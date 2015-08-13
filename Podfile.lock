@@ -1,0 +1,56 @@
+PODS:
+  - AIMTableViewIndexBar (0.1.1)
+  - ASIHTTPRequest (1.8.2):
+    - ASIHTTPRequest/ASIWebPageRequest (= 1.8.2)
+    - ASIHTTPRequest/CloudFiles (= 1.8.2)
+    - ASIHTTPRequest/Core (= 1.8.2)
+    - ASIHTTPRequest/S3 (= 1.8.2)
+  - ASIHTTPRequest/ASIWebPageRequest (1.8.2):
+    - ASIHTTPRequest/Core
+  - ASIHTTPRequest/CloudFiles (1.8.2):
+    - ASIHTTPRequest/Core
+  - ASIHTTPRequest/Core (1.8.2):
+    - Reachability
+  - ASIHTTPRequest/S3 (1.8.2):
+    - ASIHTTPRequest/Core
+  - CMPopTipView (2.2.0)
+  - iOS-Slide-Menu (1.4.6)
+  - MBProgressHUD (0.9.1)
+  - MJRefresh (1.4.6)
+  - Reachability (3.2)
+  - REFrostedViewController (2.4.8)
+  - SBJson4 (4.0.2)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
+  - UIActivityIndicator-for-SDWebImage+UIButton (1.2):
+    - SDWebImage (~> 3.7)
+  - ZYQAssetPickerController (1.0.0)
+
+DEPENDENCIES:
+  - AIMTableViewIndexBar (~> 0.1.1)
+  - ASIHTTPRequest (~> 1.8.2)
+  - CMPopTipView (~> 2.2.0)
+  - iOS-Slide-Menu (~> 1.4.6)
+  - MBProgressHUD (~> 0.9.1)
+  - MJRefresh (~> 1.4.6)
+  - REFrostedViewController (~> 2.4.8)
+  - SBJson4 (~> 4.0.1)
+  - UIActivityIndicator-for-SDWebImage+UIButton (~> 1.2)
+  - ZYQAssetPickerController (~> 1.0.0)
+
+SPEC CHECKSUMS:
+  AIMTableViewIndexBar: 184f27a47a6f0937baa0f91a1533bb052daf1ffb
+  ASIHTTPRequest: ec013992946676b7978dcbde6396d57312d21db4
+  CMPopTipView: a0a88404b9f46a5cfc16ce54bdb1b9bf9acb9aff
+  iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MJRefresh: 2eaa3fd8f67fbb86497840fb0167446f7eb61dc7
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  REFrostedViewController: a893b4979ba1f200c547aef9ff4c3fd5a18f5923
+  SBJson4: b64afe0d4607e9e339b6d7538b04611e756f71db
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
+  UIActivityIndicator-for-SDWebImage+UIButton: fec60d688a1b85ea6aabf5190a9fbb3752ebd16f
+  ZYQAssetPickerController: e5cf51ee6c05fa06746830026c247cb9f6699e84
+
+COCOAPODS: 0.37.1

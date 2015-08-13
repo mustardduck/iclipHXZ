@@ -1,0 +1,110 @@
+
+// To check if a library is compiled with CocoaPods you
+// can use the `COCOAPODS` macro definition which is
+// defined in the xcconfigs so it is available in
+// headers also when they are imported in the client
+// project.
+
+
+// AIMTableViewIndexBar
+#define COCOAPODS_POD_AVAILABLE_AIMTableViewIndexBar
+#define COCOAPODS_VERSION_MAJOR_AIMTableViewIndexBar 0
+#define COCOAPODS_VERSION_MINOR_AIMTableViewIndexBar 1
+#define COCOAPODS_VERSION_PATCH_AIMTableViewIndexBar 1
+
+// ASIHTTPRequest
+#define COCOAPODS_POD_AVAILABLE_ASIHTTPRequest
+#define COCOAPODS_VERSION_MAJOR_ASIHTTPRequest 1
+#define COCOAPODS_VERSION_MINOR_ASIHTTPRequest 8
+#define COCOAPODS_VERSION_PATCH_ASIHTTPRequest 2
+
+// ASIHTTPRequest/ASIWebPageRequest
+#define COCOAPODS_POD_AVAILABLE_ASIHTTPRequest_ASIWebPageRequest
+#define COCOAPODS_VERSION_MAJOR_ASIHTTPRequest_ASIWebPageRequest 1
+#define COCOAPODS_VERSION_MINOR_ASIHTTPRequest_ASIWebPageRequest 8
+#define COCOAPODS_VERSION_PATCH_ASIHTTPRequest_ASIWebPageRequest 2
+
+// ASIHTTPRequest/CloudFiles
+#define COCOAPODS_POD_AVAILABLE_ASIHTTPRequest_CloudFiles
+#define COCOAPODS_VERSION_MAJOR_ASIHTTPRequest_CloudFiles 1
+#define COCOAPODS_VERSION_MINOR_ASIHTTPRequest_CloudFiles 8
+#define COCOAPODS_VERSION_PATCH_ASIHTTPRequest_CloudFiles 2
+
+// ASIHTTPRequest/Core
+#define COCOAPODS_POD_AVAILABLE_ASIHTTPRequest_Core
+#define COCOAPODS_VERSION_MAJOR_ASIHTTPRequest_Core 1
+#define COCOAPODS_VERSION_MINOR_ASIHTTPRequest_Core 8
+#define COCOAPODS_VERSION_PATCH_ASIHTTPRequest_Core 2
+
+// ASIHTTPRequest/S3
+#define COCOAPODS_POD_AVAILABLE_ASIHTTPRequest_S3
+#define COCOAPODS_VERSION_MAJOR_ASIHTTPRequest_S3 1
+#define COCOAPODS_VERSION_MINOR_ASIHTTPRequest_S3 8
+#define COCOAPODS_VERSION_PATCH_ASIHTTPRequest_S3 2
+
+// CMPopTipView
+#define COCOAPODS_POD_AVAILABLE_CMPopTipView
+#define COCOAPODS_VERSION_MAJOR_CMPopTipView 2
+#define COCOAPODS_VERSION_MINOR_CMPopTipView 2
+#define COCOAPODS_VERSION_PATCH_CMPopTipView 0
+
+// MBProgressHUD
+#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
+#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
+#define COCOAPODS_VERSION_PATCH_MBProgressHUD 1
+
+// MJRefresh
+#define COCOAPODS_POD_AVAILABLE_MJRefresh
+#define COCOAPODS_VERSION_MAJOR_MJRefresh 1
+#define COCOAPODS_VERSION_MINOR_MJRefresh 4
+#define COCOAPODS_VERSION_PATCH_MJRefresh 6
+
+// REFrostedViewController
+#define COCOAPODS_POD_AVAILABLE_REFrostedViewController
+#define COCOAPODS_VERSION_MAJOR_REFrostedViewController 2
+#define COCOAPODS_VERSION_MINOR_REFrostedViewController 4
+#define COCOAPODS_VERSION_PATCH_REFrostedViewController 8
+
+// Reachability
+#define COCOAPODS_POD_AVAILABLE_Reachability
+#define COCOAPODS_VERSION_MAJOR_Reachability 3
+#define COCOAPODS_VERSION_MINOR_Reachability 2
+#define COCOAPODS_VERSION_PATCH_Reachability 0
+
+// SBJson4
+#define COCOAPODS_POD_AVAILABLE_SBJson4
+#define COCOAPODS_VERSION_MAJOR_SBJson4 4
+#define COCOAPODS_VERSION_MINOR_SBJson4 0
+#define COCOAPODS_VERSION_PATCH_SBJson4 2
+
+// SDWebImage
+#define COCOAPODS_POD_AVAILABLE_SDWebImage
+#define COCOAPODS_VERSION_MAJOR_SDWebImage 3
+#define COCOAPODS_VERSION_MINOR_SDWebImage 7
+#define COCOAPODS_VERSION_PATCH_SDWebImage 2
+
+// SDWebImage/Core
+#define COCOAPODS_POD_AVAILABLE_SDWebImage_Core
+#define COCOAPODS_VERSION_MAJOR_SDWebImage_Core 3
+#define COCOAPODS_VERSION_MINOR_SDWebImage_Core 7
+#define COCOAPODS_VERSION_PATCH_SDWebImage_Core 2
+
+// UIActivityIndicator-for-SDWebImage+UIButton
+#define COCOAPODS_POD_AVAILABLE_UIActivityIndicator_for_SDWebImage_UIButton
+#define COCOAPODS_VERSION_MAJOR_UIActivityIndicator_for_SDWebImage_UIButton 1
+#define COCOAPODS_VERSION_MINOR_UIActivityIndicator_for_SDWebImage_UIButton 2
+#define COCOAPODS_VERSION_PATCH_UIActivityIndicator_for_SDWebImage_UIButton 0
+
+// ZYQAssetPickerController
+#define COCOAPODS_POD_AVAILABLE_ZYQAssetPickerController
+#define COCOAPODS_VERSION_MAJOR_ZYQAssetPickerController 1
+#define COCOAPODS_VERSION_MINOR_ZYQAssetPickerController 0
+#define COCOAPODS_VERSION_PATCH_ZYQAssetPickerController 0
+
+// iOS-Slide-Menu
+#define COCOAPODS_POD_AVAILABLE_iOS_Slide_Menu
+#define COCOAPODS_VERSION_MAJOR_iOS_Slide_Menu 1
+#define COCOAPODS_VERSION_MINOR_iOS_Slide_Menu 4
+#define COCOAPODS_VERSION_PATCH_iOS_Slide_Menu 6
+
