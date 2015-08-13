@@ -206,7 +206,10 @@
     }
     
     [dic setObject:[NSString stringWithFormat:@"%d",self.isLabel?1:0] forKey:@"isLabel"];
-    [dic setObject:self.partList forKey:@"partList"];
+    if(_partList.count)
+    {
+        [dic setObject:self.partList forKey:@"partList"];
+    }
 
     if (self.isLabel)
         [dic setObject:self.labelList forKey:@"labelList"];
