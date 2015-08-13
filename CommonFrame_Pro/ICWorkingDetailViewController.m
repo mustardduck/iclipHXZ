@@ -65,6 +65,7 @@
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
+    _indexRow = 1099;
 
     [self loadData];
     
@@ -868,12 +869,6 @@
 
 #pragma -   
 #pragma mark Input Bar Action
-
-- (void) inputBarDidBeginEditing:(YFInputBar *)inputBar
-{
-    [self btnCommentButtonClicked:nil];
-}
-
 -(void)inputBar:(YFInputBar *)inputBar sendBtnPress:(UIButton *)sendBtn withInputString:(NSString *)str
 {
     

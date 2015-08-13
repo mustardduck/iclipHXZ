@@ -12,9 +12,7 @@
 @class YFInputBar;
 @protocol YFInputBarDelegate <NSObject>
 
-@optional
 -(void)inputBar:(YFInputBar*)inputBar sendBtnPress:(UIButton*)sendBtn withInputString:(NSString*)str;
-- (void)inputBarDidBeginEditing:(YFInputBar*) inputBar;
 
 @end
 @interface YFInputBar : UIView <UITextViewDelegate>

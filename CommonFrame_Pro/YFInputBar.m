@@ -299,22 +299,30 @@
 - (void)keyboardWillShow:(NSNotification*)notification{
     
     CGRect _keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    NSLog(@"keyboardRect: %f-%f-%f-%f",_keyboardRect.origin.y, _keyboardRect.size.height, [self getHeighOfWindow]-CGRectGetMaxY(self.frame), CGRectGetMinY(self.frame));
+    NSLog(@"%f-%f-%f-%f",_keyboardRect.origin.y, _keyboardRect.size.height, [self getHeighOfWindow]-CGRectGetMaxY(self.frame), CGRectGetMinY(self.frame));
     //CGRect frame = self.frame;
     
-//    if (!((_keyboardRect.origin.y == 227 && _keyboardRect.size.height == 253) || (_keyboardRect.origin.y == 228 && _keyboardRect.size.height == 252)))
-//    { //4S
-//        if (!((_keyboardRect.origin.y == 316 && _keyboardRect.size.height == 252) || (_keyboardRect.origin.y == 315 && _keyboardRect.size.height == 253)))
-//        {   //5s
-//            if (!(_keyboardRect.origin.y == 409 && _keyboardRect.size.height == 258))
-//            {    //6
-//                if (!((_keyboardRect.origin.y == 465 && _keyboardRect.size.height == 271) || (_keyboardRect.origin.y == 466 && _keyboardRect.size.height == 270)))
-//                {    //6+
-//                    return;
-//                }
-//            }
-//        }
-//    }
+    if (!( (_keyboardRect.origin.y == 227 && _keyboardRect.size.height == 253)
+          || (_keyboardRect.origin.y == 228 && _keyboardRect.size.height == 252) ))
+    { //4S
+        if (!( (_keyboardRect.origin.y == 316 && _keyboardRect.size.height == 252)
+              || (_keyboardRect.origin.y == 315 && _keyboardRect.size.height == 253)
+              || (_keyboardRect.origin.y == 316.5 && _keyboardRect.size.height == 251.5) ))
+        {   //5s
+            if (!( (_keyboardRect.origin.y == 409 && _keyboardRect.size.height == 258)
+                  || (_keyboardRect.origin.y == 415 && _keyboardRect.size.height == 252)
+                  || (_keyboardRect.origin.y == 383.5 && _keyboardRect.size.height == 283.5)
+                  || (_keyboardRect.origin.y == 451 && _keyboardRect.size.height == 216) ))
+            {    //6
+                if (!( (_keyboardRect.origin.y == 474 && _keyboardRect.size.height == 262)
+                      || (_keyboardRect.origin.y == 466 && _keyboardRect.size.height == 270)
+                      || (_keyboardRect.origin.y >= 442 && _keyboardRect.size.height >= 293) ))
+                {    //6+
+                    return;
+                }
+            }
+        }
+    }
     
     [self removeType];
     //_relativeControlOriFrame = self.relativeControl.frame;
@@ -382,9 +390,6 @@
         
     }
     
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(inputBarDidBeginEditing:)]) {
-        [self.delegate inputBarDidBeginEditing:self];
-    }
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification
