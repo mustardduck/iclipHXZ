@@ -26,4 +26,6 @@
 @property (nonatomic,strong) id                     icMainViewController;
 @property (nonatomic,strong) NSString*              content;
 
+@property (nonatomic,strong) IBOutlet UITableView*       tableView;
+
 @end

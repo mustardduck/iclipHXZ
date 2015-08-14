@@ -13,7 +13,7 @@
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate>
 {
-    IBOutlet UITableView*       _tableView;
+    
     
 
     NSMutableDictionary*        _reReplyDic;
@@ -21,7 +21,7 @@
     
     IBOutlet YFInputBar*        _inputBar;
     
-    
+    NSInteger                   _oriIndexRow;
     NSMutableArray*             _commentArray;
     NSMutableArray*             _attachmentImageHeightArray;
     BOOL                        _hasLoaded;
@@ -65,7 +65,6 @@
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    _indexRow = 1099;
 
     [self loadData];
     
@@ -81,6 +80,8 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    _indexRow = 1099;
+    _oriIndexRow = 0;
     [self.view addSubview:_tableView];
     //_tableView.hidden = NO;
 
@@ -828,6 +829,9 @@
     if (_navBarLeftButtonPopTipView.hasShadow) {
         [_navBarLeftButtonPopTipView dismissAnimated:YES];
     }
+    
+    _oriIndexRow = 0;
+    
     if (indexPath.row < 2) {
         //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
         NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
@@ -852,6 +856,7 @@
                 hasLoad = YES;
                 [_inputBar.textField becomeFirstResponder];
                 [_tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                _oriIndexRow = _indexRow;
                 _indexRow = 1099;
             }
         }
@@ -892,6 +897,22 @@
         cm.userImg = [LoginUser loginUserPhoto];
         cm.userId = [LoginUser loginUserID];
         cm.taskId = _taskId;
+        
+        if (_oriIndexRow > 1) {
+            /*
+            NSString * pid = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-2)]).commentsId;
+            cm.parentId = pid==nil?@"0":pid;
+            
+            for (Comment* pc in _commentArray) {
+                if (pc.commentsId == pid) {
+                    NSMutableArray* tAr = [NSMutableArray arrayWithArray:pc.comments];
+                    [tAr addObject:cm];
+                    pc.comments = tAr;
+                    break;
+                }
+            }
+             */
+        }
         
         [_commentArray addObject:cm];
         
@@ -967,7 +988,7 @@
             
              [_tableView reloadData];
             
-            _indexRow = 0;
+            _indexRow = 1099;
         }
     }
 }

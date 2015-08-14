@@ -298,33 +298,12 @@
 
 - (void)keyboardWillShow:(NSNotification*)notification{
     
-    CGRect _keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    NSLog(@"%f-%f-%f-%f",_keyboardRect.origin.y, _keyboardRect.size.height, [self getHeighOfWindow]-CGRectGetMaxY(self.frame), CGRectGetMinY(self.frame));
-    //CGRect frame = self.frame;
     
-    if (!( (_keyboardRect.origin.y == 227 && _keyboardRect.size.height == 253)
-          || (_keyboardRect.origin.y == 228 && _keyboardRect.size.height == 252) ))
-    { //4S
-        if (!( (_keyboardRect.origin.y == 316 && _keyboardRect.size.height == 252)
-              || (_keyboardRect.origin.y == 315 && _keyboardRect.size.height == 253)
-              || (_keyboardRect.origin.y == 316.5 && _keyboardRect.size.height == 251.5) ))
-        {   //5s
-            if (!( (_keyboardRect.origin.y == 409 && _keyboardRect.size.height == 258)
-                  || (_keyboardRect.origin.y == 415 && _keyboardRect.size.height == 252)
-                  || (_keyboardRect.origin.y == 383.5 && _keyboardRect.size.height == 283.5)
-                  || (_keyboardRect.origin.y == 451 && _keyboardRect.size.height == 216) ))
-            {    //6
-                if (!( (_keyboardRect.origin.y == 474 && _keyboardRect.size.height == 262)
-                      || (_keyboardRect.origin.y == 466 && _keyboardRect.size.height == 270)
-                      || (_keyboardRect.origin.y >= 442 && _keyboardRect.size.height >= 293) ))
-                {    //6+
-                    return;
-                }
-            }
-        }
-    }
+    CGRect _keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    //NSLog(@"%f-%f-%f-%f",_keyboardRect.origin.y, _keyboardRect.size.height, [self getHeighOfWindow]-CGRectGetMaxY(self.frame), CGRectGetMinY(self.frame));
     
     [self removeType];
+    [self keyHide];
     //_relativeControlOriFrame = self.relativeControl.frame;
     
     CGFloat oy = [self convertYToWindow:CGRectGetMaxY(self.originalFrame)];
@@ -333,7 +312,7 @@
         if (self.frame.origin.y == self.originalFrame.origin.y)
         {
             CGFloat winHeihgt = [self getHeighOfWindow];
-            CGFloat y = - _keyboardRect.size.height + winHeihgt - CGRectGetMaxY(self.originalFrame) - ([self getHeighOfWindow]-CGRectGetMaxY(self.frame));
+            CGFloat y = winHeihgt - _keyboardRect.size.height - CGRectGetMaxY(self.originalFrame) - (winHeihgt - CGRectGetMaxY(self.frame));
             
             [UIView animateWithDuration:0.3
                                   delay:0
@@ -342,16 +321,17 @@
                                  self.transform = CGAffineTransformMakeTranslation(0, y);
                              } completion:nil];
             
-            [UIView animateWithDuration:0.3
-                                  delay:0
-                                options:UIViewAnimationOptionCurveEaseInOut
-                             animations:^{
-                                 //self.relativeControl.transform = CGAffineTransformMakeTranslation(0, y);
-                             } completion:nil];
-            
-            for (UIControl* control in ((UIViewController*)self.parentController).view.subviews) {
+            for (UIControl* control in ((ICWorkingDetailViewController*)self.parentController).view.subviews) {
+                
                 if ([control isKindOfClass:[UITableView class]]) {
-                    _relativeControlOriFrame = control.frame;
+                    
+                    CGRect afr = ((ICWorkingDetailViewController*)self.parentController).tableView.frame;
+                    if (CGRectGetWidth(afr) == 0 && CGRectGetHeight(afr) == 0) {
+                        CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
+                        _relativeControlOriFrame = frame;
+                    }
+                    else
+                        _relativeControlOriFrame = afr;
                     control.frame = CGRectMake(_relativeControlOriFrame.origin.x, _relativeControlOriFrame.origin.y, _relativeControlOriFrame.size.width, _relativeControlOriFrame.size.height + y);
                     
                     NSInteger index = ((ICWorkingDetailViewController*)self.parentController).indexRow;
@@ -368,7 +348,6 @@
                     break;
                 }
             }
-            
             _hasShowed = YES;
             
         }
@@ -394,14 +373,19 @@
 
 - (void)keyboardWillHide:(NSNotification*)notification
 {
+    [self keyHide];
+    
+}
 
+- (void)keyHide
+{
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.transform = CGAffineTransformMakeTranslation(0,0);
                          //if (_btnTypeHasClicked)
-                             //self.relativeControl.transform = CGAffineTransformMakeTranslation(0,0);
+                         //self.relativeControl.transform = CGAffineTransformMakeTranslation(0,0);
                      } completion:nil];
     
     for (UIControl* control in ((UIViewController*)self.parentController).view.subviews) {
@@ -425,6 +409,7 @@
     }
     _hasShowed = NO;
 }
+
 #pragma  mark ConvertPoint
 //将坐标点y 在window和superview转化  方便和键盘的坐标比对
 -(float)convertYFromWindow:(float)Y
