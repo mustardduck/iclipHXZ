@@ -607,11 +607,12 @@ typedef enum {
             NSString* imgPath = ac.address;
             
             UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(6, 4, 20, 20)];
-            [photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
+            [photo setImageWithURL:[NSURL URLWithString: ac.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [photo setBackgroundColor:[UIColor clearColor]];
             [cell.contentView addSubview:photo];
             
             UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(photo.frame.origin.x + photo.frame.size.width + 4, photo.frame.origin.y + 4, 40, 12)];
-            [name setText:@"未知"];
+            [name setText:ac.userName];
             [name setTextColor:[UIColor whiteColor]];
             [name setFont:[UIFont systemFontOfSize:13]];
             [cell.contentView addSubview:name];

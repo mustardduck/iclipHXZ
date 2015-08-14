@@ -32,7 +32,7 @@
 
 @interface UIColor (Addition)
 
-//灰字不能点击
-+ (UIColor *) disableGreyColor;
++ (UIColor *) disableGreyColor;//灰字不能点击
++ (UIColor *) greyStatusBarColor;
 
 @end

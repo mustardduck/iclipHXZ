@@ -99,4 +99,10 @@
     return RGBCOLOR(99, 99, 102);
 }
 
++ (UIColor *) greyStatusBarColor
+{
+    return RGBCOLOR(35, 34, 39);
+}
+
+
 @end
