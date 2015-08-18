@@ -54,7 +54,7 @@ typedef enum {
 @property (nonatomic, assign) int       replayNum;//评论数
 
 + (NSArray*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString*)wgId termString:(NSString*)termStr;
-+ (NSMutableArray*)getMssionListbyWorkContractID:(NSString*)contractid currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;
++ (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;
 
 + (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments;
 

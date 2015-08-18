@@ -213,7 +213,7 @@
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
         _pageNo = 1;
-        _dataArray =  [Mission getMssionListbyWorkContractID:_memberObj.workContractsId currentPageIndex:_pageNo pageSize:_pageRowCount];
+        _dataArray =  [Mission getMssionListbyWorkGroupID:_memberObj.workGroupId andUserId:_memberObj.userId currentPageIndex:_pageNo pageSize:_pageRowCount];
         
         NSLog(@"Header:%@",_dataArray);
         
@@ -234,7 +234,7 @@
         
         _pageNo++;
         
-        NSArray* newArr = [Mission getMssionListbyWorkContractID:_memberObj.workContractsId currentPageIndex:_pageNo pageSize:_pageRowCount];
+        NSArray* newArr = [Mission getMssionListbyWorkGroupID:_memberObj.workGroupId andUserId:_memberObj.userId currentPageIndex:_pageNo pageSize:_pageRowCount];
         
         if (newArr.count > 0) {
             [_dataArray addObjectsFromArray:newArr];

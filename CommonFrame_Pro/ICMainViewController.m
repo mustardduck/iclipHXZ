@@ -698,7 +698,7 @@
 - (void)tableViewCellDidClicked:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Member* m = _sideMenu.dataArray[indexPath.section][indexPath.row];
-    m.workContractsId = @"0";//查找工作组成员动态
+    m.workGroupId = @"0";//查找工作组成员动态
     
     if (m != nil) {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -795,7 +795,10 @@
         }
 
         [dirLine setBackgroundColor:[UIColor whiteColor]];
-        [cell.contentView addSubview:dirLine];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cell.contentView addSubview:dirLine];
+        });
         
         CGRect dateFrame = CGRectMake(0, isFristIndex?64:30, 50, 12);
         UILabel* dateMon = [[UILabel alloc] initWithFrame:dateFrame];

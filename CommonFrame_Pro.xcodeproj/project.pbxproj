@@ -137,7 +137,7 @@
 		783D2C3E1B5CFADE007B197E /* NSStringEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSStringEx.h; path = Request/NSStringEx.h; sourceTree = "<group>"; };
 		783D2C3F1B5CFADE007B197E /* NSStringEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSStringEx.m; path = Request/NSStringEx.m; sourceTree = "<group>"; };
 		7841F6F11B535A0800CCACE0 /* ICFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICFileViewController.h; sourceTree = "<group>"; };
-		7841F6F21B535A0800CCACE0 /* ICFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICFileViewController.m; sourceTree = "<group>"; };
+		7841F6F21B535A0800CCACE0 /* ICFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 5; lastKnownFileType = sourcecode.c.objc; path = ICFileViewController.m; sourceTree = "<group>"; };
 		7844F6721B2145BB0021FFDF /* ICMemberTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMemberTableViewController.h; sourceTree = "<group>"; };
 		7844F6731B2145BB0021FFDF /* ICMemberTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMemberTableViewController.m; sourceTree = "<group>"; };
 		784770E41B2FC8C5007D7839 /* ICMemberInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMemberInfoViewController.h; sourceTree = "<group>"; };

@@ -84,6 +84,7 @@
                                  cm.isRead = [[di valueForKey:@"isRead"] boolValue];
                                  cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
                                  cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
+                                 cm.labelList = [di objectForKey:@"labelList"];
                                  
                                  [array addObject:cm];
   
@@ -102,12 +103,12 @@
     return array;
 }
 
-+ (NSMutableArray*)getMssionListbyWorkContractID:(NSString*)contractid currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount
++ (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount
 {
 
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* url_s = [NSString stringWithFormat:@"%@?workContactsId=%@&page=%ld&pageSize=%ld",PERSION_INFO,contractid,page,rowCount];
+    NSString* url_s = [NSString stringWithFormat:@"%@?workGroupId=%@&userId=%@&page=%ld&pageSize=%ld",PERSION_INFO,groupId, userId,page,rowCount];
     
     NSString* responseString = [HttpBaseFile requestDataWithSync:url_s];
     

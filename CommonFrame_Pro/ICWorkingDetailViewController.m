@@ -748,7 +748,7 @@
             CGFloat height = 15;
             
             id obj = [_reReplyDic valueForKey:key];
-            if ([obj isKindOfClass:[NSArray class]])
+            if ([obj isKindOfClass:[NSArray class]] && comm.comments.count > 0)
             {
                 NSArray* reArray = [NSArray arrayWithArray:(NSArray *)obj];
                 reCount = reArray.count;
@@ -945,69 +945,79 @@
         cm.userId = [LoginUser loginUserID];
         cm.taskId = _taskId;
         
-        if (_oriIndexRow > 1) {
-            
-            Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-2)]);
-            pc.commentsId = @"0";
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BOOL isChild = NO;
+            if (_oriIndexRow > 1) {
+                
+                Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-2)]);
+                pc.commentsId = @"0";
+                
+                NSString* newCommentId = @"";
+                BOOL isOk = [pc sendComment:&newCommentId];
+                
+                if (isOk) {
+                    cm.parentId = newCommentId;
+                    NSMutableArray* tAr = [NSMutableArray array];
+                    [tAr addObject:cm];
+                    pc.comments = tAr;
+                    isChild = YES;
+                }
+                
+                [_commentArray addObject:pc];
+                [_replyList addObject:pc.main];
+            }
             
             NSString* newCommentId = @"";
-            BOOL isOk = [pc sendComment:&newCommentId];
-            
-            if (isOk) {
-                cm.parentId = newCommentId;
-                NSMutableArray* tAr = [NSMutableArray array];
-                [tAr addObject:cm];
-                pc.comments = tAr;
+            BOOL isOk = [cm sendComment:&newCommentId];
+            //BOOL isOk = [cm sendComment];
+            if(isOk){
+                cm.commentsId = newCommentId;
+                [_commentArray addObject:cm];
+                if (!isChild) {
+                    [_replyList addObject:str];
+                }
+                
+                NSLog(@"New Child Comment!!");
+                
+                NSInteger index = _replyList.count - 1;
+                
+                NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 2)];
+                id obj = [_reReplyDic valueForKey:key];
+                if ([obj isKindOfClass:[NSArray class]]) {
+                    NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
+                    if (reArray.count > 0) {
+                        
+                        [reArray addObject:str];
+                        [_reReplyDic setObject:reArray forKey:key];
+                    }
+                }
+                else
+                {
+                    NSMutableArray* reArray = [NSMutableArray array];
+                    [reArray addObject:str];
+                    if (_commentArray.count > 1) {
+                        if (isChild) {
+                            [_reReplyDic setObject:reArray forKey:key];
+                        }
+                    }
+                    
+                }
+                
+                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                NSMutableArray* indexPaths = [NSMutableArray arrayWithObject:indexPath];
+                
+                [_tableView beginUpdates];
+                [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+                [_tableView reloadData];
+                [_tableView endUpdates];
+                
+                NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+                [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             }
-            
-            [_commentArray addObject:pc];
-            [_replyList addObject:pc.main];
-        }
-        else
-        {
-            [_commentArray addObject:cm];
-            [_replyList addObject:str];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            BOOL isOk = [cm sendComment];
-            if(isOk)
-                NSLog(@"New Comment!!");
         });
         
-        NSInteger index = _replyList.count - 1;
         
-        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-        NSMutableArray* indexPaths = [NSMutableArray arrayWithObject:indexPath];
-        
-        
-        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 2)];
-        id obj = [_reReplyDic valueForKey:key];
-        if ([obj isKindOfClass:[NSArray class]]) {
-            NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
-            if (reArray.count > 0) {
-                
-                [reArray addObject:str];
-                [_reReplyDic setObject:reArray forKey:key];
-            }
-        }
-        else
-        {
-            NSMutableArray* reArray = [NSMutableArray array];
-            [reArray addObject:str];
-            [_reReplyDic setObject:reArray forKey:key];
-            
-        }
-        
-        
-        [_tableView beginUpdates];
-        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-        [_tableView reloadData];
-        [_tableView endUpdates];
-        
-        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
-        //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     else
     {
@@ -1022,46 +1032,49 @@
             cm.userId = [LoginUser loginUserID];
             cm.taskId = _taskId;
             
-            for (Comment* pc in _commentArray) {
-                if (pc.commentsId == pid) {
-                    NSMutableArray* tAr = [NSMutableArray arrayWithArray:pc.comments];
-                    [tAr addObject:cm];
-                    pc.comments = tAr;
-                    break;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                for (Comment* pc in _commentArray) {
+                    if (pc.commentsId == pid) {
+                        NSMutableArray* tAr = [NSMutableArray arrayWithArray:pc.comments];
+                        [tAr addObject:cm];
+                        pc.comments = tAr;
+                        break;
+                    }
                 }
-            }
-            if (cm != nil) {
-                //dispatch_async(dispatch_get_main_queue(), ^{
-                
-                BOOL isOk = [cm sendComment];
-                if(isOk)
-                    NSLog(@"New Child Comment!!");
-                //});
-            }
-            
-            
-            NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 2)];
-            id obj = [_reReplyDic valueForKey:key];
-            if ([obj isKindOfClass:[NSArray class]]) {
-                NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
-                if (reArray.count > 0) {
+                if (cm != nil) {
                     
                     
-                    [reArray addObject:str];
-                    [_reReplyDic setObject:reArray forKey:key];
+                    BOOL isOk = [cm sendComment];
+                    if(isOk)
+                    {
+                        NSLog(@"New Child Comment!!");
+                        
+                        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 2)];
+                        id obj = [_reReplyDic valueForKey:key];
+                        if ([obj isKindOfClass:[NSArray class]]) {
+                            NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
+                            if (reArray.count > 0) {
+                                
+                                
+                                [reArray addObject:str];
+                                [_reReplyDic setObject:reArray forKey:key];
+                            }
+                        }
+                        else
+                        {
+                            NSMutableArray* reArray = [NSMutableArray array];
+                            [reArray addObject:str];
+                            [_reReplyDic setObject:reArray forKey:key];
+                            
+                        }
+                        
+                        [_tableView reloadData];
+                        _indexRow = 1099;
+                    }
+                    
                 }
-            }
-            else
-            {
-                NSMutableArray* reArray = [NSMutableArray array];
-                [reArray addObject:str];
-                [_reReplyDic setObject:reArray forKey:key];
-                
-            }
+            });
             
-            [_tableView reloadData];
-            
-            _indexRow = 1099;
         }
     }
 }
