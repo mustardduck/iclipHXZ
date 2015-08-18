@@ -115,7 +115,7 @@
         [searchView addSubview:_txtSearch];
         [searchView addSubview:_lblSearch];
         
-        [view addSubview:searchView];
+//        [view addSubview:searchView];
 
         UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 44, [UIScreen mainScreen].bounds.size.width, 0.5)];
         [bottomLine setBackgroundColor:[UIColor grayColor]];
@@ -209,9 +209,24 @@
     
     cell.tag = indexPath.row;
     
-    [cell.contentView  setBackgroundColor:[UIColor colorWithHexString:@"#2f2e33"]];
+    cell.backgroundColor = [UIColor colorWithHexString:@"#2f2e33"];
+    [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 65, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    [cell.selectedBackgroundView addSubview:bottomLine];
+    
+    return YES;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

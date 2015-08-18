@@ -42,5 +42,6 @@
 
 
 - (BOOL)sendComment;
+- (BOOL)sendComment:(NSString**)commentId;
 + (BOOL)praise:(NSString*)commentId workGroupId:(NSString*)wgid hasPraised:(BOOL)isPraise;
 @end

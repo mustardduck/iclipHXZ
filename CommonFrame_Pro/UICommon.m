@@ -104,5 +104,9 @@
     return RGBCOLOR(35, 34, 39);
 }
 
++ (UIColor *) cellHoverBackgroundColor
+{
+    return RGBCOLOR(43, 42, 47);
+}
 
 @end

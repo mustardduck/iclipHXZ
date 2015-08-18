@@ -83,7 +83,10 @@
             {
                 ALAssetRepresentation* representation = [ass defaultRepresentation];
                 UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-                
+                imgH = [UIImage
+                        imageWithCGImage:[representation fullScreenImage]
+                        scale:[representation scale]
+                        orientation:UIImageOrientationUp];
                 UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
                 [img setBackgroundColor:[UIColor clearColor]];
                 [img setImage:imgH];

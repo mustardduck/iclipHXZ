@@ -43,12 +43,17 @@
     _tableView.delegate = self;
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
-    
+
     dispatch_sync(dispatch_queue_create("qu", nil), ^{
         NSString* isAdmin = @"";
-        _authroyArray = [NSArray arrayWithArray:[Group groupAuthoryByWorkGroupId:_workGroup.workGroupId isAdmin:&isAdmin]];
+        
+        NSDictionary * dic = [Group groupDicByWorkGroupId:_workGroup.workGroupId isAdmin:&isAdmin];
+        
+        _authroyArray = [self authroyArr:dic];
+        
         _isAdmin = ([[NSString stringWithFormat:@"%@",isAdmin] isEqualToString:@""]?NO:[isAdmin boolValue]);
         
+        _workGroup.userName = [dic valueForKey:@"userName"];
     });
 }
 
@@ -59,6 +64,58 @@
     if (_workGroup != nil) {
         [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
+    
+    if (_ccopyToMembersArray != nil) {
+        NSString* idArrayStr = @"";
+        int i = 0;
+        for (Member* m in _ccopyToMembersArray) {
+            i++;
+            idArrayStr = [NSString stringWithFormat:@"%@%@",idArrayStr,m.orgcontactId];
+            if (i < _ccopyToMembersArray.count) {
+                idArrayStr = [NSString stringWithFormat:@"%@%@",idArrayStr,@","];
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString* loginUserId = [LoginUser loginUserID];
+            //NSString* idStr = _txtGroupName.text;
+            BOOL isOk = [Group inviteNewUser:loginUserId workGroupId:_workGroupId source:3 sourceValue:idArrayStr];
+            if (isOk) {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已邀请群组成员!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                _ccopyToMembersArray = nil;
+            }
+            
+        });
+        
+    }
+}
+
+- (NSArray *)authroyArr:(NSDictionary *)dArr
+{
+    NSMutableArray * array = [NSMutableArray array];
+    
+    id listArr = [dArr valueForKey:@"list"];
+    
+    if ([listArr isKindOfClass:[NSArray class]])
+    {
+        for (id data in listArr) {
+            if ([data isKindOfClass:[NSDictionary class]]) {
+                
+                NSDictionary* di = (NSDictionary*)data;
+                
+                Group* cm = [Group new];
+                
+                cm.workGroupId = [di valueForKey:@"wgRoleId"];
+                cm.workGroupName = [di valueForKey:@"wgRoleName"];
+                
+                [array addObject:cm];
+                
+            }
+        }
+    }
+    
+    return array;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -118,6 +175,21 @@
 {
     
     return @"    ";
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 39, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    
+    [cell.selectedBackgroundView addSubview:bottomLine];
+    
+    return YES;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -213,7 +285,7 @@
             [cell.contentView addSubview:text];
             
             UILabel* text1 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 38, width/2 - 10, 13)];
-            text1.text = [LoginUser loginUserName];
+            text1.text = _workGroup.userName;
             text1.textColor = [UIColor whiteColor];
             text1.font = font;
             text1.backgroundColor = [UIColor clearColor];
@@ -331,10 +403,19 @@
     else if (index == 1 && section == 1) {
         // 1
         if ([self hasAuthory:@"1"]) {
-            controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInvitationTableViewController"];
-            ((ICMemberInvitationTableViewController*)controller).workGroupId = _workGroupId;
+//            controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInvitationTableViewController"];
+//            ((ICMemberInvitationTableViewController*)controller).workGroupId = _workGroupId;
+//            
+//            [self.navigationController pushViewController:controller animated:YES];
             
-            [self.navigationController pushViewController:controller animated:YES];
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberTableViewController"];
+            ((ICMemberTableViewController*)vc).controllerType = MemberViewFromControllerCopyTo;
+            ((ICMemberTableViewController*)vc).icPublishMisonController = self;
+            
+            ((ICMemberTableViewController*)vc).workgid = self.workGroupId;
+            
+            [self.navigationController pushViewController:vc animated:YES];
         }
         else
         {

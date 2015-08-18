@@ -98,29 +98,8 @@
     }
     else
     {
-        NSMutableArray* sectionArray = [NSMutableArray array];
-        NSArray*        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:wgid];
-        
-        if (sectionArray.count == 0 || memberArray.count == 0) {
-            _sections = @[@"A", @"D", @"F", @"M", @"N", @"O", @"Z"];
-            
-            _rows = @[@[@"adam", @"alfred", @"ain", @"abdul", @"anastazja", @"angelica"],
-                      @[@"dennis" , @"deamon", @"destiny", @"dragon", @"dry", @"debug", @"drums"],
-                      @[@"Fredric", @"France", @"friends", @"family", @"fatish", @"funeral"],
-                      @[@"Mark", @"Madeline"],
-                      @[@"Nemesis", @"nemo", @"name"],
-                      @[@"Obama", @"Oprah", @"Omen", @"OMG OMG OMG", @"O-Zone", @"Ontario"],
-                      @[@"Zeus", @"Zebra", @"zed"]];
-        }
-        else
-        {
-            _sections = sectionArray;
-            _rows = memberArray;
-        }
-
+        [self fillAllMember];
     }
-    
-   
     
      CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
@@ -283,7 +262,7 @@
             [searchView addSubview:_txtSearch];
             [searchView addSubview:_lblSearch];
             
-            [view addSubview:searchView];
+//            [view addSubview:searchView];
             
             UILabel* bottomLine3 = [[UILabel alloc] initWithFrame:CGRectMake(0, searchView.frame.origin.y + searchView.frame.size.height -1,  [UIScreen mainScreen].bounds.size.width, 0.5f)];
             [bottomLine3 setBackgroundColor:[UIColor grayColor]];
@@ -426,12 +405,36 @@
             [searchView addSubview:_txtSearch];
             [searchView addSubview:_lblSearch];
             
-            [view addSubview:searchView];
+//            [view addSubview:searchView];
             
             view;
         });
         
         [_tableView setFrame:CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 66) ];
+    }
+}
+
+- (void) fillAllMember
+{    
+    NSMutableArray* sectionArray = [NSMutableArray array];
+    NSArray*        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid];
+    
+    if (sectionArray.count == 0 || memberArray.count == 0) {
+        _sections = @[@"A", @"D", @"F", @"M", @"N", @"O", @"Z"];
+        
+        _rows = @[@[@"adam", @"alfred", @"ain", @"abdul", @"anastazja", @"angelica"],
+                  @[@"dennis" , @"deamon", @"destiny", @"dragon", @"dry", @"debug", @"drums"],
+                  @[@"Fredric", @"France", @"friends", @"family", @"fatish", @"funeral"],
+                  @[@"Mark", @"Madeline"],
+                  @[@"Nemesis", @"nemo", @"name"],
+                  @[@"Obama", @"Oprah", @"Omen", @"OMG OMG OMG", @"O-Zone", @"Ontario"],
+                  @[@"Zeus", @"Zebra", @"zed"]];
+    }
+    else
+    {
+        _sections = sectionArray;
+        
+        _rows = memberArray;
     }
 }
 
@@ -559,6 +562,19 @@
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    Member* mem = _rows[indexPath.section][indexPath.row];
+
+    if(mem.userId == [LoginUser loginUserID])
+    {
+        _editingStyle = UITableViewCellEditingStyleNone;
+    }
+    
+    if(!_justRead)
+    {
+        _editingStyle = UITableViewCellEditingStyleDelete;
+    }
+    
     return _editingStyle;
 }
 
@@ -569,17 +585,44 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    //if (self.controllerType == MemberViewFromControllerGroupMembers) {
+    if (self.controllerType == MemberViewFromControllerGroupMembers) {
         // 删除操作
         if (editingStyle == UITableViewCellEditingStyleDelete) {
-            // 1.删除数据
-            //[self.data removeObjectAtIndex:indexPath.row];
             
-            // 2.更新UITableView UI界面
-            // [tableView reloadData];
-            //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            Member* mem = _rows[indexPath.section][indexPath.row];
+
+            BOOL isDeleted = [Member memberUpdateWgPeopleStrtus:mem.workContractsId status:@"-1"];
+            if(isDeleted)
+            {
+                [self fillAllMember];
+                
+                [tableView reloadData];
+            }
+
+                
+
+//                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+            
+            // 1.删除数据
+//            [self.data removeObjectAtIndex:indexPath.row];
+//
         }
-    //}
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 59.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    [cell.selectedBackgroundView addSubview:bottomLine];
+    
+    return YES;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -713,7 +756,9 @@
     }
     
     //[cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-    [cell.contentView setBackgroundColor:[UIColor blackColor]];
+    
+    cell.backgroundColor = [UIColor blackColor];
+    [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 59.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayColor]];

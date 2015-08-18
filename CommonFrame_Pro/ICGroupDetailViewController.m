@@ -268,6 +268,37 @@
     return _contentArray.count;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UIView* dirLine = [[UIView alloc] init];
+    NSInteger ind = indexPath.row;
+    
+    CGFloat contentHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    
+    if (ind == 0) {
+        dirLine.frame = CGRectMake(50 + 7.5, 19 + 15, 0.5, contentHeight - 19 - 15 + 1);
+    }
+    else
+    {
+        dirLine.frame = CGRectMake(57.5, 0, 0.5, contentHeight + 1);
+    }
+    [dirLine setBackgroundColor:[UIColor whiteColor]];
+    [cell.selectedBackgroundView addSubview:dirLine];
+    
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * _screenWidth + 15, contentHeight - 1, _screenWidth - (0.156 * _screenWidth + 15) - 12, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor whiteColor]];
+    [cell.selectedBackgroundView addSubview:bottomLine];
+    
+    return YES;
+
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"GroupDetailTableViewCellId2";
@@ -439,8 +470,9 @@
         //[cell.contentView setBackgroundColor:[UIColor blackColor]];
         
 //        [cell.contentView setBackgroundColor:[UIColor colorWithHexString:@"#2f2e33"]];
-        [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-
+        
+        cell.backgroundColor = [UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f];
+        [cell.contentView setBackgroundColor:[UIColor clearColor]];
     }
     
     return cell;

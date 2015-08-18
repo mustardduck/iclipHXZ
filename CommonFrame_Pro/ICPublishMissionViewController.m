@@ -675,6 +675,43 @@
     return 44;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    NSInteger index = indexPath.row;
+    NSInteger section = indexPath.section;
+    CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    
+    if (section == 0 && index == 0) {
+        UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        [line1 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line1];
+    }
+    else if (section == 1 && index == 0) {
+        UILabel* line2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        [line2 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line2];
+    }
+    else if (section == 2 && index == 0) {
+        UILabel* line3 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        [line3 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line3];
+    }
+    if (!(section == 2 && index == 1))
+    {
+        UILabel* line4 = [[UILabel alloc] initWithFrame:CGRectMake(0, cellHeight - 1, tableWidth, 0.5)];
+        [line4 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line4];
+    }
+    
+    return YES;
+}
+
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -802,10 +839,16 @@
     NSInteger section = indexPath.section;
     
     if (section == 1) {
+        UIView *datePickView = [(UIView *)self.view viewWithTag: 1111];
+        if(datePickView)
+        {
+            [datePickView removeFromSuperview];
+        }
         
         _datePickerView = nil;
         _datePickerView = [[UIView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height , [UIScreen mainScreen].bounds.size.width, 220)];
         [_datePickerView setBackgroundColor:[UIColor blackColor]];
+        _datePickerView.tag = 1111;
         
         UIButton* btnChoicedDate = [[UIButton alloc] initWithFrame:CGRectMake(_datePickerView.bounds.size.width - 110, 2, 100, 35)];
         [btnChoicedDate setTitle:@"确定" forState:UIControlStateNormal];
@@ -813,9 +856,11 @@
         [btnChoicedDate setBackgroundColor:[UIColor clearColor]];
         if (index == 0) {
             [btnChoicedDate setTag:11];
+            
         }
         else if (index == 1) {
             [btnChoicedDate setTag:12];
+            
         }
         [btnChoicedDate addTarget:self action:@selector(btnDatePickerClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -826,12 +871,21 @@
         [btnToday addTarget:self action:@selector(btnTodayClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         _datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 40, _datePickerView.bounds.size.width, 170)];
-        _datePicker.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
-        _datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+//        _datePicker.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+        _datePicker.datePickerMode = UIDatePickerModeDate;
         [_datePicker setDate:[NSDate date]];
         [_datePicker setCalendar:[NSCalendar currentCalendar]];
         [_datePicker setTintColor:[UIColor whiteColor]];
         [_datePicker setBackgroundColor:[UIColor whiteColor]];
+        
+        if(index == 0)
+        {
+            _datePicker.datePickerMode = UIDatePickerModeDate;
+        }
+        else if (index == 1)
+        {
+            _datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+        }
         
         NSDate* min = [[NSDate alloc] initWithTimeInterval:1000 sinceDate:[NSDate date]];
         [_datePicker setMinimumDate:min];

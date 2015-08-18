@@ -33,6 +33,7 @@
 @interface UIColor (Addition)
 
 + (UIColor *) disableGreyColor;//灰字不能点击
-+ (UIColor *) greyStatusBarColor;
++ (UIColor *) greyStatusBarColor;//状态栏背景颜色
++ (UIColor *) cellHoverBackgroundColor;//列表点击时背景颜色；
 
 @end

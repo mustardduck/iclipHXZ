@@ -513,6 +513,35 @@
     return vi;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    NSInteger index = indexPath.row;
+    NSInteger section = indexPath.section;
+    CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
+    
+    if (section == 0 && index == 0) {
+        UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        [line1 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line1];
+    }
+    else if (section == 1 && index == 0) {
+        UILabel* line2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        [line2 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line2];
+    }
+    else if (section == 1 && index == 1) {
+        UILabel* line2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        [line2 setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:line2];
+    }
+    return YES;
+}
+
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

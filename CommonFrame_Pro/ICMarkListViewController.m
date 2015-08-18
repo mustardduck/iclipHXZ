@@ -9,6 +9,7 @@
 #import "ICMarkListViewController.h"
 #import "UIColor+HexString.h"
 #import "Mark.h"
+#import "UICommon.h"
 
 @interface ICMarkListViewController()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -111,6 +112,21 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 39, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    
+    [cell.selectedBackgroundView addSubview:bottomLine];
+    
+    return YES;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

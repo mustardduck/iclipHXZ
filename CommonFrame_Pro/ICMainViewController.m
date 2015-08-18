@@ -14,6 +14,7 @@
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
 #import "PPDragDropBadgeView.h"
 #import "UICommon.h"
+#import <Reachability.h>
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -46,6 +47,8 @@
     NSInteger               _maxVal;
     
     UIView*                 _headView;
+    Reachability  *hostReach;
+
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -60,6 +63,20 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)reachabilityChanged:(NSNotification *)note {
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+    NetworkStatus status = [hostReach currentReachabilityStatus];
+    
+    if (status == NotReachable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                        message:@"网络连接异常"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
@@ -70,6 +87,14 @@
         [self presentViewController:controller animated:YES completion:nil];
         return;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name: kReachabilityChangedNotification
+                                               object: nil];
+    
+    hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [hostReach startNotifier];
    
     self.loginUserID = [LoginUser loginUserID];
     
@@ -121,7 +146,18 @@
     [_smView setFrame:CGRectMake(0, 0, _screenWidth, _screenHeight)];
     
     NSArray* markArray = [NSArray array];
-    _bottomArray = [NSArray arrayWithArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray searchString:(isBarOne ? searchString : nil)]];
+    NSMutableArray * muArr = [[NSMutableArray alloc] init];
+    Group * gr = [[Group alloc] init];
+    gr.workGroupId = @"0";
+    gr.workGroupName = @"全部";
+    gr.messageCount = @"0";
+    
+    [muArr addObject:gr];
+    
+    [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray searchString:(isBarOne ? searchString : nil)]];
+    
+    _bottomArray = [NSArray arrayWithArray:muArr];
+    
     if (_bottomArray.count > 0) {
         NSMutableArray* imgs = [NSMutableArray array];
         NSMutableArray* names = [NSMutableArray array];
@@ -233,6 +269,13 @@
 
 - (void)addRefrish
 {
+    if ([_tableView.header isRefreshing]) {
+        return;
+    }
+    if ([_tableView.footer isRefreshing]) {
+        return;
+    }
+    
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
         _pageNo = 1;
@@ -278,8 +321,6 @@
             [_tableView.footer endRefreshing];
             [_tableView.footer noticeNoMoreData];
         }
-        
-        
     }];
 }
 
@@ -558,6 +599,8 @@
 
 - (void)icSideMenuClicked:(id)sender
 {
+    _pubGroupId = nil;
+
     _tableView.tableHeaderView = nil;
     _headView = nil;
     
@@ -654,15 +697,17 @@
 
 - (void)tableViewCellDidClicked:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc;
-    vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
+    Member* m = _sideMenu.dataArray[indexPath.section][indexPath.row];
+    m.workContractsId = @"0";//查找工作组成员动态
     
-    //((ICMemberInfoViewController*)vc).
+    if (m != nil) {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc;
+        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
+        ((ICMemberInfoViewController*)vc).memberObj = m;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
-    [self.navigationController pushViewController:vc animated:YES];
-     */
 }
 
 #pragma mark - SlideNavigationController Methods -
@@ -748,6 +793,7 @@
         {
             dirLine.frame = CGRectMake(57.5, 0, 0.5, contentHeight);
         }
+
         [dirLine setBackgroundColor:[UIColor whiteColor]];
         [cell.contentView addSubview:dirLine];
         
@@ -863,7 +909,11 @@
     
         //[cell.contentView addSubview:pView];
         
-        [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+        [cell.contentView setBackgroundColor:[UIColor clearColor]];
+        
+        CGRect rect = cell.frame;
+        rect.size.height = contentHeight - 10;
+
     }
     
 
@@ -890,6 +940,37 @@
     [self.navigationController pushViewController:vc animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UIView* dirLine = [[UIView alloc] init];
+    NSInteger ind = indexPath.row;
+    
+    CGFloat contentHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    
+    if (ind == 0) {
+        dirLine.frame = CGRectMake(50 + 7.5, 19 + 15, 0.5, contentHeight - 19 - 15 + 1);
+    }
+    else
+    {
+        dirLine.frame = CGRectMake(57.5, 0, 0.5, contentHeight + 1);
+    }
+    [dirLine setBackgroundColor:[UIColor whiteColor]];
+    [cell.selectedBackgroundView addSubview:dirLine];
+    
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * _screenWidth + 15, contentHeight - 1, _screenWidth - (0.156 * _screenWidth + 15) - 12, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor whiteColor]];
+    [cell.selectedBackgroundView addSubview:bottomLine];
+
+    return YES;
 }
 
 #pragma mark - Navigation

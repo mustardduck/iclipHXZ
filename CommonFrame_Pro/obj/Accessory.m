@@ -88,7 +88,8 @@
                             cm.size = [di valueForKey:@"size"];
                             cm.sourceId = [di valueForKey:@"sourceId"];
                             cm.addTime = [di valueForKey:@"addTime"];
-
+                            cm.userName = [di valueForKey:@"userName"];
+                            cm.userImg = [di valueForKey:@"userImg"];
                             [array addObject:cm];
                             
                         }

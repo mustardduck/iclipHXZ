@@ -28,6 +28,9 @@
     CMPopTipView*               _navBarLeftButtonPopTipView;
     
     BOOL                        _hasDel;
+    
+    UIActivityIndicatorView* acInd ;
+
 }
 
 
@@ -58,45 +61,47 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
-    [rightButton setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
-    [rightButton addTarget:self action:@selector(btnMenu) forControlEvents:UIControlEventTouchUpInside];
+    acInd = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 40) / 2, [UIScreen mainScreen].bounds.size.height/ 2 - 80 , 40, 40)];
+    [acInd setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [acInd setHidesWhenStopped:YES];
+    [self.view addSubview:acInd];
     
-    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
-    self.navigationItem.rightBarButtonItem = rightBarButton;
-    
+    [acInd startAnimating];
+    dispatch_async(dispatch_queue_create("mcc", nil), ^{
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self loadData];
+            
+            _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66) style:UITableViewStylePlain];
+            [_tableView setBackgroundColor:[UIColor blackColor]];
+            _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            _tableView.dataSource = self;
+            _tableView.delegate = self;
+            _indexRow = 1099;
+            _oriIndexRow = 0;
+            [self.view addSubview:_tableView];
+            
+            
+            NSArray* typeList = @[@"批示",@"评论"];
+            _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 44 - 66, [UIScreen mainScreen].bounds.size.width, 44)];
+            //[inputBar setFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) + 100, 320, 44)];
+            _inputBar.delegate = self;
+            _inputBar.clearInputWhenSend = YES;
+            _inputBar.resignFirstResponderWhenSend = YES;
+            _inputBar.relativeControl = (UIControl*)_tableView;
+            _inputBar.typeList = typeList;
+            _inputBar.parentController = self;
+            _inputBar.dataCount = _replyList.count - 1;
+            
+            [self.view addSubview:_inputBar];
+            
+            [acInd stopAnimating];
+        });
+    });
 
-    [self loadData];
-    
     //_dataList = [NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10", nil];
     //_replyList = [NSMutableArray arrayWithObjects:@" ",@" ",@"回形针工具上线申请1！",@"回形针工具上线申请2！",@"回形针工具上线申请3！",@"回形针工具上线申请！",@"回形针工具上线申请！",@"回形针工具上线申请8！",@"回形针工具上线申请9！",@"回形针工具上线申请10！", nil];
-    
-    NSArray* typeList = @[@"批示",@"评论"];
-    
-    
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66) style:UITableViewStylePlain];
-    [_tableView setBackgroundColor:[UIColor blackColor]];
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
-    _indexRow = 1099;
-    _oriIndexRow = 0;
-    [self.view addSubview:_tableView];
-    //_tableView.hidden = NO;
 
-    
-    _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 44 - 66, [UIScreen mainScreen].bounds.size.width, 44)];
-    //[inputBar setFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) + 100, 320, 44)];
-    _inputBar.delegate = self;
-    _inputBar.clearInputWhenSend = YES;
-    _inputBar.resignFirstResponderWhenSend = YES;
-    _inputBar.relativeControl = (UIControl*)_tableView;
-    _inputBar.typeList = typeList;
-    _inputBar.parentController = self;
-    _inputBar.dataCount = _replyList.count - 1;
-    
-    [self.view addSubview:_inputBar];
     
    
 }
@@ -134,6 +139,16 @@
     _currentMission = [Mission detail:_taskId commentArray:&commentsArray];
     
     if (_currentMission != nil) {
+        
+        if(_currentMission.createUserId == [LoginUser loginUserID])
+        {
+            UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
+            [rightButton setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
+            [rightButton addTarget:self action:@selector(btnMenu) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+            self.navigationItem.rightBarButtonItem = rightBarButton;
+        }
         
         if (commentsArray.count > 0) {
             _commentArray = [NSMutableArray arrayWithArray:commentsArray];
@@ -474,6 +489,40 @@
     return _replyList.count;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    NSInteger index = indexPath.row;
+    CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
+
+    if (index == 0) {
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 58 - 1, cWidth, 0.5)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:bottomLine];
+    }
+    else if (index == 1)
+    {
+        CGFloat newcHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight - 1, cWidth, 0.5)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:bottomLine];
+    }
+    else if (index > 1)
+    {
+        CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
+
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, cHeight - 1, cWidth, 0.5)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:bottomLine];
+    }
+    return YES;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger index = indexPath.row;
@@ -503,7 +552,7 @@
         
         UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(52, 20, cWidth - 62, 20)];
         [title setBackgroundColor:[UIColor clearColor]];
-        [title setText:[NSString stringWithFormat:@"%@ 发布到 %@",_currentMission.userName,_currentMission.workGroupName]];
+        [title setText:[NSString stringWithFormat:@"%@ %@",_currentMission.userName,_currentMission.workGroupName]];
         [title setTextColor:[UIColor whiteColor]];
         [title setFont:[UIFont boldSystemFontOfSize:15]];
         
@@ -519,7 +568,7 @@
         CGFloat contentWidth = cWidth - 22;
         UIFont* font = [UIFont systemFontOfSize:13];
         
-        CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];;
+        CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
         
         __block CGFloat newcHeight = contentHeight + 35;
         
@@ -601,9 +650,9 @@
                 
                 [acView addSubview:attachment];
                 
-                UIImageView* attachmentIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 15, 13)];
-                [attachmentIcon setImage:[UIImage imageNamed:@"icon_fujian"]];
-                [acView addSubview:attachmentIcon];
+//                UIImageView* attachmentIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 15, 13)];
+//                [attachmentIcon setImage:[UIImage imageNamed:@"icon_fujian"]];
+//                [acView addSubview:attachmentIcon];
                 
                 [attchView addSubview:acView];
                 
@@ -887,8 +936,6 @@
     
     if (_indexRow == 1099) {
         
-        [_replyList addObject:str];
-        
         Comment* cm = [Comment new];
         cm.main = str;
         cm.parentId = @"0";
@@ -899,22 +946,28 @@
         cm.taskId = _taskId;
         
         if (_oriIndexRow > 1) {
-            /*
-            NSString * pid = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-2)]).commentsId;
-            cm.parentId = pid==nil?@"0":pid;
             
-            for (Comment* pc in _commentArray) {
-                if (pc.commentsId == pid) {
-                    NSMutableArray* tAr = [NSMutableArray arrayWithArray:pc.comments];
-                    [tAr addObject:cm];
-                    pc.comments = tAr;
-                    break;
-                }
+            Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-2)]);
+            pc.commentsId = @"0";
+            
+            NSString* newCommentId = @"";
+            BOOL isOk = [pc sendComment:&newCommentId];
+            
+            if (isOk) {
+                cm.parentId = newCommentId;
+                NSMutableArray* tAr = [NSMutableArray array];
+                [tAr addObject:cm];
+                pc.comments = tAr;
             }
-             */
+            
+            [_commentArray addObject:pc];
+            [_replyList addObject:pc.main];
         }
-        
-        [_commentArray addObject:cm];
+        else
+        {
+            [_commentArray addObject:cm];
+            [_replyList addObject:str];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL isOk = [cm sendComment];
@@ -926,6 +979,26 @@
         
         NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
         NSMutableArray* indexPaths = [NSMutableArray arrayWithObject:indexPath];
+        
+        
+        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 2)];
+        id obj = [_reReplyDic valueForKey:key];
+        if ([obj isKindOfClass:[NSArray class]]) {
+            NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
+            if (reArray.count > 0) {
+                
+                [reArray addObject:str];
+                [_reReplyDic setObject:reArray forKey:key];
+            }
+        }
+        else
+        {
+            NSMutableArray* reArray = [NSMutableArray array];
+            [reArray addObject:str];
+            [_reReplyDic setObject:reArray forKey:key];
+            
+        }
+        
         
         [_tableView beginUpdates];
         [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
@@ -959,20 +1032,20 @@
             }
             if (cm != nil) {
                 //dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    BOOL isOk = [cm sendComment];
-                    if(isOk)
-                        NSLog(@"New Child Comment!!");
+                
+                BOOL isOk = [cm sendComment];
+                if(isOk)
+                    NSLog(@"New Child Comment!!");
                 //});
             }
-
+            
             
             NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 2)];
             id obj = [_reReplyDic valueForKey:key];
             if ([obj isKindOfClass:[NSArray class]]) {
                 NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
                 if (reArray.count > 0) {
-
+                    
                     
                     [reArray addObject:str];
                     [_reReplyDic setObject:reArray forKey:key];
@@ -986,7 +1059,7 @@
                 
             }
             
-             [_tableView reloadData];
+            [_tableView reloadData];
             
             _indexRow = 1099;
         }

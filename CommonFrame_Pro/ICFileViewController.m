@@ -222,6 +222,11 @@ typedef enum {
              NSLog(@"uti:%@",[representation UTI]);
              */
             
+            imgH = [UIImage
+                    imageWithCGImage:[representation fullScreenImage]
+                    scale:[representation scale]
+                    orientation:UIImageOrientationUp];
+            
             NSData* data = UIImageJPEGRepresentation(imgH, 1.0f);
             
             NSString* filePath = [CommonFile saveImageToDocument:data fileName:filename];
@@ -695,7 +700,11 @@ typedef enum {
          NSLog(@"url:%@",url);
          NSLog(@"uti:%@",[representation UTI]);
          */
-        
+         
+         imgH = [UIImage
+                 imageWithCGImage:[representation fullScreenImage]
+                 scale:[representation scale]
+                 orientation:UIImageOrientationUp];
         
         UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(12,10, 50, 50)];
         [img setImage:imgH];

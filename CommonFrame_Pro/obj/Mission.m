@@ -206,11 +206,15 @@
     }
     
     [dic setObject:[NSString stringWithFormat:@"%d",self.isLabel?1:0] forKey:@"isLabel"];
-    if(_partList.count)
+//    if(_partList.count)
+//    {
+//        [dic setObject:self.partList forKey:@"partList"];
+//    }
+    if(_cclist.count > 0)
     {
-        [dic setObject:self.partList forKey:@"partList"];
+        [dic setObject:self.cclist forKey:@"ccList"];
     }
-
+    
     if (self.isLabel)
         [dic setObject:self.labelList forKey:@"labelList"];
     [dic setObject:[NSString stringWithFormat:@"%d",self.isAccessory?1:0]  forKey:@"isAccessory"];

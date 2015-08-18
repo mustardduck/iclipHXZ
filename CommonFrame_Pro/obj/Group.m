@@ -10,7 +10,7 @@
 
 #define CURL                @"/index/findIndexMessageNum.hz"
 #define WORKLIST_URL        @"/workgroup/findMeWgList.hz"
-#define INVITE_URL          @"/workgroup/inviteUser.hz"
+#define INVITE_URL          @"/workgroup/inviteUserList.hz"
 #define NEW_GROUP           @"/workgroup/addWorkgroup.hz"
 #define DETAIL_URL          @"/workgroup/intoWorkgroupDetail.hz"
 #define UPDATE_URL          @"/workgroup/updateWorkgroup.hz"
@@ -172,7 +172,7 @@
 
     [dic setObject:loginUserId forKey:@"userId"];
     [dic setObject:workGroupId forKey:@"workGroupId"];
-    [dic setObject:[NSString stringWithFormat:@"%ld",source] forKey:@"source"];
+    [dic setObject:@"0" forKey:@"source"];//  0:单位通讯录添加   1：短信邀请   2：邮件   3：工作组通讯录
     [dic setObject:sourceStr forKey:@"sourceStr"];
      [dic setObject:@"2" forKey:@"platform"];
     
@@ -195,7 +195,6 @@
         }
         
     }
-    
     
     return isOk;
 }
@@ -274,15 +273,15 @@
     return isOk;
 }
 
-+ (NSArray*)groupAuthoryByWorkGroupId:(NSString*)workGroupId isAdmin:(NSString**)admin
++ (NSDictionary*)groupDicByWorkGroupId:(NSString*)workGroupId isAdmin:(NSString**)admin
 {
-    NSMutableArray* array = [NSMutableArray array];
+    NSDictionary* dict = [NSDictionary dictionary];
     NSString* isAdmin = @"";
     
     NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&userId=%@",DETAIL_URL,workGroupId,[LoginUser loginUserID]]];
     
     if (responseString == nil) {
-        return array;
+        return dict;
     }
     id val = [CommonFile json:responseString];
     
@@ -296,34 +295,11 @@
                 
                 if ([dataDic isKindOfClass:[NSDictionary class]])
                 {
-                    NSDictionary* dArr = (NSDictionary*)dataDic;
+                    dict = (NSDictionary *)dataDic;
                     
-                    if ([dArr valueForKey:@"isAdmin"] != nil) {
-                        isAdmin = [dArr valueForKey:@"isAdmin"];
+                    if ([dict valueForKey:@"isAdmin"] != nil) {
+                        isAdmin = [dict valueForKey:@"isAdmin"];
                     }
-                    
-                    id listArr = [dArr valueForKey:@"list"];
-                    
-                    if ([listArr isKindOfClass:[NSArray class]])
-                    {
-                        for (id data in listArr) {
-                            if ([data isKindOfClass:[NSDictionary class]]) {
-                                
-                                NSDictionary* di = (NSDictionary*)data;
-                                
-                                Group* cm = [Group new];
-                                
-                                cm.workGroupId = [di valueForKey:@"wgRoleId"];
-                                cm.workGroupName = [di valueForKey:@"wgRoleName"];
-                                
-                                [array addObject:cm];
-                                
-                            }
-                        }
-                    }
-                    
-                    
-                    
                 }
                 
             }
@@ -333,7 +309,7 @@
     
     *admin = isAdmin;
     
-    return array;
+    return dict;
 }
 
 

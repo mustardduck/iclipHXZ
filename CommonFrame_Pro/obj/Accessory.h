@@ -24,6 +24,8 @@
 @property (nonatomic,strong) NSString*  sourceId;
 @property (nonatomic,strong) NSString*  addTime;
 @property (nonatomic,strong) NSString*  jsonStr;
+@property (nonatomic,strong) NSString*  userName;
+@property (nonatomic,strong) NSString*  userImg;
 
 
 +(Accessory*)jsonToObj:(NSString*)jsonString;

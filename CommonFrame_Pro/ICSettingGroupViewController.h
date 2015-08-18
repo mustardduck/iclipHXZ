@@ -21,4 +21,6 @@
 
 @property(nonatomic,strong) id  icGroupDetailController;
 
+@property(nonatomic,strong) NSArray* ccopyToMembersArray;
+
 @end

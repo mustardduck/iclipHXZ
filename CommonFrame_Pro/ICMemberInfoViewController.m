@@ -318,9 +318,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat cellHeight = _screenHeight * 0.321;
-    if (indexPath.row > 0) {
-        cellHeight = cellHeight - 4;
+    Mission* ms = [_dataArray objectAtIndex:indexPath.row];
+    
+    CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
+    
+    CGFloat cellHeight = contentH + 70 + 42;
+    
+    if (indexPath.row == 0) {
+        cellHeight = cellHeight + 37;
     }
     
     return cellHeight;
@@ -329,6 +334,36 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _dataArray.count;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    UIView* dirLine = [[UIView alloc] init];
+    NSInteger ind = indexPath.row;
+    
+    CGFloat contentHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    
+    if (ind == 0) {
+        dirLine.frame = CGRectMake(50 + 7.5, 19 + 15, 0.5, contentHeight - 19 - 15 + 1);
+    }
+    else
+    {
+        dirLine.frame = CGRectMake(57.5, 0, 0.5, contentHeight + 1);
+    }
+    [dirLine setBackgroundColor:[UIColor whiteColor]];
+    [cell.selectedBackgroundView addSubview:dirLine];
+    
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * _screenWidth + 15, contentHeight - 1, _screenWidth - (0.156 * _screenWidth + 15) - 12, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor whiteColor]];
+    [cell.selectedBackgroundView addSubview:bottomLine];
+    
+    return YES;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -347,15 +382,19 @@
         [view removeFromSuperview];
     }
     
-    Mission* mi = [_dataArray objectAtIndex:index];
-    
     if (cell.contentView.subviews.count == 0) {
         
-        CGFloat cellHeight = _screenHeight * 0.321;
-        if (index > 0) {
-            cellHeight = cellHeight - 4;
-        }
         
+        //        CGFloat cellHeight = _screenHeight * 0.321;
+        Mission* ms = [_dataArray objectAtIndex:indexPath.row];
+        
+        CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
+        
+        CGFloat cellHeight = contentH + 70 + 42;
+        
+        if (indexPath.row == 0) {
+            cellHeight = cellHeight + 37;
+        }
         
         CGFloat contentHeight = cellHeight;
         CGFloat contentWidth = _screenWidth;
@@ -370,7 +409,7 @@
             [timeIcon setImage:[UIImage imageNamed:@"icon_shijian"]];
             [timeIcon setBackgroundColor:[UIColor clearColor]];
             [cell.contentView addSubview:timeIcon];
-            
+            //[menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             
             dirLine.frame = CGRectMake(timeIcon.frame.origin.x + 7.5, timeIcon.frame.origin.y + 15, 0.5, contentHeight - timeIcon.frame.origin.y - timeIcon.frame.size.height);
         }
@@ -378,26 +417,32 @@
         {
             dirLine.frame = CGRectMake(57.5, 0, 0.5, contentHeight);
         }
+        
         [dirLine setBackgroundColor:[UIColor whiteColor]];
         [cell.contentView addSubview:dirLine];
         
-        CGRect dateFrame = CGRectMake(0, isFristIndex?64:60, 50, 12);
+        CGRect dateFrame = CGRectMake(0, isFristIndex?64:30, 50, 12);
         UILabel* dateMon = [[UILabel alloc] initWithFrame:dateFrame];
-        dateMon.font = [UIFont boldSystemFontOfSize:12];
+        dateMon.font = [UIFont boldSystemFontOfSize:15];
         dateMon.textAlignment = NSTextAlignmentRight;
         dateMon.textColor = [UIColor whiteColor];
-        dateMon.text = mi.monthAndDay;
+        dateMon.text = ms.monthAndDay;
         [cell.contentView addSubview:dateMon];
         
         UILabel* dateHour = [[UILabel alloc] initWithFrame:CGRectMake(0, dateMon.frame.origin.y + 12 + 4, 50, 8)];
         dateHour.font = [UIFont systemFontOfSize:8];
         dateHour.textAlignment = NSTextAlignmentRight;
         dateHour.textColor = [UIColor whiteColor];
-        dateHour.text = mi.hour;
+        dateHour.text = ms.hour;
         [cell.contentView addSubview:dateHour];
         
+        UILabel* readLbl = [[UILabel alloc] initWithFrame:CGRectMake(1, dateHour.frame.origin.y + 13, 50, 8)];
+        readLbl.font = [UIFont systemFontOfSize:12];
+        readLbl.textAlignment = NSTextAlignmentRight;
+        readLbl.textColor = [UIColor whiteColor];
         
-        UILabel* corner = [[UILabel alloc] initWithFrame:CGRectMake(55, isFristIndex?68:64, 5, 5)];
+        
+        UILabel* corner = [[UILabel alloc] initWithFrame:CGRectMake(55, isFristIndex?68:34, 5, 5)];
         corner.layer.cornerRadius = 2;
         corner.backgroundColor = [UIColor whiteColor];
         corner.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -412,42 +457,70 @@
         [bottomLine setBackgroundColor:[UIColor whiteColor]];
         [cell.contentView addSubview:bottomLine];
         
-        UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(dirLine.frame.origin.x + 20, isFristIndex?19:15, 36, 36)];
+        UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(dirLine.frame.origin.x + 20, isFristIndex?52:15, 36, 36)];
         //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
-        [photo setImageWithURL:[NSURL URLWithString:mi.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [photo setImageWithURL:[NSURL URLWithString:ms.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
         [photo setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:photo];
         
         
-        CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 6, photo.frame.origin.y + 12,
+        CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 6, photo.frame.origin.y + 10,
                                      contentWidth - (photo.frame.origin.x + photo.frame.size.width + 6 + 39) , 21);
         UILabel* name = [[UILabel alloc] initWithFrame: nameFrame];
-        name.text  = [NSString stringWithFormat:@"%@ 发送到 %@",mi.userName, mi.workGroupName];
+        name.text  = [NSString stringWithFormat:@"%@ 发送到 %@", ms.userName, ms.workGroupName];
         name.textColor = [UIColor whiteColor];
-        name.font = [UIFont boldSystemFontOfSize:12];
+        name.font = [UIFont boldSystemFontOfSize:15];
         [cell.contentView addSubview:name];
         
-        CGRect contentFrame = CGRectMake(photo.frame.origin.x, photo.frame.origin.y + photo.frame.size.height + 8,
+        CGRect contentFrame = CGRectMake(photo.frame.origin.x, photo.frame.origin.y + photo.frame.size.height + 18,
                                          contentWidth - (photo.frame.origin.x + 39),
-                                         cellHeight - (photo.frame.origin.y + photo.frame.size.height + 8 + 14));
+                                         contentH);
         UILabel* content = [[UILabel alloc] init];
         content.frame = contentFrame;
         [content setNumberOfLines:0];
         content.textColor = [UIColor grayColor];
-        content.font = [UIFont boldSystemFontOfSize:12];
-        content.text = mi.main;
+        content.font = [UIFont boldSystemFontOfSize:15];
+        content.text = ms.main;
         [content setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:content];
         
-        if (mi.isAccessory) {
-            UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(contentWidth - 39, contentHeight / 2 + 20, 15, 13)];
-            attachment.image = [UIImage imageNamed:@"icon_fujian"];
-            [cell.contentView addSubview:attachment];
-        }
-       
+        
+        //        if (ms.isAccessory) {
+        
+        UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(content), YH(content) + 20 , 12, 10)];
+        attachment.image = [UIImage imageNamed:@"btn_fujianIcon"];
+        [cell.contentView addSubview:attachment];
+        
+        UILabel* fujianLbl = [[UILabel alloc] init];
+        fujianLbl.textColor = [UIColor grayColor];
+        fujianLbl.font = [UIFont boldSystemFontOfSize:10];
+        [fujianLbl setBackgroundColor:[UIColor clearColor]];
+        fujianLbl.text = [NSString stringWithFormat:@"附件 (%d)", ms.accessoryNum];
+        
+        fujianLbl.frame = CGRectMake(XW(attachment) + 5, Y(attachment) - 2, [UICommon getWidthFromLabel:fujianLbl].width, 14);
+        [cell.contentView addSubview:fujianLbl];
+        
+        UIImageView* plIcon = [[UIImageView alloc] initWithFrame:CGRectMake(XW(fujianLbl) + 21, YH(content) + 20 , 12, 10)];
+        plIcon.image = [UIImage imageNamed:@"btn_pinglun"];
+        [cell.contentView addSubview:plIcon];
+        
+        UILabel* plLbl = [[UILabel alloc] init];
+        plLbl.textColor = [UIColor grayColor];
+        plLbl.font = [UIFont boldSystemFontOfSize:10];
+        [plLbl setBackgroundColor:[UIColor clearColor]];
+        plLbl.text = [NSString stringWithFormat:@"评论 (%d)", ms.replayNum];
+        
+        plLbl.frame = CGRectMake(XW(plIcon) + 5, Y(attachment) - 2, [UICommon getWidthFromLabel:plLbl].width, 14);
+        [cell.contentView addSubview:plLbl];
+        
         //[cell.contentView addSubview:pView];
         
-       [cell.contentView setBackgroundColor:[UIColor colorWithHexString:@"#2f2e33"]];
+        [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+        
+        CGRect rect = cell.frame;
+        rect.size.height = contentHeight - 10;
+        
     }
     
     //[cell.imageView setImageWithURL:[NSURL URLWithString:@"http://img0.bdstatic.com/img/image/shouye/mingxing0605.jpg"] placeholderImage:[UIImage imageNamed:@"menuUsers"] options:SDWebImageContinueInBackground usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

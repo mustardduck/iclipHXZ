@@ -170,7 +170,7 @@
                                          }];
         [topBar setBarTintColor:[UIColor colorWithRed:0.10f green:0.10f blue:0.10f alpha:1.0f]];
         
-        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组消息"];
+        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
 
         UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
         [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
@@ -252,7 +252,7 @@
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [view addSubview:bottomLine];
         
-        [_messageView addSubview:view];
+//        [_messageView addSubview:view];
         
         
         if (_dataCount / columeCount > 0) {
@@ -420,7 +420,7 @@
         
         UILabel* menuTitle = [[UILabel alloc] initWithFrame:CGRectMake((_pViewWidth - 120) / 2, top + menuHeight, 120, 28)];
         menuTitle.backgroundColor = [UIColor clearColor];
-        menuTitle.text = @"群组消息";
+        menuTitle.text = @"群组";
         menuTitle.textColor = [UIColor grayColor];
         menuTitle.textAlignment = NSTextAlignmentCenter;
         menuTitle.font = [UIFont systemFontOfSize:13];
@@ -687,7 +687,7 @@
     
     _tableView.tableHeaderView = ({
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 167)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 167 - 66)];
         [view setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
         
         UIView* searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
@@ -721,7 +721,7 @@
         [searchView addSubview:_txtSearch];
         [searchView addSubview:_lblSearch];
         
-        [view addSubview:searchView];
+//        [view addSubview:searchView];
         
         if (!_isFirstSearchBar) {
             if (_searchText != nil) {
@@ -754,18 +754,16 @@
         [mlbl setTextAlignment:NSTextAlignmentLeft];
         [mlbl setTextColor:[UIColor whiteColor]];
         [mlbl setFont:[UIFont boldSystemFontOfSize:15]];
-        [mlbl setText:@"群组消息"];
+//        [mlbl setText:@"群组消息"];
         [mBtn addSubview:mlbl];
+//
+//        [messageView addSubview:mBtn];
         
-        [messageView addSubview:mBtn];
-        
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, messageView.frame.origin.y + messageView.frame.size.height -1,  [UIScreen mainScreen].bounds.size.width, 0.5f)];
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, searchView.frame.origin.y + searchView.frame.size.height -1,  [UIScreen mainScreen].bounds.size.width, 0.5f)];
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [view addSubview:bottomLine];
         
-        
-        
-        UIView* projectView = [[UIView alloc] initWithFrame:CGRectMake(-1, 101, tableWidth + 2, 66)];
+        UIView* projectView = [[UIView alloc] initWithFrame:CGRectMake(-1, 101 - H(messageView), tableWidth + 2, 66)];
         [projectView setBackgroundColor: [UIColor clearColor]];
         
         UIButton* pBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 66)];
@@ -821,8 +819,8 @@
         //[view addSubview:bottomLine2];
         
         
-        [view addSubview:searchView];
-        [view addSubview:messageView];
+//        [view addSubview:searchView];
+//        [view addSubview:messageView];
         [view addSubview:projectView];
         [view addSubview:departmentView];
         
@@ -847,7 +845,7 @@
     
     [self restoreTextName:_lblSearch textField:_txtSearch];
     
-    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组消息"];
+    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
@@ -911,7 +909,7 @@
 #pragma mark Table View Action
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellId = @"MemberTableViewCellId";
+    static NSString *cellId = @"MainTableViewCellIdentitifer";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
@@ -945,7 +943,8 @@
 
     
     //[cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-    [cell.contentView setBackgroundColor:[UIColor blackColor]];
+    cell.backgroundColor = [UIColor blackColor];
+    [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 59.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayColor]];
@@ -963,6 +962,16 @@
 
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+    cell.selectedBackgroundView = selectionColor;
+    
+    return YES;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

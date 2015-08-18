@@ -13,6 +13,7 @@
 #define WORKGROUP_URL       @"/workgroup/findWgPeopleListByInitial.hz"
 #define MEMBER_INFO_URL     @"/workgroup/findWgPeopleDetail.hz"
 #define MARK_URL            @"/workgroup/findWgPeopleListByLabel.hz"
+#define UPDATEWGPEOPLESTRUS_URL   @"/workgroup/updateWgPeopleStrtus.hz"
 
 @implementation Member
 
@@ -462,6 +463,39 @@
     }
     
     return array;
+}
+
++ (BOOL)memberUpdateWgPeopleStrtus:(NSString*)workContactsId status:(NSString *)status
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    [dic setObject:workContactsId forKey:@"workContactsId"];
+    
+    [dic setObject:status forKey:@"status"];
+    
+    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATEWGPEOPLESTRUS_URL postData:dic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile json:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+
+    return isOk;
 }
 
 @end

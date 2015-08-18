@@ -136,7 +136,15 @@
             [self diminishTextName:_lblPwd];
         }
     }
+    
+//    [self setNeedsStatusBarAppearanceUpdate];
+
 }
+
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//    return UIStatusBarStyleLightContent;
+//}
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField

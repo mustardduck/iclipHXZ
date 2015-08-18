@@ -53,6 +53,50 @@
     return isOk;
 }
 
+- (BOOL)sendComment:(NSString**)commentId
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    
+    [dic setObject:self.taskId forKey:@"taskId"];
+    [dic setObject:self.userId forKey:@"userId"];
+    [dic setObject:[NSString stringWithFormat:@"%ld",self.level] forKey:@"level"];
+    [dic setObject:self.main forKey:@"main"];
+    [dic setObject:self.parentId forKey:@"parentId"];
+    
+    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile json:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSDictionary class]])
+                {
+                    NSString* cid = [dataDic valueForKey:@"commentsId"];
+                    *commentId = cid;
+                }
+            }
+        }
+        
+    }
+    
+    return isOk;
+}
+
 + (BOOL)praise:(NSString*)commentId workGroupId:(NSString*)wgid hasPraised:(BOOL)isPraise
 {
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
