@@ -19,9 +19,11 @@
 
 @implementation Mission
 
-+ (NSArray*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr
++ (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr
 {
-    NSMutableArray* array = [NSMutableArray array];
+    NSDictionary* dict = [NSDictionary dictionary];
+
+//    NSMutableArray* array = [NSMutableArray array];
 
     NSString* url_s;
     
@@ -34,7 +36,7 @@
     NSString* responseString = [HttpBaseFile requestDataWithSync:url_s];
     
     if (responseString == nil) {
-        return array;
+        return dict;
     }
     id val = [CommonFile json:responseString];
     
@@ -48,50 +50,13 @@
                 
                  if ([dataDic isKindOfClass:[NSDictionary class]])
                  {
+                     dict = (NSDictionary *)dataDic;
+
                      NSInteger totalPages = 0;
                      if ([dataDic valueForKey:@"totalPages"] != nil) {
                          totalPages = [[dataDic valueForKey:@"totalPages"] integerValue];
                      }
                      
-                     id dataArr = [dataDic valueForKey:@"datalist"];
-                     if ([dataArr isKindOfClass:[NSArray class]])
-                     {
-                         NSArray* dArr = (NSArray*)dataArr;
-                         
-                         for (id data in dArr) {
-                             if ([data isKindOfClass:[NSDictionary class]]) {
-                                 
-                                 NSDictionary* di = (NSDictionary*)data;
-                                 
-                                 Mission* cm = [Mission new];
-                                 
-                                 cm.monthAndDay = [NSString stringWithFormat:@"%@/%@",[di valueForKey:@"monthStr"],[di valueForKey:@"dayStr"]];
-                                 cm.hour = [di valueForKey:@"hourStr"];
-                                 cm.planExecTime = [di valueForKey:@"planExecTime"];
-                                 cm.type = [[di valueForKey:@"type"] integerValue];
-                                 cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
-                                 cm.finishTime = [di valueForKey:@"finishTime"];
-                                 cm.createUserId = [di valueForKey:@"createUserId"];
-                                 cm.taskId = [di valueForKey:@"taskId"];
-                                 cm.workGroupId = [di valueForKey:@"workGroupId"];
-                                 cm.workGroupName = [di valueForKey:@"wgName"];
-                                 cm.main = [di valueForKey:@"main"];
-                                 cm.userImg = [di valueForKey:@"userImg"];
-                                 cm.status = [[di valueForKey:@"status"] integerValue];
-                                 cm.userName = [di valueForKey:@"userName"];
-                                 cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
-                                 cm.totalPages = totalPages;
-                                 cm.isRead = [[di valueForKey:@"isRead"] boolValue];
-                                 cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
-                                 cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
-                                 cm.labelList = [di objectForKey:@"labelList"];
-                                 
-                                 [array addObject:cm];
-  
-                             }
-                         }
-                         
-                     }
                  }
                 
                 NSLog(@"Dic:%@",dic);
@@ -100,7 +65,7 @@
         
     }
     
-    return array;
+    return dict;
 }
 
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount

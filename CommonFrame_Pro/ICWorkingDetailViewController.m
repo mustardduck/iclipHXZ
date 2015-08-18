@@ -552,7 +552,7 @@
         
         UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(52, 20, cWidth - 62, 20)];
         [title setBackgroundColor:[UIColor clearColor]];
-        [title setText:[NSString stringWithFormat:@"%@ %@",_currentMission.userName,_currentMission.workGroupName]];
+        [title setText:[NSString stringWithFormat:@"%@  %@",_currentMission.userName,_currentMission.workGroupName]];
         [title setTextColor:[UIColor whiteColor]];
         [title setFont:[UIFont boldSystemFontOfSize:15]];
         
@@ -570,7 +570,7 @@
         
         CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
         
-        __block CGFloat newcHeight = contentHeight + 35;
+        __block CGFloat newcHeight = contentHeight + 35 + 16;
         
         UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(11, 11, contentWidth, contentHeight)];
         [title setBackgroundColor:[UIColor clearColor]];
@@ -588,7 +588,7 @@
             CGFloat accHeight = 200;
             CGFloat intevalHeight = 7;
             
-            UIView* attchView = [[UIView alloc] initWithFrame:CGRectMake(11, contentHeight + title.frame.origin.y, cWidth - 22, accArr.count * (accHeight + intevalHeight))];
+            UIView* attchView = [[UIView alloc] initWithFrame:CGRectMake(11, contentHeight + title.frame.origin.y + 4, cWidth - 22, accArr.count * (accHeight + intevalHeight))];
             [attchView setBackgroundColor:[UIColor clearColor]];
             
             __block CGFloat nextHeight = 0;
@@ -661,7 +661,7 @@
             [cell.contentView addSubview:attchView];
         }
         
-        
+        //日期
         UIView* bView = [[UIView alloc] initWithFrame:CGRectMake(0, newcHeight - 35, cWidth, 35)];
         [bView setBackgroundColor:[UIColor clearColor]];
         

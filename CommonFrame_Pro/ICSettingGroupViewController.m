@@ -49,7 +49,12 @@
         
         NSDictionary * dic = [Group groupDicByWorkGroupId:_workGroup.workGroupId isAdmin:&isAdmin];
         
-        _authroyArray = [self authroyArr:dic];
+        NSArray * arr = [self fillAuthroyArr:dic];
+        
+        if(arr.count)
+        {
+            _authroyArray = arr;
+        }
         
         _isAdmin = ([[NSString stringWithFormat:@"%@",isAdmin] isEqualToString:@""]?NO:[isAdmin boolValue]);
         
@@ -91,7 +96,7 @@
     }
 }
 
-- (NSArray *)authroyArr:(NSDictionary *)dArr
+- (NSArray *)fillAuthroyArr:(NSDictionary *)dArr
 {
     NSMutableArray * array = [NSMutableArray array];
     

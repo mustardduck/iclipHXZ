@@ -158,7 +158,11 @@
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
         _pageNo = 1;
-        _contentArray =  [NSMutableArray arrayWithArray:[Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@""]];
+        
+        NSDictionary * dic = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@""];
+        
+        NSMutableArray * newArr = [self fillContentArr:dic];
+        _contentArray = newArr;
         
         NSLog(@"Header:%@",_contentArray);
         
@@ -179,8 +183,9 @@
         
         _pageNo++;
         
-        NSArray* newArr = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount  workGroupId:workGroupId termString:@""];
+        NSDictionary * dic = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@""];
         
+        NSMutableArray * newArr = [self fillContentArr:dic];
         if (newArr.count > 0) {
             [_contentArray addObjectsFromArray:newArr];
             
@@ -210,6 +215,55 @@
         //[_tableView.footer setTitle:@"wo cao" forState:MJRefreshFooterStateNoMoreData];
         
     }];
+}
+
+- (NSMutableArray *)fillContentArr:(NSDictionary *)dataDic
+{
+    NSMutableArray * array = [NSMutableArray array];
+
+    NSInteger totalPages = [[dataDic valueForKey:@"totalPages"] integerValue];
+
+    id dataArr = [dataDic valueForKey:@"datalist"];
+    if ([dataArr isKindOfClass:[NSArray class]])
+    {
+        NSArray* dArr = (NSArray*)dataArr;
+        
+        for (id data in dArr) {
+            if ([data isKindOfClass:[NSDictionary class]]) {
+                
+                NSDictionary* di = (NSDictionary*)data;
+                
+                Mission* cm = [Mission new];
+                
+                cm.monthAndDay = [NSString stringWithFormat:@"%@/%@",[di valueForKey:@"monthStr"],[di valueForKey:@"dayStr"]];
+                cm.hour = [di valueForKey:@"hourStr"];
+                cm.planExecTime = [di valueForKey:@"planExecTime"];
+                cm.type = [[di valueForKey:@"type"] integerValue];
+                cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
+                cm.finishTime = [di valueForKey:@"finishTime"];
+                cm.createUserId = [di valueForKey:@"createUserId"];
+                cm.taskId = [di valueForKey:@"taskId"];
+                cm.workGroupId = [di valueForKey:@"workGroupId"];
+                cm.workGroupName = [di valueForKey:@"wgName"];
+                cm.main = [di valueForKey:@"main"];
+                cm.userImg = [di valueForKey:@"userImg"];
+                cm.status = [[di valueForKey:@"status"] integerValue];
+                cm.userName = [di valueForKey:@"userName"];
+                cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
+                cm.totalPages = totalPages;
+                cm.isRead = [[di valueForKey:@"isRead"] boolValue];
+                cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
+                cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
+                cm.labelList = [di objectForKey:@"labelList"];
+                
+                [array addObject:cm];
+                
+            }
+        }
+        
+    }
+    
+    return array;
 }
 
 - (void)didReceiveMemoryWarning {

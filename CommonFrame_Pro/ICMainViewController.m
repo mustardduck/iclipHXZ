@@ -48,6 +48,8 @@
     
     UIView*                 _headView;
     Reachability  *hostReach;
+    
+    Group                   *_currentGroup;
 
 }
 
@@ -245,6 +247,11 @@
     
     self.navigationItem.rightBarButtonItems = tright;
     
+    [self setNaviLeftBarItem:@"回形针"];
+}
+
+- (void) setNaviLeftBarItem:(NSString *)titleName
+{
     UIButton* left = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     left.titleLabel.textColor = [UIColor whiteColor];
     [left setBackgroundColor:[UIColor clearColor]];
@@ -253,7 +260,7 @@
     UIBarButtonItem* bLeft = [[UIBarButtonItem alloc] initWithCustomView:left];
     
     UIBarButtonItem* barLeftButton = [[UIBarButtonItem alloc] init];
-    [barLeftButton setTitle:@"回形针"];
+    [barLeftButton setTitle: titleName];
     [barLeftButton setTarget:self];
     
     NSMutableDictionary *textAttrs=[NSMutableDictionary dictionary];
@@ -265,6 +272,133 @@
     [tList addObject:barLeftButton];
     
     self.navigationItem.leftBarButtonItems= tList;
+}
+
+- (void) fillCurrentGroup:(NSDictionary *) dataDic
+{
+    Group * gr = [Group new];
+    
+    id dDic = [dataDic valueForKey:@"work"];
+    if ([dDic isKindOfClass:[NSDictionary class]])
+    {
+        NSDictionary * dic = (NSDictionary *)dDic;
+        
+        gr.userName = [dic valueForKey:@"userName"];
+        gr.workGroupName = [dic valueForKey:@"workGroupName"];
+        gr.workGroupId = [dic valueForKey:@"workGroupId"];
+        gr.workGroupImg = [dic valueForKey:@"workGroupImg"];
+        gr.workGroupMain = [dic valueForKey:@"workGroupMain"];
+    }
+    
+    _currentGroup = gr;
+    
+    if(_currentGroup != nil) {
+        CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
+        _tableView.tableHeaderView = ({
+            
+            UIView* hView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300)];
+            [hView setBackgroundColor:[UIColor greyStatusBarColor]];
+            
+            UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256)];
+            [bgImage setBackgroundColor:[UIColor clearColor]];
+            //[bgImage setImage:[UIImage imageNamed:@"bimg.jpg"]];
+            [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bimg.jpg"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            
+            [hView addSubview:bgImage];
+            
+            UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196, 80, 80)];
+            [sView setBackgroundColor:[UIColor colorWithHexString:@"#393b48"]];
+            
+            UIImageView* sImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+            [sImage setBackgroundColor:[UIColor clearColor]];
+            [sImage setImage:[UIImage imageNamed:@"icon_touxiang"]];
+            [sImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            
+            UIButton* btnPhoto = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
+            [btnPhoto setBackgroundColor:[UIColor clearColor]];
+            [btnPhoto setBackgroundImage:sImage.image forState:UIControlStateNormal];
+            [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [sView addSubview:btnPhoto];
+            
+            [hView addSubview:sView];
+            
+            UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219, 190, 20)];
+            [gName setBackgroundColor:[UIColor clearColor]];
+            [gName setFont:[UIFont boldSystemFontOfSize:19]];
+            [gName setTextAlignment:NSTextAlignmentRight];
+            [gName setTextColor:[UIColor whiteColor]];
+            [gName setNumberOfLines:1];
+            
+            [gName setText:_currentGroup.workGroupName];
+            
+            [hView addSubview:gName];
+            
+            
+            
+            UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276, tableWidth - 30, 20)];
+            [lbl setBackgroundColor:[UIColor clearColor]];
+            [lbl setFont:[UIFont systemFontOfSize:15]];
+            [lbl setTextAlignment:NSTextAlignmentRight];
+            [lbl setTextColor:[UIColor grayColor]];
+            [lbl setNumberOfLines:1];
+            
+            [lbl setText:_currentGroup.workGroupMain];
+            
+            [hView addSubview:lbl];
+            
+            hView;
+        });
+    }
+}
+
+- (NSMutableArray *)fillContentArr:(NSDictionary *)dataDic
+{
+    NSMutableArray * array = [NSMutableArray array];
+    
+    NSInteger totalPages = [[dataDic valueForKey:@"totalPages"] integerValue];
+    
+    id dataArr = [dataDic valueForKey:@"datalist"];
+    if ([dataArr isKindOfClass:[NSArray class]])
+    {
+        NSArray* dArr = (NSArray*)dataArr;
+        
+        for (id data in dArr) {
+            if ([data isKindOfClass:[NSDictionary class]]) {
+                
+                NSDictionary* di = (NSDictionary*)data;
+                
+                Mission* cm = [Mission new];
+                
+                cm.monthAndDay = [NSString stringWithFormat:@"%@/%@",[di valueForKey:@"monthStr"],[di valueForKey:@"dayStr"]];
+                cm.hour = [di valueForKey:@"hourStr"];
+                cm.planExecTime = [di valueForKey:@"planExecTime"];
+                cm.type = [[di valueForKey:@"type"] integerValue];
+                cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
+                cm.finishTime = [di valueForKey:@"finishTime"];
+                cm.createUserId = [di valueForKey:@"createUserId"];
+                cm.taskId = [di valueForKey:@"taskId"];
+                cm.workGroupId = [di valueForKey:@"workGroupId"];
+                cm.workGroupName = [di valueForKey:@"wgName"];
+                cm.main = [di valueForKey:@"main"];
+                cm.userImg = [di valueForKey:@"userImg"];
+                cm.status = [[di valueForKey:@"status"] integerValue];
+                cm.userName = [di valueForKey:@"userName"];
+                cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
+                cm.totalPages = totalPages;
+                cm.isRead = [[di valueForKey:@"isRead"] boolValue];
+                cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
+                cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
+                cm.labelList = [di objectForKey:@"labelList"];
+                
+                [array addObject:cm];
+                
+            }
+        }
+        
+    }
+    
+    return array;
 }
 
 - (void)addRefrish
@@ -279,8 +413,15 @@
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
         _pageNo = 1;
-        _contentArray =  [NSMutableArray arrayWithArray:[Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString]];
         
+        NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+        
+        NSMutableArray * newArr = [self fillContentArr:dic];
+        
+        [self fillCurrentGroup:dic];
+
+        _contentArray = newArr;
+
         NSLog(@"Header:%@",_contentArray);
         
         [_tableView reloadData];
@@ -296,10 +437,14 @@
         
         _pageNo++;
         
-        NSArray* newArr = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount  workGroupId:_workGroupId  termString:_TermString];
+        NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+        NSMutableArray * newArr = [self fillContentArr:dic];
+        
+        [self fillCurrentGroup:dic];
         
         if (newArr.count > 0) {
-            [_contentArray addObjectsFromArray:newArr];
+//            [_contentArray addObjectsFromArray:newArr];
+            _contentArray = newArr;
             
             NSLog(@"%@",_contentArray);
             
@@ -354,7 +499,6 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -610,6 +754,8 @@
     Mission* mi = [_bottomArray objectAtIndex:index];
     _workGroupId = mi.workGroupId;
     
+    [self setNaviLeftBarItem:mi.workGroupName];
+    
     _TermString = @"";
     [self addRefrish];
     
@@ -757,8 +903,6 @@
         [view removeFromSuperview];
     }
     
-    Mission* ms = [_contentArray objectAtIndex:index];
-    
     if (cell.contentView.subviews.count == 0) {
         
 //        CGFloat cellHeight = _screenHeight * 0.321;
@@ -861,13 +1005,44 @@
         [cell.contentView addSubview:photo];
         
         
-        CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 6, photo.frame.origin.y + 10,
-                                     contentWidth - (photo.frame.origin.x + photo.frame.size.width + 6 + 39) , 21);
+        CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 11, photo.frame.origin.y + 2,
+                                     contentWidth - (photo.frame.origin.x + photo.frame.size.width + 6 + 39) , 16);
         UILabel* name = [[UILabel alloc] initWithFrame: nameFrame];
-        name.text  = [NSString stringWithFormat:@"%@ 发送到 %@", ms.userName, ms.workGroupName];
+        name.text  = ms.userName;
         name.textColor = [UIColor whiteColor];
-        name.font = [UIFont boldSystemFontOfSize:15];
+        name.font = [UIFont boldSystemFontOfSize:14];
         [cell.contentView addSubview:name];
+        
+        CGRect tagFrame = nameFrame;
+        tagFrame.origin.y = YH(name) + 3;
+        tagFrame.size.width = 184;
+
+        UILabel* tag = [[UILabel alloc] initWithFrame: tagFrame];
+        NSString * tagStr = @"";
+        
+        for (NSDictionary * dic in ms.labelList)
+        {
+            NSString * lblName = [dic valueForKey:@"labelName"];
+            if(ms.labelList.count == 1)
+            {
+                tagStr = lblName;
+            }
+            else
+            {
+                tagStr = [tagStr stringByAppendingString:[NSString stringWithFormat:@"%@ · ", lblName]];
+            }
+        }
+        
+        NSString * pointTagStr = [tagStr substringFromIndex:tagStr.length - 3];
+        if([pointTagStr isEqualToString:@" · "])
+        {
+            tagStr = [tagStr substringToIndex:tagStr.length - 3];
+        }
+        
+        tag.text  = [NSString stringWithFormat:@"%@   %@", ms.workGroupName, tagStr];
+        tag.textColor = [UIColor grayColor];
+        tag.font = [UIFont systemFontOfSize:10];
+        [cell.contentView addSubview:tag];
         
         CGRect contentFrame = CGRectMake(photo.frame.origin.x, photo.frame.origin.y + photo.frame.size.height + 18,
                                          contentWidth - (photo.frame.origin.x + 39),
@@ -876,7 +1051,7 @@
         content.frame = contentFrame;
         [content setNumberOfLines:0];
         content.textColor = [UIColor grayColor];
-        content.font = [UIFont boldSystemFontOfSize:15];
+        content.font = [UIFont boldSystemFontOfSize:14];
         content.text = ms.main;
         [content setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:content];
@@ -1004,6 +1179,5 @@
     }
     */
 }
-
 
 @end
