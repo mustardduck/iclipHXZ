@@ -205,7 +205,7 @@
     [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
 
     NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_tongzhi"], [UIImage imageNamed:@"btn_tongzhi"]];
-    NSArray* topMenuNameList = @[@"任务",@"分享",@"通知"];
+    NSArray* topMenuNameList = @[@"任务",@"问题",@"通知"];
 
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];
     _topMenuController.delegate = self;

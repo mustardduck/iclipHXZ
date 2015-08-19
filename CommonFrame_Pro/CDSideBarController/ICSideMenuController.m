@@ -172,22 +172,37 @@
         
         UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
 
-        UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
-        [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
-        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 2, 10, 18)];
-        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
-        [leftButton addSubview:imgview];
-        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 2, 80, 20)];
-        [ti setBackgroundColor:[UIColor clearColor]];
-        [ti setTextColor:[UIColor whiteColor]];
-        [ti setText:@"所有群组"];
-        [ti setFont:[UIFont systemFontOfSize:13]];
-        [leftButton addSubview:ti];
+//        UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+//        [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
+//        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 2, 10, 18)];
+//        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+//        [leftButton addSubview:imgview];
+//        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 2, 80, 20)];
+//        [ti setBackgroundColor:[UIColor clearColor]];
+//        [ti setTextColor:[UIColor whiteColor]];
+//        [ti setText:@"所有群组"];
+//        [ti setFont:[UIFont systemFontOfSize:13]];
+//        [leftButton addSubview:ti];
+//        
+//        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+//        [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
+//
+//        [item setLeftBarButtonItem:leftBarButton];
         
-        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
-        [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
-
-        [item setLeftBarButtonItem:leftBarButton];
+        UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+        [rightBtn addTarget:self action:@selector(btnCreateNewGroup:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UILabel* cti = [[UILabel alloc] initWithFrame:CGRectMake(6, 2, 80, 20)];
+        [cti setBackgroundColor:[UIColor clearColor]];
+        [cti setTextColor:[UIColor whiteColor]];
+        [cti setText:@"创建群组"];
+        [cti setFont:[UIFont systemFontOfSize:13]];
+        [rightBtn addSubview:cti];
+        
+        UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightBtn];
+        [rightBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
+        
+        [item setRightBarButtonItem:rightBarButton];
         [topBar pushNavigationItem:item animated:NO];
         
         [topBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13],NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -261,7 +276,9 @@
         else
             rowCount = 1;
         
-        UIScrollView* sv = [[UIScrollView alloc] initWithFrame:CGRectMake(0, top, [UIScreen mainScreen].bounds.size.width, _messageView.frame.size.height - view.frame.size.height)];
+        CGFloat svHeight = menuHeight * rowCount + 7;
+        
+        UIScrollView* sv = [[UIScrollView alloc] initWithFrame:CGRectMake(0, top, [UIScreen mainScreen].bounds.size.width, svHeight)];
         
         [sv setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, menuHeight * rowCount)];
         [sv setBounces:YES];
@@ -329,6 +346,37 @@
         }
         
         [_messageView addSubview:sv];
+        
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        
+        //成员通讯录
+        UIView * msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(sv), width, 66)];
+        [msgView setBackgroundColor:[UIColor clearColor]];
+        [_messageView addSubview:msgView];
+        
+        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0.5f)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [msgView addSubview:bottomLine];
+        
+        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, H(msgView) - 0.5, width, 0.5f)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [msgView addSubview:bottomLine];
+        
+        UIImageView * photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 12, 42, 42)];
+        photo.image = [UIImage imageNamed:@"btn_cytxl"];
+        [msgView addSubview:photo];
+        
+        UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 0, width, H(msgView))];
+        titLbl.backgroundColor = [UIColor clearColor];
+        titLbl.text = @"成员通讯录";
+        titLbl.font = [UIFont systemFontOfSize:16];
+        titLbl.textColor = [UIColor whiteColor];
+        [msgView addSubview:titLbl];
+        
+        UIButton * btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
+        [btn addTarget:self action:@selector(jumpToMemberList:) forControlEvents:UIControlEventTouchUpInside];
+        btn.backgroundColor = [UIColor clearColor];
+        [msgView addSubview:btn];
         
         [_mainView addSubview:_messageView];
         
@@ -513,20 +561,20 @@
     [rightBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
     
     
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
-    [leftButton addTarget:self action:@selector(btnCreateNewGroup:) forControlEvents:UIControlEventTouchUpInside];
-
-    UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(6, 2, 80, 20)];
-    [ti setBackgroundColor:[UIColor clearColor]];
-    [ti setTextColor:[UIColor whiteColor]];
-    [ti setText:@"创建群组"];
-    [ti setFont:[UIFont systemFontOfSize:13]];
-    [leftButton addSubview:ti];
-    
-    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
-    [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
-    
-    [item setRightBarButtonItem:leftBarButton];
+//    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+//    [leftButton addTarget:self action:@selector(btnCreateNewGroup:) forControlEvents:UIControlEventTouchUpInside];
+//
+//    UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(6, 2, 80, 20)];
+//    [ti setBackgroundColor:[UIColor clearColor]];
+//    [ti setTextColor:[UIColor whiteColor]];
+//    [ti setText:@"创建群组"];
+//    [ti setFont:[UIFont systemFontOfSize:13]];
+//    [leftButton addSubview:ti];
+//    
+//    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+//    [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
+//    
+//    [item setRightBarButtonItem:leftBarButton];
     [item setLeftBarButtonItem:rightBarButton];
     [topBar pushNavigationItem:item animated:NO];
     
@@ -687,7 +735,7 @@
     
     _tableView.tableHeaderView = ({
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 167 - 66)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 167 - 66 - 66)];
         [view setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
         
         UIView* searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
@@ -783,13 +831,12 @@
         [plbl setText:@"群组"];
         [pBtn addSubview:plbl];
         
-        [projectView addSubview:pBtn];
+//        [projectView addSubview:pBtn];
         
-        UILabel* bottomLine1 = [[UILabel alloc] initWithFrame:CGRectMake(0, projectView.frame.origin.y + projectView.frame.size.height - 0.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
-        [bottomLine1 setBackgroundColor:[UIColor grayColor]];
-        [view addSubview:bottomLine1];
-        
-        
+//        UILabel* bottomLine1 = [[UILabel alloc] initWithFrame:CGRectMake(0, projectView.frame.origin.y + projectView.frame.size.height - 0.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
+//        [bottomLine1 setBackgroundColor:[UIColor grayColor]];
+//        [view addSubview:bottomLine1];
+
         
         UIView* departmentView = [[UIView alloc] initWithFrame:CGRectMake(-1, 161, tableWidth + 2, 66)];
         [departmentView setBackgroundColor: [UIColor clearColor]];
@@ -837,6 +884,69 @@
     [self restoreTextName:_lblSearch textField:_txtSearch];
     if ([self.delegate respondsToSelector:@selector(btnCreateNewGroup:)])
         [self.delegate btnCreateNewGroup:sender];
+}
+
+- (void) jumpToMemberList:(id)sender
+{
+    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
+    
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+    [leftButton addTarget:self action:@selector(btnGroupBackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
+    [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+    [leftButton addSubview:imgview];
+    UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 50, 20)];
+    [ti setBackgroundColor:[UIColor clearColor]];
+    [ti setTextColor:[UIColor whiteColor]];
+    [ti setText:@"返回"];
+    [ti setFont:[UIFont systemFontOfSize:17]];
+    [leftButton addSubview:ti];
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+    [item setLeftBarButtonItem:leftBarButton];
+    
+    [topBar pushNavigationItem:item animated:NO];
+    
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.4 animations:^{
+            _messageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -width, 0);
+            _groupView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -width, 0);
+        }];
+    });
+}
+
+- (void)btnGroupBackClicked:(id)sender
+{
+    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
+
+    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+    [rightBtn addTarget:self action:@selector(btnCreateNewGroup:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel* cti = [[UILabel alloc] initWithFrame:CGRectMake(6, 2, 80, 20)];
+    [cti setBackgroundColor:[UIColor clearColor]];
+    [cti setTextColor:[UIColor whiteColor]];
+    [cti setText:@"创建群组"];
+    [cti setFont:[UIFont systemFontOfSize:13]];
+    [rightBtn addSubview:cti];
+    
+    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightBtn];
+    [rightBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
+    
+    [item setRightBarButtonItem:rightBarButton];
+    
+    [item setHidesBackButton:TRUE animated:NO];
+
+    [topBar pushNavigationItem:item animated:NO];
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.4 animations:^{
+            _messageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+            _groupView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+        }];
+    });
+
 }
 
 - (void)btnGroupMessageClicked:(id)sender

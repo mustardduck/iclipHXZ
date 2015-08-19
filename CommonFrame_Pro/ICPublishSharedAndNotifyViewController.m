@@ -87,7 +87,7 @@
     [self.view addSubview:_tableView];
     
     if (_isShared) {
-        self.navigationItem.title = @"分享";
+        self.navigationItem.title = @"问题";
     }
 
 }
