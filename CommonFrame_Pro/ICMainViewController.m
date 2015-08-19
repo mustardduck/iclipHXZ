@@ -276,21 +276,26 @@
 
 - (void) fillCurrentGroup:(NSDictionary *) dataDic
 {
-    Group * gr = [Group new];
+    _currentGroup = nil;
     
-    id dDic = [dataDic valueForKey:@"work"];
-    if ([dDic isKindOfClass:[NSDictionary class]])
+    if([_workGroupId integerValue])
     {
-        NSDictionary * dic = (NSDictionary *)dDic;
+        Group * gr = [Group new];
         
-        gr.userName = [dic valueForKey:@"userName"];
-        gr.workGroupName = [dic valueForKey:@"workGroupName"];
-        gr.workGroupId = [dic valueForKey:@"workGroupId"];
-        gr.workGroupImg = [dic valueForKey:@"workGroupImg"];
-        gr.workGroupMain = [dic valueForKey:@"workGroupMain"];
+        id dDic = [dataDic valueForKey:@"work"];
+        if ([dDic isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary * dic = (NSDictionary *)dDic;
+            
+            gr.userName = [dic valueForKey:@"userName"];
+            gr.workGroupName = [dic valueForKey:@"workGroupName"];
+            gr.workGroupId = [dic valueForKey:@"workGroupId"];
+            gr.workGroupImg = [dic valueForKey:@"workGroupImg"];
+            gr.workGroupMain = [dic valueForKey:@"workGroupMain"];
+        }
+        
+        _currentGroup = gr;
     }
-    
-    _currentGroup = gr;
     
     if(_currentGroup != nil) {
         CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
@@ -754,6 +759,11 @@
     Mission* mi = [_bottomArray objectAtIndex:index];
     _workGroupId = mi.workGroupId;
     
+    if(![_workGroupId integerValue])//全部
+    {
+        
+    }
+    
     [self setNaviLeftBarItem:mi.workGroupName];
     
     _TermString = @"";
@@ -1033,12 +1043,15 @@
             }
         }
         
-        NSString * pointTagStr = [tagStr substringFromIndex:tagStr.length - 3];
-        if([pointTagStr isEqualToString:@" · "])
+        if(tagStr.length >= 3)
         {
-            tagStr = [tagStr substringToIndex:tagStr.length - 3];
+            NSString * pointTagStr = [tagStr substringFromIndex:tagStr.length - 3];
+            if([pointTagStr isEqualToString:@" · "])
+            {
+                tagStr = [tagStr substringToIndex:tagStr.length - 3];
+            }
         }
-        
+
         tag.text  = [NSString stringWithFormat:@"%@   %@", ms.workGroupName, tagStr];
         tag.textColor = [UIColor grayColor];
         tag.font = [UIFont systemFontOfSize:10];
