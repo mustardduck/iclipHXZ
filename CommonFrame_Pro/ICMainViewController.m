@@ -274,6 +274,26 @@
     self.navigationItem.leftBarButtonItems= tList;
 }
 
+- (void)btnPhotoClicked:(id)sender
+{
+    //    if (_group.isAdmin) {
+    UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
+    ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;
+    ((ICSettingGroupViewController*)controller).workGroup = _currentGroup;
+    ((ICSettingGroupViewController*)controller).icGroupDetailController = self;
+    [self.navigationController pushViewController:controller animated:YES];
+    //    }
+    //    else
+    //    {
+    //        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"权限不足，因为您不是该工作组创建者！" delegate:self
+    //                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    //        [alert show];
+    //    }
+    
+    
+}
+
 - (void) fillCurrentGroup:(NSDictionary *) dataDic
 {
     _currentGroup = nil;
