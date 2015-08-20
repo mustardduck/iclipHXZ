@@ -8,6 +8,8 @@
 
 #import "ICPublishMissionViewController.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "PH_UITextView.h"
+#import "UICommon.h"
 
 @interface ICPublishMissionViewController() <UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>
 {
@@ -15,7 +17,8 @@
     UIDatePicker*           _datePicker;
     UIView*                 _datePickerView;
     NSMutableArray*         _accessoryArray;
-    UITextView*             _txtContent;
+    PH_UITextView*             _txtContent;
+    UITextField*             _titleText;
     BOOL                    _btnDoneClicked;
 }
 
@@ -53,11 +56,26 @@
     CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
     _tableView.tableHeaderView = ({
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 150)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 108 + 40)];
         [view setBackgroundColor:[UIColor colorWithRed:[self colorWithRGB:57] green:[self colorWithRGB:59] blue:[self colorWithRGB:74] alpha:1.0f]];
         
-        _txtContent = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 150)];
-        [_txtContent setReturnKeyType:UIReturnKeyDone];
+        _titleText = [[UITextField alloc] initWithFrame:CGRectMake(12, 0, tableWidth, 40)];
+        _titleText.placeholder = @"标题";
+        [_titleText setValue:[UIColor grayColor] forKeyPath:@"_placeholderLabel.textColor"];
+        _titleText.font = [UIFont systemFontOfSize:15];
+        _titleText.textColor = [UIColor whiteColor];
+        _titleText.backgroundColor = [UIColor clearColor];
+        _titleText.textAlignment = NSTextAlignmentLeft;
+        [view addSubview:_titleText];
+        [self addDoneToKeyboard:_titleText];
+
+        
+        UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, YH(_titleText)- 0.5, tableWidth, 0.5)];
+        [line1 setBackgroundColor:[UIColor grayColor]];
+        [view addSubview:line1];
+        
+        _txtContent = [[PH_UITextView alloc] initWithFrame:CGRectMake(8, YH(_titleText), tableWidth, 108)];
+//        [_txtContent setReturnKeyType:UIReturnKeyNext];
         if (![_content isEqualToString:@""] && _content != nil) {
             [_txtContent setText:_content];
         }
@@ -68,8 +86,12 @@
         [_txtContent setTextAlignment:NSTextAlignmentLeft];
         [_txtContent setTextColor:[UIColor whiteColor]];
         [_txtContent setBackgroundColor:[UIColor clearColor]];
-        _txtContent.font = [UIFont systemFontOfSize:18];
+        _txtContent.font = [UIFont systemFontOfSize:14];
         _txtContent.delegate = self;
+        _txtContent.placeholder = @"点击编辑正文";
+        _txtContent.placeholderColor = [UIColor grayColor];
+        
+        [self addDoneToKeyboard:_txtContent];
         
         [view addSubview:_txtContent];
         
@@ -84,6 +106,32 @@
     [self.view addSubview:_tableView];
     
     [self.view setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+}
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self removeExistDatePickView];
+}
+
+- (void) removeExistDatePickView
+{
+    UIView *datePickView = [(UIView *)self.view viewWithTag: 1111];
+    if(datePickView)
+    {
+        [datePickView removeFromSuperview];
+    }
+}
+
+- (void) textViewDidBeginEditing:(UITextView *)textView
+{
+    [self removeExistDatePickView];
+}
+
+- (void) hiddenKeyboard
+{
+    [_titleText resignFirstResponder];
+    [_txtContent resignFirstResponder];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -103,11 +151,11 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"]){
-        //[self send];
-        [_txtContent resignFirstResponder];
-        return NO;
-    }
+//    if ([text isEqualToString:@"\n"]){
+//        //[self send];
+//        [_txtContent resignFirstResponder];
+//        return NO;
+//    }
     return YES;
 }
 
@@ -457,6 +505,7 @@
     m.finishTime = _strFinishTime;
     m.remindTime = _strRemindTime;
     m.type = TaskTypeMission;
+    m.title = _titleText.text;
     
     if (_taskId != nil) {
         m.taskId = _taskId;

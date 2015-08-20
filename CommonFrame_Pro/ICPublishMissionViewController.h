@@ -15,7 +15,7 @@
 #import "ICFileViewController.h"
 
 
-@interface ICPublishMissionViewController : UIViewController <ZYQAssetPickerControllerDelegate>
+@interface ICPublishMissionViewController : UIViewController <ZYQAssetPickerControllerDelegate,UITextViewDelegate, UITextFieldDelegate>
 
 //责任人
 @property(nonatomic,strong) NSArray* responsibleDic;

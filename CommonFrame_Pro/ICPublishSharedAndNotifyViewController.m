@@ -8,13 +8,16 @@
 
 #import "ICPublishSharedAndNotifyViewController.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "PH_UITextView.h"
+#import "UICommon.h"
 
 @interface ICPublishSharedAndNotifyViewController() <ZYQAssetPickerControllerDelegate, UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>
 {
     UITableView*               _tableView;
     NSMutableArray*            _accessoryArray;
     NSMutableArray*            _fileAccessoryArr;
-    UITextView*                _txtContent;
+    PH_UITextView*                _txtContent;
+    UITextField*             _titleText;
     BOOL                       _btnDoneClicked;
 }
 
@@ -59,10 +62,26 @@
     CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
     _tableView.tableHeaderView = ({
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 150)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 108 + 40)];
         [view setBackgroundColor:[UIColor colorWithRed:[self colorWithRGB:57] green:[self colorWithRGB:59] blue:[self colorWithRGB:74] alpha:1.0f]];
         
-        _txtContent = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 150)];
+        _titleText = [[UITextField alloc] initWithFrame:CGRectMake(12, 0, tableWidth, 40)];
+        _titleText.placeholder = @"标题";
+        [_titleText setValue:[UIColor grayColor] forKeyPath:@"_placeholderLabel.textColor"];
+        _titleText.font = [UIFont systemFontOfSize:15];
+        _titleText.textColor = [UIColor whiteColor];
+        _titleText.backgroundColor = [UIColor clearColor];
+        _titleText.textAlignment = NSTextAlignmentLeft;
+        [view addSubview:_titleText];
+        [self addDoneToKeyboard:_titleText];
+        
+        
+        UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, YH(_titleText)- 0.5, tableWidth, 0.5)];
+        [line1 setBackgroundColor:[UIColor grayColor]];
+        [view addSubview:line1];
+        
+        _txtContent = [[PH_UITextView alloc] initWithFrame:CGRectMake(8, YH(_titleText), tableWidth, 108)];
+        //        [_txtContent setReturnKeyType:UIReturnKeyNext];
         if (![_content isEqualToString:@""] && _content != nil) {
             [_txtContent setText:_content];
         }
@@ -73,9 +92,12 @@
         [_txtContent setTextAlignment:NSTextAlignmentLeft];
         [_txtContent setTextColor:[UIColor whiteColor]];
         [_txtContent setBackgroundColor:[UIColor clearColor]];
-        [_txtContent setReturnKeyType:UIReturnKeyDone];
-        _txtContent.font = [UIFont systemFontOfSize:18];
+        _txtContent.font = [UIFont systemFontOfSize:14];
         _txtContent.delegate = self;
+        _txtContent.placeholder = @"点击编辑正文";
+        _txtContent.placeholderColor = [UIColor grayColor];
+        
+        [self addDoneToKeyboard:_txtContent];
         
         [view addSubview:_txtContent];
         
@@ -86,10 +108,16 @@
     
     [self.view addSubview:_tableView];
     
-    if (_isShared) {
+    if (_isShared == 1) {
         self.navigationItem.title = @"问题";
     }
 
+}
+
+- (void) hiddenKeyboard
+{
+    [_titleText resignFirstResponder];
+    [_txtContent resignFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -110,11 +138,11 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"]){
-        //[self send];
-        [_txtContent resignFirstResponder];
-        return NO;
-    }
+//    if ([text isEqualToString:@"\n"]){
+//        //[self send];
+//        [_txtContent resignFirstResponder];
+//        return NO;
+//    }
     return YES;
 }
 
@@ -326,23 +354,30 @@
     m.createUserId = [LoginUser loginUserID];
     m.workGroupId = self.workGroupId;
     m.main = _txtContent.text;
-    if (_isShared)
-        m.type = TaskTypeShare;
-    else
-        m.type = TaskTypeNoitification;
+    m.title = _titleText.text;
     
+    if (_isShared == 1)
+        m.type = TaskTypeShare;
+    else if(_isShared == 2)
+    {
+        m.type = TaskTypeJianYi;
+    }
+    else if (_isShared == 3)
+    {
+        m.type = TaskTypeNoitification;
+    }
     if (_taskId != nil) {
         m.taskId = _taskId;
     }
     
     if (self.ccopyToMembersArray.count > 0) {
-        m.partList = [NSMutableArray array];
+        m.cclist = [NSMutableArray array];
         NSMutableArray* tAr = [NSMutableArray array];
         for (int i = 0; i < self.ccopyToMembersArray.count; i++) {
             Member * cM = [self.ccopyToMembersArray objectAtIndex:i];
             [tAr addObject:cM.userId];
         }
-        m.partList = [NSArray arrayWithArray:tAr];
+        m.cclist = [NSArray arrayWithArray:tAr];
     }
     
     if (self.cMarkAarry.count > 0) {

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+typedef void (^keyboardBlock) ();
+
 @interface UICommon : NSObject
 
 #define W(obj)   (!obj?0:(obj).frame.size.width)
@@ -23,10 +25,19 @@
 #define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
 
+
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;
 + (CGSize)getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(CGFloat)fontsize;
 + (NSString *)dayAndHourFromString:(NSString *)dateString formatStyle:(NSString *)format;
+
+
+@end
+
+@interface UIViewController (expanded)
+//KeyboardUI
+- (void)addDoneToKeyboard:(UIView *)activeView;//对键盘添加“完成”按钮
+- (void)hiddenKeyboard;
 
 @end
 

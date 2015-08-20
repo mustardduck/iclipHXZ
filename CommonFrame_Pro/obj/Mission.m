@@ -120,6 +120,7 @@
                                 cm.workGroupId = [di valueForKey:@"workGroupId"];
                                 cm.workGroupName = [di valueForKey:@"wgName"];
                                 cm.main = [di valueForKey:@"main"];
+                                cm.title = [di valueForKey:@"title"];
                                 cm.userImg = [di valueForKey:@"userImg"];
                                 cm.status = [[di valueForKey:@"status"] integerValue];
                                 cm.userName = [di valueForKey:@"userName"];
@@ -144,8 +145,6 @@
     
 }
 
-
-
 - (BOOL)sendMission:(BOOL)isMission
 {
     BOOL isOk = NO;
@@ -160,6 +159,8 @@
     
     [dic setObject:self.workGroupId forKey:@"workGroupId"];
     [dic setObject:self.main forKey:@"main"];
+    [dic setObject:self.title forKey:@"title"];
+
     if (isMission) {
         [dic setObject:self.liableUserId forKey:@"lableUserId"];
         if(self.partList != nil)
@@ -268,6 +269,7 @@
                         cm.workGroupId = [di valueForKey:@"workGroupId"];
                         cm.workGroupName = [di valueForKey:@"wgName"];
                         cm.main = [di valueForKey:@"main"];
+                        cm.title = [di valueForKey:@"title"];
                         cm.userImg = [di valueForKey:@"userImg"];
                         cm.status = [[di valueForKey:@"status"] integerValue];
                         cm.userName = [di valueForKey:@"userName"];
@@ -488,7 +490,8 @@
                         cm.status = [[di valueForKey:@"status"] integerValue];
                         cm.userName = [di valueForKey:@"userName"];
                         cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
-                        
+                        cm.title = [di valueForKey:@"title"];
+
                     }
                 }
                 

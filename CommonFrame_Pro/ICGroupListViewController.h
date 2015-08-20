@@ -25,7 +25,7 @@ typedef enum{
 @property (nonatomic,strong) id icPublishMissionResponsibleController;
 @property (nonatomic,strong) NSArray* responsibleDictionaryToPublish;
 @property (nonatomic,assign) NSString* hasValue;
-@property (nonatomic,assign) BOOL isShared; //1: NO; 0: YES
+@property (nonatomic,assign) NSInteger isShared; //1: 问题  2：建议  3：通知
 @property(nonatomic,strong) NSString* loginUserID;
 @property(nonatomic,strong) NSString* groupId;
 

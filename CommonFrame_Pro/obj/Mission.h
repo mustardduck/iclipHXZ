@@ -21,7 +21,8 @@ typedef enum {
     TaskTypeMission         = 1,
     TaskTypeShare           = 2,
     TaskTypeNoitification   = 3,
-    TaskTypeApplication     = 4
+    TaskTypeApplication     = 4,
+    TaskTypeJianYi          = 8
 }TaskType;
 
 @interface Mission : NSObject
@@ -38,6 +39,7 @@ typedef enum {
 @property (nonatomic,strong) NSString*  workGroupId;
 @property (nonatomic,strong) NSString*  workGroupName;
 @property (nonatomic,strong) NSString*  main;
+@property (nonatomic,strong) NSString*  title;
 @property (nonatomic,assign) NSInteger  type;
 @property (nonatomic,assign) NSInteger  status;
 @property (nonatomic,strong) NSString*  userImg;

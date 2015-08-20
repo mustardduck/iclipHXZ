@@ -127,6 +127,7 @@
     _replyList = [NSMutableArray array];
     [_replyList addObject:@""];
     [_replyList addObject:@""];
+    [_replyList addObject:@""];
     
     
     _reReplyDic = [NSMutableDictionary dictionary];
@@ -306,7 +307,7 @@
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* vc;
             vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishSharedAndNotifyViewController"];
-            ((ICPublishSharedAndNotifyViewController*)vc).isShared = YES;
+            ((ICPublishSharedAndNotifyViewController*)vc).isShared = 1;
             ((ICPublishSharedAndNotifyViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishSharedAndNotifyViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishSharedAndNotifyViewController*)vc).cMarkAarry = labelA;
@@ -322,7 +323,7 @@
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* vc;
             vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishSharedAndNotifyViewController"];
-            ((ICPublishSharedAndNotifyViewController*)vc).isShared = NO;
+            ((ICPublishSharedAndNotifyViewController*)vc).isShared = 3;
             ((ICPublishSharedAndNotifyViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishSharedAndNotifyViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishSharedAndNotifyViewController*)vc).cMarkAarry = labelA;
@@ -408,7 +409,11 @@
     if (index == 0) {
         height = 58;
     }
-    else if (index == 1) {
+    else if (index == 1)
+    {
+        height = 38;
+    }
+    else if (index == 2) {
         
         
         UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
@@ -500,11 +505,17 @@
     CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
 
     if (index == 0) {
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 58 - 1, cWidth, 0.5)];
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 58 - 0.5, cWidth, 0.5)];
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [cell.selectedBackgroundView addSubview:bottomLine];
     }
     else if (index == 1)
+    {
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 38 - 0.5, cWidth, 0.5)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [cell.selectedBackgroundView addSubview:bottomLine];
+    }
+    else if (index == 2)
     {
         CGFloat newcHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
 
@@ -512,7 +523,7 @@
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [cell.selectedBackgroundView addSubview:bottomLine];
     }
-    else if (index > 1)
+    else if (index > 2)
     {
         CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
 
@@ -562,7 +573,21 @@
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:bottomLine];
     }
-    else if (index == 1) {
+    else if (index == 1)
+    {
+        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(11, 0, cWidth - 11, 38)];
+        [title setBackgroundColor:[UIColor clearColor]];
+        [title setText:_currentMission.title];
+        [title setTextColor:[UIColor whiteColor]];
+        [title setFont:[UIFont boldSystemFontOfSize:14]];
+        
+        [cell.contentView addSubview:title];
+        
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 38 - 0.5, cWidth, 0.5)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [cell.contentView addSubview:bottomLine];
+    }
+    else if (index == 2) {
         
         NSString* content = _currentMission.main;
         CGFloat contentWidth = cWidth - 22;
@@ -713,7 +738,7 @@
         
         [cell setFrame:CGRectMake(0, 0, cWidth ,newcHeight)];
     }
-    else if (index > 1)
+    else if (index > 2)
     {
         //cell.textLabel.text = [_dataList objectAtIndex:index];
         if (cell.contentView.subviews.count < 4) {

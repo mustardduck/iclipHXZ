@@ -205,7 +205,7 @@
     [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
 
     NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_tongzhi"], [UIImage imageNamed:@"btn_tongzhi"]];
-    NSArray* topMenuNameList = @[@"任务",@"问题",@"通知"];
+    NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"通知"];
 
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];
     _topMenuController.delegate = self;
@@ -321,17 +321,17 @@
         CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
         _tableView.tableHeaderView = ({
             
-            UIView* hView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300)];
+            UIView* hView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300 - 171)];
             [hView setBackgroundColor:[UIColor greyStatusBarColor]];
             
-            UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256)];
+            UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256 - 171)];
             [bgImage setBackgroundColor:[UIColor clearColor]];
             //[bgImage setImage:[UIImage imageNamed:@"bimg.jpg"]];
-            [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bimg.jpg"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bg_qunzutou_1"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             
             [hView addSubview:bgImage];
             
-            UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196, 80, 80)];
+            UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196 - 171, 80, 80)];
             [sView setBackgroundColor:[UIColor colorWithHexString:@"#393b48"]];
             
             UIImageView* sImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
@@ -348,7 +348,7 @@
             
             [hView addSubview:sView];
             
-            UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219, 190, 20)];
+            UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219 - 171, 190, 20)];
             [gName setBackgroundColor:[UIColor clearColor]];
             [gName setFont:[UIFont boldSystemFontOfSize:19]];
             [gName setTextAlignment:NSTextAlignmentRight];
@@ -361,7 +361,7 @@
             
             
             
-            UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276, tableWidth - 30, 20)];
+            UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276 - 171, tableWidth - 30, 20)];
             [lbl setBackgroundColor:[UIColor clearColor]];
             [lbl setFont:[UIFont systemFontOfSize:15]];
             [lbl setTextAlignment:NSTextAlignmentRight];
@@ -406,6 +406,7 @@
                 cm.workGroupId = [di valueForKey:@"workGroupId"];
                 cm.workGroupName = [di valueForKey:@"wgName"];
                 cm.main = [di valueForKey:@"main"];
+                cm.title = [di valueForKey:@"title"];
                 cm.userImg = [di valueForKey:@"userImg"];
                 cm.status = [[di valueForKey:@"status"] integerValue];
                 cm.userName = [di valueForKey:@"userName"];
@@ -583,7 +584,7 @@
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
          ((ICGroupListViewController*)vc).icMainViewController = self;
-        ((ICGroupListViewController*)vc).isShared = YES;
+        ((ICGroupListViewController*)vc).isShared = 1;
         [self.navigationController pushViewController:vc animated:YES];
         
     }
@@ -593,7 +594,17 @@
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
          ((ICGroupListViewController*)vc).icMainViewController = self;
-        ((ICGroupListViewController*)vc).isShared = NO;
+        ((ICGroupListViewController*)vc).isShared = 2;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+    else if (index == 3) {
+        _isTopMenuSharedButtonClicked = NO;
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
+        ((ICGroupListViewController*)vc).icMainViewController = self;
+        ((ICGroupListViewController*)vc).isShared = 3;
         [self.navigationController pushViewController:vc animated:YES];
         
     }
@@ -905,7 +916,7 @@
     
     CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
     
-    CGFloat cellHeight = contentH + 70 + 42;
+    CGFloat cellHeight = contentH + 70 + 42 + 28;
     
     if (indexPath.row == 0) {
         cellHeight = cellHeight + 37;
@@ -940,7 +951,7 @@
         
         CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
         
-        CGFloat cellHeight = contentH + 70 + 42;
+        CGFloat cellHeight = contentH + 70 + 42 + 28;
         
         if (indexPath.row == 0) {
             cellHeight = cellHeight + 37;
@@ -1077,8 +1088,28 @@
         tag.font = [UIFont systemFontOfSize:10];
         [cell.contentView addSubview:tag];
         
-        CGRect contentFrame = CGRectMake(photo.frame.origin.x, photo.frame.origin.y + photo.frame.size.height + 18,
-                                         contentWidth - (photo.frame.origin.x + 39),
+        
+        CGRect titleFrame = CGRectMake(photo.frame.origin.x, YH(photo) + 10,
+                                         contentWidth - (X(photo) + 39),
+                                         16);
+        UILabel * titleLbl = [[UILabel alloc] init];
+        titleLbl.frame = titleFrame;
+        titleLbl.backgroundColor = [UIColor clearColor];
+        titleLbl.textColor = [UIColor whiteColor];
+        titleLbl.font = [UIFont boldSystemFontOfSize:14];
+        if(ms.title.length)
+        {
+            titleLbl.text = ms.title;
+        }
+        else
+        {
+            titleLbl.text = @"无标题";
+        }
+        
+        [cell.contentView addSubview:titleLbl];
+        
+        CGRect contentFrame = CGRectMake(X(photo), YH(titleLbl) + 6,
+                                         contentWidth - (X(photo) + 39),
                                          contentH);
         UILabel* content = [[UILabel alloc] init];
         content.frame = contentFrame;
