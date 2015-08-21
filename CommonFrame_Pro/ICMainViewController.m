@@ -22,7 +22,7 @@
     ICSideMenuController*   _sideMenu;
     ICSideTopMenuController* _topMenuController;
     
-   __weak IBOutlet UITableView*   _tableView;
+    __weak IBOutlet UITableView*   _tableView;
     IBOutlet UIView*        _smView;
     IBOutlet UIView*        _topMenuView;
     IBOutlet UIButton*      mbutton;
@@ -46,11 +46,17 @@
     NSInteger               _minVal;
     NSInteger               _maxVal;
     
-    UIView*                 _headView;
+    UIView*                 _markHeadView;
+    //    UIView*                 groupHeadView;
+    
     Reachability  *hostReach;
     
     Group                   *_currentGroup;
-
+    
+    BOOL                    _isMarkShow;
+    NSString *              _markNameStr;
+    NSInteger               _tagNum;
+    
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -97,7 +103,7 @@
     
     hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     [hostReach startNotifier];
-   
+    
     self.loginUserID = [LoginUser loginUserID];
     
     _pageNo = 1;
@@ -106,7 +112,7 @@
     _workGroupId = @"0";
     
     _isTopMenuSharedButtonClicked = NO;
-
+    
     _screenWidth = [UIScreen mainScreen].bounds.size.width;
     _screenHeight = [UIScreen mainScreen].bounds.size.height;
     _TermString = @"";
@@ -115,10 +121,10 @@
     _maxVal = 0;
     
     [self addRefrish];
-
+    
     NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
     [self loadTopToolBarView:markArray];
-
+    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
@@ -134,7 +140,7 @@
         searchString = nil;
         isSearch = YES;
     }
-
+    
     NSArray* nameList = @[@"群组",@"群组",@"群组",@"群组",@"群组",@"群组",@"群组",@"群组",@"群组",@"申请"];
     NSArray *imageListBottom = @[@"icon_touxiang", @"icon_touxiang",@"icon_touxiang", @"icon_touxiang", @"icon_touxiang",@"icon_touxiang", @"icon_touxiang",@"icon_touxiang",@"icon_touxiang", @"icon_touxiang"];
     NSArray* badgeList =@[@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0"];
@@ -203,10 +209,10 @@
     btn2.titleLabel.textColor = [UIColor whiteColor];
     [btn2 setBackgroundColor:[UIColor clearColor]];
     [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
-
-    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_tongzhi"]];
+    
+    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_tongzhi"], [UIImage imageNamed:@"btn_tongzhi"]];
     NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"通知"];
-
+    
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];
     _topMenuController.delegate = self;
     
@@ -312,69 +318,12 @@
             gr.workGroupId = [dic valueForKey:@"workGroupId"];
             gr.workGroupImg = [dic valueForKey:@"workGroupImg"];
             gr.workGroupMain = [dic valueForKey:@"workGroupMain"];
+            
+            _currentGroup = gr;
         }
-        
-        _currentGroup = gr;
     }
     
-    if(_currentGroup != nil) {
-        CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
-        _tableView.tableHeaderView = ({
-            
-            UIView* hView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300 - 171)];
-            [hView setBackgroundColor:[UIColor greyStatusBarColor]];
-            
-            UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256 - 171)];
-            [bgImage setBackgroundColor:[UIColor clearColor]];
-            //[bgImage setImage:[UIImage imageNamed:@"bimg.jpg"]];
-            [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bg_qunzutou_1"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            
-            [hView addSubview:bgImage];
-            
-            UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196 - 171, 80, 80)];
-            [sView setBackgroundColor:[UIColor colorWithHexString:@"#393b48"]];
-            
-            UIImageView* sImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-            [sImage setBackgroundColor:[UIColor clearColor]];
-            [sImage setImage:[UIImage imageNamed:@"icon_touxiang"]];
-            [sImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            
-            UIButton* btnPhoto = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
-            [btnPhoto setBackgroundColor:[UIColor clearColor]];
-            [btnPhoto setBackgroundImage:sImage.image forState:UIControlStateNormal];
-            [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [sView addSubview:btnPhoto];
-            
-            [hView addSubview:sView];
-            
-            UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219 - 171, 190, 20)];
-            [gName setBackgroundColor:[UIColor clearColor]];
-            [gName setFont:[UIFont boldSystemFontOfSize:19]];
-            [gName setTextAlignment:NSTextAlignmentRight];
-            [gName setTextColor:[UIColor whiteColor]];
-            [gName setNumberOfLines:1];
-            
-            [gName setText:_currentGroup.workGroupName];
-            
-            [hView addSubview:gName];
-            
-            
-            
-            UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276 - 171, tableWidth - 30, 20)];
-            [lbl setBackgroundColor:[UIColor clearColor]];
-            [lbl setFont:[UIFont systemFontOfSize:15]];
-            [lbl setTextAlignment:NSTextAlignmentRight];
-            [lbl setTextColor:[UIColor grayColor]];
-            [lbl setNumberOfLines:1];
-            
-            [lbl setText:_currentGroup.workGroupMain];
-            
-            [hView addSubview:lbl];
-            
-            hView;
-        });
-    }
+    [self reSetHeaderView];
 }
 
 - (NSMutableArray *)fillContentArr:(NSDictionary *)dataDic
@@ -445,9 +394,9 @@
         NSMutableArray * newArr = [self fillContentArr:dic];
         
         [self fillCurrentGroup:dic];
-
-        _contentArray = [NSMutableArray arrayWithArray:newArr];
-
+        
+        _contentArray = newArr;
+        
         NSLog(@"Header:%@",_contentArray);
         
         [_tableView reloadData];
@@ -465,8 +414,6 @@
         
         NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
         NSMutableArray * newArr = [self fillContentArr:dic];
-        
-        [self fillCurrentGroup:dic];
         
         if (newArr.count > 0) {
             [_contentArray addObjectsFromArray:newArr];
@@ -557,7 +504,7 @@
 
 - (void)icSideTopMenuButtonClicked:(id)sender
 {
-     // Execute code
+    // Execute code
     UIButton* button = (UIButton*)sender;
     NSInteger index = button.tag;
     
@@ -568,21 +515,21 @@
         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
         ((ICGroupListViewController*)vc).icMainViewController = self;
         /*
-        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
-        ((ICGroupListViewController*)vc).icPublishMissionResponsibleController = self;
-        ((ICGroupListViewController*)vc).responsibleDictionaryToPublish = _responsibleDic;
-        ((ICGroupListViewController*)vc).hasValue = @"0";
+         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
+         ((ICGroupListViewController*)vc).icPublishMissionResponsibleController = self;
+         ((ICGroupListViewController*)vc).responsibleDictionaryToPublish = _responsibleDic;
+         ((ICGroupListViewController*)vc).hasValue = @"0";
          */
         
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (index == 1) {
         _isTopMenuSharedButtonClicked = YES;
-      
+        
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
-         ((ICGroupListViewController*)vc).icMainViewController = self;
+        ((ICGroupListViewController*)vc).icMainViewController = self;
         ((ICGroupListViewController*)vc).isShared = 1;
         [self.navigationController pushViewController:vc animated:YES];
         
@@ -592,7 +539,7 @@
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
-         ((ICGroupListViewController*)vc).icMainViewController = self;
+        ((ICGroupListViewController*)vc).icMainViewController = self;
         ((ICGroupListViewController*)vc).isShared = 2;
         [self.navigationController pushViewController:vc animated:YES];
         
@@ -609,6 +556,32 @@
     }
 }
 
+- (void) reSetHeaderView
+{
+    _tableView.tableHeaderView = nil;
+    
+    if(!_currentGroup && _isMarkShow)
+    {
+        _tableView.tableHeaderView = ({
+            [self markHeaderView];
+        });
+    }
+    else if (_currentGroup && !_isMarkShow)
+    {
+        _tableView.tableHeaderView = ({
+            [self groupHeaderView];
+        });
+    }
+    else if(_currentGroup && _isMarkShow)
+    {
+        _tableView.tableHeaderView = ({
+            [self groupAndMarkHeaderView];
+        });
+    }
+    
+    [_tableView.header beginRefreshing];
+}
+
 #pragma make -
 #pragma  Side Bar Controller Action
 
@@ -617,7 +590,7 @@
     if (index != 0 && index != 6) {
         NSLog(@"cd : %ld",(NSInteger)index);
         NSInteger tag = 0;
-         Mark* m = [_icSideRightMarkArray objectAtIndex:index];
+        Mark* m = [_icSideRightMarkArray objectAtIndex:index];
         if (index < 6) {
             tag = 1;
             _minVal = - [m.labelId integerValue];
@@ -632,7 +605,7 @@
             _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_minVal];
         }
         else if (_minVal == 0 && _maxVal != 0) {
-           _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_maxVal];
+            _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_maxVal];
         }
         else if (_minVal != 0 && _maxVal != 0) {
             _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_maxVal];
@@ -649,44 +622,244 @@
 
 - (void)loadTopMarkView:(NSString*)markName markTag:(NSInteger)tag
 {
+    _isMarkShow = YES;
+
+    _markNameStr = markName;
     
-    _tableView.tableHeaderView = ({
-        CGFloat sWidth = [UIScreen mainScreen].bounds.size.width;
+    _tagNum = tag;
+    
+//    [self reSetHeaderView];
+    
+}
+
+- (UIView *) groupAndMarkHeaderView
+{
+    CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
+    
+    UIView * mainHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 129 + 40)];
+    
+    mainHeaderView.backgroundColor = [UIColor clearColor];
+    
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300 - 171)];
+    
+    
+    //groupHeader
+    
+    if(_currentGroup)
+    {
         
-        if (_headView == nil) {
-            _headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sWidth, 40)];
-            [_headView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+        [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
+        
+        UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256 - 171)];
+        [bgImage setBackgroundColor:[UIColor clearColor]];
+        //[bgImage setImage:[UIImage imageNamed:@"bimg.jpg"]];
+        [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bg_qunzutou_1"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        [groupHeadView addSubview:bgImage];
+        
+        UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196 - 171, 80, 80)];
+        [sView setBackgroundColor:[UIColor colorWithHexString:@"#393b48"]];
+        
+        UIImageView* sImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+        [sImage setBackgroundColor:[UIColor clearColor]];
+        [sImage setImage:[UIImage imageNamed:@"icon_touxiang"]];
+        [sImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        UIButton* btnPhoto = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
+        [btnPhoto setBackgroundColor:[UIColor clearColor]];
+        [btnPhoto setBackgroundImage:sImage.image forState:UIControlStateNormal];
+        [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [sView addSubview:btnPhoto];
+        
+        [groupHeadView addSubview:sView];
+        
+        UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219 - 171, 190, 20)];
+        [gName setBackgroundColor:[UIColor clearColor]];
+        [gName setFont:[UIFont boldSystemFontOfSize:19]];
+        [gName setTextAlignment:NSTextAlignmentRight];
+        [gName setTextColor:[UIColor whiteColor]];
+        [gName setNumberOfLines:1];
+        
+        [gName setText:_currentGroup.workGroupName];
+        
+        [groupHeadView addSubview:gName];
+        
+        
+        
+        UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276 - 171, tableWidth - 30, 20)];
+        [lbl setBackgroundColor:[UIColor clearColor]];
+        [lbl setFont:[UIFont systemFontOfSize:15]];
+        [lbl setTextAlignment:NSTextAlignmentRight];
+        [lbl setTextColor:[UIColor grayColor]];
+        [lbl setNumberOfLines:1];
+        
+        [lbl setText:_currentGroup.workGroupMain];
+        
+        [groupHeadView addSubview:lbl];
+        
+        //        [mainHeaderView addSubview:groupHeadView];
+        
+    }
+    
+    //    [mainHeaderView addSubview:_markHeadView];
+    
+    //markHeaderView
+    /*
+     if (!_markHeadView) {
+     _markHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 129, tableWidth, 40)];
+     [_markHeadView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+     
+     UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(12, 8, 80, 24)];
+     [name setText:_markNameStr];
+     [name setTextColor:[UIColor whiteColor]];
+     [name setTextAlignment:NSTextAlignmentCenter];
+     [name setBackgroundColor:[UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0]];
+     [name setFont:[UIFont systemFontOfSize:13]];
+     name.tag = _tagNum;
+     [_markHeadView addSubview:name];
+     
+     
+     UIButton* close = [[UIButton alloc] initWithFrame:CGRectMake(tableWidth - 40, 0, 40, 36)];
+     [close setImage:[UIImage imageNamed:@"btn_guanbi_1"] forState:UIControlStateNormal];
+     [close addTarget:self action:@selector(btnCloseClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [_markHeadView addSubview:close];
+     
+     
+     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 39.5, tableWidth, 0.5)];
+     [bottomLine setBackgroundColor:[UIColor grayColor]];
+     [_markHeadView addSubview:bottomLine];
+     
+     }
+     else
+     {
+     BOOL hasEx = NO;
+     for (UIControl* control in _markHeadView.subviews) {
+     if ([control isKindOfClass:[UILabel class]]) {
+     UILabel* lbl = (UILabel*)control;
+     if (lbl.tag == _tagNum) {
+     hasEx = YES;
+     lbl.text = _markNameStr;
+     break;
+     }
+     }
+     }
+     if (!hasEx) {
+     
+     UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(102, 8, 80, 24)];
+     [name setText:_markNameStr];
+     [name setTextColor:[UIColor whiteColor]];
+     [name setTextAlignment:NSTextAlignmentCenter];
+     [name setBackgroundColor:[UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0]];
+     [name setFont:[UIFont systemFontOfSize:13]];
+     name.tag = _tagNum;
+     [_markHeadView addSubview:name];
+     }
+     }
+     */
+    return groupHeadView;
+    
+}
+
+- (UIView *)groupHeaderView
+{
+    CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
+    
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300 - 171)];
+    
+    [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
+    
+    UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256 - 171)];
+    [bgImage setBackgroundColor:[UIColor clearColor]];
+    //[bgImage setImage:[UIImage imageNamed:@"bimg.jpg"]];
+    [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bg_qunzutou_1"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    [groupHeadView addSubview:bgImage];
+    
+    UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196 - 171, 80, 80)];
+    [sView setBackgroundColor:[UIColor colorWithHexString:@"#393b48"]];
+    
+    UIImageView* sImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+    [sImage setBackgroundColor:[UIColor clearColor]];
+    [sImage setImage:[UIImage imageNamed:@"icon_touxiang"]];
+    [sImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    UIButton* btnPhoto = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
+    [btnPhoto setBackgroundColor:[UIColor clearColor]];
+    [btnPhoto setBackgroundImage:sImage.image forState:UIControlStateNormal];
+    [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [sView addSubview:btnPhoto];
+    
+    [groupHeadView addSubview:sView];
+    
+    UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219 - 171, 190, 20)];
+    [gName setBackgroundColor:[UIColor clearColor]];
+    [gName setFont:[UIFont boldSystemFontOfSize:19]];
+    [gName setTextAlignment:NSTextAlignmentRight];
+    [gName setTextColor:[UIColor whiteColor]];
+    [gName setNumberOfLines:1];
+    
+    [gName setText:_currentGroup.workGroupName];
+    
+    [groupHeadView addSubview:gName];
+    
+    
+    
+    UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276 - 171, tableWidth - 30, 20)];
+    [lbl setBackgroundColor:[UIColor clearColor]];
+    [lbl setFont:[UIFont systemFontOfSize:15]];
+    [lbl setTextAlignment:NSTextAlignmentRight];
+    [lbl setTextColor:[UIColor grayColor]];
+    [lbl setNumberOfLines:1];
+    
+    [lbl setText:_currentGroup.workGroupMain];
+    
+    [groupHeadView addSubview:lbl];
+    
+    return groupHeadView;
+}
+
+- (UIView *) markHeaderView
+{
+    CGFloat sWidth = [UIScreen mainScreen].bounds.size.width;
+    
+    if(_isMarkShow)
+    {
+        if (!_markHeadView) {
+            _markHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sWidth, 40)];
+            [_markHeadView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
             
             UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(12, 8, 80, 24)];
-            [name setText:markName];
+            [name setText:_markNameStr];
             [name setTextColor:[UIColor whiteColor]];
             [name setTextAlignment:NSTextAlignmentCenter];
             [name setBackgroundColor:[UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0]];
             [name setFont:[UIFont systemFontOfSize:13]];
-            name.tag = tag;
-            [_headView addSubview:name];
+            name.tag = _tagNum;
+            [_markHeadView addSubview:name];
             
             
             UIButton* close = [[UIButton alloc] initWithFrame:CGRectMake(sWidth - 40, 0, 40, 36)];
             [close setImage:[UIImage imageNamed:@"btn_guanbi_1"] forState:UIControlStateNormal];
             [close addTarget:self action:@selector(btnCloseClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [_headView addSubview:close];
+            [_markHeadView addSubview:close];
             
             
             UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 39.5, sWidth, 0.5)];
             [bottomLine setBackgroundColor:[UIColor grayColor]];
-            [_headView addSubview:bottomLine];
+            [_markHeadView addSubview:bottomLine];
             
         }
         else
         {
             BOOL hasEx = NO;
-            for (UIControl* control in _headView.subviews) {
+            for (UIControl* control in _markHeadView.subviews) {
                 if ([control isKindOfClass:[UILabel class]]) {
                     UILabel* lbl = (UILabel*)control;
-                    if (lbl.tag == tag) {
+                    if (lbl.tag == _tagNum) {
                         hasEx = YES;
-                        lbl.text = markName;
+                        lbl.text = _markNameStr;
                         break;
                     }
                 }
@@ -694,27 +867,25 @@
             if (!hasEx) {
                 
                 UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(102, 8, 80, 24)];
-                [name setText:markName];
+                [name setText:_markNameStr];
                 [name setTextColor:[UIColor whiteColor]];
                 [name setTextAlignment:NSTextAlignmentCenter];
                 [name setBackgroundColor:[UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0]];
                 [name setFont:[UIFont systemFontOfSize:13]];
-                name.tag = tag;
-                [_headView addSubview:name];
+                name.tag = _tagNum;
+                [_markHeadView addSubview:name];
             }
         }
-        _headView;
-        
-    });
+    }
     
-    
-    
+    return _markHeadView;
 }
 
 - (void)btnCloseClicked:(UIButton*)btn
 {
     _tableView.tableHeaderView = nil;
-    _headView = nil;
+    _isMarkShow = NO;
+    _markHeadView = nil;
     _TermString = @"";
     [_tableView.header beginRefreshing];
 }
@@ -779,9 +950,9 @@
 - (void)icSideMenuClicked:(id)sender
 {
     _pubGroupId = nil;
-
+    
     _tableView.tableHeaderView = nil;
-    _headView = nil;
+    _markHeadView = nil;
     
     UIButton* button = (UIButton*)sender;
     NSInteger index = button.tag;
@@ -825,7 +996,7 @@
     
     //UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     //UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICSearchViewController"];
-
+    
     //[self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -909,7 +1080,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    CGFloat cellHeight = _screenHeight * 0.321;
+    //    CGFloat cellHeight = _screenHeight * 0.321;
     
     Mission* ms = [_contentArray objectAtIndex:indexPath.row];
     
@@ -945,7 +1116,7 @@
     
     if (cell.contentView.subviews.count == 0) {
         
-//        CGFloat cellHeight = _screenHeight * 0.321;
+        //        CGFloat cellHeight = _screenHeight * 0.321;
         Mission* ms = [_contentArray objectAtIndex:indexPath.row];
         
         CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
@@ -955,7 +1126,7 @@
         if (indexPath.row == 0) {
             cellHeight = cellHeight + 37;
         }
-
+        
         CGFloat contentHeight = cellHeight;
         CGFloat contentWidth = _screenWidth;
         
@@ -977,7 +1148,7 @@
         {
             dirLine.frame = CGRectMake(57.5, 0, 0.5, contentHeight);
         }
-
+        
         [dirLine setBackgroundColor:[UIColor whiteColor]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1032,7 +1203,7 @@
         corner.clipsToBounds = YES;
         [cell.contentView addSubview:corner];
         
-
+        
         UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * contentWidth + 15, contentHeight - 1, contentWidth - (0.156 * contentWidth + 15) - 12, 0.5)];
         [bottomLine setBackgroundColor:[UIColor whiteColor]];
         [cell.contentView addSubview:bottomLine];
@@ -1056,7 +1227,7 @@
         CGRect tagFrame = nameFrame;
         tagFrame.origin.y = YH(name) + 3;
         tagFrame.size.width = 184;
-
+        
         UILabel* tag = [[UILabel alloc] initWithFrame: tagFrame];
         NSString * tagStr = @"";
         
@@ -1081,7 +1252,7 @@
                 tagStr = [tagStr substringToIndex:tagStr.length - 3];
             }
         }
-
+        
         tag.text  = [NSString stringWithFormat:@"%@   %@", ms.workGroupName, tagStr];
         tag.textColor = [UIColor grayColor];
         tag.font = [UIFont systemFontOfSize:10];
@@ -1089,8 +1260,8 @@
         
         
         CGRect titleFrame = CGRectMake(photo.frame.origin.x, YH(photo) + 10,
-                                         contentWidth - (X(photo) + 39),
-                                         16);
+                                       contentWidth - (X(photo) + 39),
+                                       16);
         UILabel * titleLbl = [[UILabel alloc] init];
         titleLbl.frame = titleFrame;
         titleLbl.backgroundColor = [UIColor clearColor];
@@ -1147,17 +1318,17 @@
         
         plLbl.frame = CGRectMake(XW(plIcon) + 5, Y(attachment) - 2, [UICommon getWidthFromLabel:plLbl].width, 14);
         [cell.contentView addSubview:plLbl];
-    
+        
         //[cell.contentView addSubview:pView];
         
         [cell.contentView setBackgroundColor:[UIColor clearColor]];
         
         CGRect rect = cell.frame;
         rect.size.height = contentHeight - 10;
-
+        
     }
     
-
+    
     
     // 0.156 0.321  365
     
@@ -1186,7 +1357,7 @@
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-
+    
     UIView *selectionColor = [[UIView alloc] init];
     selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
     cell.selectedBackgroundView = selectionColor;
@@ -1210,7 +1381,7 @@
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * _screenWidth + 15, contentHeight - 1, _screenWidth - (0.156 * _screenWidth + 15) - 12, 0.5)];
     [bottomLine setBackgroundColor:[UIColor whiteColor]];
     [cell.selectedBackgroundView addSubview:bottomLine];
-
+    
     return YES;
 }
 
@@ -1221,26 +1392,26 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     /*
-    NSString* data = @"12112";
-    UIViewController* vc = segue.destinationViewController;
-    if ([vc respondsToSelector:@selector(setParam:)]) {
-        [vc setValue:data forKey:@"param"];
-    }
-    
-    if ([vc respondsToSelector:@selector(setIsshared:)]) {
-        if (_isTopMenuSharedButtonClicked) {
-            [vc setValue:@"0" forKey:@"isshared"];
-        }
-        else
-        {
-            [vc setValue:@"1" forKey:@"isShared"];
-        }
-    }
-    
-    if ([vc respondsToSelector:@selector(setIcMainViewController:)]) {
-        [vc setValue:self forKey:@"icMainViewController"];
-    }
-    */
+     NSString* data = @"12112";
+     UIViewController* vc = segue.destinationViewController;
+     if ([vc respondsToSelector:@selector(setParam:)]) {
+     [vc setValue:data forKey:@"param"];
+     }
+     
+     if ([vc respondsToSelector:@selector(setIsshared:)]) {
+     if (_isTopMenuSharedButtonClicked) {
+     [vc setValue:@"0" forKey:@"isshared"];
+     }
+     else
+     {
+     [vc setValue:@"1" forKey:@"isShared"];
+     }
+     }
+     
+     if ([vc respondsToSelector:@selector(setIcMainViewController:)]) {
+     [vc setValue:self forKey:@"icMainViewController"];
+     }
+     */
 }
 
 @end
