@@ -295,6 +295,7 @@
             ((ICPublishMissionViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishMissionViewController*)vc).strFinishTime = _currentMission.finishTime;
             ((ICPublishMissionViewController*)vc).strRemindTime = _currentMission.remindTime;
+            ((ICPublishMissionViewController*)vc).title = m.title;
             ((ICPublishMissionViewController*)vc).content = m.main;
             ((ICPublishMissionViewController*)vc).taskId = m.taskId;
             ((ICPublishMissionViewController*)vc).workGroupId = m.workGroupId;
@@ -311,6 +312,7 @@
             ((ICPublishSharedAndNotifyViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishSharedAndNotifyViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishSharedAndNotifyViewController*)vc).cMarkAarry = labelA;
+            ((ICPublishSharedAndNotifyViewController*)vc).titleName = m.title;
             ((ICPublishSharedAndNotifyViewController*)vc).content = m.main;
             ((ICPublishSharedAndNotifyViewController*)vc).taskId = m.taskId;
             ((ICPublishSharedAndNotifyViewController*)vc).workGroupId = m.workGroupId;
@@ -327,6 +329,7 @@
             ((ICPublishSharedAndNotifyViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishSharedAndNotifyViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishSharedAndNotifyViewController*)vc).cMarkAarry = labelA;
+            ((ICPublishSharedAndNotifyViewController*)vc).titleName = m.title;
             ((ICPublishSharedAndNotifyViewController*)vc).content = m.main;
             ((ICPublishSharedAndNotifyViewController*)vc).taskId = m.taskId;
             ((ICPublishSharedAndNotifyViewController*)vc).workGroupId = m.workGroupId;
@@ -343,6 +346,7 @@
             ((ICPublishSharedAndNotifyViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishSharedAndNotifyViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishSharedAndNotifyViewController*)vc).cMarkAarry = labelA;
+            ((ICPublishSharedAndNotifyViewController*)vc).titleName = m.title;
             ((ICPublishSharedAndNotifyViewController*)vc).content = m.main;
             ((ICPublishSharedAndNotifyViewController*)vc).taskId = m.taskId;
             ((ICPublishSharedAndNotifyViewController*)vc).workGroupId = m.workGroupId;
@@ -446,7 +450,7 @@
 
         height = [self contentHeight:content vWidth:contentWidth contentFont:font];
         
-        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 2)];
+        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 3)];
         id obj = [_reReplyDic valueForKey:key];
         if ([obj isKindOfClass:[NSArray class]]) {
             NSArray* reArray = [NSArray arrayWithArray:(NSArray *)obj];
@@ -592,7 +596,14 @@
     {
         UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(11, 0, cWidth - 11, 38)];
         [title setBackgroundColor:[UIColor clearColor]];
-        [title setText:_currentMission.title];
+        if(!_currentMission.title.length)
+        {
+            title.text = @"无标题";
+        }
+        else
+        {
+            [title setText:_currentMission.title];
+        }
         [title setTextColor:[UIColor whiteColor]];
         [title setFont:[UIFont boldSystemFontOfSize:14]];
         
@@ -758,7 +769,7 @@
         //cell.textLabel.text = [_dataList objectAtIndex:index];
         if (cell.contentView.subviews.count < 4) {
             
-            NSInteger cIndex = index - 2;
+            NSInteger cIndex = index - 3;
             
             Comment* comm = [_commentArray objectAtIndex:cIndex];
             
@@ -921,7 +932,7 @@
     
     _oriIndexRow = 0;
     
-    if (indexPath.row < 2) {
+    if (indexPath.row < 3) {
         //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
         NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
         [_inputBar.textField becomeFirstResponder];
@@ -933,7 +944,7 @@
     {
         _indexRow = indexPath.row;
         BOOL hasLoad = NO;
-         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 2)];
+         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 3)];
         id obj = [_reReplyDic valueForKey:key];
         if ([obj isKindOfClass:[NSArray class]])
         {
@@ -987,9 +998,9 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL isChild = NO;
-            if (_oriIndexRow > 1) {
+            if (_oriIndexRow > 2) {
                 
-                Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-2)]);
+                Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-3)]);
                 pc.commentsId = @"0";
                 
                 NSString* newCommentId = @"";
@@ -1021,7 +1032,7 @@
                 
                 NSInteger index = _replyList.count - 1;
                 
-                NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 2)];
+                NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 3)];
                 id obj = [_reReplyDic valueForKey:key];
                 if ([obj isKindOfClass:[NSArray class]]) {
                     NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
@@ -1061,8 +1072,8 @@
     }
     else
     {
-        if (_indexRow > 1) {
-            NSString * pid = ((Comment*)[_commentArray objectAtIndex:(_indexRow-2)]).commentsId;
+        if (_indexRow > 2) {
+            NSString * pid = ((Comment*)[_commentArray objectAtIndex:(_indexRow - 3)]).commentsId;
             Comment* cm = [Comment new];
             cm.main = str;
             cm.parentId = pid==nil?@"0":pid;
@@ -1089,7 +1100,7 @@
                     {
                         NSLog(@"New Child Comment!!");
                         
-                        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 2)];
+                        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 3)];
                         id obj = [_reReplyDic valueForKey:key];
                         if ([obj isKindOfClass:[NSArray class]]) {
                             NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];

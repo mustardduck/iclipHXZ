@@ -24,6 +24,8 @@
 @property(nonatomic,strong) NSString* taskId;
 @property(nonatomic,strong) NSString*    workGroupId;
 @property(nonatomic,strong) NSString*   userId;
+@property(nonatomic,strong) NSString* titleName;
+
 
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;

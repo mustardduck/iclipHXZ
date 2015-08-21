@@ -204,7 +204,7 @@
     [btn2 setBackgroundColor:[UIColor clearColor]];
     [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
 
-    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_tongzhi"], [UIImage imageNamed:@"btn_tongzhi"]];
+    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_tongzhi"]];
     NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"通知"];
 
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];

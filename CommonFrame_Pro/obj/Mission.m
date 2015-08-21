@@ -196,7 +196,7 @@
             [di setObject:acc.name forKey:@"name"];
             [di setObject:acc.address forKey:@"address"];
             [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
-            [di setObject:acc.size forKey:@"size"];
+//            [di setObject:acc.size forKey:@"size"];
             [tA addObject:di];
         }
         [dic setObject:tA forKey:@"accessoryList"];

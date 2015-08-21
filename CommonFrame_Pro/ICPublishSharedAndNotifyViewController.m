@@ -72,6 +72,13 @@
         _titleText.textColor = [UIColor whiteColor];
         _titleText.backgroundColor = [UIColor clearColor];
         _titleText.textAlignment = NSTextAlignmentLeft;
+        if (![_titleName isEqualToString:@""] && _titleName != nil) {
+            [_titleText setText:_titleName];
+        }
+        else
+        {
+            [_titleText setText:@""];
+        }
         [view addSubview:_titleText];
         [self addDoneToKeyboard:_titleText];
         
