@@ -446,7 +446,7 @@
         
         [self fillCurrentGroup:dic];
 
-        _contentArray = newArr;
+        _contentArray = [NSMutableArray arrayWithArray:newArr];
 
         NSLog(@"Header:%@",_contentArray);
         
@@ -469,8 +469,7 @@
         [self fillCurrentGroup:dic];
         
         if (newArr.count > 0) {
-//            [_contentArray addObjectsFromArray:newArr];
-            _contentArray = newArr;
+            [_contentArray addObjectsFromArray:newArr];
             
             NSLog(@"%@",_contentArray);
             
