@@ -334,7 +334,22 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-            
+        case 8:
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc;
+            vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishSharedAndNotifyViewController"];
+            ((ICPublishSharedAndNotifyViewController*)vc).isShared = 2;
+            ((ICPublishSharedAndNotifyViewController*)vc).ccopyToMembersArray = copyToA;
+            ((ICPublishSharedAndNotifyViewController*)vc).cAccessoryArray = accessoryA;
+            ((ICPublishSharedAndNotifyViewController*)vc).cMarkAarry = labelA;
+            ((ICPublishSharedAndNotifyViewController*)vc).content = m.main;
+            ((ICPublishSharedAndNotifyViewController*)vc).taskId = m.taskId;
+            ((ICPublishSharedAndNotifyViewController*)vc).workGroupId = m.workGroupId;
+            ((ICPublishSharedAndNotifyViewController*)vc).icDetailViewController = self;
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
         default:
             break;
     }
