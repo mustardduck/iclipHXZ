@@ -295,7 +295,7 @@
             ((ICPublishMissionViewController*)vc).cAccessoryArray = accessoryA;
             ((ICPublishMissionViewController*)vc).strFinishTime = _currentMission.finishTime;
             ((ICPublishMissionViewController*)vc).strRemindTime = _currentMission.remindTime;
-            ((ICPublishMissionViewController*)vc).title = m.title;
+            ((ICPublishMissionViewController*)vc).titleName = m.title;
             ((ICPublishMissionViewController*)vc).content = m.main;
             ((ICPublishMissionViewController*)vc).taskId = m.taskId;
             ((ICPublishMissionViewController*)vc).workGroupId = m.workGroupId;
@@ -617,7 +617,7 @@
         
         NSString* content = _currentMission.main;
         CGFloat contentWidth = cWidth - 22;
-        UIFont* font = [UIFont systemFontOfSize:13];
+        UIFont* font = [UIFont boldSystemFontOfSize:14];
         
         CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
         

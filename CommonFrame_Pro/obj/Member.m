@@ -72,6 +72,7 @@
                                         cm.faxTel = [di valueForKey:@"faxTel"];
                                         cm.email = [di valueForKey:@"email"];
                                         cm.duty = [di valueForKey:@"duty"];
+                                        cm.mobile = [di valueForKey:@"mobile"];
                                         cm.remark = [di valueForKey:@"remark"];
                                         cm.img = [di valueForKey:@"img"];
                                         cm.QQ = [di valueForKey:@"QQ"];
@@ -336,6 +337,7 @@
                                         mem.name = [di valueForKey:@"name"];
                                         mem.officeTel = [di valueForKey:@"officeTel"];
                                         mem.email = [di valueForKey:@"email"];
+                                        mem.mobile = [di valueForKey:@"mobile"];
                                         mem.duty = [di valueForKey:@"duty"];
                                         mem.img = [di valueForKey:@"img"];
                                         mem.QQ = [di valueForKey:@"QQ"];
