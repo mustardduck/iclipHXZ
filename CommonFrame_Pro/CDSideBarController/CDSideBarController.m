@@ -174,14 +174,14 @@
     
     CGRect tableFrame = CGRectMake(_viewWidth - 106, 0 , 106, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60 - 120);
     
-    UITableView *tableView = [[UITableView alloc]  initWithFrame:tableFrame];
-    [tableView setSeparatorColor:[UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f]];
-    [tableView setBackgroundColor:[UIColor blackColor]];
-    [tableView setDataSource:self];
-    [tableView setDelegate: self];
-    [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _mainTableView = [[UITableView alloc]  initWithFrame:tableFrame];
+    [_mainTableView setSeparatorColor:[UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f]];
+    [_mainTableView setBackgroundColor:[UIColor blackColor]];
+    [_mainTableView setDataSource:self];
+    [_mainTableView setDelegate: self];
+    [_mainTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 
-    [_backgroundMenuView addSubview:tableView];
+    [_backgroundMenuView addSubview:_mainTableView];
     
     _backgroundMenuView.frame = CGRectMake(_viewWidth, 64, _viewWidth, view.frame.size.height);
     _backgroundMenuView.backgroundColor = [UIColor clearColor];
@@ -254,8 +254,6 @@
 
 - (void)showMenu
 {
-    
-    
     if (!_isOpen)
     {
         //[_bgView setHidden:NO];

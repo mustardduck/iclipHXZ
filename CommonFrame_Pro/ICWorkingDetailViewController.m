@@ -285,7 +285,7 @@
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* vc;
             vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
-            ((ICPublishMissionViewController*)vc).workGroupId = _currentMission.workGroupId;
+            ((ICPublishMissionViewController*)vc).workGroupId = m.workGroupId;
             ((ICPublishMissionViewController*)vc).userId = [LoginUser loginUserID];
             
             ((ICPublishMissionViewController*)vc).responsibleDic = responsibleA;
@@ -293,8 +293,8 @@
             ((ICPublishMissionViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishMissionViewController*)vc).cMarkAarry = labelA;
             ((ICPublishMissionViewController*)vc).cAccessoryArray = accessoryA;
-            ((ICPublishMissionViewController*)vc).strFinishTime = _currentMission.finishTime;
-            ((ICPublishMissionViewController*)vc).strRemindTime = _currentMission.remindTime;
+            ((ICPublishMissionViewController*)vc).strFinishTime = m.finishTime;
+            ((ICPublishMissionViewController*)vc).strRemindTime = m.remindTime;
             ((ICPublishMissionViewController*)vc).titleName = m.title;
             ((ICPublishMissionViewController*)vc).content = m.main;
             ((ICPublishMissionViewController*)vc).taskId = m.taskId;

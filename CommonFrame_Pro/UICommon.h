@@ -30,6 +30,7 @@ typedef void (^keyboardBlock) ();
 + (CGSize)getHeightFromLabel:(UILabel *)label;
 + (CGSize)getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(CGFloat)fontsize;
 + (NSString *)dayAndHourFromString:(NSString *)dateString formatStyle:(NSString *)format;
++ (NSString*) formatTime:(NSString*)input withLength:(int)length;
 
 
 @end

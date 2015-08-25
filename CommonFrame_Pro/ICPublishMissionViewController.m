@@ -438,7 +438,7 @@
         [lbl setBackgroundColor:[UIColor clearColor]];
         [lbl setTextColor:[UIColor colorWithRed:0.10 green:0.48 blue:0.94 alpha:1.0]];
         [lbl setFont:[UIFont systemFontOfSize:15]];
-        [lbl setText:_strFinishTime];
+        [lbl setText:[UICommon formatTime:_strFinishTime withLength:10]];
         [lbl setTag:109];
         [lbl setTextAlignment:NSTextAlignmentLeft];
         
@@ -463,7 +463,7 @@
         [lbl setBackgroundColor:[UIColor clearColor]];
         [lbl setTextColor:[UIColor colorWithRed:0.10 green:0.48 blue:0.94 alpha:1.0]];
         [lbl setFont:[UIFont systemFontOfSize:15]];
-        [lbl setText:_strRemindTime];
+        [lbl setText:[UICommon formatTime:_strRemindTime withLength:19]];
         [lbl setTag:109];
         [lbl setTextAlignment:NSTextAlignmentLeft];
         
@@ -510,7 +510,17 @@
     m.workGroupId = self.workGroupId;
     m.main = _txtContent.text;
     m.liableUserId = ((Member*)[_responsibleDic objectAtIndex:0]).userId;
+    
+    if(_strFinishTime.length > 10)
+    {
+        _strFinishTime = [NSString stringWithFormat:@"%@ 00:00:00",[UICommon formatTime:_strFinishTime withLength:10]];
+    }
+    else
+    {
+        _strFinishTime = [NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime];
+    }
     m.finishTime = _strFinishTime;
+    
     m.remindTime = _strRemindTime;
     m.type = TaskTypeMission;
     m.title = _titleText.text;
@@ -1100,7 +1110,16 @@
         if (_strFinishTime != nil) {
             
             NSDate* fdate = [dateFormatter dateFromString:strDate];
-            NSDate* tdate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime]];
+            NSDate* tdate = nil;
+            
+            if(_strFinishTime.length > 10)
+            {
+                tdate =  [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ 00:00:00",[UICommon formatTime:_strFinishTime withLength:10]]];
+            }
+            else
+            {
+                tdate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime]];
+            }
             NSComparisonResult  dataCompare= [fdate compare:tdate];
             if (dataCompare != NSOrderedDescending) {
                 UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之后" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

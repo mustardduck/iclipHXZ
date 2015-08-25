@@ -22,7 +22,8 @@
 @property (nonatomic,assign) BOOL  isAdmin;
 @property (nonatomic,strong) NSString*  userName;
 
-+ (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray searchString:(NSString*)str;
++ (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str;
+
 + (NSArray*)getWorkGroupListByUserID:(NSString*)userID;
 + (BOOL)inviteNewUser:(NSString*)loginUserId workGroupId:(NSString*)workGroupId source:(NSInteger)source sourceValue:(NSString*)sourceStr;
 + (BOOL)createNewGroup:(NSString*)workGroupName description:(NSString*)workGroupMain groupImage:(NSString*)img;

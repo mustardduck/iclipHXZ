@@ -21,7 +21,6 @@
     UIView              *_backgroundMenuView;
     NSMutableArray      *_buttonList;
      UIButton            *_menuButton;
-    NSMutableArray      *_nameList;
     UIView*             _bgView;
     CGFloat             _viewWidth;
 }
@@ -29,6 +28,9 @@
 
 @property (nonatomic, retain) UIColor *menuColor;
 @property (nonatomic) BOOL isOpen;
+@property (nonatomic, strong) UITableView *mainTableView;
+@property (nonatomic, strong) NSMutableArray *nameList;
+
 
 @property (nonatomic, retain) id<CDSideBarControllerDelegate> delegate;
 

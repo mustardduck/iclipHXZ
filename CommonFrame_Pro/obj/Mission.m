@@ -114,7 +114,8 @@
                                 cm.planExecTime = [di valueForKey:@"planExecTime"];
                                 cm.type = [[di valueForKey:@"type"] integerValue];
                                 cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
-                                cm.finishTime = [di valueForKey:@"finishTime"];
+                                cm.finishTime = [di valueForKey:@"finishTimeStr"];
+                                cm.remindTime = [di valueForKey:@"remindTimeStr"];
                                 cm.createUserId = [di valueForKey:@"createUserId"];
                                 cm.taskId = [di valueForKey:@"taskId"];
                                 cm.workGroupId = [di valueForKey:@"workGroupId"];
@@ -167,7 +168,11 @@
             [dic setObject:self.partList forKey:@"partList"];
         if(self.cclist != nil)
             [dic setObject:self.cclist forKey:@"ccList"];
-        [dic setObject:[NSString stringWithFormat:@"%@ 00:00:00",self.finishTime] forKey:@"finishTime"];
+        
+        
+        [dic setObject:self.finishTime forKey:@"finishTime"];
+//        [dic setObject:self.finishTime forKey:@"finishTime"];
+        
         if(self.remindTime != nil)
             [dic setObject:self.remindTime forKey:@"remindTime"];
     }
@@ -263,7 +268,8 @@
                         cm.planExecTime = [di valueForKey:@"planExecTime"];
                         cm.type = [[di valueForKey:@"type"] integerValue];
                         cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
-                        cm.finishTime = [di valueForKey:@"finishTime"];
+                        cm.finishTime = [di valueForKey:@"finishTimeStr"];
+                        cm.remindTime = [di valueForKey:@"remindTimeStr"];
                         cm.createUserId = [di valueForKey:@"createUserId"];
                         cm.taskId = [di valueForKey:@"taskId"];
                         cm.workGroupId = [di valueForKey:@"workGroupId"];
@@ -480,7 +486,8 @@
                         cm.planExecTime = [di valueForKey:@"planExecTime"];
                         cm.type = [[di valueForKey:@"type"] integerValue];
                         cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
-                        cm.finishTime = [di valueForKey:@"finishTime"];
+                        cm.finishTime = [di valueForKey:@"finishTimeStr"];
+                        cm.remindTime = [di valueForKey:@"remindTimeStr"];
                         cm.createUserId = [di valueForKey:@"createUserId"];
                         cm.taskId = [di valueForKey:@"taskId"];
                         cm.workGroupId = [di valueForKey:@"workGroupId"];

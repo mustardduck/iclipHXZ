@@ -99,6 +99,23 @@
 
 }
 
++ (NSString*) formatTime:(NSString*)input withLength:(int)length{
+    
+    if ([input length] == 0) {
+        
+        return @"";
+    }
+    
+    NSString *text = [input stringByReplacingOccurrencesOfString:@"T" withString:@" "];
+    
+    if ([text length] > length) {
+        
+        text = [text substringToIndex:length];
+    }
+    
+    return text;
+}
+
 @end
 
 @implementation UIViewController (expanded)

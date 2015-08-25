@@ -17,12 +17,12 @@
 
 @implementation Group
 
-+ (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray  searchString:(NSString*)str
++ (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str 
 {
     NSMutableArray* array = [NSMutableArray array];
     NSMutableArray* marks = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@%@",CURL,userID,(str == nil ? @"" : [NSString stringWithFormat:@"&str=%@",str])]];
+    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@%@",CURL,userID, workGroupId, (str == nil ? @"" : [NSString stringWithFormat:@"&str=%@",str])]];
     
     if (responseString == nil) {
         return array;

@@ -162,7 +162,7 @@
     
     [muArr addObject:gr];
     
-    [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray searchString:(isBarOne ? searchString : nil)]];
+    [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray workGroupId:_workGroupId searchString:(isBarOne ? searchString : nil)]];
     
     _bottomArray = [NSArray arrayWithArray:muArr];
     
@@ -235,6 +235,7 @@
     if (markArray.count > 0) {
         _icSideRightMarkArray = [NSArray arrayWithArray:markArray];
     }
+    
     _sideBar = [[CDSideBarController alloc] initWithImages:nil  names:_icSideRightMarkArray  menuButton:button];
     _sideBar.delegate = self;
     
@@ -977,6 +978,11 @@
         [_sideMenu showMenu];
     }
     //[_sideMenu showMenu];
+    
+    NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
+    _sideBar.nameList = markArray;
+    [_sideBar.mainTableView reloadData];
+//    [self loadTopToolBarView:markArray];
     
     NSLog(@"Clicked !!");
 }
