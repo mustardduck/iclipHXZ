@@ -210,8 +210,8 @@
     [btn2 setBackgroundColor:[UIColor clearColor]];
     [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
     
-    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_fenxiang"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_tongzhi"]];
-    NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"通知"];
+    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_wenti"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_qita"]];
+    NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"其它"];
     
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];
     _topMenuController.delegate = self;
@@ -324,7 +324,7 @@
         }
     }
     
-    [self reSetHeaderView];
+    [self resetHeaderView];
 }
 
 - (NSMutableArray *)fillContentArr:(NSDictionary *)dataDic
@@ -472,6 +472,18 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
+    
+    [self resetRightMarkView];//刷新主页右边的标签
+    
+    [self loadBottomMenuView:nil isSearchBarOne:YES];//刷新主页底部的群组
+
+}
+
+- (void)resetRightMarkView
+{
+    NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
+    _sideBar.nameList = markArray;
+    [_sideBar.mainTableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -557,7 +569,7 @@
     }
 }
 
-- (void) reSetHeaderView
+- (void) resetHeaderView
 {
     _tableView.tableHeaderView = nil;
     
@@ -629,7 +641,7 @@
     
     _tagNum = tag;
     
-//    [self reSetHeaderView];
+//    [self resetHeaderView];
     
 }
 
@@ -977,12 +989,8 @@
     if (!_sideMenu.isOpen) {
         [_sideMenu showMenu];
     }
-    //[_sideMenu showMenu];
     
-    NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
-    _sideBar.nameList = markArray;
-    [_sideBar.mainTableView reloadData];
-//    [self loadTopToolBarView:markArray];
+    [self resetRightMarkView];
     
     NSLog(@"Clicked !!");
 }
