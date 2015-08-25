@@ -609,7 +609,6 @@
                 
                 if ([lblArr isKindOfClass:[NSArray class]])
                 {
-                    
                     NSArray* aArr = (NSArray*)lblArr;
                     
                     for (id obj in aArr) {

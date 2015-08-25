@@ -482,6 +482,7 @@
 - (void)resetRightMarkView
 {
     NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
+    _icSideRightMarkArray = markArray;
     _sideBar.nameList = markArray;
     [_sideBar.mainTableView reloadData];
 }
