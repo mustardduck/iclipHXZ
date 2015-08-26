@@ -380,6 +380,7 @@
                                         
                                         childComment.taskId = [childDic valueForKey:@"taskId"];
                                         childComment.parentId = [childDic valueForKey:@"parentId"];
+                                        childComment.parentName = [childDic valueForKey:@"parentName"];
                                         childComment.createTime = [childDic valueForKey:@"createTime"];
                                         childComment.praiseNum = [[di valueForKey:@"upNum"] integerValue];
                                         childComment.isPraised = ([[di valueForKey:@"isup"] integerValue] > 0 ? YES : NO);

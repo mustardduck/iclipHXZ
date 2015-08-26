@@ -27,6 +27,7 @@
 
 @property(nonatomic,strong) NSString*   taskId;
 @property(nonatomic,strong) NSString*   parentId;
+@property(nonatomic,strong) NSString*   parentName;
 @property(nonatomic,strong) NSString*   createTime;
 @property(nonatomic,assign) NSInteger   praiseNum;
 @property(nonatomic,assign) BOOL        isPraised;
