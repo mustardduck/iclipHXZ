@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3222B81B8DB64900957DEF /* PH_UITextView.m */; };
 		4BC66A071B74556300353789 /* UICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC66A061B74556300353789 /* UICommon.m */; };
 		4BC66A0B1B745BC200353789 /* btn_pinglun@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A091B745BC200353789 /* btn_pinglun@2x.png */; };
 		4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A231B745EFD00353789 /* icon_du@2x.png */; };
@@ -88,6 +89,8 @@
 
 /* Begin PBXFileReference section */
 		1579B5EA179A50AC05B6E19A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B3222B71B8DB64900957DEF /* PH_UITextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PH_UITextView.h; sourceTree = "<group>"; };
+		4B3222B81B8DB64900957DEF /* PH_UITextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PH_UITextView.m; sourceTree = "<group>"; };
 		4BC66A051B74556300353789 /* UICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommon.h; sourceTree = "<group>"; };
 		4BC66A061B74556300353789 /* UICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommon.m; sourceTree = "<group>"; };
 		4BC66A091B745BC200353789 /* btn_pinglun@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_pinglun@2x.png"; sourceTree = "<group>"; };
@@ -234,6 +237,8 @@
 		4BC66A041B74551100353789 /* UICommon */ = {
 			isa = PBXGroup;
 			children = (
+				4B3222B71B8DB64900957DEF /* PH_UITextView.h */,
+				4B3222B81B8DB64900957DEF /* PH_UITextView.m */,
 				4BC66A051B74556300353789 /* UICommon.h */,
 				4BC66A061B74556300353789 /* UICommon.m */,
 			);
@@ -718,6 +723,7 @@
 				787EF9CC1B1D784B0030C560 /* ICMainViewController.m in Sources */,
 				786381CF1B3AA55C0078F156 /* ICGroupNaviController.m in Sources */,
 				783AC2DB1B55FDF800EE3E37 /* Group.m in Sources */,
+				4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */,
 				784B061F1B43C5BD0033C0EA /* ICSettingViewController.m in Sources */,
 				78CB22441B2926F8003B6707 /* PRTween.m in Sources */,
 				78354CD31B40F5A000E2F00A /* ICMemberRegisterViewController.m in Sources */,
