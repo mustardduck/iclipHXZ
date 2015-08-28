@@ -10,6 +10,7 @@
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
 #import "PH_UITextView.h"
 #import "UICommon.h"
+#import <AVOSCloud/AVOSCloud.h>
 
 @interface ICPublishMissionViewController() <UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>
 {
@@ -576,6 +577,36 @@
          
          BOOL isSendOK = [m sendMission:YES];
          if (isSendOK) {
+             
+//             2，被别人的发布提及时，如：任务-参与人，通知、问题、建议-可见范围；
+//             （XX(用户名)发布了XX(类型名)，需要你查看。）
+//             - 点击进入时，进入该发布。
+             
+             for(int i = 0; i < m.partList.count; i ++)
+             {
+                 NSString * userId = m.partList[i];
+                 
+                 NSString * alertStr = [NSString stringWithFormat:@"%@ 发布了任务，需要你查看", [LoginUser loginUserName]];
+                 
+                 NSDictionary *data = @{
+                                        @"alert": alertStr
+                                        };
+                 
+                 AVQuery *pushQuery = [AVInstallation query];
+
+                 [pushQuery whereKey:@"HXZ_userId" equalTo:userId];
+                 [pushQuery whereKey:@"deviceType" equalTo:@"ios"];
+                 
+                 // Notification for iOS users
+                 AVPush *push = [[AVPush alloc] init];
+                 [AVPush setProductionMode:NO];//测试证书
+                 [push setChannel:@"HXZ_loginUsers"];
+                 [push setQuery:pushQuery];
+                 [push setData:data];
+                 [push sendPushInBackground];
+
+             }
+             
              UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"任务创建成功！" delegate:self
                                                    cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
              [alert show];

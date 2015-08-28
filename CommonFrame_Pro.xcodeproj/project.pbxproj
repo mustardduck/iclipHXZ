@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3222B81B8DB64900957DEF /* PH_UITextView.m */; };
+		4B3222CE1B8DBB4700957DEF /* AVOSCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222CD1B8DBB4700957DEF /* AVOSCloud.framework */; };
+		4B3222D01B8DBB6900957DEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */; };
+		4B3222D21B8DBB7100957DEF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D11B8DBB7100957DEF /* MobileCoreServices.framework */; };
+		4B3222D41B8DBB7900957DEF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */; };
+		4B3222D61B8DBB8C00957DEF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D51B8DBB8C00957DEF /* CoreLocation.framework */; };
+		4B3222D81B8DBB9400957DEF /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D71B8DBB9400957DEF /* libicucore.dylib */; };
+		4B3222DA1B8DBBA200957DEF /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D91B8DBBA200957DEF /* libc++.dylib */; };
+		4B3222DC1B8DBBAD00957DEF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222DB1B8DBBAD00957DEF /* libsqlite3.dylib */; };
+		4B8479631B8EB0AA00E05C77 /* AVOSCloudIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8479621B8EB0AA00E05C77 /* AVOSCloudIM.framework */; };
 		4BC66A071B74556300353789 /* UICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC66A061B74556300353789 /* UICommon.m */; };
 		4BC66A0B1B745BC200353789 /* btn_pinglun@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A091B745BC200353789 /* btn_pinglun@2x.png */; };
 		4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A231B745EFD00353789 /* icon_du@2x.png */; };
@@ -91,6 +100,15 @@
 		1579B5EA179A50AC05B6E19A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3222B71B8DB64900957DEF /* PH_UITextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PH_UITextView.h; sourceTree = "<group>"; };
 		4B3222B81B8DB64900957DEF /* PH_UITextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PH_UITextView.m; sourceTree = "<group>"; };
+		4B3222CD1B8DBB4700957DEF /* AVOSCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AVOSCloud.framework; sourceTree = "<group>"; };
+		4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		4B3222D11B8DBB7100957DEF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		4B3222D51B8DBB8C00957DEF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		4B3222D71B8DBB9400957DEF /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		4B3222D91B8DBBA200957DEF /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		4B3222DB1B8DBBAD00957DEF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		4B8479621B8EB0AA00E05C77 /* AVOSCloudIM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AVOSCloudIM.framework; sourceTree = "<group>"; };
 		4BC66A051B74556300353789 /* UICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommon.h; sourceTree = "<group>"; };
 		4BC66A061B74556300353789 /* UICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommon.m; sourceTree = "<group>"; };
 		4BC66A091B745BC200353789 /* btn_pinglun@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_pinglun@2x.png"; sourceTree = "<group>"; };
@@ -220,7 +238,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B3222DC1B8DBBAD00957DEF /* libsqlite3.dylib in Frameworks */,
+				4B3222DA1B8DBBA200957DEF /* libc++.dylib in Frameworks */,
+				4B3222D81B8DBB9400957DEF /* libicucore.dylib in Frameworks */,
+				4B3222D61B8DBB8C00957DEF /* CoreLocation.framework in Frameworks */,
+				4B3222D41B8DBB7900957DEF /* CoreTelephony.framework in Frameworks */,
+				4B3222D21B8DBB7100957DEF /* MobileCoreServices.framework in Frameworks */,
+				4B3222D01B8DBB6900957DEF /* SystemConfiguration.framework in Frameworks */,
+				4B8479631B8EB0AA00E05C77 /* AVOSCloudIM.framework in Frameworks */,
 				CDFFD5DDEE75808EC728E0D1 /* libPods.a in Frameworks */,
+				4B3222CE1B8DBB4700957DEF /* AVOSCloud.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,6 +587,15 @@
 		D2B2CDA374529C6DA5E67102 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4B8479621B8EB0AA00E05C77 /* AVOSCloudIM.framework */,
+				4B3222DB1B8DBBAD00957DEF /* libsqlite3.dylib */,
+				4B3222D91B8DBBA200957DEF /* libc++.dylib */,
+				4B3222D71B8DBB9400957DEF /* libicucore.dylib */,
+				4B3222D51B8DBB8C00957DEF /* CoreLocation.framework */,
+				4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */,
+				4B3222D11B8DBB7100957DEF /* MobileCoreServices.framework */,
+				4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */,
+				4B3222CD1B8DBB4700957DEF /* AVOSCloud.framework */,
 				1579B5EA179A50AC05B6E19A /* libPods.a */,
 			);
 			name = Frameworks;
@@ -616,7 +652,7 @@
 				TargetAttributes = {
 					789182601B0EDBC2004C6AF6 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = ST5Q97C575;
+						DevelopmentTeam = 2A6YLJ5ES8;
 					};
 					789182791B0EDBC2004C6AF6 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -822,6 +858,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -864,6 +901,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -888,13 +926,17 @@
 			baseConfigurationReference = 9E87DA4309DF8BDC38B2AD7E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = CommonFrame_Pro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -904,13 +946,17 @@
 			baseConfigurationReference = B1D1E51CD5227A76A70C4532 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = CommonFrame_Pro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -938,6 +984,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "InputText.h"
+#import <AVOSCloud/AVOSCloud.h>
 
 @interface ViewController ()<InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
 {
@@ -281,6 +282,13 @@
         _txtPwd.text = @"";
         [self restoreTextName:_lblUserName textField:_txtUserName];
         [self restoreTextName:_lblPwd textField:_txtPwd];
+        
+        //保存登录用户的通讯录ID
+        AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+        [currentInstallation addUniqueObject:@"HXZ_loginUsers" forKey:@"channels"];
+        [currentInstallation setObject:[LoginUser loginUserID] forKey:@"HXZ_userId"];
+        [currentInstallation setObject:[LoginUser loginUserName] forKey:@"HXZ_userName"];
+        [currentInstallation saveInBackground];
     }
     else
     {

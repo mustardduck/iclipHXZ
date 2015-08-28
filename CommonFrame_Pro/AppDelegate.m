@@ -9,8 +9,14 @@
 #import "AppDelegate.h"
 #import "ICPersonalInfoViewController.h"
 #import <SlideNavigationController.h>
+#import <AVOSCloud/AVOSCloud.h>
+#import "UICommon.h"
+#import "ICMainViewController.h"
 
 @interface AppDelegate ()
+{
+    NSString * _workGroupId;
+}
 
 @end
 
@@ -21,9 +27,6 @@
 
      
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStoryboard instantiateInitialViewController];
     
     
     
@@ -57,7 +60,83 @@
      */
     
     // Override point for customization after application launch.
+    
+    [AVOSCloud setApplicationId:@"8XDxjHTxkM2pCCOhgs39qwno"
+                      clientKey:@"EchvO498r256FWNfuFlGmkqe"];
+    if([UICommon getSystemVersion] < 8.0)
+    {
+        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
+    }
+    else
+    {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert
+                                                | UIUserNotificationTypeBadge
+                                                | UIUserNotificationTypeSound
+                                                                                 categories:nil];
+        [application registerUserNotificationSettings:settings];
+        [application registerForRemoteNotifications];
+    }
+    
+    
+    // Extract the notification data
+    NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    NSString *workGroupId = [numberFormatter stringFromNumber:[notificationPayload objectForKey:@"workGroupId"]];
+    
+    if(workGroupId.length)
+    {
+        [self jumpToMainView:workGroupId];
+    }
+    
     return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    _workGroupId = [numberFormatter stringFromNumber:[userInfo objectForKey:@"workGroupId"]];
+    if(_workGroupId.length)
+    {
+        if ([[userInfo objectForKey:@"inviteToGroup"] isEqualToString:@"inviteToGroup"]) {
+            
+            NSString * alertStr = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+            //判断应用程序当前的运行状态，如果是激活状态，则进行提醒，否则不提醒
+            if (application.applicationState == UIApplicationStateActive) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:alertStr
+                                                               delegate:self
+                                                      cancelButtonTitle:@"关闭"
+                                                      otherButtonTitles:@"查看", nil];
+                [alert show];
+            }
+            else if (application.applicationState == UIApplicationStateInactive)
+            {
+                if(_workGroupId.length)
+                {
+                    [self jumpToMainView:_workGroupId];
+                }
+            }
+        }
+        
+    }
+}
+
+- (void) jumpToMainView:(NSString *)workGroupId
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMainViewController"];
+    ((ICMainViewController*)vc).pubGroupId = workGroupId;
+    
+    UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+    [nav pushViewController:vc animated:YES];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        [self jumpToMainView:_workGroupId];
+    }
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
@@ -87,7 +166,25 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    NSLog(@"从后台唤醒");
+    int num=application.applicationIconBadgeNumber;
+    if(num!=0){
+        AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+        [currentInstallation setBadge:0];
+        [currentInstallation saveEventually];
+        application.applicationIconBadgeNumber=0;
+    }
+    [application cancelAllLocalNotifications];
+}
+
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"注册失败，无法获取设备 ID, 具体错误: %@", error);
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

@@ -15,6 +15,7 @@
 #import "PPDragDropBadgeView.h"
 #import "UICommon.h"
 #import <Reachability.h>
+#import <AVOSCloud/AVOSCloud.h>
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -127,6 +128,13 @@
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    
+    //保存登录用户的通讯录ID
+    AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+    [currentInstallation addUniqueObject:@"HXZ_loginUsers" forKey:@"channels"];
+    [currentInstallation setObject:[LoginUser loginUserID] forKey:@"HXZ_userId"];
+    [currentInstallation setObject:[LoginUser loginUserName] forKey:@"HXZ_userName"];
+    [currentInstallation saveInBackground];
     
 }
 

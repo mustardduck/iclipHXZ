@@ -9,6 +9,7 @@
 #import "ICSettingGroupViewController.h"
 #import "UIColor+HexString.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import <AVOSCloud/AVOSCloud.h>
 
 @interface ICSettingGroupViewController()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -72,13 +73,22 @@
     
     if (_ccopyToMembersArray != nil) {
         NSString* idArrayStr = @"";
+        NSString * userArrayStr = @"";
         int i = 0;
         for (Member* m in _ccopyToMembersArray) {
             i++;
             idArrayStr = [NSString stringWithFormat:@"%@%@",idArrayStr,m.orgcontactId];
+            userArrayStr = [NSString stringWithFormat:@"%@%@",userArrayStr,m.userId];
             if (i < _ccopyToMembersArray.count) {
                 idArrayStr = [NSString stringWithFormat:@"%@%@",idArrayStr,@","];
+                userArrayStr = [NSString stringWithFormat:@"%@%@",userArrayStr,@","];
+
             }
+        }
+        NSArray *invitedArr = nil;
+        if(userArrayStr.length)
+        {
+            invitedArr = [userArrayStr componentsSeparatedByString:@","];//被邀请的用户ID
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -86,6 +96,40 @@
             //NSString* idStr = _txtGroupName.text;
             BOOL isOk = [Group inviteNewUser:loginUserId workGroupId:_workGroupId source:3 sourceValue:idArrayStr];
             if (isOk) {
+                
+//                1，被邀请加入某一个群组时：
+//                （你被XX(用户名)加入了XX(群组名)。）
+//                - 点击进入时，进入该群组。
+                
+                for(int i = 0; i < invitedArr.count; i ++)
+                {
+                    NSString * alertStr = [NSString stringWithFormat:@"你被 %@ 加入了 %@ ", [LoginUser loginUserName], _workGroup.workGroupName];
+                    
+                    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          alertStr, @"alert",
+                                          @"Increment", @"badge",
+                                          _workGroup.workGroupId, @"workGroupId",
+                                          @"inviteToGroup", @"inviteToGroup",
+                                          nil];
+                    
+                    AVPush *push = [[AVPush alloc] init];
+                    [AVPush setProductionMode:NO];
+
+                    AVQuery *pushQuery = [AVInstallation query];
+                    long long invitedStr = [invitedArr[i] longLongValue];
+                    
+                    [pushQuery whereKey:@"HXZ_userId" equalTo:@(invitedStr)];
+//                    [pushQuery whereKey:@"HXZ_userId" equalTo:@(1015080615070001)];
+                    [pushQuery whereKey:@"deviceType" equalTo:@"ios"];
+
+                    [push setChannel:@"HXZ_loginUsers"];
+                    [push setQuery:pushQuery];
+
+                    [push setData:data];
+                    [push sendPushInBackground];
+                }
+                
+                
                 UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已邀请群组成员!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 _ccopyToMembersArray = nil;

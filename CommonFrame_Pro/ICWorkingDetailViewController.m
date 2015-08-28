@@ -289,7 +289,7 @@
             ((ICPublishMissionViewController*)vc).userId = [LoginUser loginUserID];
             
             ((ICPublishMissionViewController*)vc).responsibleDic = responsibleA;
-            ((ICPublishMissionViewController*)vc).participantsIndexPathArray = participantA;
+            ((ICPublishMissionViewController*)vc).participantsIndexPathArray = participantA;//参与人
             ((ICPublishMissionViewController*)vc).ccopyToMembersArray = copyToA;
             ((ICPublishMissionViewController*)vc).cMarkAarry = labelA;
             ((ICPublishMissionViewController*)vc).cAccessoryArray = accessoryA;

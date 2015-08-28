@@ -31,7 +31,7 @@ typedef void (^keyboardBlock) ();
 + (CGSize)getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(CGFloat)fontsize;
 + (NSString *)dayAndHourFromString:(NSString *)dateString formatStyle:(NSString *)format;
 + (NSString*) formatTime:(NSString*)input withLength:(int)length;
-
++ (float)getSystemVersion;
 
 @end
 
