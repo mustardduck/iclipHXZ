@@ -9,7 +9,6 @@
 #import "Mark.h"
 #import "LoginUser.h"
 
-#define CURL                @"/workgroup/findWgLabel.hz"
 #define NEW_URL             @"/workgroup/addWgLabel.hz"
 #define DELETE_URL          @"/workgroup/deleteWgLabel.hz"
 #define UPDATE_URL          @"/workgroup/updateWgLabel.hz"
@@ -17,11 +16,20 @@
 
 @implementation Mark
 
-+ (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid
++ (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid andUrl:(NSString *)url
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&levelStr=1,2&statusStr=1",CURL,workGroupId]];
+    NSString* responseString = @"";
+    
+    if([url isEqualToString:CURL])
+    {
+        responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&levelStr=1,2&statusStr=1",url,workGroupId]];
+    }
+    else
+    {
+        responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&levelStr=1,2&statusStr=1&userId=%@",url,workGroupId,userid]];
+    }
     
     if (responseString == nil) {
         return array;

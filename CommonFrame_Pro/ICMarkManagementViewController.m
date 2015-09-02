@@ -56,7 +56,7 @@
     [self.navigationItem setTitle:@"分类列表"];
     
     if(self.workGroupId != nil)
-        _markList = [NSMutableArray arrayWithArray:[Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:[LoginUser loginUserID]]];
+        _markList = [NSMutableArray arrayWithArray:[Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:[LoginUser loginUserID] andUrl:CURL]];
     
     //_markList = [NSMutableArray arrayWithArray:@[@"工作汇报",@"会议概要",@"申请",@"质量与维修报损",@"请假",@"会计部",@"议"]] ;
     //_authority = [NSMutableArray arrayWithArray:@[@"0",@"0",@"1",@"1",@"1",@"1",@"1"]];

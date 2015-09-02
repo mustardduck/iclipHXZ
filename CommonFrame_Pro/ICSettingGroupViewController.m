@@ -522,6 +522,7 @@
         if ([self hasAuthory:@"7"]) {
             controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMarkListViewController"];
             ((ICMarkListViewController*)controller).workGroupId = _workGroupId;
+            ((ICMarkListViewController*)controller).isSetting = YES;
             [self.navigationController pushViewController:controller animated:YES];
         }
         else

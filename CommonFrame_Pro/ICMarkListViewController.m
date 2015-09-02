@@ -50,7 +50,19 @@
     
     self.userId = [LoginUser loginUserID];
     if(self.workGroupId != nil)
-        _markList = [Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:self.userId];
+    {
+        NSString * url = @"";
+        if(_isSetting)
+        {
+            url = CURL;
+        }
+        else
+        {
+            url = ME_LABEL_CURL;
+        }
+        _markList = [Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:self.userId andUrl:url];
+
+    }
     
     _tableView.dataSource = self;
     _tableView.delegate = self;
