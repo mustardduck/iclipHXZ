@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+int            NotificationNum;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 

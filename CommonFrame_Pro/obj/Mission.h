@@ -18,11 +18,11 @@
 #import "Mark.h"
 
 typedef enum {
-    TaskTypeMission         = 1,
-    TaskTypeShare           = 2,
-    TaskTypeNoitification   = 3,
-    TaskTypeApplication     = 4,
-    TaskTypeJianYi          = 8
+    TaskTypeMission         = 1,//任务
+    TaskTypeShare           = 2,//问题
+    TaskTypeNoitification   = 3,//其他
+    TaskTypeApplication     = 4,//(没有用了）
+    TaskTypeJianYi          = 8//建议
 }TaskType;
 
 @interface Mission : NSObject
@@ -40,7 +40,7 @@ typedef enum {
 @property (nonatomic,strong) NSString*  workGroupName;
 @property (nonatomic,strong) NSString*  main;
 @property (nonatomic,strong) NSString*  title;
-@property (nonatomic,assign) NSInteger  type;
+@property (nonatomic,assign) NSInteger  type;//
 @property (nonatomic,assign) NSInteger  status;
 @property (nonatomic,strong) NSString*  userImg;
 @property (nonatomic,strong) NSString*  userName;
@@ -61,7 +61,7 @@ typedef enum {
 + (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments;
 
 //pusblish mission
-- (BOOL)sendMission:(BOOL)isMission;
+- (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId;
 + (BOOL)reomveMission:(NSString*)taskId;
 + (Mission*)missionInfo:(NSString*)taskId responsible:(NSArray**)responsibleArray participants:(NSArray**)participantArray copyTo:(NSArray**)copyToArray labels:(NSArray**)labelArray accessories:(NSArray**)accessoryArray;
 @end

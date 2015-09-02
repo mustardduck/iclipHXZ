@@ -15,7 +15,8 @@
 #import "PPDragDropBadgeView.h"
 #import "UICommon.h"
 #import <Reachability.h>
-#import <AVOSCloud/AVOSCloud.h>
+//#import <AVOSCloud/AVOSCloud.h>
+#import "APService.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -129,13 +130,53 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
+    /*
     //保存登录用户的通讯录ID
     AVInstallation *currentInstallation = [AVInstallation currentInstallation];
     [currentInstallation addUniqueObject:@"HXZ_loginUsers" forKey:@"channels"];
     [currentInstallation setObject:[LoginUser loginUserID] forKey:@"HXZ_userId"];
     [currentInstallation setObject:[LoginUser loginUserName] forKey:@"HXZ_userName"];
     [currentInstallation saveInBackground];
+    */
     
+    __autoreleasing NSMutableSet *tags = [NSMutableSet set];
+    long long alias = [[LoginUser loginUserID] longLongValue];
+    
+    NSString * aliStr = [NSString stringWithFormat:@"%lld", alias];
+    
+    [APService setTags:tags
+                 alias:aliStr
+      callbackSelector:@selector(tagsAliasCallback:tags:alias:)
+                target:self];
+}
+
+- (void)tagsAliasCallback:(int)iResCode
+                     tags:(NSSet *)tags
+                    alias:(NSString *)alias {
+    NSString *callbackString =
+    [NSString stringWithFormat:@"%d, \ntags: %@, \nalias: %@\n", iResCode,
+     [self logSet:tags], alias];
+    NSLog(@"TagsAlias回调:%@", callbackString);
+}
+
+- (NSString *)logSet:(NSSet *)dic {
+    if (![dic count]) {
+        return nil;
+    }
+    NSString *tempStr1 =
+    [[dic description] stringByReplacingOccurrencesOfString:@"\\u"
+                                                 withString:@"\\U"];
+    NSString *tempStr2 =
+    [tempStr1 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    NSString *tempStr3 =
+    [[@"\"" stringByAppendingString:tempStr2] stringByAppendingString:@"\""];
+    NSData *tempData = [tempStr3 dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *str =
+    [NSPropertyListSerialization propertyListFromData:tempData
+                                     mutabilityOption:NSPropertyListImmutable
+                                               format:NULL
+                                     errorDescription:NULL];
+    return str;
 }
 
 #pragma mark -
@@ -530,7 +571,7 @@
     UIButton* button = (UIButton*)sender;
     NSInteger index = button.tag;
     
-    if (index == 0) {
+    if (index == 0) {//任务
         
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
@@ -545,7 +586,7 @@
         
         [self.navigationController pushViewController:vc animated:YES];
     }
-    else if (index == 1) {
+    else if (index == 1) {//问题
         _isTopMenuSharedButtonClicked = YES;
         
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -556,7 +597,7 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     }
-    else if (index == 2) {
+    else if (index == 2) {//建议
         _isTopMenuSharedButtonClicked = NO;
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
@@ -566,7 +607,7 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     }
-    else if (index == 3) {
+    else if (index == 3) {//其它
         _isTopMenuSharedButtonClicked = NO;
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];

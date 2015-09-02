@@ -12,7 +12,7 @@
 
 @interface ICPublishSharedAndNotifyViewController : UIViewController
 
-@property (nonatomic,assign) NSInteger isShared;  //1: 问题  2：建议  3：通知
+@property (nonatomic,assign) NSInteger isShared;  //1: 问题  2：建议  3：其他
 //可见范围
 @property(nonatomic,strong) NSArray* ccopyToMembersArray;
 //标签

@@ -10,8 +10,8 @@
 
 #define BASE_URL @"http://192.168.0.200:8080/clip_basic"
 //192.168.0.111 (lijun local)
-//120.26.113.44 (release)
-//测试服ip    192.168.0.200  
+//120.26.113.44 (release) // www.iclip365.com
+//测试服ip    192.168.0.200
 
 @implementation HttpBaseFile
 

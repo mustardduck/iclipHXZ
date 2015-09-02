@@ -10,6 +10,7 @@
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
 #import "PH_UITextView.h"
 #import "UICommon.h"
+//#import <AVOSCloud/AVOSCloud.h>
 
 @interface ICPublishSharedAndNotifyViewController() <ZYQAssetPickerControllerDelegate, UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>
 {
@@ -362,7 +363,7 @@
     m.workGroupId = self.workGroupId;
     m.main = _txtContent.text;
     m.title = _titleText.text;
-    
+     //1: 问题  2：建议  3：其它
     if (_isShared == 1)
         m.type = TaskTypeShare;
     else if(_isShared == 2)
@@ -411,9 +412,43 @@
         m.isAccessory = 0;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        BOOL isSendOK = [m sendMission:NO];
+        NSString * taskId = @"";
+        BOOL isSendOK = [m sendMission:NO taksId:&taskId];
         
         if (isSendOK) {
+            /*
+            AVQuery *pushQuery = [AVInstallation query];
+            
+            long long usId = 0;
+            
+            NSMutableArray * userArr = [NSMutableArray array];
+            
+            for(int i = 0; i < m.cclist.count; i ++)
+            {
+                usId = [m.cclist[i] longLongValue];
+                [userArr addObject:@(usId)];//抄送人
+            }
+            
+            [pushQuery whereKey:@"HXZ_userId" containedIn:userArr];
+            
+            NSString * typeStr = @"";
+            
+            if(m.type == 2)
+            {
+                typeStr = @"问题";
+            }
+            else if (m.type == 8)
+            {
+                typeStr = @"建议";
+            }
+            else if (m.type == 3)
+            {
+                typeStr = @"其它";
+            }
+            
+            [self AVpush:taskId pushQuery:pushQuery typeStr:typeStr];
+            */
+            
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"发布成功！" delegate:self
                                                   cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -431,6 +466,30 @@
     
     
 }
+
+/*
+- (void) AVpush:(NSString *)taskId pushQuery:(AVQuery *)pushQuery typeStr:(NSString *)typeStr
+{
+    NSString * alertStr = [NSString stringWithFormat:@"%@ 发布了%@，需要你查看", [LoginUser loginUserName], typeStr];
+    
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                          alertStr, @"alert",
+                          @"Increment", @"badge",
+                          taskId, @"taskId",
+                          @"missionNotify", @"missionNotify",
+                          nil];
+    
+    // Notification for iOS users
+    AVPush *push = [[AVPush alloc] init];
+    [AVPush setProductionMode:NO];//测试证书
+    [push setChannel:@"HXZ_loginUsers"];
+    
+    [pushQuery whereKey:@"deviceType" equalTo:@"ios"];
+    [push setQuery:pushQuery];
+    [push setData:data];
+    [push sendPushInBackground];
+}
+ */
 
 #pragma -
 #pragma Table View

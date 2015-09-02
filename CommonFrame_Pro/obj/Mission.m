@@ -146,7 +146,7 @@
     
 }
 
-- (BOOL)sendMission:(BOOL)isMission
+- (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId
 {
     BOOL isOk = NO;
     
@@ -225,11 +225,19 @@
     }
     
     id val = [CommonFile json:responseString];
+    
+    NSString * taStr = @"";
+    
     if ([val isKindOfClass:[NSDictionary class]]) {
         if ([[((NSDictionary*)val) valueForKey:@"state"] integerValue] == 1) {
+            
+            taStr = [((NSDictionary*)val) valueForKey:@"data"];
+            
             isOk = YES;
         }
     }
+    
+    *taskId = taStr;
     
     return isOk;
 }
