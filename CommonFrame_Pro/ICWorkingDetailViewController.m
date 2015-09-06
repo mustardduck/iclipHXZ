@@ -1093,8 +1093,7 @@
                     }
                 }
                 if (cm != nil) {
-                    
-                    
+
                     BOOL isOk = [cm sendComment];
                     if(isOk)
                     {

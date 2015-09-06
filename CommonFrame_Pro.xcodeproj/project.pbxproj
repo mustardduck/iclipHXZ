@@ -952,6 +952,7 @@
 				);
 				PRODUCT_NAME = "回形针";
 				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
 			};
@@ -978,6 +979,7 @@
 				);
 				PRODUCT_NAME = "回形针";
 				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
 			};
