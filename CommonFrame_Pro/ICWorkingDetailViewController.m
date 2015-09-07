@@ -10,6 +10,7 @@
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
 #import <MJRefresh.h>
 #import <CMPopTipView.h>
+#import "RRAttributedString.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate>
 {
@@ -157,17 +158,24 @@
             
             for (Comment* pComment in commentsArray) {
                 
-                [_replyList addObject:pComment.main];
+                [_replyList addObject:pComment];
                 
                 if (pComment.hasChild) {
                     
-                    NSString* key = [NSString stringWithFormat:@"ReIndex%d",i];
-                    NSMutableArray* childCommentsArray = [NSMutableArray array];
-                    for (Comment* cComment in pComment.comments) {
-                        [childCommentsArray addObject:cComment.main];
+                    [_commentArray addObjectsFromArray:pComment.comments];
+                    
+                    for (Comment* cComment in pComment.comments)
+                    {
+                        [_replyList addObject:cComment];
                     }
                     
-                    [_reReplyDic setObject:childCommentsArray forKey:key];
+//                    NSString* key = [NSString stringWithFormat:@"ReIndex%d",i];
+//                    NSMutableArray* childCommentsArray = [NSMutableArray array];
+//                    for (Comment* cComment in pComment.comments) {
+//                        [childCommentsArray addObject:cComment.main];
+//                    }
+//                    
+//                    [_reReplyDic setObject:childCommentsArray forKey:key];
                     
                 }
                 i++;
@@ -444,7 +452,9 @@
     {
         //CGFloat contentWidth = _tableView.frame.size.width;
         CGFloat contentWidth = [UIScreen mainScreen].bounds.size.width - 45 - 60;
-        NSString *content = [_replyList objectAtIndex:index];
+        
+        Comment * com = _replyList[index];
+        NSString *content = com.main;
         content = [@"\t\t\t" stringByAppendingString:content];
         UIFont *font = [UIFont systemFontOfSize:14];
 
@@ -865,18 +875,39 @@
             [rev setText:(comm.level == 1?@"批示：":(reCount < 0 ? [NSString stringWithFormat:@"%@:",comm.userName] : @""))];
             [rev setTextColor:comm.level == 1?[UIColor colorWithHexString:@"#09f4a6"]:[UIColor colorWithHexString:@"#3c9ed7"]];
             [rev setFont:font];
-            [rev setTextAlignment:NSTextAlignmentRight];
+            [rev setTextAlignment:NSTextAlignmentLeft];
             
             [cell.contentView addSubview:rev];
             
-            
-            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + 2 + ([rev.text isEqualToString:@""] ? 10 : rev.frame.size.width), 34, reContentWidth, height)];
+            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + ([rev.text isEqualToString:@""] ? 0 : rev.frame.size.width - 12), 34, reContentWidth, height)];
             [revContent setBackgroundColor:[UIColor clearColor]];
-            [revContent setText:[_replyList objectAtIndex:index]];
             [revContent setTextColor:[UIColor whiteColor]];
             [revContent setFont:font];
             [revContent setTextAlignment:NSTextAlignmentLeft];
             
+            NSString * mainStr = comm.main;
+            
+            BOOL isBlue = NO;
+            
+            for(Comment * comment in _commentArray)
+            {
+                if(comm.parentId == comment.commentsId && comm.level == 2 && comm.userId != comment.userId)//评论
+                {
+                    mainStr = [NSString stringWithFormat:@"回复 %@ %@", comment.userName, comm.main];
+                    
+                    isBlue = YES;
+                }
+            }
+            
+            [revContent setText:mainStr];//momo
+
+            if(mainStr.length > 0 && isBlue)
+            {
+                NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#3c9ed7"] range:NSMakeRange(2, mainStr.length - 2 - comm.main.length)];
+                
+                [revContent setAttributedText:attrStr];
+            }
+
             [cell.contentView addSubview:revContent];
             
             UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60, 7, 45, 15)];
@@ -888,25 +919,29 @@
             
             //[cell.contentView addSubview:date];
             
-            UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 50, date.frame.origin.y + date.frame.size.height + 5, 30, 20)];
-            //[par setTitle:@"20" forState:UIControlStateNormal];
-            [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [par setBackgroundColor:[UIColor clearColor]];
-            [par.layer setBorderWidth:0.5f];
-            [par.layer setCornerRadius:10];
-            [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-            [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [par setTag:cIndex];
-            
-            NSMutableAttributedString* parHig = [[NSMutableAttributedString alloc]
-                                                 initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
-            [par setAttributedTitle:parHig forState:UIControlStateHighlighted];
-            
-            NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
-                                                 initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-            [par setAttributedTitle:parNor forState:UIControlStateNormal];
-            
-            [cell.contentView addSubview:par];
+            if(comm.level == 2)
+            {
+                UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 50, date.frame.origin.y + date.frame.size.height + 5, 30, 20)];
+                //[par setTitle:@"20" forState:UIControlStateNormal];
+                [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [par setBackgroundColor:[UIColor clearColor]];
+                [par.layer setBorderWidth:0.5f];
+                [par.layer setCornerRadius:10];
+                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+                [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [par setTag:cIndex];
+                
+                NSMutableAttributedString* parHig = [[NSMutableAttributedString alloc]
+                                                     initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
+                [par setAttributedTitle:parHig forState:UIControlStateHighlighted];
+                
+                NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
+                                                     initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+                [par setAttributedTitle:parNor forState:UIControlStateNormal];
+                
+                [cell.contentView addSubview:par];
+
+            }
             
             CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
             
@@ -1015,7 +1050,7 @@
                 }
                 
                 [_commentArray addObject:pc];
-                [_replyList addObject:pc.main];
+                [_replyList addObject:pc];
             }
             
             NSString* newCommentId = @"";
@@ -1025,7 +1060,7 @@
                 cm.commentsId = newCommentId;
                 [_commentArray addObject:cm];
                 if (!isChild) {
-                    [_replyList addObject:str];
+                    [_replyList addObject:cm];
                 }
                 
                 NSLog(@"New Child Comment!!");

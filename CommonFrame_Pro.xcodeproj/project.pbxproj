@@ -10,6 +10,7 @@
 		4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3222B81B8DB64900957DEF /* PH_UITextView.m */; };
 		4B3222D01B8DBB6900957DEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */; };
 		4B3222D41B8DBB7900957DEF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */; };
+		4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */; };
 		4B9AE1011B93FE6900E2124D /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE1001B93FE6900E2124D /* libPushSDK-1.8.5.a */; };
 		4B9AE1031B94006100E2124D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE1021B94006100E2124D /* CFNetwork.framework */; };
 		4B9AE1051B94006800E2124D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE1041B94006800E2124D /* CoreFoundation.framework */; };
@@ -104,6 +105,8 @@
 		4B3222B81B8DB64900957DEF /* PH_UITextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PH_UITextView.m; sourceTree = "<group>"; };
 		4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRAttributedString.h; sourceTree = "<group>"; };
+		4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RRAttributedString.m; sourceTree = "<group>"; };
 		4B9AE0FF1B93FE6900E2124D /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		4B9AE1001B93FE6900E2124D /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPushSDK-1.8.5.a"; path = "CommonFrame_Pro/libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
 		4B9AE1021B94006100E2124D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -270,6 +273,8 @@
 		4BC66A041B74551100353789 /* UICommon */ = {
 			isa = PBXGroup;
 			children = (
+				4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */,
+				4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */,
 				4B9AE0FF1B93FE6900E2124D /* APService.h */,
 				4B3222B71B8DB64900957DEF /* PH_UITextView.h */,
 				4B3222B81B8DB64900957DEF /* PH_UITextView.m */,
@@ -787,6 +792,7 @@
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
 				78354CD01B40E03000E2F00A /* ICMemberAccessControlViewContoller.m in Sources */,
 				784B061B1B43BADA0033C0EA /* ICNavigationController.m in Sources */,
+				4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */,
 				783D2C3D1B5CF73D007B197E /* PrintObject.m in Sources */,
 				78613FCA1B3D4D72007ED169 /* ICMarkClassifyViewController.m in Sources */,
 				7830DDFF1B3BE99200D956C9 /* ICSettingGroupViewController.m in Sources */,
