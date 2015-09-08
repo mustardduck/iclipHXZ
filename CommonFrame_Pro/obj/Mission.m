@@ -208,6 +208,11 @@
     }
     [dic setObject:[NSString stringWithFormat:@"%ld",self.type] forKey:@"type"];
     
+    if(!self.taskId)
+    {
+        [dic setObject:@"2" forKey:@"platform"];//来源平台：1：web  2：IOs  3：android  4:微信
+    }
+    
     NSString* jsonStr = [CommonFile toJson:dic];
     
     NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
