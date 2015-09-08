@@ -130,7 +130,6 @@
     [_replyList addObject:@""];
     [_replyList addObject:@""];
     
-    
     _reReplyDic = [NSMutableDictionary dictionary];
     _currentMission = [Mission new];
     
@@ -427,6 +426,37 @@
 
 #pragma -  
 #pragma TableView Action
+
+-(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
+        //end of loading
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSLog(@"uitableview 加载完了");
+            
+            if(_commentsId.length > 0)
+            {
+                for(NSInteger i = 0; i < _commentArray.count; i ++)
+                {
+                    Comment * cm = _commentArray[i];
+                    
+                    NSString * cmId = [NSString stringWithFormat:@"%@", cm.commentsId];
+                    
+                    if([_commentsId isEqualToString:cmId])
+                    {
+                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i - 3 inSection:0];
+                        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                        
+                        _commentsId = @"";
+                    }
+                }
+            }
+            
+        });
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

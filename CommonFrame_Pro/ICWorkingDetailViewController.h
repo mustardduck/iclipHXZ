@@ -19,6 +19,7 @@
 @interface ICWorkingDetailViewController : UIViewController
 
 @property (nonatomic,strong) NSString* taskId;
+@property (nonatomic,strong) NSString* commentsId;
 @property (nonatomic,strong) NSMutableArray*             replyList;
 @property (nonatomic,assign) NSInteger                   indexRow;
 

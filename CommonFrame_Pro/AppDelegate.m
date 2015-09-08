@@ -20,6 +20,7 @@
     NSString * _workGroupId;
     NSString * _taskId;
     NSString * _currentTag;
+    NSString * _commentsId;
 }
 
 @end
@@ -135,7 +136,6 @@
     // 1 任务  2：分享  3通知  4申请 5问题  6加入工作组  7：评论 8:建议
     switch (type) {
         case 6:
-            
             _workGroupId = sourceId;
             
             if(_workGroupId.length)
@@ -154,11 +154,21 @@
                     [self jumpToMainView:_workGroupId];
                 }
             }
-
             break;
         default:
             
             _taskId = sourceId;
+            
+            NSString * commentId = [userInfo objectForKey:@"commentId"];
+            
+            if(commentId.length > 0)
+            {
+                _commentsId = commentId;
+            }
+            else
+            {
+                _commentsId = @"";
+            }
             
             if(_taskId.length)
             {
@@ -238,7 +248,8 @@
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
     ((ICWorkingDetailViewController*)vc).taskId = taskId;
-    
+    ((ICWorkingDetailViewController*)vc).commentsId = _commentsId;
+
     UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
     [nav pushViewController:vc animated:YES];
 }
