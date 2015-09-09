@@ -119,6 +119,14 @@
     if (_isShared == 1) {
         self.navigationItem.title = @"问题";
     }
+    else if (_isShared == 2)
+    {
+        self.navigationItem.title = @"建议";
+    }
+    else if (_isShared == 3)
+    {
+        self.navigationItem.title = @"其它";
+    }
 
 }
 

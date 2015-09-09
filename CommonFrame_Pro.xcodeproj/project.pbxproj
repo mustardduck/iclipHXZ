@@ -20,6 +20,11 @@
 		4B9AE10D1B94009100E2124D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE10C1B94009100E2124D /* Security.framework */; };
 		4B9AE10F1B94009800E2124D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE10E1B94009800E2124D /* libz.dylib */; };
 		4B9AE1121B94029F00E2124D /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B9AE1111B94029F00E2124D /* PushConfig.plist */; };
+		4BB33A8D1B9EC5CF009D80E2 /* expandableImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A851B9EC5CF009D80E2 /* expandableImage.png */; };
+		4BB33A8E1B9EC5CF009D80E2 /* expandableImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */; };
+		4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A881B9EC5CF009D80E2 /* SKSTableView.m */; };
+		4BB33A901B9EC5CF009D80E2 /* SKSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A8A1B9EC5CF009D80E2 /* SKSTableViewCell.m */; };
+		4BB33A911B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */; };
 		4BC66A071B74556300353789 /* UICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC66A061B74556300353789 /* UICommon.m */; };
 		4BC66A0B1B745BC200353789 /* btn_pinglun@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A091B745BC200353789 /* btn_pinglun@2x.png */; };
 		4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A231B745EFD00353789 /* icon_du@2x.png */; };
@@ -117,6 +122,14 @@
 		4B9AE10C1B94009100E2124D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4B9AE10E1B94009800E2124D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		4B9AE1111B94029F00E2124D /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		4BB33A851B9EC5CF009D80E2 /* expandableImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expandableImage.png; sourceTree = "<group>"; };
+		4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expandableImage@2x.png"; sourceTree = "<group>"; };
+		4BB33A871B9EC5CF009D80E2 /* SKSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableView.h; sourceTree = "<group>"; };
+		4BB33A881B9EC5CF009D80E2 /* SKSTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableView.m; sourceTree = "<group>"; };
+		4BB33A891B9EC5CF009D80E2 /* SKSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCell.h; sourceTree = "<group>"; };
+		4BB33A8A1B9EC5CF009D80E2 /* SKSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCell.m; sourceTree = "<group>"; };
+		4BB33A8B1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCellIndicator.h; sourceTree = "<group>"; };
+		4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
 		4BC66A051B74556300353789 /* UICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommon.h; sourceTree = "<group>"; };
 		4BC66A061B74556300353789 /* UICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommon.m; sourceTree = "<group>"; };
 		4BC66A091B745BC200353789 /* btn_pinglun@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_pinglun@2x.png"; sourceTree = "<group>"; };
@@ -270,9 +283,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4BB33A841B9EC5CF009D80E2 /* SKSTableVeiwImp */ = {
+			isa = PBXGroup;
+			children = (
+				4BB33A851B9EC5CF009D80E2 /* expandableImage.png */,
+				4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */,
+				4BB33A871B9EC5CF009D80E2 /* SKSTableView.h */,
+				4BB33A881B9EC5CF009D80E2 /* SKSTableView.m */,
+				4BB33A891B9EC5CF009D80E2 /* SKSTableViewCell.h */,
+				4BB33A8A1B9EC5CF009D80E2 /* SKSTableViewCell.m */,
+				4BB33A8B1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.h */,
+				4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */,
+			);
+			path = SKSTableVeiwImp;
+			sourceTree = "<group>";
+		};
 		4BC66A041B74551100353789 /* UICommon */ = {
 			isa = PBXGroup;
 			children = (
+				4BB33A841B9EC5CF009D80E2 /* SKSTableVeiwImp */,
 				4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */,
 				4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */,
 				4B9AE0FF1B93FE6900E2124D /* APService.h */,
@@ -708,9 +737,11 @@
 				7830DDF91B3BD3E800D956C9 /* bimg.jpg in Resources */,
 				4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */,
 				78CB22421B2926F8003B6707 /* PPDragDropBadgeView.bundle in Resources */,
+				4BB33A8E1B9EC5CF009D80E2 /* expandableImage@2x.png in Resources */,
 				781C1B1E1B1ED1CF008ECABF /* menuMap.png in Resources */,
 				781C1B211B1EF0E7008ECABF /* avatar@2x.jpg in Resources */,
 				4BC66A0B1B745BC200353789 /* btn_pinglun@2x.png in Resources */,
+				4BB33A8D1B9EC5CF009D80E2 /* expandableImage.png in Resources */,
 				789182721B0EDBC2004C6AF6 /* Images.xcassets in Resources */,
 				781C1B1F1B1ED1CF008ECABF /* menuUsers.png in Resources */,
 			);
@@ -782,6 +813,7 @@
 				7891826A1B0EDBC2004C6AF6 /* AppDelegate.m in Sources */,
 				78ABB1E61B538CBD0019534F /* LoginUser.m in Sources */,
 				78613FBD1B3D1ED4007ED169 /* ICMemberInvitationTableViewController.m in Sources */,
+				4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */,
 				78486E191B61EA7D00D67751 /* ICSearchViewController.m in Sources */,
 				78BE76D61B2043F5008AF8AD /* ICSideMenuController.m in Sources */,
 				786381D21B3AAFEA0078F156 /* ICGroupDetailViewController.m in Sources */,
@@ -798,6 +830,7 @@
 				7830DDFF1B3BE99200D956C9 /* ICSettingGroupViewController.m in Sources */,
 				78613FC41B3D2FF3007ED169 /* ICMarkManagementViewController.m in Sources */,
 				7823E1A91B39447600061DAF /* ICPublishSharedAndNotifyViewController.m in Sources */,
+				4BB33A901B9EC5CF009D80E2 /* SKSTableViewCell.m in Sources */,
 				7823E1871B38F2B800061DAF /* YFInputBar.m in Sources */,
 				7844F6741B2145BB0021FFDF /* ICMemberTableViewController.m in Sources */,
 				784A84BD1B462E4F000D6577 /* ICMemberNaviController.m in Sources */,
@@ -816,6 +849,7 @@
 				783AC2DE1B56543900EE3E37 /* Member.m in Sources */,
 				78BE76CF1B1FEEA6008AF8AD /* ICAccountViewController.m in Sources */,
 				783176041B5DF8FB00446283 /* Authority.m in Sources */,
+				4BB33A911B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

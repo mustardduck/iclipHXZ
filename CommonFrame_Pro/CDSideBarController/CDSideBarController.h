@@ -9,14 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "Mark.h"
+#import "SKSTableView.h"
 
 @protocol CDSideBarControllerDelegate <NSObject>
 
-- (void)cdSliderCellClicked:(NSInteger)index;
+- (void)cdSliderCellClicked:(NSIndexPath *)indexPath;
 - (void)partfarmButtonClicked:(NSString*)val;
 @end
 
-@interface CDSideBarController : NSObject <UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
+@interface CDSideBarController : NSObject <UIGestureRecognizerDelegate,SKSTableViewDelegate>
 {
     UIView              *_backgroundMenuView;
     NSMutableArray      *_buttonList;
@@ -28,7 +29,7 @@
 
 @property (nonatomic, retain) UIColor *menuColor;
 @property (nonatomic) BOOL isOpen;
-@property (nonatomic, strong) UITableView *mainTableView;
+@property (nonatomic, strong) SKSTableView *mainTableView;
 @property (nonatomic, strong) NSMutableArray *nameList;
 
 

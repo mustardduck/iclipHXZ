@@ -70,8 +70,16 @@
                     if ([markArr isKindOfClass:[NSArray class]])
                     {
                         NSArray* dArr = (NSArray*)markArr;
-                        NSArray *imageList = @[@"icon_youshijian", @"icon_youfabu",@"icon_youhuifu", @"icon_you7", @"icon_you30",@"icon_you365", @"icon_youbiaoqian_1"];
+                        NSArray *imageList = @[@"icon_youshijian", @"icon_youfabu",@"icon_youhuifu", @"icon_you7", @"icon_you30",@"icon_you365",@"icon_fabu", @"icon_renwu", @"icon_wenti", @"icon_jianyi", @"icon_qita", @"icon_youbiaoqian_1"];
+                        
+                        NSMutableArray * timeArr = [NSMutableArray array];
+                        NSMutableArray * missionArr = [NSMutableArray array];
+                        NSMutableArray * tagArr = [NSMutableArray array];
+
+                        NSMutableArray * totalArr = [NSMutableArray array];
+                        
                         int i = 0;
+                        
                         for (id data in dArr) {
                             if ([data isKindOfClass:[NSDictionary class]]) {
                                 
@@ -84,7 +92,19 @@
                                     m.labelName = markName;
                                     m.labelId = [di valueForKey:@"id"];
                                     m.labelImage = [imageList objectAtIndex:i];
-                                    [marks addObject:m];
+                                    
+                                    if(i >= 0 && i <= 5)
+                                    {
+                                        [timeArr addObject:m];
+                                    }
+                                    else if (i >= 6 && i <= 10)
+                                    {
+                                        [missionArr addObject:m];
+                                    }
+                                    else
+                                    {
+                                        [tagArr addObject:m];
+                                    }
                                 }
                                 else if ([di valueForKey:@"labelName"] != nil)
                                 {
@@ -93,13 +113,18 @@
                                     m.labelName = markName;
                                     m.labelId = [di valueForKey:@"labelId"];
                                     m.labelImage = @"icon_youbiaoqian_2";
-                                    
-                                    [marks addObject:m];
+                                    [tagArr addObject:m];
+//                                    [marks addObject:m];
                                 }
                             }
-                            i++;
+                            i ++;
                         }
                         
+                        [totalArr addObject:timeArr];
+                        [totalArr addObject:missionArr];
+                        [totalArr addObject:tagArr];
+                        
+                        [marks addObject:totalArr];
                     }
                 }
             }

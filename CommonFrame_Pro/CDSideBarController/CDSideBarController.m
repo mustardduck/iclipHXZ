@@ -7,6 +7,8 @@
 //
 
 #import "CDSideBarController.h"
+#import "SKSTableViewCell.h"
+#import "Mark.h"
 
 @interface CDSideBarController()
 {
@@ -29,6 +31,25 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static NSString *CellIdentifier = @"SKSTableViewCell";
+    
+    SKSTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!cell)
+        cell = [[SKSTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
+    Mark * mark = _nameList[indexPath.section][indexPath.row][0];
+    
+    cell.textLabel.text = mark.labelName;
+    
+    if ((indexPath.section == 0 && (indexPath.row == 2 || indexPath.row == 1 || indexPath.row == 0)))
+        cell.expandable = YES;
+    else
+        cell.expandable = NO;
+    
+    return cell;
+
+    /*
     static NSString *CellIdentifier = @"SliderTypeCellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -64,28 +85,127 @@
     [cell.contentView addSubview:bottomLine];
     
     return cell;
+     */
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"UITableViewCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!cell)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
+    Mark * mark = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@", mark.labelName];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
+}
+
+
+- (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+    
+    if ([self.delegate respondsToSelector:@selector(cdSliderCellClicked:)])
+        [self.delegate cdSliderCellClicked:indexPath];
+    //[self dismissMenu];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    /*
+    NSInteger index = indexPath.row;
+    if (index != 0 && index != 6) {
+        UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        for (UIControl* control in cell.contentView.subviews) {
+            if (control.tag == 1020) {
+                ((UILabel*)control).textColor = [UIColor whiteColor];
+                break;
+            }
+        }
+        
+        if (index > 0 && index < 6) {
+            
+            if (_indexTime != nil) {
+                cell = [tableView cellForRowAtIndexPath:_indexTime];
+                
+                for (UIControl* control in cell.contentView.subviews) {
+                    if (control.tag == 1020) {
+                        ((UILabel*)control).textColor = [UIColor grayColor];
+                        break;
+                    }
+                }
+            }
+            
+            
+            _indexTime = indexPath;
+        }
+        if (index > 6) {
+            
+            if (_indexType != nil) {
+                cell = [tableView cellForRowAtIndexPath:_indexType];
+                
+                for (UIControl* control in cell.contentView.subviews) {
+                    if (control.tag == 1020) {
+                        ((UILabel*)control).textColor = [UIColor grayColor];
+                        break;
+                    }
+                }
+            }
+            
+            _indexType = indexPath;
+        }
+        
+    }
+    
+    
+    
+    if ([self.delegate respondsToSelector:@selector(cdSliderCellClicked:)])
+        [self.delegate cdSliderCellClicked:indexPath.row];
+    //[self dismissMenu];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    */
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 41;
+    return 65;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
-    return 1;
+    return [_nameList count];
+}
+
+- (BOOL)tableView:(SKSTableView *)tableView shouldExpandSubRowsOfCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0 && indexPath.row == 0)
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger count  = _nameList.count;
-    return count;
+    return [_nameList[section] count];
+}
+
+- (NSInteger)tableView:(SKSTableView *)tableView numberOfSubRowsAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [_nameList[indexPath.section][indexPath.row] count] - 1;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    /*
     NSInteger index = indexPath.row;
     if (index != 0 && index != 6) {
         UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -137,6 +257,7 @@
         [self.delegate cdSliderCellClicked:indexPath.row];
     //[self dismissMenu];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    */
 }
 
 #pragma mark - 
@@ -172,14 +293,14 @@
     
     _viewWidth = view.frame.size.width;
     
-    CGRect tableFrame = CGRectMake(_viewWidth - 106, 0 , 106, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60 - 120);
+    CGRect tableFrame = CGRectMake(_viewWidth - 221, 0 , 221, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60 - 120);
     
-    _mainTableView = [[UITableView alloc]  initWithFrame:tableFrame];
+    _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
+    _mainTableView.showsVerticalScrollIndicator = NO;
     [_mainTableView setSeparatorColor:[UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f]];
     [_mainTableView setBackgroundColor:[UIColor blackColor]];
-    [_mainTableView setDataSource:self];
-    [_mainTableView setDelegate: self];
     [_mainTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _mainTableView.SKSTableViewDelegate = self;
 
     [_backgroundMenuView addSubview:_mainTableView];
     
@@ -273,7 +394,7 @@
 - (void)onMenuButtonClick:(UIButton*)button
 {
     if ([self.delegate respondsToSelector:@selector(cdSliderCellClicked:)])
-        [self.delegate cdSliderCellClicked:button.tag];
+//        [self.delegate cdSliderCellClicked:button.tag];
     [self dismissMenuWithSelection:button];
 }
 

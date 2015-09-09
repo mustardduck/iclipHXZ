@@ -648,39 +648,44 @@
 #pragma make -
 #pragma  Side Bar Controller Action
 
-- (void)cdSliderCellClicked:(NSInteger)index
+- (void)cdSliderCellClicked:(NSIndexPath *)indexPath
 {
-    if (index != 0 && index != 6) {
-        NSLog(@"cd : %ld",(NSInteger)index);
-        NSInteger tag = 0;
-        Mark* m = [_icSideRightMarkArray objectAtIndex:index];
-        if (index < 6) {
-            tag = 1;
-            _minVal = - [m.labelId integerValue];
-        }
-        else if(index > 6)
-        {
-            tag = 2;
-            _maxVal = [m.labelId integerValue];
-        }
+    NSInteger tag = 0;
+    
+    Mark *m = _icSideRightMarkArray[indexPath.section][indexPath.row][indexPath.subRow];
+    
+    if(indexPath.row == 0)
+    {
+        tag = 1;
         
-        if (_minVal != 0 && _maxVal == 0) {
-            _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_minVal];
-        }
-        else if (_minVal == 0 && _maxVal != 0) {
-            _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_maxVal];
-        }
-        else if (_minVal != 0 && _maxVal != 0) {
-            _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_maxVal];
-        }
+        _minVal = - [m.labelId integerValue];
+    }
+    else if (indexPath.row == 1)
+    {
+        tag = 3;
         
-        [self loadTopMarkView:m.labelName markTag:tag];
-        
-        [_tableView.header beginRefreshing];
-        
+        _minVal = - [m.labelId integerValue];
+    }
+    else if (indexPath.row == 2)
+    {
+        tag = 2;
+        _maxVal = [m.labelId integerValue];
     }
     
-    // Execute code
+    if (_minVal != 0 && _maxVal == 0) {
+        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_minVal];
+    }
+    else if (_minVal == 0 && _maxVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_maxVal];
+    }
+    else if (_minVal != 0 && _maxVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_maxVal];
+    }
+    
+    [self loadTopMarkView:m.labelName markTag:tag];
+    
+    [_tableView.header beginRefreshing];
+
 }
 
 - (void)loadTopMarkView:(NSString*)markName markTag:(NSInteger)tag
