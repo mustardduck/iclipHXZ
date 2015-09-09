@@ -25,6 +25,10 @@
  */
 @property (nonatomic, assign, getter = isExpanded) BOOL expanded;
 
+@property (nonatomic, strong) UIImageView * iconImg;
+
+@property (nonatomic, strong) UILabel * titleLbl;
+
 /**
  * Adds an indicator view into the receiver when the relevant cell is expanded.
  */

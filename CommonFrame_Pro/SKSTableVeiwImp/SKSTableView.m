@@ -10,6 +10,7 @@
 #import "SKSTableViewCell.h"
 #import "SKSTableViewCellIndicator.h"
 #import <objc/runtime.h>
+#import "UICommon.h"
 
 static NSString * const kIsExpandedKey = @"isExpanded";
 static NSString * const kSubrowsKey = @"subrowsCount";
@@ -139,6 +140,16 @@ CGFloat const kDefaultCellHeight = 44.0f;
     return [_SKSTableViewDelegate tableView:tableView numberOfRowsInSection:section] + [self numberOfExpandedSubrowsInSection:section];
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    UIView *selectionColor = [[UIView alloc] init];
+    selectionColor.backgroundColor = RGBCOLOR(74, 74, 74);
+    cell.selectedBackgroundView = selectionColor;
+    
+    return YES;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
@@ -163,7 +174,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
             
             if (isExpanded)
             {
-                expandableCell.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+                expandableCell.accessoryView.transform = CGAffineTransformMakeRotation(M_PI * 0.5);
             }
             else
             {

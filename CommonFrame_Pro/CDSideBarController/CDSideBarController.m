@@ -9,6 +9,7 @@
 #import "CDSideBarController.h"
 #import "SKSTableViewCell.h"
 #import "Mark.h"
+#import "UICommon.h"
 
 @interface CDSideBarController()
 {
@@ -40,7 +41,14 @@
     
     Mark * mark = _nameList[indexPath.section][indexPath.row][0];
     
-    cell.textLabel.text = mark.labelName;
+//    cell.textLabel.text = mark.labelName;
+    cell.titleLbl.text = mark.labelName;
+    cell.iconImg.image = [UIImage imageNamed:mark.labelImage];
+    cell.backgroundColor = RGBCOLOR(31, 31, 31);
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 64.5, tableView.frame.size.width, 0.5)];
+    [bottomLine setBackgroundColor:RGBCOLOR(74, 74, 74)];
+    [cell.contentView addSubview:bottomLine];
     
     if ((indexPath.section == 0 && (indexPath.row == 2 || indexPath.row == 1 || indexPath.row == 0)))
         cell.expandable = YES;
@@ -48,8 +56,11 @@
         cell.expandable = NO;
     
     return cell;
+    
+}
 
-    /*
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"SliderTypeCellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -60,48 +71,26 @@
         [view removeFromSuperview];
     }
     
-    NSInteger index = indexPath.row;
+    Mark * m = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
     
-    Mark* m = [_nameList objectAtIndex:index];
-    
-    UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(14, 13, 15, 15)];
+    UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 16, 15)];
     [img setBackgroundColor:[UIColor clearColor]];
     [img setImage:[UIImage imageNamed:m.labelImage]];
     
     [cell.contentView addSubview:img];
     
-    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(37, 13, 200, 13)];
+    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(img)+ 20, 0, 200, 65)];
     [name setBackgroundColor:[UIColor clearColor]];
     [name setText:m.labelName];
-    [name setTextColor:[UIColor grayColor]];
+    [name setTextColor:RGBCOLOR(251, 251, 251)];
     [name setFont:[UIFont systemFontOfSize:13]];
-    name.tag = 1020;
     [cell.contentView addSubview:name];
     
-    cell.contentView.backgroundColor = [UIColor blackColor];
+    cell.contentView.backgroundColor = RGBCOLOR(36, 36, 36);
     
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 40.5, tableView.frame.size.width, 0.5)];
-    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 64.5, tableView.frame.size.width, 0.5)];
+    [bottomLine setBackgroundColor:RGBCOLOR(74, 74, 74)];
     [cell.contentView addSubview:bottomLine];
-    
-    return cell;
-     */
-    
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"UITableViewCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    
-    Mark * mark = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@", mark.labelName];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
@@ -173,6 +162,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 65;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 65;
 }
@@ -297,7 +291,6 @@
     
     _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
     _mainTableView.showsVerticalScrollIndicator = NO;
-    [_mainTableView setSeparatorColor:[UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f]];
     [_mainTableView setBackgroundColor:[UIColor blackColor]];
     [_mainTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     _mainTableView.SKSTableViewDelegate = self;

@@ -8,6 +8,7 @@
 
 #import "SKSTableViewCell.h"
 #import "SKSTableViewCellIndicator.h"
+#import "UICommon.h"
 
 #define kIndicatorViewTag -1
 
@@ -23,6 +24,18 @@
     if (self) {
         self.expandable = YES;
         self.expanded = NO;
+        
+        UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 16, 15)];
+        [self.contentView addSubview:iconView];
+        self.iconImg = iconView;
+        
+        UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(iconView) + 20, 0, 200, 65)];
+        titLbl.textColor = RGBCOLOR(251, 251, 251);
+        titLbl.backgroundColor = [UIColor clearColor];
+        titLbl.font = [UIFont systemFontOfSize:13];
+        
+        [self.contentView addSubview:titLbl];
+        self.titleLbl = titLbl;
     }
     return self;
 }
@@ -34,7 +47,9 @@
     if (self.isExpanded) {
         
         if (![self containsIndicatorView])
-            [self addIndicatorView];
+        {
+//            [self addIndicatorView];
+        }
         else {
             [self removeIndicatorView];
             [self addIndicatorView];
@@ -46,7 +61,7 @@ static UIImage *_image = nil;
 - (UIView *)expandableView
 {
     if (!_image) {
-        _image = [UIImage imageNamed:@"expandableImage.png"];
+        _image = [UIImage imageNamed:@"icon_jiantou"];
     }
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -102,7 +117,7 @@ static UIImage *_image = nil;
     [UIView animateWithDuration:0.2 animations:^{
         if (self.isExpanded) {
             
-            self.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+            self.accessoryView.transform = CGAffineTransformMakeRotation(M_PI * 0.5);
             
         } else {
             self.accessoryView.transform = CGAffineTransformMakeRotation(0);
