@@ -1159,11 +1159,34 @@
                 }
                 if (cm != nil) {
 
-                    BOOL isOk = [cm sendComment];
+                    NSString* newCommentId = @"";
+                    BOOL isOk = [cm sendComment:&newCommentId];
+                    BOOL isChild = NO;
                     if(isOk)
                     {
+                        cm.commentsId = newCommentId;
+                        [_commentArray addObject:cm];
+                        if (!isChild) {
+                            [_replyList addObject:cm];
+                        }
+                        
                         NSLog(@"New Child Comment!!");
                         
+                        NSInteger index = _replyList.count - 1;
+                        
+                        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                        NSMutableArray* indexPaths = [NSMutableArray arrayWithObject:indexPath];
+                        
+                        [_tableView beginUpdates];
+                        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+                        [_tableView reloadData];
+                        [_tableView endUpdates];
+                        
+                        
+                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        
+                        /* momo todo
                         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 3)];
                         id obj = [_reReplyDic valueForKey:key];
                         if ([obj isKindOfClass:[NSArray class]]) {
@@ -1185,6 +1208,7 @@
                         
                         [_tableView reloadData];
                         _indexRow = 1099;
+                         */
                     }
                     
                 }

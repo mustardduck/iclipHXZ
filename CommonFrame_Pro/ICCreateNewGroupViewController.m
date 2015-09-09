@@ -10,7 +10,7 @@
 #import "InputText.h"
 #import <ZYQAssetPickerController.h>
 #import <UIButton+UIActivityIndicatorForSDWebImage.h>
-
+#import "ICMainViewController.h"
 
 @interface ICCreateNewGroupViewController()<InputTextDelegate,UITextFieldDelegate,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
@@ -26,6 +26,8 @@
     
     NSMutableArray*         _accessoryArray;
     BOOL            _hasCreatedNew;
+    
+    NSString        *_workGroupId;
 }
 @property (nonatomic,assign) BOOL chang;
 
@@ -191,7 +193,8 @@
     
     if (_hasCreatedNew) {
         if ([self.icMainController respondsToSelector:@selector(setHasCreatedNewGroup:)]) {
-            [self.icMainController setValue:@"1" forKey:@"hasCreatedNewGroup"];
+//            [self.icMainController setValue:@"1" forKey:@"hasCreatedNewGroup"];
+            [self.icMainController setValue:_workGroupId forKey:@"hasCreatedNewGroup"];
         }
     }
 }
@@ -258,12 +261,19 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            BOOL isOk = [Group createNewGroup:name description:desc groupImage:img];
+            NSString * workGId = @"";
+            
+            BOOL isOk = [Group createNewGroup:name description:desc groupImage:img workGroupId:&workGId];
             if (isOk) {
                 UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"群组已创建!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 _hasCreatedNew = YES;
-                [self.navigationController popViewControllerAnimated:YES];
+                
+                _workGroupId = [NSString stringWithFormat:@"%@", workGId];
+                
+                [self jumpToMainView:_workGroupId];
+                
+//                [self.navigationController popViewControllerAnimated:YES];
             }
             
         });
@@ -271,6 +281,15 @@
         
         
     }
+}
+
+- (void) jumpToMainView:(NSString *)workGroupId
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMainViewController"];
+    ((ICMainViewController*)vc).pubGroupId = workGroupId;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

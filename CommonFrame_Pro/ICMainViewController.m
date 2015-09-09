@@ -512,15 +512,50 @@
         [_tableView.header beginRefreshing];
     }
     
+    /*
     if (_hasCreatedNewGroup != nil) {
-        if ([_hasCreatedNewGroup isEqualToString:@"1"]) {
+        if (![_hasCreatedNewGroup isEqualToString:@"0"])
+        {
+            _pubGroupId = nil;
             
-            UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-            ((ICGroupListViewController*)vc).icMainViewController = self;
-            [self.navigationController pushViewController:vc animated:YES];
+            _tableView.tableHeaderView = nil;
+            _markHeadView = nil;
+            
+            UIButton* button = (UIButton*)sender;
+            NSInteger index = button.tag;
+            
+            Mission* mi = [_bottomArray objectAtIndex:index];
+            _workGroupId = _hasCreatedNewGroup;
+            
+            if(![_workGroupId integerValue])//全部
+            {
+                
+            }
+            
+            [self setNaviLeftBarItem:mi.workGroupName];
+            
+            _TermString = @"";
+            [self addRefrish];
+            
+            _sideMenu.clickedButtonTag = button.tag;
+            
+            if (!_sideMenu.isOpen) {
+                [_sideMenu showMenu];
+            }
+            
+            [self resetRightMarkView];
+            
         }
+
+//        if ([_hasCreatedNewGroup isEqualToString:@"1"]) {
+//            
+//            UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+//            ((ICGroupListViewController*)vc).icMainViewController = self;
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }
     }
+     */
     
     [self resetRightMarkView];//刷新主页右边的标签
     

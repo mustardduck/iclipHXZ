@@ -224,7 +224,7 @@
     return isOk;
 }
 
-+ (BOOL)createNewGroup:(NSString*)workGroupName description:(NSString*)workGroupMain groupImage:(NSString*)img
++ (BOOL)createNewGroup:(NSString*)workGroupName description:(NSString*)workGroupMain groupImage:(NSString*)img workGroupId:(NSString **)workGroupId
 {
     BOOL isOk = NO;
     
@@ -246,6 +246,8 @@
     
     id val = [CommonFile json:responseString];
     
+    NSString * wgId = @"";
+    
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
         
@@ -253,10 +255,16 @@
             if ([[dic valueForKey:@"state"] intValue] == 1) {
                 isOk = YES;
                 NSLog(@"Dic:%@",dic);
+                
+                NSDictionary * dicc = [dic objectForKey:@"data"];
+                
+                wgId = [dicc valueForKey:@"workGroupId"];
             }
         }
         
     }
+    
+    *workGroupId = wgId;
     
     return isOk;
 }

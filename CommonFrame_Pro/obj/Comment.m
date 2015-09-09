@@ -30,7 +30,7 @@
     [dic setObject:self.main forKey:@"main"];
     [dic setObject:self.parentId forKey:@"parentId"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithASyncByPost:CURL postData:dic];
+    NSString* responseString = [HttpBaseFile requestDataWithASyncByPost:CURL postData:dic];//requestDataWithASyncByPost("A")
     
     if (responseString == nil) {
         return isOk;
