@@ -11,7 +11,7 @@
 #define CURL                    @"/index/findIndexTrends.hz"
 #define PUBLISH_MISSION_URL     @"/task/createTaskApp.hz"
 #define PERSION_INFO            @"/workgroup/findWgPeopleTrends.hz"
-#define DETAIL_URL              @"/task/findTaskDetailApp.hz"
+#define DETAIL_URL              @"/task/findTaskDetail.hz"
 #define TERM_URL                @"/index/findIndexTrendsByTerm.hz"
 #define REMOVE_URL              @"/task/deleteTask.hz"
 #define INFO_URL                @"/task/intoUpdateTaskMian.hz"

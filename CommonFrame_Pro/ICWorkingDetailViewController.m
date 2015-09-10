@@ -151,8 +151,10 @@
             self.navigationItem.rightBarButtonItem = rightBarButton;
         }
         
-        if (commentsArray.count > 0) {
+        if (commentsArray.count > 0)
+        {
             _commentArray = [NSMutableArray arrayWithArray:commentsArray];
+            
             int i = 0;
             
             for (Comment* pComment in commentsArray) {
@@ -179,7 +181,6 @@
                 }
                 i++;
             }
-            
         }
         
     }
@@ -481,7 +482,7 @@
     else
     {
         //CGFloat contentWidth = _tableView.frame.size.width;
-        CGFloat contentWidth = [UIScreen mainScreen].bounds.size.width - 45 - 60;
+        CGFloat contentWidth = [UIScreen mainScreen].bounds.size.width - 45 - 60 - 47;
         
         Comment * com = _replyList[index];
         NSString *content = com.main;
@@ -519,10 +520,15 @@
             }
         }
         
-        if (height < 60) {
+        if (height < 50) {
+           
             height = 60;
+
         }
-        
+        else
+        {
+            height = height + 30;
+        }
     }
  
     return height;
@@ -909,12 +915,6 @@
             
             [cell.contentView addSubview:rev];
             
-            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + ([rev.text isEqualToString:@""] ? 0 : rev.frame.size.width - 12), 34, reContentWidth, height)];
-            [revContent setBackgroundColor:[UIColor clearColor]];
-            [revContent setTextColor:[UIColor whiteColor]];
-            [revContent setFont:font];
-            [revContent setTextAlignment:NSTextAlignmentLeft];
-            
             NSString * mainStr = comm.main;
             
             BOOL isBlue = NO;
@@ -929,7 +929,35 @@
                 }
             }
             
-            [revContent setText:mainStr];//momo
+            NSString * content = [@"\t\t\t" stringByAppendingString:mainStr];
+            UIFont *font2 = [UIFont systemFontOfSize:14];
+            
+            height = [self contentHeight:content vWidth:reContentWidth contentFont:font2];
+            
+            CGFloat y = 21;
+            
+            CGSize size = [UIScreen mainScreen].bounds.size;
+            
+            int screenWidth = size.width;
+            
+            if(screenWidth == 375)
+            {
+                y = 29;
+            }
+            else if (screenWidth == 414)
+            {
+                y = 29;
+            }
+            
+            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + ([rev.text isEqualToString:@""] ? 0 : rev.frame.size.width - 12), y, reContentWidth, height)];
+            [revContent setBackgroundColor:[UIColor clearColor]];
+            [revContent setTextColor:[UIColor whiteColor]];
+            [revContent setFont:font];
+            [revContent setTextAlignment:NSTextAlignmentLeft];
+            [revContent setNumberOfLines:1000];
+
+            
+            [revContent setText:mainStr];//momo todo
 
             if(mainStr.length > 0 && isBlue)
             {
