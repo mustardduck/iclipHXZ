@@ -43,10 +43,30 @@
 
 @implementation ICWorkingDetailViewController
 
+- (void)notiForJumpToMissionDetail:(NSNotification *)note {
+    
+    NSLog(@"jumpToMissionDetail");
+    
+    NSDictionary * dic = note.object;
+    
+    _commentsId = [dic valueForKey:@"commentId"];
+    
+    _taskId = [dic valueForKey:@"taskId"];
+    
+    [self loadData];
+    
+    [_tableView reloadData];
+
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notiForJumpToMissionDetail:) name:@"jumpToMissionDetail"
+                                               object:nil];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -1258,6 +1278,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     [_navBarLeftButtonPopTipView dismissAnimated:YES];
     
     if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {

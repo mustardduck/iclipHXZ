@@ -31,6 +31,32 @@
     return [[[UIDevice currentDevice] systemVersion] floatValue];
 }
 
++ (UIViewController *)getOldViewController:(Class)viewCon withNavController:(UINavigationController *)navController
+{
+    id ret = nil;
+    
+    NSArray *array = navController.viewControllers;
+    
+    if (!array && array.count == 0) return nil;
+    
+    for (id object in array)
+    {
+        if ([object isKindOfClass:[viewCon class]])
+        {
+            ret = object;
+        }
+    }
+    UIViewController *popTarget = ret;
+    return popTarget;
+}
+
++ (void)popOldViewController:(Class)viewCon withNavController:(UINavigationController *)navController
+{
+    UIViewController *model =  [self getOldViewController:viewCon withNavController:navController];
+    if (model && [model isKindOfClass:[UIViewController class]])
+        [navController popToViewController:model animated:YES];
+}
+
 + (CGSize) getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(CGFloat)fontsize
 {
     CGSize size = CGSizeZero;

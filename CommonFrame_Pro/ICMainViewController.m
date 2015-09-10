@@ -87,6 +87,38 @@
     }
 }
 
+- (void)notiForJumpToMissionDetail:(NSNotification *)note {
+    
+    NSLog(@"jumpToMissionDetail");
+    
+    NSDictionary * dic = note.object;
+    
+//    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+//    
+//    ((ICWorkingDetailViewController*)vc).taskId = [dic valueForKey:@"taskId"];
+//    ((ICWorkingDetailViewController*)vc).commentsId = [dic valueForKey:@"commentId"];
+//    
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+
+     
+     UIViewController* currentViewCon = self.navigationController.topViewController;
+    
+     if([currentViewCon isKindOfClass:[ICWorkingDetailViewController class]])
+     {
+         UIViewController *model =  [UICommon getOldViewController:[ICWorkingDetailViewController class] withNavController:self.navigationController];
+         if (model && [model isKindOfClass:[UIViewController class]])
+         {
+             ((ICWorkingDetailViewController*)model).taskId = [dic valueForKey:@"taskId"];
+         
+             ((ICWorkingDetailViewController*)model).commentsId = [dic valueForKey:@"commentId"];
+         
+             [self.navigationController popToViewController:model animated:YES];
+         }
+     }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
@@ -97,6 +129,10 @@
         [self presentViewController:controller animated:YES completion:nil];
         return;
     }
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(notiForJumpToMissionDetail:) name:@"jumpToMissionDetail"
+//                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)

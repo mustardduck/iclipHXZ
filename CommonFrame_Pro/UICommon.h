@@ -33,6 +33,9 @@ typedef void (^keyboardBlock) ();
 + (NSString*) formatTime:(NSString*)input withLength:(int)length;
 + (float)getSystemVersion;
 
++ (UIViewController *)getOldViewController:(Class)viewCon withNavController:(UINavigationController *)navController;
++ (void)popOldViewController:(Class)viewCon withNavController:(UINavigationController *)navController;
+
 @end
 
 @interface UIViewController (expanded)

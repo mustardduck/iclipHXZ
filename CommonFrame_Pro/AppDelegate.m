@@ -15,12 +15,18 @@
 #import "ICWorkingDetailViewController.h"
 #import "APService.h"
 
+#define checkCurrentConWith(_model) \
+if ([currentViewCon isKindOfClass:[_model class]]) \
+{return;}
+
 @interface AppDelegate ()
 {
     NSString * _workGroupId;
     NSString * _taskId;
     NSString * _currentTag;
     NSString * _commentsId;
+    
+    BOOL _isLaunchedByNotificationActive;
 }
 
 @end
@@ -130,6 +136,9 @@
             if(_workGroupId.length)
             {
                 if (application.applicationState == UIApplicationStateActive) {
+                    
+                    _isLaunchedByNotificationActive = YES;
+                    
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                     message:mainStr
                                                                    delegate:self
@@ -140,6 +149,8 @@
                 }
                 else if (application.applicationState == UIApplicationStateInactive)
                 {
+                    _isLaunchedByNotificationActive = NO;
+                    
                     [self jumpToMainView:_workGroupId];
                 }
             }
@@ -162,6 +173,9 @@
             if(_taskId.length)
             {
                 if (application.applicationState == UIApplicationStateActive) {
+                   
+                    _isLaunchedByNotificationActive = YES;
+                    
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                     message:mainStr
                                                                    delegate:self
@@ -172,6 +186,8 @@
                 }
                 else if (application.applicationState == UIApplicationStateInactive)
                 {
+                    _isLaunchedByNotificationActive = NO;
+                    
                     [self jumpToMissionDetail:_taskId];
                 }
             }
@@ -179,7 +195,7 @@
             break;
     }
     
-    /*
+    /*LEAN CLOUD
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     
     if ([[userInfo objectForKey:@"inviteToGroup"] isEqualToString:@"inviteToGroup"]) {
@@ -234,13 +250,55 @@
 
 - (void) jumpToMissionDetail:(NSString *)taskId
 {
-    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-    ((ICWorkingDetailViewController*)vc).taskId = taskId;
-    ((ICWorkingDetailViewController*)vc).commentsId = _commentsId;
-
     UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
-    [nav pushViewController:vc animated:YES];
+    
+    UIViewController* currentViewCon = nav.topViewController;
+
+    if([currentViewCon isKindOfClass:[ICWorkingDetailViewController class]])
+    {
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        
+        [dic setObject:taskId forKey:@"taskId"];
+        [dic setObject:_commentsId forKey:@"commentId"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToMissionDetail"
+                                                            object:dic];
+    }
+    else
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+        
+        ((ICWorkingDetailViewController*)vc).taskId = taskId;
+        ((ICWorkingDetailViewController*)vc).commentsId = _commentsId;
+        
+        [nav pushViewController:vc animated:YES];
+    }
+    
+    /*
+    UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+
+//    if([UICommon getOldViewController:[ICWorkingDetailViewController class] withNavController:nav])
+//    {
+//        NSLog(@"got Old View Controller");
+//    }
+    
+    UIViewController* currentViewCon = nav.topViewController;
+    
+//    checkCurrentConWith(ICWorkingDetailViewController);
+
+    if([currentViewCon isKindOfClass:[ICWorkingDetailViewController class]])
+    {
+        UIViewController *model =  [UICommon getOldViewController:[ICWorkingDetailViewController class] withNavController:nav];
+        if (model && [model isKindOfClass:[UIViewController class]])
+        {
+            ((ICWorkingDetailViewController*)model).taskId = taskId;
+            ((ICWorkingDetailViewController*)model).commentsId = _commentsId;
+            
+            [nav popToViewController:model animated:YES];
+        }
+    }
+    */
 }
 
 - (void) jumpToMainView:(NSString *)workGroupId
