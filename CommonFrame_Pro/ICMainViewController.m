@@ -46,6 +46,7 @@
     
     
     NSInteger               _minVal;
+    NSInteger               _midVal;
     NSInteger               _maxVal;
     
     UIView*                 _markHeadView;
@@ -87,36 +88,12 @@
     }
 }
 
-- (void)notiForJumpToMissionDetail:(NSNotification *)note {
+- (void)notiForJumpToMain:(NSNotification *)note {
     
-    NSLog(@"jumpToMissionDetail");
+    _workGroupId = note.object;
     
-    NSDictionary * dic = note.object;
-    
-//    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-//    
-//    ((ICWorkingDetailViewController*)vc).taskId = [dic valueForKey:@"taskId"];
-//    ((ICWorkingDetailViewController*)vc).commentsId = [dic valueForKey:@"commentId"];
-//    
-//    [self.navigationController pushViewController:vc animated:YES];
     
 
-     
-     UIViewController* currentViewCon = self.navigationController.topViewController;
-    
-     if([currentViewCon isKindOfClass:[ICWorkingDetailViewController class]])
-     {
-         UIViewController *model =  [UICommon getOldViewController:[ICWorkingDetailViewController class] withNavController:self.navigationController];
-         if (model && [model isKindOfClass:[UIViewController class]])
-         {
-             ((ICWorkingDetailViewController*)model).taskId = [dic valueForKey:@"taskId"];
-         
-             ((ICWorkingDetailViewController*)model).commentsId = [dic valueForKey:@"commentId"];
-         
-             [self.navigationController popToViewController:model animated:YES];
-         }
-     }
 }
 
 - (void)viewDidLoad {
@@ -131,7 +108,7 @@
     }
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(notiForJumpToMissionDetail:) name:@"jumpToMissionDetail"
+//                                             selector:@selector(notiForJumpToMain:) name:@"jumpToMainView"
 //                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -156,6 +133,7 @@
     _TermString = @"";
     
     _minVal = 0;
+    _midVal = 0;
     _maxVal = 0;
     
     [self addRefrish];
@@ -323,7 +301,6 @@
     
     _sideBar = [[CDSideBarController alloc] initWithImages:nil  names:_icSideRightMarkArray  menuButton:button];
     _sideBar.delegate = self;
-    
     return barButton;
 }
 
@@ -604,7 +581,8 @@
     NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
     _icSideRightMarkArray = markArray;
     _sideBar.nameList = markArray;
-    [_sideBar.mainTableView reloadData];
+    
+    [_sideBar.mainTableView refreshData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -692,6 +670,13 @@
 
 - (void) resetHeaderView
 {
+    
+//    _tableView.tableHeaderView = nil;
+//    _isMarkShow = NO;
+//    _markHeadView = nil;
+//    _TermString = @"";
+//    [_tableView.header beginRefreshing];
+    
     _tableView.tableHeaderView = nil;
     
     if(!_currentGroup && _isMarkShow)
@@ -709,7 +694,7 @@
     else if(_currentGroup && _isMarkShow)
     {
         _tableView.tableHeaderView = ({
-            [self groupAndMarkHeaderView];
+            [self markHeaderView];
         });
     }
     
@@ -735,7 +720,7 @@
     {
         tag = 3;
         
-        _minVal = - [m.labelId integerValue];
+        _midVal = - [m.labelId integerValue];
     }
     else if (indexPath.row == 2)
     {
@@ -743,14 +728,26 @@
         _maxVal = [m.labelId integerValue];
     }
     
-    if (_minVal != 0 && _maxVal == 0) {
+    if (_minVal != 0 && _maxVal == 0 && _midVal == 0) {
         _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_minVal];
     }
-    else if (_minVal == 0 && _maxVal != 0) {
+    else if (_minVal == 0 && _maxVal != 0 && _midVal == 0) {
         _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_maxVal];
     }
-    else if (_minVal != 0 && _maxVal != 0) {
+    else if (_minVal == 0 && _maxVal == 0 && _midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_midVal];
+    }
+    else if (_minVal != 0 && _maxVal != 0 && _midVal == 0) {
         _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_maxVal];
+    }
+    else if (_minVal != 0 && _maxVal == 0 && _midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_midVal];
+    }
+    else if (_minVal == 0 && _maxVal != 0 && _midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_midVal,(NSInteger)_maxVal];
+    }
+    else if (_minVal != 0 && _maxVal != 0 && _midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld,%ld",(NSInteger)_minVal, (NSInteger)_midVal,(NSInteger)_maxVal];
     }
     
     [self loadTopMarkView:m.labelName markTag:tag];
@@ -993,9 +990,11 @@
         else
         {
             BOOL hasEx = NO;
+            int count = 0;
             for (UIControl* control in _markHeadView.subviews) {
                 if ([control isKindOfClass:[UILabel class]]) {
                     UILabel* lbl = (UILabel*)control;
+                    count ++;
                     if (lbl.tag == _tagNum) {
                         hasEx = YES;
                         lbl.text = _markNameStr;
@@ -1005,7 +1004,14 @@
             }
             if (!hasEx) {
                 
-                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(102, 8, 80, 24)];
+                CGFloat x = 102;
+                
+                if(count == 3)
+                {
+                    x = 102 + 90;
+                }
+                
+                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x, 8, 80, 24)];
                 [name setText:_markNameStr];
                 [name setTextColor:[UIColor whiteColor]];
                 [name setTextAlignment:NSTextAlignmentCenter];
@@ -1089,9 +1095,12 @@
 - (void)icSideMenuClicked:(id)sender
 {
     _pubGroupId = nil;
-    
+
     _tableView.tableHeaderView = nil;
+    _isMarkShow = NO;
     _markHeadView = nil;
+    _TermString = @"";
+    [_tableView.header beginRefreshing];
     
     UIButton* button = (UIButton*)sender;
     NSInteger index = button.tag;

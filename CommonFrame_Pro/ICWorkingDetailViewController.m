@@ -11,8 +11,9 @@
 #import <MJRefresh.h>
 #import <CMPopTipView.h>
 #import "RRAttributedString.h"
+#import "UICommon.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate>
+@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate>
 {
     
     
@@ -29,6 +30,7 @@
     CMPopTipView*               _navBarLeftButtonPopTipView;
     
     BOOL                        _hasDel;
+    BOOL                        _showDelete;
     
     UIActivityIndicatorView* acInd ;
 
@@ -44,9 +46,7 @@
 @implementation ICWorkingDetailViewController
 
 - (void)notiForJumpToMissionDetail:(NSNotification *)note {
-    
-    NSLog(@"jumpToMissionDetail");
-    
+        
     NSDictionary * dic = note.object;
     
     _commentsId = [dic valueForKey:@"commentId"];
@@ -102,6 +102,10 @@
             _oriIndexRow = 0;
             [self.view addSubview:_tableView];
             
+            UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+            lpgr.minimumPressDuration = 1.0; //seconds	设置响应时间
+            lpgr.delegate = self;
+            [_tableView addGestureRecognizer:lpgr];	//启用长按事件
             
             NSArray* typeList = @[@"批示",@"评论"];
             _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 44 - 66, [UIScreen mainScreen].bounds.size.width, 44)];
@@ -125,6 +129,104 @@
 
     
    
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
+{
+    CGPoint p = [gestureRecognizer locationInView:_tableView ];
+
+    NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:p];//获取响应的长按的indexpath
+    if (indexPath == nil)
+        NSLog(@"long press on table view but not on a row");
+    else
+        NSLog(@"long press on table view at row %d", indexPath.row);
+    
+    if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        NSInteger index = indexPath.row;
+        
+        if(index >= 3)
+        {
+            Comment* comm = [_commentArray objectAtIndex:index - 3];
+            
+            NSString * loginUserId = [LoginUser loginUserID];
+            
+            if(loginUserId == comm.userId)
+            {
+                UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:@"取消"
+                                                  destructiveButtonTitle:nil
+                                                       otherButtonTitles:@"删除", @"复制", nil];
+                as.tag = indexPath.row;
+                _showDelete = YES;
+                [as showInView:self.view];
+            }
+            else
+            {
+                UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:@"取消"
+                                                  destructiveButtonTitle:nil
+                                                       otherButtonTitles:@"复制", nil];
+                as.tag = indexPath.row;
+                _showDelete = NO;
+                [as showInView:self.view];
+            }
+            
+
+        }
+    }
+    //else if(gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    //{
+    //NSLog(@"UIGestureRecognizerStateEnded");
+    //}
+    //else if(gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    //{
+    //NSLog(@"UIGestureRecognizerStateChanged");
+    //}
+    //else if(gestureRecognizer.state == UIGestureRecognizerStateCancelled)
+    //{
+    //NSLog(@"UIGestureRecognizerStateCancelled");
+    //}
+    //else if(gestureRecognizer.state ==UIGestureRecognizerStateFailed )
+    //{
+    //NSLog(@"UIGestureRecognizerStateFailed");
+    //}
+}
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSInteger cIndex = actionSheet.tag;
+    
+    Comment* comm = [_commentArray objectAtIndex:cIndex - 3];
+    
+    if(_showDelete)
+    {
+        if(buttonIndex == 0)//delete
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"确定删除该条评论吗？"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"不，请保留！"
+                                                  otherButtonTitles:@"是的", nil];
+            alert.tag = cIndex;
+            [alert show];
+        }
+        else if (buttonIndex == 1)//copy
+        {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = comm.main;
+        }
+    }
+    else
+    {
+        if(buttonIndex == 0)//copy
+        {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = comm.main;
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -398,11 +500,31 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        BOOL isRemoved = [Mission reomveMission:_currentMission.taskId];
-        if (isRemoved) {
-            _hasDel = YES;
-            [self.navigationController popViewControllerAnimated:YES];
+    NSInteger cIndex = alertView.tag;
+    
+    if(cIndex >= 3)
+    {
+        Comment* comm = [_commentArray objectAtIndex:cIndex - 3];
+        
+        if (buttonIndex == 1)
+        {
+            BOOL isOk = [comm deleteTaskComment:comm.commentsId taskId:comm.taskId];
+            
+            if(isOk)
+            {
+                [self loadData];
+                [_tableView reloadData];
+            }
+        }
+    }
+    else
+    {
+        if (buttonIndex == 1) {
+            BOOL isRemoved = [Mission reomveMission:_currentMission.taskId];
+            if (isRemoved) {
+                _hasDel = YES;
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }
@@ -467,7 +589,7 @@
                     
                     if([_commentsId isEqualToString:cmId])
                     {
-                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i - 3 inSection:0];
+                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i + 3 inSection:0];
                         [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
                         
                         _commentsId = @"";
@@ -506,10 +628,21 @@
         
         Comment * com = _replyList[index];
         NSString *content = com.main;
-        content = [@"\t\t\t" stringByAppendingString:content];
-        UIFont *font = [UIFont systemFontOfSize:14];
-
-        height = [self contentHeight:content vWidth:contentWidth contentFont:font];
+        
+//        content = [@"\t\t\t" stringByAppendingString:content];
+//        UIFont *font = [UIFont systemFontOfSize:14];
+//        height = [self contentHeight:content vWidth:contentWidth contentFont:font];
+        
+        if(com.level == 2 && com.parentName.length > 0)//评论
+        {
+            content = [NSString stringWithFormat:@"回复 %@ %@", com.parentName, com.main];
+        }
+        else if (com.level == 1)
+        {
+            content = [@"批示：" stringByAppendingString:content];
+        }
+        
+        height = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:14].height;
         
         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 3)];
         id obj = [_reReplyDic valueForKey:key];
@@ -522,7 +655,9 @@
                 
                 for (int i = 0; i< reArray.count; i++) {
                     NSString* cc = [reArray objectAtIndex:i];
-                    CGFloat ch = [self contentHeight:cc vWidth:contentWidth contentFont:font];
+//                    CGFloat ch = [self contentHeight:cc vWidth:contentWidth contentFont:font];
+                    CGFloat ch = [UICommon getSizeFromString:cc withSize:CGSizeMake(contentWidth, 1000) withFont:14].height;
+
                     height = height + ch;
                     
                     if (ch > 20 && reArray.count == 1) {
@@ -540,14 +675,14 @@
             }
         }
         
-        if (height < 50) {
+        if (height < 34) {
            
             height = 60;
 
         }
         else
         {
-            height = height + 30;
+            height = height + 35;
         }
     }
  
@@ -685,7 +820,9 @@
         CGFloat contentWidth = cWidth - 22;
         UIFont* font = [UIFont boldSystemFontOfSize:14];
         
-        CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
+//        CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
+        
+        CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:14].height;
         
         __block CGFloat newcHeight = contentHeight + 35 + 16;
         
@@ -880,9 +1017,13 @@
                     {
                         NSString* cStr = [reArray objectAtIndex:j];
                         
-                        cStr = [@"\t\t\t" stringByAppendingString:cStr];
+//                        cStr = [@"\t\t\t" stringByAppendingString:cStr];
                         
-                        CGFloat height = [self contentHeight:cStr vWidth:reContentWidth contentFont:font];
+//                        CGFloat height = [self contentHeight:cStr vWidth:reContentWidth contentFont:font];
+                        
+                        CGFloat height = [UICommon getSizeFromString:cStr withSize:CGSizeMake(reContentWidth, 1000) withFont:14].height;
+
+                        
                         if (j == 0) {
                             teHeight = reHeight + (reLabelHeight* (j + 1)) + height * j + 20;
                         }
@@ -925,56 +1066,45 @@
             
             reHeight =  reCount == 0 ? 34 : reHeight + reLabelHeight + height;
             
-            UILabel* rev = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.origin.x, 34, 50, height)];
-
-            [rev setBackgroundColor:[UIColor clearColor]];
-            [rev setText:(comm.level == 1?@"批示：":(reCount < 0 ? [NSString stringWithFormat:@"%@:",comm.userName] : @""))];
-            [rev setTextColor:comm.level == 1?[UIColor colorWithHexString:@"#09f4a6"]:[UIColor colorWithHexString:@"#3c9ed7"]];
-            [rev setFont:font];
-            [rev setTextAlignment:NSTextAlignmentLeft];
-            
-            [cell.contentView addSubview:rev];
+//            UILabel* rev = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.origin.x, 34, 50, height)];
+//
+//            [rev setBackgroundColor:[UIColor clearColor]];
+//            [rev setText:(comm.level == 1?@"批示：":(reCount < 0 ? [NSString stringWithFormat:@"%@:",comm.userName] : @""))];
+//            [rev setTextColor:comm.level == 1?[UIColor colorWithHexString:@"#09f4a6"]:[UIColor colorWithHexString:@"#3c9ed7"]];
+//            [rev setFont:font];
+//            [rev setTextAlignment:NSTextAlignmentLeft];
+//            
+//            [cell.contentView addSubview:rev];
             
             NSString * mainStr = comm.main;
             
             BOOL isBlue = NO;
             
-            for(Comment * comment in _commentArray)
+            BOOL isGreen = NO;
+            
+            if(comm.level == 2 && comm.parentName.length > 0)//评论
             {
-                if(comm.parentId == comment.commentsId && comm.level == 2 && comm.userId != comment.userId)//评论
-                {
-                    mainStr = [NSString stringWithFormat:@"回复 %@ %@", comment.userName, comm.main];
-                    
-                    isBlue = YES;
-                }
+                mainStr = [NSString stringWithFormat:@"回复 %@ %@", comm.parentName, comm.main];
+                
+                isBlue = YES;
+            }
+            else if (comm.level == 1)//批示
+            {
+                mainStr = [NSString stringWithFormat:@"批示：%@", comm.main];
+                
+                isGreen = YES;
             }
             
-            NSString * content = [@"\t\t\t" stringByAppendingString:mainStr];
-            UIFont *font2 = [UIFont systemFontOfSize:14];
+            height = [UICommon getSizeFromString:mainStr withSize:CGSizeMake(reContentWidth, 1000) withFont:14].height;
             
-            height = [self contentHeight:content vWidth:reContentWidth contentFont:font2];
+            CGFloat y = 30;
             
-            CGFloat y = 21;
-            
-            CGSize size = [UIScreen mainScreen].bounds.size;
-            
-            int screenWidth = size.width;
-            
-            if(screenWidth == 375)
-            {
-                y = 29;
-            }
-            else if (screenWidth == 414)
-            {
-                y = 29;
-            }
-            
-            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + ([rev.text isEqualToString:@""] ? 0 : rev.frame.size.width - 12), y, reContentWidth, height)];
+            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(X(name), y, reContentWidth, height)];
             [revContent setBackgroundColor:[UIColor clearColor]];
             [revContent setTextColor:[UIColor whiteColor]];
             [revContent setFont:font];
             [revContent setTextAlignment:NSTextAlignmentLeft];
-            [revContent setNumberOfLines:1000];
+            [revContent setNumberOfLines:0];
 
             
             [revContent setText:mainStr];//momo todo
@@ -982,6 +1112,12 @@
             if(mainStr.length > 0 && isBlue)
             {
                 NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#3c9ed7"] range:NSMakeRange(2, mainStr.length - 2 - comm.main.length)];
+                
+                [revContent setAttributedText:attrStr];
+            }
+            else if (mainStr.length > 0 && isGreen)
+            {
+                NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#09f4a6"] range:NSMakeRange(0, 3)];
                 
                 [revContent setAttributedText:attrStr];
             }
@@ -1120,6 +1256,12 @@
                 BOOL isOk = [pc sendComment:&newCommentId];
                 
                 if (isOk) {
+                    
+                    _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                    [self loadData];
+                    [_tableView reloadData];
+                    return;
+                    
                     cm.parentId = newCommentId;
                     NSMutableArray* tAr = [NSMutableArray array];
                     [tAr addObject:cm];
@@ -1135,6 +1277,12 @@
             BOOL isOk = [cm sendComment:&newCommentId];
             //BOOL isOk = [cm sendComment];
             if(isOk){
+                
+                _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                [self loadData];
+                [_tableView reloadData];
+                return;
+                
                 cm.commentsId = newCommentId;
                 [_commentArray addObject:cm];
                 if (!isChild) {
@@ -1212,6 +1360,11 @@
                     BOOL isChild = NO;
                     if(isOk)
                     {
+                        _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                        [self loadData];
+                        [_tableView reloadData];
+                        return;
+                        
                         cm.commentsId = newCommentId;
                         [_commentArray addObject:cm];
                         if (!isChild) {

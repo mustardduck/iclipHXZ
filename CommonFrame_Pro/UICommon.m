@@ -63,17 +63,21 @@
     
     if([UICommon getSystemVersion] >= 7.0)
     {
+        
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 
         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         
         NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:Font(fontsize),NSFontAttributeName,[NSParagraphStyle defaultParagraphStyle],NSParagraphStyleAttributeName, nil];
         
-        size = [str boundingRectWithSize:cSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+        NSStringDrawingOptions options =  NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+        
+        size = [str boundingRectWithSize:cSize options:options attributes:attributes context:nil].size;
         
         size.height = ceil(size.height);
         
         size.width = ceil(size.width);
+
     }
     else
     {

@@ -25,8 +25,6 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
     NSString * _taskId;
     NSString * _currentTag;
     NSString * _commentsId;
-    
-    BOOL _isLaunchedByNotificationActive;
 }
 
 @end
@@ -137,8 +135,6 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
             {
                 if (application.applicationState == UIApplicationStateActive) {
                     
-                    _isLaunchedByNotificationActive = YES;
-                    
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                     message:mainStr
                                                                    delegate:self
@@ -149,8 +145,6 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
                 }
                 else if (application.applicationState == UIApplicationStateInactive)
                 {
-                    _isLaunchedByNotificationActive = NO;
-                    
                     [self jumpToMainView:_workGroupId];
                 }
             }
@@ -173,8 +167,6 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
             if(_taskId.length)
             {
                 if (application.applicationState == UIApplicationStateActive) {
-                   
-                    _isLaunchedByNotificationActive = YES;
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                     message:mainStr
@@ -186,8 +178,6 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
                 }
                 else if (application.applicationState == UIApplicationStateInactive)
                 {
-                    _isLaunchedByNotificationActive = NO;
-                    
                     [self jumpToMissionDetail:_taskId];
                 }
             }
@@ -309,6 +299,26 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
     
     UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
     [nav pushViewController:vc animated:YES];
+    
+    /*
+    UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+    
+    UIViewController* currentViewCon = nav.topViewController;
+    
+    if([currentViewCon isKindOfClass:[ICMainViewController class]])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToMainView"
+                                                            object:workGroupId];
+    }
+    else
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMainViewController"];
+        ((ICMainViewController*)vc).pubGroupId = workGroupId;
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        [nav pushViewController:vc animated:YES];
+    }*/
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

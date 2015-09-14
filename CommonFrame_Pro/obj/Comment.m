@@ -13,6 +13,7 @@
 
 #define CURL                @"/task/createTaskComment.hz"
 #define PRAISE_URL          @"/task/commentThumbsUp.hz"
+#define DELETECOMMENT_URL       @"/task/deleteTaskComment.hz"
 
 @implementation Comment
 
@@ -48,6 +49,41 @@
             }
         }
         
+    }
+    
+    return isOk;
+}
+
+- (BOOL)deleteTaskComment:(NSString *) commentsId taskId:(NSString *) taskId
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+
+    [dic setObject:[LoginUser loginUserID] forKey:@"userId"];
+    
+    [dic setObject:commentsId forKey:@"commentsId"];
+    
+    [dic setObject:taskId forKey:@"taskId"];
+    
+    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:DELETECOMMENT_URL postData:dic];
+
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile json:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+
+            }
+        }
     }
     
     return isOk;

@@ -317,10 +317,11 @@ CGFloat const kDefaultCellHeight = 44.0f;
                     NSIndexPath *expIndexPath = [NSIndexPath indexPathForRow:row+index inSection:section];
                     [expandedIndexPaths addObject:expIndexPath];
                 }
-            
+                            
                 if (cell.isExpanded)
                 {
                     [self setExpanded:YES forCellAtIndexPath:correspondingIndexPath];
+                    
                     [self insertRowsAtIndexPaths:expandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
                 }
                 else
@@ -328,7 +329,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
                     [self setExpanded:NO forCellAtIndexPath:correspondingIndexPath];
                     [self deleteRowsAtIndexPaths:expandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
                 }
-            
+                
                 [cell accessoryViewAnimation];
             }
         }

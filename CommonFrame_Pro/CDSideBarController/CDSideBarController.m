@@ -71,26 +71,33 @@
         [view removeFromSuperview];
     }
     
-    Mark * m = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    NSInteger subRow = indexPath.subRow;
     
-    UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 16, 15)];
-    [img setBackgroundColor:[UIColor clearColor]];
-    [img setImage:[UIImage imageNamed:m.labelImage]];
-    
-    [cell.contentView addSubview:img];
-    
-    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(img)+ 20, 0, 200, 65)];
-    [name setBackgroundColor:[UIColor clearColor]];
-    [name setText:m.labelName];
-    [name setTextColor:RGBCOLOR(251, 251, 251)];
-    [name setFont:[UIFont systemFontOfSize:13]];
-    [cell.contentView addSubview:name];
-    
-    cell.contentView.backgroundColor = RGBCOLOR(36, 36, 36);
-    
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 64.5, tableView.frame.size.width, 0.5)];
-    [bottomLine setBackgroundColor:RGBCOLOR(74, 74, 74)];
-    [cell.contentView addSubview:bottomLine];
+    if(indexPath.subRow < [_nameList[indexPath.section][indexPath.row] count])
+    {
+        Mark * m = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
+        
+        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 16, 15)];
+        [img setBackgroundColor:[UIColor clearColor]];
+        [img setImage:[UIImage imageNamed:m.labelImage]];
+        
+        [cell.contentView addSubview:img];
+        
+        UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(img)+ 20, 0, 200, 65)];
+        [name setBackgroundColor:[UIColor clearColor]];
+        [name setText:m.labelName];
+        [name setTextColor:RGBCOLOR(251, 251, 251)];
+        [name setFont:[UIFont systemFontOfSize:13]];
+        [cell.contentView addSubview:name];
+        
+        cell.contentView.backgroundColor = RGBCOLOR(36, 36, 36);
+        
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 64.5, tableView.frame.size.width, 0.5)];
+        [bottomLine setBackgroundColor:RGBCOLOR(74, 74, 74)];
+        [cell.contentView addSubview:bottomLine];
+    }
     
     return cell;
 }
@@ -197,8 +204,8 @@
     return [_nameList[indexPath.section][indexPath.row] count] - 1;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
     /*
     NSInteger index = indexPath.row;
     if (index != 0 && index != 6) {
@@ -252,7 +259,7 @@
     //[self dismissMenu];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     */
-}
+//}
 
 #pragma mark - 
 #pragma mark Init
