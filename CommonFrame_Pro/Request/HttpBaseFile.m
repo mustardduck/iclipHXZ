@@ -43,6 +43,28 @@
     return res;
 }
 
++ (NSString*)requestImageWithSyncByPost:(NSString*)urlStr withFilePath:(NSString *)filePath
+{
+    NSString* res = nil;
+    
+    NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BASE_URL,urlStr]];
+    
+    ASIFormDataRequest* requestForm = [[ASIFormDataRequest alloc] initWithURL:url];
+    
+    [requestForm setDelegate:self];
+    [requestForm setRequestMethod:@"POST"];
+    [requestForm addRequestHeader:@"Content-Type" value:@"image/jpg"];
+    [requestForm setFile:filePath forKey:@"photo"];
+    [requestForm setUploadProgressDelegate:self];
+    [requestForm setShowAccurateProgress:YES];
+    
+    [requestForm startSynchronous];
+    
+    res = [requestForm responseString];
+    
+    return res;
+}
+
 + (NSString*)requestDataWithSyncByPostContansBaseURL:(NSString*)urlStr postData:(NSDictionary*)data
 {
     NSString* res = nil;

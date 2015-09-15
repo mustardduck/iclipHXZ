@@ -10,6 +10,7 @@
 #import "HttpBaseFile.h"
 #import "CommonFile.h"
 #import <SBJson4Parser.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 #define CURL                @"/user/loginUser.hz"
 #define QUIT_URL            @"/user/outLogin.hz"
@@ -17,6 +18,7 @@
 #define PWD_URL             @"/user/updateUserPwd.hz"
 #define FIND_PWD_URL        @"/user/sendSmsByPwd.hz"
 #define UPDATE_URL          @"/user/updateUserDetail.hz"
+#define UPLOAD_IMAGE_URL    @"/file/upload.hz"
 
 @implementation LoginUser
 
@@ -253,6 +255,55 @@
     }
     
     return re;
+}
+
++ (BOOL)uploadImage:(NSArray *)objs withUserImgPath:(NSString **)userImgPath
+{
+    BOOL isOk = NO;
+    
+    ALAsset* asset = (ALAsset*)objs[0];
+    ALAssetRepresentation* representation = [asset defaultRepresentation];
+    UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+    NSString* filename = [representation filename];
+    
+    imgH = [UIImage
+            imageWithCGImage:[representation fullScreenImage]
+            scale:[representation scale]
+            orientation:UIImageOrientationUp];
+    
+    NSData* data = UIImageJPEGRepresentation(imgH, 1.0f);
+    
+    NSString* filePath = [CommonFile saveImageToDocument:data fileName:filename];
+    
+    NSString* responseString = [HttpBaseFile requestImageWithSyncByPost:UPLOAD_IMAGE_URL withFilePath:filePath];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile json:responseString];
+    
+    NSString * strImg = @"";
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+                
+                NSDictionary * sdic = [dic objectForKey:@"data"];
+                
+                strImg = [sdic valueForKey:@"path"];
+            }
+        }
+        
+    }
+    
+    *userImgPath = strImg;
+    
+    return isOk;
 }
 
 + (BOOL)updateInfo:(NSString*)name phone:(NSString*)phone email:(NSString*)mail photo:(NSString*)photo

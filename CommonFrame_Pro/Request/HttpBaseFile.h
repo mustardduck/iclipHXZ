@@ -23,4 +23,6 @@
 
 + (NSString*)baseURL;
 
++ (NSString*)requestImageWithSyncByPost:(NSString*)urlStr withFilePath:(NSString *)filePath;
+
 @end

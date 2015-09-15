@@ -48,4 +48,7 @@
 
 + (BOOL)updateInfo:(NSString*)name phone:(NSString*)phone email:(NSString*)mail photo:(NSString*)photo;
 + (BOOL)isKeepLogined;
+
++ (BOOL)uploadImage:(NSArray *)objs withUserImgPath:(NSString **)userImgPath;
+
 @end

@@ -17,6 +17,7 @@
 #import <Reachability.h>
 //#import <AVOSCloud/AVOSCloud.h>
 #import "APService.h"
+#import "ICMemberInfoViewController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -670,7 +671,6 @@
 
 - (void) resetHeaderView
 {
-    
 //    _tableView.tableHeaderView = nil;
 //    _isMarkShow = NO;
 //    _markHeadView = nil;
@@ -1216,6 +1216,25 @@
     
 }
 
+- (void) jumpToPersonalInfo:(id)sender
+{
+    UIView *v = [sender superview];//获取父类view
+    UITableViewCell *cell = (UITableViewCell *)[v superview];//获取cell
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];//获取cell对应的section
+    
+//    Mission * m = _contentArray[indexPath.row];
+//    m.workGroupId = @"0";//查找工作组成员动态
+//    
+//    if (m != nil) {
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc;
+//        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
+//        ((ICMemberInfoViewController*)vc).memberObj = m;
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
+    
+}
+
 #pragma mark - SlideNavigationController Methods -
 
 - (BOOL)slideNavigationControllerShouldDisplayLeftMenu
@@ -1364,6 +1383,11 @@
         [photo setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:photo];
         
+        UIButton * photoBtn = [[UIButton alloc] initWithFrame:photo.frame];
+        [photoBtn addTarget:self action:@selector(jumpToPersonalInfo:) forControlEvents:UIControlEventTouchUpInside];
+        photoBtn.backgroundColor = [UIColor clearColor];
+        
+        [cell.contentView addSubview:photoBtn];
         
         CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 11, photo.frame.origin.y + 2,
                                      contentWidth - (photo.frame.origin.x + photo.frame.size.width + 6 + 39) , 16);

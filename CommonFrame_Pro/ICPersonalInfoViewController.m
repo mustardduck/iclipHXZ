@@ -75,28 +75,28 @@
 {
     [super viewWillAppear:animated];
     
-    if (self.cAccessoryArray != nil){
-        NSLog(@"%@",self.cAccessoryArray);
-        if (_cAccessoryArray.count > 0) {
-            int i = 0;
-            for (ALAsset* ass in _accessoryArray)
-            {
-                ALAssetRepresentation* representation = [ass defaultRepresentation];
-                UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-                imgH = [UIImage
-                        imageWithCGImage:[representation fullScreenImage]
-                        scale:[representation scale]
-                        orientation:UIImageOrientationUp];
-                UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-                [img setBackgroundColor:[UIColor clearColor]];
-                [img setImage:imgH];
-                
-                [_imgButton setImage:img.image forState:UIControlStateNormal];
-                
-                i++;
-            }
-        }
-    }
+//    if (self.cAccessoryArray != nil){
+//        NSLog(@"%@",self.cAccessoryArray);
+//        if (_cAccessoryArray.count > 0) {
+//            int i = 0;
+//            for (ALAsset* ass in _accessoryArray)
+//            {
+//                ALAssetRepresentation* representation = [ass defaultRepresentation];
+//                UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+//                imgH = [UIImage
+//                        imageWithCGImage:[representation fullScreenImage]
+//                        scale:[representation scale]
+//                        orientation:UIImageOrientationUp];
+//                UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+//                [img setBackgroundColor:[UIColor clearColor]];
+//                [img setImage:imgH];
+//                
+//                [_imgButton setImage:img.image forState:UIControlStateNormal];
+//                
+//                i++;
+//            }
+//        }
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,8 +111,13 @@
 
 - (void)btnPhotoClicked:(id)sender
 {
-    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取",@" ", nil];
+//    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取",@" ", nil];
+//    [as showInView:self.view];
+    
+    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选取",nil];
     [as showInView:self.view];
+    
+    
 }
 
 - (void)editButtonClicked:(UIBarButtonItem*)barButton
@@ -366,20 +371,20 @@
 #pragma UIActionSheet Deleget
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else if (buttonIndex == 1)
+//    if (buttonIndex == 0) {
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
+//        
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
+    if (buttonIndex == 0)
     {
         UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
         ctrl.delegate = self;
         ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:ctrl animated:YES completion:nil];
     }
-    else if (buttonIndex == 2)
+    else if (buttonIndex == 1)
     {
         ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
         picker.maximumNumberOfSelection = 1;
@@ -441,13 +446,37 @@
         }
         
         if (_accessoryArray.count > 0) {
-            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
-            ((ICFileViewController*)vc).uploadFileArray = _accessoryArray;
-            ((ICFileViewController*)vc).hasUploadedFileArray = (_cAccessoryArray == nil? [NSMutableArray array] :[NSMutableArray arrayWithArray:_cAccessoryArray]);
-            ((ICFileViewController*)vc).icPublishMissionController = self;
             
-            [self.navigationController pushViewController:vc animated:YES];
+//            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
+//            ((ICFileViewController*)vc).uploadFileArray = _accessoryArray;
+//            ((ICFileViewController*)vc).hasUploadedFileArray = (_cAccessoryArray == nil? [NSMutableArray array] :[NSMutableArray arrayWithArray:_cAccessoryArray]);
+//            ((ICFileViewController*)vc).icPublishMissionController = self;
+//            
+//            [self.navigationController pushViewController:vc animated:YES];
+            
+            NSString * userImgPath = @"";
+            
+            BOOL isOk = [LoginUser uploadImage:_accessoryArray withUserImgPath:&userImgPath];
+            
+            if(isOk)
+            {
+                ALAsset * ass = _accessoryArray[0];
+                
+                ALAssetRepresentation* representation = [ass defaultRepresentation];
+                UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+                imgH = [UIImage
+                        imageWithCGImage:[representation fullScreenImage]
+                        scale:[representation scale]
+                        orientation:UIImageOrientationUp];
+                UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+                [img setBackgroundColor:[UIColor clearColor]];
+                [img setImage:imgH];
+                
+                [_imgButton setImage:img.image forState:UIControlStateNormal];
+                
+                _user.img = userImgPath;
+            }
         }
     }
     
