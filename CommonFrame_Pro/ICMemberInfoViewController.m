@@ -195,8 +195,14 @@
         infoView;
     });
     
-    
-    _dataArray = [NSMutableArray array];
+    if(_dataListArr.count)
+    {
+        _dataArray = [NSMutableArray arrayWithArray:_dataListArr];
+    }
+    else
+    {
+        _dataArray = [NSMutableArray array];
+    }
     
     [self addRefrish];
 
@@ -213,7 +219,11 @@
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
         _pageNo = 1;
-        _dataArray =  [Mission getMssionListbyWorkGroupID:_memberObj.workGroupId andUserId:_memberObj.userId currentPageIndex:_pageNo pageSize:_pageRowCount];
+        
+        if(!_dataListArr.count)
+        {
+            _dataArray =  [Mission getMssionListbyWorkGroupID:_memberObj.workGroupId andUserId:_memberObj.userId currentPageIndex:_pageNo pageSize:_pageRowCount];
+        }
         
         NSLog(@"Header:%@",_dataArray);
         

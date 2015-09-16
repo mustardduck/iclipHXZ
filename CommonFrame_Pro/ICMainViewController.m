@@ -89,14 +89,6 @@
     }
 }
 
-- (void)notiForJumpToMain:(NSNotification *)note {
-    
-    _workGroupId = note.object;
-    
-    
-
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
@@ -107,10 +99,6 @@
         [self presentViewController:controller animated:YES completion:nil];
         return;
     }
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(notiForJumpToMain:) name:@"jumpToMainView"
-//                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
@@ -1222,7 +1210,28 @@
     UITableViewCell *cell = (UITableViewCell *)[v superview];//获取cell
     NSIndexPath *indexPath = [_tableView indexPathForCell:cell];//获取cell对应的section
     
-//    Mission * m = _contentArray[indexPath.row];
+    Mission * mi = _contentArray[indexPath.row];
+    
+    Member * me = [Member new];
+    
+    me.workGroupId = @"0";
+    
+    NSMutableArray * dataArr = [NSMutableArray array];
+    
+    BOOL isOk = [Mission findWgPeopleTrends:mi.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+    
+    if(isOk)
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc;
+        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
+        ((ICMemberInfoViewController*)vc).memberObj = me;
+        ((ICMemberInfoViewController*)vc).dataListArr = dataArr;
+
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }
+    
 //    m.workGroupId = @"0";//查找工作组成员动态
 //    
 //    if (m != nil) {
@@ -1386,7 +1395,6 @@
         UIButton * photoBtn = [[UIButton alloc] initWithFrame:photo.frame];
         [photoBtn addTarget:self action:@selector(jumpToPersonalInfo:) forControlEvents:UIControlEventTouchUpInside];
         photoBtn.backgroundColor = [UIColor clearColor];
-        
         [cell.contentView addSubview:photoBtn];
         
         CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 11, photo.frame.origin.y + 2,
@@ -1396,6 +1404,15 @@
         name.textColor = [UIColor whiteColor];
         name.font = [UIFont boldSystemFontOfSize:14];
         [cell.contentView addSubview:name];
+        
+        CGRect btnRect = name.frame;
+        btnRect.origin.y = 0;
+        btnRect.size.height = YH(name);
+        
+        photoBtn = [[UIButton alloc] initWithFrame:btnRect];
+        [photoBtn addTarget:self action:@selector(jumpToPersonalInfo:) forControlEvents:UIControlEventTouchUpInside];
+        photoBtn.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:photoBtn];
         
         CGRect tagFrame = nameFrame;
         tagFrame.origin.y = YH(name) + 3;
@@ -1431,6 +1448,11 @@
         tag.font = [UIFont systemFontOfSize:10];
         [cell.contentView addSubview:tag];
         
+        //跳转到群组详细页
+//        photoBtn = [[UIButton alloc] initWithFrame:tag.frame];
+//        [photoBtn addTarget:self action:@selector(jumpToPersonalInfo:) forControlEvents:UIControlEventTouchUpInside];
+//        photoBtn.backgroundColor = [UIColor clearColor];
+//        [cell.contentView addSubview:photoBtn];
         
         CGRect titleFrame = CGRectMake(photo.frame.origin.x, YH(photo) + 10,
                                        contentWidth - (X(photo) + 39),

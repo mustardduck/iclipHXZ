@@ -17,4 +17,6 @@
 
 @property (nonatomic,strong) Member* memberObj;
 
+@property (nonatomic, strong) NSMutableArray * dataListArr;
+
 @end

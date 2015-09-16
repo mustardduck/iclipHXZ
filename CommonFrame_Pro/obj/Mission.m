@@ -16,6 +16,9 @@
 #define REMOVE_URL              @"/task/deleteTask.hz"
 #define INFO_URL                @"/task/intoUpdateTaskMian.hz"
 #define UPDATE_URL              @"/task/updateTaskMian.hz"
+#define FIND_WGPEOPLE_TRENDS_URL  @"/user/findWgPeopleTrends.hz"
+
+@class LoginUser;
 
 @implementation Mission
 
@@ -67,6 +70,106 @@
     
     return dict;
 }
+
++ (BOOL)findWgPeopleTrends:(NSString*)createUserId workGroupId:(NSString *)groupId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount dataListArr:(NSMutableArray **)dataListArr member:(Member **)member
+{
+    BOOL isOk = NO;
+    
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSString* url_s = [NSString stringWithFormat:@"%@?createUserId=%@&workGroupId=%@&userId=%@&page=%ld&pageSize=%ld",FIND_WGPEOPLE_TRENDS_URL,createUserId, groupId, [LoginUser loginUserID],page,rowCount];
+    
+    NSString* responseString = [HttpBaseFile requestDataWithSync:url_s];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile json:responseString];
+    
+    Member * user = [Member new];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                isOk = YES;
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSDictionary class]])
+                {
+                    NSInteger totalPages = 0;
+                    if ([dataDic valueForKey:@"totalPages"] != nil) {
+                        totalPages = [[dataDic valueForKey:@"totalPages"] integerValue];
+                    }
+                    
+                    NSDictionary * userDic = [dataDic objectForKey:@"userMap"];
+                    
+                    
+                    user.duty = [userDic valueForKey:@"duty"];
+                    user.img = [userDic valueForKey:@"img"];
+                    user.name = [userDic valueForKey:@"name"];
+                    user.userId = [userDic valueForKey:@"userId"];
+                    user.mobile = [userDic valueForKey:@"mobile"];
+                    user.email = [userDic valueForKey:@"email"];
+                    
+                    id dataArr = [dataDic valueForKey:@"datalist"];
+                    if ([dataArr isKindOfClass:[NSArray class]])
+                    {
+                        NSArray* dArr = (NSArray*)dataArr;
+                        
+                        for (id data in dArr) {
+                            if ([data isKindOfClass:[NSDictionary class]]) {
+                                
+                                NSDictionary* di = (NSDictionary*)data;
+                                
+                                Mission* cm = [Mission new];
+                                
+                                cm.monthAndDay = [NSString stringWithFormat:@"%@/%@",[di valueForKey:@"monthStr"],[di valueForKey:@"dayStr"]];
+                                cm.hour = [di valueForKey:@"hourStr"];
+                                cm.planExecTime = [di valueForKey:@"planExecTime"];
+                                cm.type = [[di valueForKey:@"type"] integerValue];
+                                cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
+                                cm.finishTime = [di valueForKey:@"finishTime"];
+                                cm.createUserId = [di valueForKey:@"createUserId"];
+                                cm.taskId = [di valueForKey:@"taskId"];
+                                cm.workGroupId = [di valueForKey:@"workGroupId"];
+                                cm.workGroupName = [di valueForKey:@"wgName"];
+                                cm.main = [di valueForKey:@"main"];
+                                cm.title = [di valueForKey:@"title"];
+                                cm.userImg = [di valueForKey:@"userImg"];
+                                cm.status = [[di valueForKey:@"status"] integerValue];
+                                cm.userName = [di valueForKey:@"userName"];
+                                cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
+                                cm.totalPages = totalPages;
+                                cm.isRead = [[di valueForKey:@"isRead"] boolValue];
+                                cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
+                                cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
+                                cm.labelList = [di objectForKey:@"labelList"];
+                                
+                                [array addObject:cm];
+                                
+                            }
+                        }
+                        
+                    }
+                }
+                
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+    
+    *dataListArr = array;
+    *member = user;
+    
+    return isOk;
+    
+}
+
 
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount
 {

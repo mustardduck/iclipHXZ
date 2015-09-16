@@ -64,4 +64,7 @@ typedef enum {
 - (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId;
 + (BOOL)reomveMission:(NSString*)taskId;
 + (Mission*)missionInfo:(NSString*)taskId responsible:(NSArray**)responsibleArray participants:(NSArray**)participantArray copyTo:(NSArray**)copyToArray labels:(NSArray**)labelArray accessories:(NSArray**)accessoryArray;
+
++ (BOOL)findWgPeopleTrends:(NSString*)createUserId workGroupId:(NSString *)groupId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount dataListArr:(NSMutableArray **)dataListArr member:(Member **)member;
+
 @end
