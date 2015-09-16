@@ -7,6 +7,9 @@
 //
 
 #import "UICommon.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+
+static UIViewController *imagePicker = nil;
 
 @implementation UICommon
 
@@ -144,6 +147,74 @@
     }
     
     return text;
+}
+
+#pragma mark camera utility
++ (BOOL) isCameraAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+
++ (BOOL) isPhotoLibraryAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:
+            UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
++ (BOOL) doesCameraSupportTakingPhotos {
+    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
+}
+
++ (BOOL) cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType{
+    __block BOOL result = NO;
+    if ([paramMediaType length] == 0) {
+        return NO;
+    }
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
+    [availableMediaTypes enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *mediaType = (NSString *)obj;
+        if ([mediaType isEqualToString:paramMediaType]){
+            result = YES;
+            *stop= YES;
+        }
+    }];
+    return result;
+}
+
++ (void) showImagePicker:(id)delegate view:(UIViewController*)controller{
+    imagePicker  = controller;
+    if ([self isPhotoLibraryAvailable]) {
+        UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+        pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+        [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+        pickerController.mediaTypes = mediaTypes;
+        pickerController.delegate = delegate;
+        [imagePicker presentViewController:pickerController
+                                  animated:YES
+                                completion:^(void){
+                                    NSLog(@"Picker View Controller is presented");
+                                }];
+    }
+    
+}
+
++ (void) showCamera:(id)delegate view:(UIViewController*) controller allowsEditing:(BOOL)allow{
+    imagePicker  = controller;
+    // 拍照
+    if ([UICommon isCameraAvailable] && [UICommon doesCameraSupportTakingPhotos]) {
+        UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+        NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+        [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+        controller.mediaTypes = mediaTypes;
+        controller.delegate = delegate;
+        [imagePicker presentViewController:controller
+                                  animated:YES
+                                completion:^(void){
+                                    NSLog(@"Picker View Controller is presented");
+                                }];
+    }else{
+        [UICommon showImagePicker:delegate view:controller];
+    }
 }
 
 @end

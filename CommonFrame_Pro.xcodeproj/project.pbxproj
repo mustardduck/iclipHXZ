@@ -10,6 +10,7 @@
 		4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3222B81B8DB64900957DEF /* PH_UITextView.m */; };
 		4B3222D01B8DBB6900957DEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */; };
 		4B3222D41B8DBB7900957DEF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */; };
+		4B831C2A1BA81E6200B01D20 /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B831C291BA81E6200B01D20 /* VPImageCropperViewController.m */; };
 		4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */; };
 		4B9AE1011B93FE6900E2124D /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE1001B93FE6900E2124D /* libPushSDK-1.8.5.a */; };
 		4B9AE1031B94006100E2124D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE1021B94006100E2124D /* CFNetwork.framework */; };
@@ -110,6 +111,8 @@
 		4B3222B81B8DB64900957DEF /* PH_UITextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PH_UITextView.m; sourceTree = "<group>"; };
 		4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		4B831C281BA81E6200B01D20 /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
+		4B831C291BA81E6200B01D20 /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 		4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRAttributedString.h; sourceTree = "<group>"; };
 		4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RRAttributedString.m; sourceTree = "<group>"; };
 		4B9AE0FF1B93FE6900E2124D /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
@@ -283,6 +286,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B831C271BA81E6200B01D20 /* ImageCropper */ = {
+			isa = PBXGroup;
+			children = (
+				4B831C281BA81E6200B01D20 /* VPImageCropperViewController.h */,
+				4B831C291BA81E6200B01D20 /* VPImageCropperViewController.m */,
+			);
+			path = ImageCropper;
+			sourceTree = "<group>";
+		};
 		4BB33A841B9EC5CF009D80E2 /* SKSTableVeiwImp */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,6 +313,7 @@
 		4BC66A041B74551100353789 /* UICommon */ = {
 			isa = PBXGroup;
 			children = (
+				4B831C271BA81E6200B01D20 /* ImageCropper */,
 				4BB33A841B9EC5CF009D80E2 /* SKSTableVeiwImp */,
 				4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */,
 				4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */,
@@ -811,6 +824,7 @@
 				78354CD31B40F5A000E2F00A /* ICMemberRegisterViewController.m in Sources */,
 				786381CC1B3AA3F50078F156 /* ICGroupListViewController.m in Sources */,
 				7891826A1B0EDBC2004C6AF6 /* AppDelegate.m in Sources */,
+				4B831C2A1BA81E6200B01D20 /* VPImageCropperViewController.m in Sources */,
 				78ABB1E61B538CBD0019534F /* LoginUser.m in Sources */,
 				78613FBD1B3D1ED4007ED169 /* ICMemberInvitationTableViewController.m in Sources */,
 				4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */,

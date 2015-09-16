@@ -25,6 +25,8 @@ typedef void (^keyboardBlock) ();
 #define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
 
+#define SCREENWIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height)
 
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;
@@ -35,6 +37,9 @@ typedef void (^keyboardBlock) ();
 
 + (UIViewController *)getOldViewController:(Class)viewCon withNavController:(UINavigationController *)navController;
 + (void)popOldViewController:(Class)viewCon withNavController:(UINavigationController *)navController;
+
++ (void) showImagePicker:(id)delegate view:(UIViewController*)controller;
++ (void) showCamera:(id)delegate view:(UIViewController*) controller allowsEditing:(BOOL)allow;
 
 @end
 

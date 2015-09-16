@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface LoginUser : NSObject
 
@@ -49,6 +50,7 @@
 + (BOOL)updateInfo:(NSString*)name phone:(NSString*)phone email:(NSString*)mail photo:(NSString*)photo;
 + (BOOL)isKeepLogined;
 
-+ (BOOL)uploadImage:(NSArray *)objs withUserImgPath:(NSString **)userImgPath;
++ (BOOL) uploadImage:(NSArray *)objs withUserImgPath:(NSString **)userImgPath;
++ (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename userImgPath:(NSString **)userImgPath;
 
 @end

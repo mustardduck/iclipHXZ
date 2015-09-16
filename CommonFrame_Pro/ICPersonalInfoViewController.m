@@ -11,8 +11,12 @@
 #import "LoginUser.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
 #import <ZYQAssetPickerController.h>
+#import "VPImageCropperViewController.h"
 
-@interface ICPersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+
+#define ORIGINAL_MAX_WIDTH 640.0f
+
+@interface ICPersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate, VPImageCropperDelegate>
 {
     IBOutlet UITableView*   _tableView;
     LoginUser*              _user;
@@ -25,6 +29,8 @@
     
      NSMutableArray*         _accessoryArray;
     BOOL            _hasChanged;
+    
+    NSString *          _currentFileName;
 }
 
 @end
@@ -114,7 +120,7 @@
 //    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取",@" ", nil];
 //    [as showInView:self.view];
     
-    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选取",nil];
+    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选取",nil];
     [as showInView:self.view];
     
     
@@ -366,6 +372,27 @@
     [tableView setTableFooterView:view];
 }
 
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:^() {
+        
+        _currentFileName = @"IMG_test.JPG";
+        
+        UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        portraitImg = [self imageByScalingToMaxSize:portraitImg];
+        // present the cropper view controller
+        VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+        imgCropperVC.delegate = self;
+        [self presentViewController:imgCropperVC animated:YES completion:^{
+            // TO DO
+        }];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^(){
+    }];
+}
 
 #pragma mark -
 #pragma UIActionSheet Deleget
@@ -404,6 +431,102 @@
     }
 }
 
+#pragma mark image scale utility
+- (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage {
+    if (sourceImage.size.width < ORIGINAL_MAX_WIDTH) return sourceImage;
+    CGFloat btWidth = 0.0f;
+    CGFloat btHeight = 0.0f;
+    if (sourceImage.size.width > sourceImage.size.height) {
+        btHeight = ORIGINAL_MAX_WIDTH;
+        btWidth = sourceImage.size.width * (ORIGINAL_MAX_WIDTH / sourceImage.size.height);
+    } else {
+        btWidth = ORIGINAL_MAX_WIDTH;
+        btHeight = sourceImage.size.height * (ORIGINAL_MAX_WIDTH / sourceImage.size.width);
+    }
+    CGSize targetSize = CGSizeMake(btWidth, btHeight);
+    return [self imageByScalingAndCroppingForSourceImage:sourceImage targetSize:targetSize];
+}
+
+- (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize {
+    UIImage *newImage = nil;
+    CGSize imageSize = sourceImage.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    CGFloat targetWidth = targetSize.width;
+    CGFloat targetHeight = targetSize.height;
+    CGFloat scaleFactor = 0.0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
+    if (CGSizeEqualToSize(imageSize, targetSize) == NO)
+    {
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor > heightFactor)
+            scaleFactor = widthFactor; // scale to fit height
+        else
+            scaleFactor = heightFactor; // scale to fit width
+        scaledWidth  = width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        // center the image
+        if (widthFactor > heightFactor)
+        {
+            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
+        }
+        else
+            if (widthFactor < heightFactor)
+            {
+                thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
+            }
+    }
+    UIGraphicsBeginImageContext(targetSize); // this will crop
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width  = scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    if(newImage == nil) NSLog(@"could not scale image");
+    
+    //pop the context to get back to the default
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+#pragma mark VPImageCropperDelegate
+- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
+    
+    NSString * userImgPath = @"";
+    
+//    BOOL isOk = [LoginUser uploadImage:_accessoryArray withUserImgPath:&userImgPath];
+    
+    BOOL isOk = [LoginUser uploadImageWithScale:editedImage fileName:_currentFileName userImgPath:&userImgPath];
+    
+    if(isOk)
+    {
+        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+        [img setBackgroundColor:[UIColor clearColor]];
+        [img setImage:editedImage];
+        
+        [_imgButton setImage:img.image forState:UIControlStateNormal];
+        
+        _user.img = userImgPath;
+    }
+    
+    
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+        // TO DO
+    }];
+}
+
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController {
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+    }];
+}
 
 #pragma mark - ZYQAssetPickerController Delegate
 -(void)assetPickerController:(ZYQAssetPickerController *)picker didFinishPickingAssets:(NSArray *)assets
@@ -411,6 +534,30 @@
     NSLog(@"%@",assets);
     
     if (assets.count > 0) {
+        
+        [picker dismissViewControllerAnimated:YES completion:^() {
+//            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            
+            ALAsset * ass = assets[0];
+            
+            ALAssetRepresentation* representation = [ass defaultRepresentation];
+            UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+            portraitImg = [UIImage
+                    imageWithCGImage:[representation fullScreenImage]
+                    scale:[representation scale]
+                    orientation:UIImageOrientationUp];
+
+            _currentFileName = [representation filename];
+            
+            portraitImg = [self imageByScalingToMaxSize:portraitImg];
+            // present the cropper view controller
+            VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+            imgCropperVC.delegate = self;
+            [self presentViewController:imgCropperVC animated:YES completion:^{
+                // TO DO
+            }];
+        }];
+
         
         //ALAssetRepresentation* representation = [asset defaultRepresentation];
         /*
@@ -425,6 +572,8 @@
          NSLog(@"uti:%@",[representation UTI]);
          */
         
+        //momo
+        /*
         if (_accessoryArray == nil) {
             _accessoryArray = [NSMutableArray array];
         }
@@ -478,8 +627,15 @@
                 _user.img = userImgPath;
             }
         }
+          */
     }
-    
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
 }
 

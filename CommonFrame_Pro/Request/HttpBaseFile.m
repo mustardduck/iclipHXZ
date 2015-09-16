@@ -8,9 +8,9 @@
 
 #import "HttpBaseFile.h"
 
-#define BASE_URL @"http://192.168.0.200:8080/clip_basic"
+#define BASE_URL @"http://10.0.1.200:8080/clip_basic"
 //120.26.113.44 (release) // www.iclip365.com
-//测试服ip    192.168.0.200
+//测试服ip    10.0.1.200
 //192.168.0.111 (lijun local)
 
 
