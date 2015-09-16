@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#define ORIGINAL_MAX_WIDTH 640.0f
+
 typedef void (^keyboardBlock) ();
 
 @interface UICommon : NSObject
@@ -40,6 +42,11 @@ typedef void (^keyboardBlock) ();
 
 + (void) showImagePicker:(id)delegate view:(UIViewController*)controller;
 + (void) showCamera:(id)delegate view:(UIViewController*) controller allowsEditing:(BOOL)allow;
+
+#pragma mark image scale utility
++ (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
+
++ (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize;
 
 @end
 

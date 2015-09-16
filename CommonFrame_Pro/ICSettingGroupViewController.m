@@ -238,7 +238,14 @@
     selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
     cell.selectedBackgroundView = selectionColor;
     
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 39, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    CGFloat y = 39;
+    
+    if(indexPath.row == 0 && indexPath.section == 0)
+    {
+        y = 94;
+    }
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, y, [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayColor]];
     
     [cell.selectedBackgroundView addSubview:bottomLine];

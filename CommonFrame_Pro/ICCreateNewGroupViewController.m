@@ -11,8 +11,9 @@
 #import <ZYQAssetPickerController.h>
 #import <UIButton+UIActivityIndicatorForSDWebImage.h>
 #import "ICMainViewController.h"
+#import "VPImageCropperViewController.h"
 
-@interface ICCreateNewGroupViewController()<InputTextDelegate,UITextFieldDelegate,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface ICCreateNewGroupViewController()<InputTextDelegate,UITextFieldDelegate,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate, VPImageCropperDelegate>
 {
     IBOutlet UIView* _contentView;
     
@@ -28,6 +29,8 @@
     BOOL            _hasCreatedNew;
     
     NSString        *_workGroupId;
+    
+    NSString *      _currentFileName;
 }
 @property (nonatomic,assign) BOOL chang;
 
@@ -379,28 +382,72 @@
 
 - (void)btnImgClicked:(id)sender
 {
-    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取",@" ", nil];
+    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选取",nil];
     [as showInView:self.view];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:^() {
+        
+        _currentFileName = @"IMG_test.JPG";
+        
+        UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+        // present the cropper view controller
+        VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+        imgCropperVC.delegate = self;
+        [self presentViewController:imgCropperVC animated:YES completion:^{
+            // TO DO
+        }];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^(){
+    }];
+}
+
+#pragma mark VPImageCropperDelegate
+- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
+    
+    NSString * userImgPath = @"";
+    
+    BOOL isOk = [LoginUser uploadImageWithScale:editedImage fileName:_currentFileName userImgPath:&userImgPath];
+    
+    if(isOk)
+    {
+        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+        [img setBackgroundColor:[UIColor clearColor]];
+        [img setImage:editedImage];
+        
+        [_imgButton setImage:img.image forState:UIControlStateNormal];
+        
+        self.workGroup.workGroupImg = userImgPath;
+    }
+    
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+        // TO DO
+    }];
+}
+
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController {
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
 #pragma mark -
 #pragma UIActionSheet Deleget
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else if (buttonIndex == 1)
+    if (buttonIndex == 0)
     {
         UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
         ctrl.delegate = self;
         ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:ctrl animated:YES completion:nil];
     }
-    else if (buttonIndex == 2)
+    else if (buttonIndex == 1)
     {
         ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
         picker.maximumNumberOfSelection = 1;
@@ -428,48 +475,29 @@
     
     if (assets.count > 0) {
         
-        //ALAssetRepresentation* representation = [asset defaultRepresentation];
-        /*
-         CGSize dimension = [representation dimensions];
-         UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-         NSString* filename = [representation filename];
-         NSLog(@"filename:%@",filename);
-         CGFloat size = [representation size];
-         NSDictionary* dic = [representation metadata];
-         NSURL* url = [representation url];
-         NSLog(@"url:%@",url);
-         NSLog(@"uti:%@",[representation UTI]);
-         */
-        
-        if (_accessoryArray == nil) {
-            _accessoryArray = [NSMutableArray array];
-        }
-        
-        for (ALAsset* asset in assets)
-        {
-            BOOL isExits = NO;
-            for (ALAsset* acc in _accessoryArray) {
-                ALAssetRepresentation* representation = [asset defaultRepresentation];
-                ALAssetRepresentation* accRepresentation = [acc defaultRepresentation];
-                if ([representation.filename isEqualToString:accRepresentation.filename]) {
-                    isExits = YES;
-                    break;
-                }
-            }
-            if (!isExits) {
-                [_accessoryArray addObject:asset];
-            }
-        }
-        
-        if (_accessoryArray.count > 0) {
-            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
-            ((ICFileViewController*)vc).uploadFileArray = _accessoryArray;
-            ((ICFileViewController*)vc).hasUploadedFileArray = (_cAccessoryArray == nil? [NSMutableArray array] :[NSMutableArray arrayWithArray:_cAccessoryArray]);
-            ((ICFileViewController*)vc).icPublishMissionController = self;
+        [picker dismissViewControllerAnimated:YES completion:^() {
+            //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
             
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+            ALAsset * ass = assets[0];
+            
+            ALAssetRepresentation* representation = [ass defaultRepresentation];
+            UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+            portraitImg = [UIImage
+                           imageWithCGImage:[representation fullScreenImage]
+                           scale:[representation scale]
+                           orientation:UIImageOrientationUp];
+            
+            _currentFileName = [representation filename];
+            
+            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+            // present the cropper view controller
+            VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+            imgCropperVC.delegate = self;
+            [self presentViewController:imgCropperVC animated:YES completion:^{
+                // TO DO
+            }];
+        }];
+
     }
     
     

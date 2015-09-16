@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "760"
-            endingLineNumber = "760">
+            startingLineNumber = "691"
+            endingLineNumber = "691">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -66,11 +66,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -98,11 +98,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -210,11 +210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -226,11 +226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -242,11 +242,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -274,11 +274,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -290,11 +290,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "878"
-            endingLineNumber = "878">
+            startingLineNumber = "809"
+            endingLineNumber = "809">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -304,17 +304,17 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "868"
-            endingLineNumber = "868">
+            startingLineNumber = "799"
+            endingLineNumber = "799">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/LoginUser.m"
@@ -398,11 +398,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "594"
-            endingLineNumber = "594"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
             landmarkName = "-assetPickerController:didFinishPickingAssets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -410,7 +410,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/LoginUser.m"
@@ -430,11 +430,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "596"
-            endingLineNumber = "596"
+            startingLineNumber = "527"
+            endingLineNumber = "527"
             landmarkName = "-assetPickerController:didFinishPickingAssets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -446,11 +446,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
+            startingLineNumber = "514"
+            endingLineNumber = "514"
             landmarkName = "-assetPickerController:didFinishPickingAssets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -462,11 +462,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/UICommon.m"
-            timestampString = "464005297.875356"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "+showImagePicker:view:"
             landmarkType = "5">
          </BreakpointContent>
@@ -478,11 +478,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464082503.300993"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -494,11 +494,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
             landmarkName = "-imageCropper:didFinished:"
             landmarkType = "5">
          </BreakpointContent>
@@ -510,11 +510,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "538"
-            endingLineNumber = "538"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
             landmarkName = "-assetPickerController:didFinishPickingAssets:"
             landmarkType = "5">
             <Locations>
@@ -558,11 +558,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "541"
-            endingLineNumber = "541"
+            startingLineNumber = "472"
+            endingLineNumber = "472"
             landmarkName = "-assetPickerController:didFinishPickingAssets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -590,11 +590,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
+            startingLineNumber = "481"
+            endingLineNumber = "481"
             landmarkName = "-assetPickerController:didFinishPickingAssets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -606,11 +606,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "378"
-            endingLineNumber = "378"
+            startingLineNumber = "376"
+            endingLineNumber = "376"
             landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
             <Locations>
@@ -654,11 +654,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083506.573762"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
             landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -670,11 +670,107 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/ICPersonalInfoViewController.m"
-            timestampString = "464083547.345392"
+            timestampString = "464085062.360819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "509"
-            endingLineNumber = "509"
+            startingLineNumber = "440"
+            endingLineNumber = "440"
+            landmarkName = "-imageCropper:didFinished:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/ICCreateNewGroupViewController.m"
+            timestampString = "464084917.34384"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "393"
+            endingLineNumber = "393"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/ICCreateNewGroupViewController.m"
+            timestampString = "464085026.435878"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
+            landmarkName = "-assetPickerController:didFinishPickingAssets:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/ICCreateNewGroupViewController.m"
+            timestampString = "464085034.157958"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
+            landmarkName = "-imageCropper:didFinished:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/ICCreateNewGroupViewController.m"
+            timestampString = "464085042.129528"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "426"
+            endingLineNumber = "426"
+            landmarkName = "-imageCropper:didFinished:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/ICCreateNewGroupViewController.m"
+            timestampString = "464085081.301942"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
+            landmarkName = "-assetPickerController:didFinishPickingAssets:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/ICCreateNewGroupViewController.m"
+            timestampString = "464085097.70955"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
             landmarkName = "-imageCropper:didFinished:"
             landmarkType = "5">
          </BreakpointContent>
