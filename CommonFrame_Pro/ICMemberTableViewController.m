@@ -10,6 +10,7 @@
 #import <AIMTableViewIndexBar.h>
 #import "InputText.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UICommon.h"
 
 @interface ICMemberTableViewController() <UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate>
 {
@@ -35,6 +36,7 @@
     
     //Group Members
     UITableViewCellEditingStyle _editingStyle;
+    
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -68,7 +70,7 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    if (self.controllerType == MemberViewFromControllerPublishMissionParticipants || self.controllerType == MemberViewFromControllerCopyTo) {
+    if (self.controllerType == MemberViewFromControllerPublishMissionParticipants) {
         UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonClicked:)];
         [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
         self.navigationItem.rightBarButtonItem = rightBarButton;
@@ -89,7 +91,7 @@
         else
         {
             NSMutableArray* sectionArray = [NSMutableArray array];
-            NSArray*        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil];
+            NSArray*        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil workGroupId:_workgid];
             
             _sections = sectionArray;
             _rows = memberArray;
@@ -103,9 +105,9 @@
     
      CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 44 )];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 68 - 66)];
     [_tableView setBackgroundColor:[UIColor blackColor]];
-    
+     _tableView.showsVerticalScrollIndicator = NO;
     [_tableView setSectionIndexColor:[UIColor blueColor]];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -114,8 +116,42 @@
     
     [self.view addSubview:_tableView];
     
+//    [self.view setBackgroundColor:RGBCOLOR(31, 31, 31)];
     
-    _indexBar = [[AIMTableViewIndexBar alloc] initWithFrame:CGRectMake(tableWidth - 30, 0, 30, [UIScreen mainScreen].bounds.size.height - 66)];
+    //全选+完成按钮
+    
+    if(self.controllerType == MemberViewFromControllerCopyTo)
+    {
+        CGRect selectFrame = CGRectMake(40, H(self.view) - 42 - 13 - 66, 136, 42);
+        
+        UIButton * selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectBtn.frame = selectFrame;
+        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateNormal];
+        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateHighlighted];
+        [selectBtn setTitle:@"全选" forState:UIControlStateNormal];
+        selectBtn.titleLabel.font = Font(14);
+        [selectBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateNormal];
+        [selectBtn setTitleColor:RGBCOLOR(251, 251, 251) forState:UIControlStateHighlighted];
+        [selectBtn addTarget:self action:@selector(selectBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:selectBtn];
+        
+        UIButton * selectOkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectFrame.origin.x = [UIScreen mainScreen].bounds.size.width - 40 - 136;
+        selectOkBtn.frame = selectFrame;
+        [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateNormal];
+        [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateHighlighted];
+        [selectOkBtn setTitle:@"完成" forState:UIControlStateNormal];
+        selectOkBtn.titleLabel.font = Font(14);
+        [selectOkBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateNormal];
+        [selectOkBtn setTitleColor:RGBCOLOR(251, 251, 251) forState:UIControlStateHighlighted];
+        [selectOkBtn addTarget:self action:@selector(selectOkBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:selectOkBtn];
+        
+    }
+    
+    _indexBar = [[AIMTableViewIndexBar alloc] initWithFrame:CGRectMake(tableWidth - 30, 0, 30, [UIScreen mainScreen].bounds.size.height - 66 - 68)];
     [_indexBar setBackgroundColor:[UIColor blackColor]];
     _indexBar.delegate = self;
     
@@ -410,7 +446,9 @@
             view;
         });
         
-        [_tableView setFrame:CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 66) ];
+        [_tableView setFrame: CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 68 - 66)];
+        
+       
     }
 }
 
@@ -438,6 +476,62 @@
     }
 }
 
+- (void) selectBtnClicked:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    if([btn.titleLabel.text isEqualToString:@"全选"])
+    {
+        for(int section= 0; section < _sections.count; section ++)
+        {
+            for (int row=0; row<[_rows[section] count]; row++)
+            {
+                NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                
+                [self addIndexPathToCopyToArray:indexPath];
+
+            }
+        }
+        
+        [btn setTitle:@"取消" forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        for(int section= 0; section < _sections.count; section ++)
+        {
+            for (int row=0; row<[_rows[section] count]; row++)
+            {
+                NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                
+                [self removeIndexPathFromCopyToArray:indexPath];
+                
+            }
+        }
+
+        [btn setTitle:@"全选" forState:UIControlStateNormal];
+    }
+    
+    [_tableView reloadData];
+
+}
+
+- (void) selectOkBtnClicked:(id)sender
+{
+    if(self.controllerType == MemberViewFromControllerCopyTo)
+    {
+        if(_selectedIndexList.count)
+        {
+            if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
+                [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
+            }
+        }
+    }
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -456,12 +550,12 @@
             [self.icPublishMisonController setValue:_selectedIndexList forKey:@"participantsIndexPathArray"];
         }
     }
-    else if(self.controllerType == MemberViewFromControllerCopyTo)
-    {
-        if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
-            [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
-        }
-    }
+//    else if(self.controllerType == MemberViewFromControllerCopyTo)
+//    {
+//        if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
+//            [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
+//        }
+//    }
     
 }
 
@@ -661,7 +755,6 @@
         x = x * 2 + 17;
     }
     
-    
     Member* mem = _rows[indexPath.section][indexPath.row];
     
     UIImageView* photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, 12, 36, 36)];
@@ -764,6 +857,37 @@
     [bottomLine setBackgroundColor:[UIColor grayColor]];
     [cell.contentView addSubview:bottomLine];
     
+//    UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
+    for (UIControl* control in cell.contentView.subviews) {
+        if (control.tag == 1010) {
+            for(Member * me in _selectedIndexList)
+            {
+                if(mem.userId == me.userId)
+                {
+                    UIImageView* img = (UIImageView*)control;
+                    img.tag = 1011;
+                    img.image = [UIImage imageNamed:@"btn_xuanze_2"];
+                    [self addIndexPathToParticipantsArray:indexPath];
+                }
+            }
+        }
+        else if (control.tag == 1011)
+        {
+            for(Member * me in _selectedIndexList)
+            {
+                if(mem.userId == me.userId)
+                {
+                    UIImageView* img = (UIImageView*)control;
+                    img.tag = 1010;
+                    img.image = [UIImage imageNamed:@"btn_xuanze_1"];
+                    [self removeIndexPathFromParticipantsArray:indexPath];
+                }
+            }
+
+        }
+    }
+
+
     return cell;
 }
 

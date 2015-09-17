@@ -715,7 +715,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="yBh-3Y-T7T" secondAttribute="trailing" constant="-16" id="2Xe-Q3-zEe"/>
                             <constraint firstItem="yBh-3Y-T7T" firstAttribute="top" secondItem="dsG-7J-1ml" secondAttribute="bottom" id="3cS-if-5Ta"/>

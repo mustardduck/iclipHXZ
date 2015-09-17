@@ -59,7 +59,7 @@
 @property (nonatomic,assign) BOOL       isHave;
 
 + (NSArray*)getAllMembers:(NSMutableArray**)sections searchText:(NSString*)searchString;
-+ (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString;
++ (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId;
 + (NSArray*)getAllMembers:(NSMutableArray**)sections participantsArray:(NSArray*)pArray;
 + (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId;
 + (Member*)getMemberInfoByWorkContractsID:(NSString*)contractID;

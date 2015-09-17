@@ -14,6 +14,7 @@
 #define MEMBER_INFO_URL     @"/workgroup/findWgPeopleDetail.hz"
 #define MARK_URL            @"/workgroup/findWgPeopleListByLabel.hz"
 #define UPDATEWGPEOPLESTRUS_URL   @"/workgroup/updateWgPeopleStrtus.hz"
+#define INVITE_URL          @"/org/findOrgContactByWork.hz?orgId=1015050511520001"
 
 @implementation Member
 
@@ -100,14 +101,14 @@
     return array;
 }
 
-+ (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString
++ (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId
 {
     NSMutableArray* array = [NSMutableArray array];
     NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
     NSMutableArray* sectionArray = [NSMutableArray array];
     
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? CURL : [NSString stringWithFormat:@"%@&str=%@",CURL,searchString])];
+    NSString* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? [NSString stringWithFormat:@"%@&workGroupId=%@",INVITE_URL, groupId] : [NSString stringWithFormat:@"%@&workGroupId=%@&str=%@",INVITE_URL, groupId,searchString])];
     
     if (responseString == nil) {
         return array;
@@ -130,8 +131,6 @@
                         id sArr = [dataDic valueForKey:tmpKey];
                         if (sArr != nil)
                         {
-                            [sectionArray addObject:tmpKey];
-
                             if ([sArr isKindOfClass:[NSArray class]])
                             {
                                 NSArray* dArr = (NSArray*)sArr;
@@ -167,13 +166,19 @@
                                         cm.version = [di valueForKey:@"version"];
                                         cm.createTime = [di valueForKey:@"createTime"];
                                         cm.status = [[di valueForKey:@"status"] boolValue];
+                                        cm.isHave = [[di valueForKey:@"isHave"] boolValue];
                                         
-                                        [sectionMemberArray addObject:cm];
+                                        if(!cm.isHave)
+                                        {
+                                            [sectionMemberArray addObject:cm];
+                                        }
                                     }
                                 }
                                 if(sectionMemberArray.count)
                                 {
                                     [array addObject:sectionMemberArray];
+                                    
+                                    [sectionArray addObject:tmpKey];
                                 }
                             }
                         }
