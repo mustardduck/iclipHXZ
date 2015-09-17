@@ -702,13 +702,13 @@
     {
         tag = 1;
         
-        _minVal = - [m.labelId integerValue];
+        _minVal = [m.labelId integerValue];
     }
     else if (indexPath.row == 1)
     {
         tag = 3;
         
-        _midVal = - [m.labelId integerValue];
+        _midVal = [m.labelId integerValue];
     }
     else if (indexPath.row == 2)
     {

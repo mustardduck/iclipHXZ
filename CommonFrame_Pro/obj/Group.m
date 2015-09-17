@@ -90,7 +90,7 @@
                                 if ([di valueForKey:@"indexSortName"] != nil) {
                                     NSString* markName = [di valueForKey:@"indexSortName"];
                                     m.labelName = markName;
-                                    m.labelId = [di valueForKey:@"id"];
+                                    m.labelId = [di valueForKey:@"indexSortId"];
                                     m.labelImage = [imageList objectAtIndex:i];
                                     
                                     if(i >= 0 && i <= 5)
