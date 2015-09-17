@@ -93,7 +93,7 @@
         [name setTextColor:[UIColor whiteColor]];
         [infoView addSubview:name];
         
-        UILabel* posi = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.size.width+name.frame.origin.x + 14, 21, 60, 15)];
+        UILabel* posi = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.size.width+name.frame.origin.x + 14, 21, 160, 15)];
         [posi setBackgroundColor:[UIColor clearColor]];
         [posi setText:_memberObj.duty];
         [posi setFont:[UIFont systemFontOfSize:13]];
