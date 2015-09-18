@@ -21,6 +21,7 @@
 @property (nonatomic,strong) NSString*  workGroupMain;
 @property (nonatomic,assign) BOOL  isAdmin;
 @property (nonatomic,strong) NSString*  userName;
+@property (nonatomic,assign) BOOL isReceive;
 
 + (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str;
 
@@ -30,5 +31,6 @@
 
 + (BOOL)updateGroup:(NSString*)wgid name:(NSString*)workGroupName description:(NSString*)workGroupMain groupImage:(NSString*)img;
 + (NSDictionary*)groupDicByWorkGroupId:(NSString*)workGroupId isAdmin:(NSString**)admin;
++ (BOOL)updateWgSubscribeStatus:(NSString *)groupId isReceive:(BOOL) isReceive;
 
 @end

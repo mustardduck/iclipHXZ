@@ -14,6 +14,8 @@
 #define NEW_GROUP           @"/workgroup/addWorkgroup.hz"
 #define DETAIL_URL          @"/workgroup/intoWorkgroupDetail.hz"
 #define UPDATE_URL          @"/workgroup/updateWorkgroup.hz"
+#define WORKLIST_SETTING_URL  @"/workgroup/findMeWgMessageList.hz"
+#define UPDATE_GROUP_SETT_URL @"/workgroup/updateWgSubscribeStatus.hz"
 
 @implementation Group
 
@@ -141,7 +143,9 @@
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",WORKLIST_URL,userID]];
+//    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",WORKLIST_URL,userID]];
+    
+    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",WORKLIST_SETTING_URL,userID]];
     
     if (responseString == nil) {
         return array;
@@ -173,6 +177,7 @@
                             cm.workGroupName = [di valueForKey:@"workGroupName"];
                             cm.workGroupMain = [di valueForKey:@"workGroupMain"];
                             cm.isAdmin = [[di valueForKey:@"isAdmin"] boolValue];
+                            cm.isReceive = [[di valueForKey:@"status"] boolValue];
                             
                             [array addObject:cm];
                             
@@ -345,5 +350,45 @@
     return dict;
 }
 
++ (BOOL)updateWgSubscribeStatus:(NSString *)groupId isReceive:(BOOL) isReceive
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    NSString* userId = [LoginUser loginUserID];
+    
+    [dic setObject:userId forKey:@"userId"];
+    NSString * status = @"1";
+    if(!isReceive)
+    {
+        status = @"0";
+    }
+    [dic setObject:status forKey:@"status"];
+    [dic setObject:groupId forKey:@"workGroupId"];
+    
+    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_GROUP_SETT_URL postData:dic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile json:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+    
+    return isOk;
+
+}
 
 @end

@@ -8,6 +8,7 @@
 
 #import "ICSettingViewController.h"
 #import "UIColor+HexString.h"
+#import "ICGroupMessageSettingController.h"
 
 @interface ICSettingViewController()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -95,7 +96,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -127,6 +128,13 @@
         [cell.contentView addSubview:imgView];
         lbl.text = @"账号设置";
     }
+    else if (index == 2)
+    {
+        UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 22, 13, 10)];
+        [imgView setImage:[UIImage imageNamed:@"icon_xiaoxitongzhi"]];
+        [cell.contentView addSubview:imgView];
+        lbl.text = @"消息设置";
+    }
     
     [cell.contentView addSubview:lbl];
     
@@ -148,6 +156,10 @@
     }
     else if (index == 1) {
         controller = [mainStory instantiateViewControllerWithIdentifier:@"ICAccountViewController"];
+    }
+    else if (index == 2)
+    {
+        controller = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupMessageSettingController"];
     }
     
     [self.navigationController pushViewController:controller animated:YES];
