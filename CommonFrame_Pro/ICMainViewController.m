@@ -900,11 +900,13 @@
     
     [groupHeadView addSubview:imgView];
     
-    UIButton* btnPhoto = [[UIButton alloc] initWithFrame:imgView.frame];
-    [btnPhoto setBackgroundColor:[UIColor clearColor]];
-    [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+
     
-    [groupHeadView addSubview:btnPhoto];
+    UIImageView * jiantou = [[UIImageView alloc] init];
+    jiantou.frame = CGRectMake(SCREENWIDTH - 12 - 11, 42, 12, 12);
+    jiantou.image = [UIImage imageNamed:@"icon_jiantou"];
+    
+    [groupHeadView addSubview:jiantou];
     
     UIFont* font = Font(14);
     
@@ -963,6 +965,12 @@
     [bottomLine setBackgroundColor:[UIColor grayColor]];
 
     [groupHeadView addSubview:bottomLine];
+    
+    UIButton* btnPhoto = [[UIButton alloc] initWithFrame:groupHeadView.frame];
+    [btnPhoto setBackgroundColor:[UIColor clearColor]];
+    [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [groupHeadView addSubview:btnPhoto];
     
     return groupHeadView;
 }

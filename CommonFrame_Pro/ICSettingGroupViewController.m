@@ -305,7 +305,6 @@
             
             CGFloat width = [UIScreen mainScreen].bounds.size.width;
             
-            
             UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 11, 67, 67)];
             //[imgView setImage:[UIImage imageNamed:@"icon_touxiang"]];
             [imgView setImageWithURL:[NSURL URLWithString:_workGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
