@@ -676,7 +676,7 @@
     else if (_currentGroup && !_isMarkShow)
     {
         _tableView.tableHeaderView = ({
-            [self groupHeaderView];
+            [self groupHeaderView2];
         });
     }
     else if(_currentGroup && _isMarkShow)
@@ -884,6 +884,89 @@
     return groupHeadView;
     
 }
+
+
+- (UIView *)groupHeaderView2
+{
+    CGFloat width = SCREENWIDTH;
+    
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 95)];
+    
+    [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
+    
+    UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 11, 67, 67)];
+    //[imgView setImage:[UIImage imageNamed:@"icon_touxiang"]];
+    [imgView setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    [groupHeadView addSubview:imgView];
+    
+    UIButton* btnPhoto = [[UIButton alloc] initWithFrame:imgView.frame];
+    [btnPhoto setBackgroundColor:[UIColor clearColor]];
+    [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [groupHeadView addSubview:btnPhoto];
+    
+    UIFont* font = Font(14);
+    
+    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(imgView.frame.size.width + imgView.frame.origin.x + 18, 13, 50 , 13)];
+    lbl.text = @"名称";
+    lbl.textColor = [UIColor grayColor];
+    lbl.font = font;
+    lbl.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:lbl];
+    
+    UILabel* lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x, lbl.frame.origin.y + lbl.frame.size.height + 12, 50 , 13)];
+    lbl1.text = @"创建人";
+    lbl1.textColor = [UIColor grayColor];
+    lbl1.font = font;
+    lbl1.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:lbl1];
+    
+    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x, lbl1.frame.origin.y + lbl1.frame.size.height + 12, 50 , 13)];
+    lbl2.text = @"签名";
+    lbl2.textColor = [UIColor grayColor];
+    lbl2.font = font;
+    lbl2.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:lbl2];
+    
+    
+    UILabel* text = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 13, width/2 - 10 , 13)];
+    text.text = _currentGroup.workGroupName;
+    text.textColor = [UIColor whiteColor];
+    text.font = font;
+    text.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:text];
+    
+    UILabel* text1 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 38, width/2 - 10, 13)];
+    text1.text = _currentGroup.userName;
+    text1.textColor = [UIColor whiteColor];
+    text1.font = font;
+    text1.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:text1];
+    
+    UILabel* text2 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 63, width/2 - 10, 13)];
+    text2.text = _currentGroup.workGroupMain;
+    text2.textColor = [UIColor whiteColor];
+    text2.font = font;
+    text2.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:text2];
+    
+    UILabel* bottomLine = [[UILabel alloc] init];
+    
+    [bottomLine setFrame:CGRectMake(0, 94, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor grayColor]];
+
+    [groupHeadView addSubview:bottomLine];
+    
+    return groupHeadView;
+}
+ 
 
 - (UIView *)groupHeaderView
 {
