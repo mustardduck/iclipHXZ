@@ -25,7 +25,7 @@
 
 + (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str;
 
-+ (NSArray*)getWorkGroupListByUserID:(NSString*)userID;
++ (NSArray*)getWorkGroupListByUserID:(NSString*)userID selectArr:(NSMutableArray **)selectArr;
 + (BOOL)inviteNewUser:(NSString*)loginUserId workGroupId:(NSString*)workGroupId source:(NSInteger)source sourceValue:(NSString*)sourceStr;
 + (BOOL)createNewGroup:(NSString*)workGroupName description:(NSString*)workGroupMain groupImage:(NSString*)img workGroupId:(NSString **)workGroupId;
 

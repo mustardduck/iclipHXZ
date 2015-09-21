@@ -857,7 +857,7 @@
     [bottomLine setBackgroundColor:[UIColor grayColor]];
     [cell.contentView addSubview:bottomLine];
     
-//    UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
+
     for (UIControl* control in cell.contentView.subviews) {
         if (control.tag == 1010) {
             for(Member * me in _selectedIndexList)
@@ -867,7 +867,7 @@
                     UIImageView* img = (UIImageView*)control;
                     img.tag = 1011;
                     img.image = [UIImage imageNamed:@"btn_xuanze_2"];
-                    [self addIndexPathToParticipantsArray:indexPath];
+                    break;
                 }
             }
         }
@@ -880,7 +880,7 @@
                     UIImageView* img = (UIImageView*)control;
                     img.tag = 1010;
                     img.image = [UIImage imageNamed:@"btn_xuanze_1"];
-                    [self removeIndexPathFromParticipantsArray:indexPath];
+                    break;
                 }
             }
 

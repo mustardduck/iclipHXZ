@@ -139,9 +139,11 @@
     return array;
 }
 
-+ (NSArray*)getWorkGroupListByUserID:(NSString*)userID
++ (NSArray*)getWorkGroupListByUserID:(NSString*)userID selectArr:(NSMutableArray **)selectArr
 {
     NSMutableArray* array = [NSMutableArray array];
+    
+    NSMutableArray * selArr = [NSMutableArray array];
     
 //    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",WORKLIST_URL,userID]];
     
@@ -179,7 +181,12 @@
                             cm.isAdmin = [[di valueForKey:@"isAdmin"] boolValue];
                             cm.isReceive = [[di valueForKey:@"status"] boolValue];
                             
+                            if(cm.isReceive)
+                            {
+                                [selArr addObject:cm];
+                            }
                             [array addObject:cm];
+                            
                             
                         }
                     }
@@ -190,6 +197,8 @@
         }
         
     }
+    
+    *selectArr = selArr;
     
     return array;
 }

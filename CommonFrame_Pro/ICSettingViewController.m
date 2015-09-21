@@ -130,7 +130,7 @@
     }
     else if (index == 2)
     {
-        UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 22, 13, 10)];
+        UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(13, 18, 13, 10)];
         [imgView setImage:[UIImage imageNamed:@"icon_xiaoxitongzhi"]];
         [cell.contentView addSubview:imgView];
         lbl.text = @"消息设置";

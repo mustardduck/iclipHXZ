@@ -17,6 +17,7 @@
 {
     __weak IBOutlet UITableView* _tableView;
     NSArray*        _dataArray;
+    NSMutableArray*         _selectedIndexList;
 }
 
 @end
@@ -48,7 +49,15 @@
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setBackgroundColor:[UIColor colorWithHexString:@"#2f2e33"]];
     
-    _dataArray = [Group getWorkGroupListByUserID:[LoginUser loginUserID]];
+    NSMutableArray * arr = [NSMutableArray array];
+    
+    _dataArray = [Group getWorkGroupListByUserID:[LoginUser loginUserID] selectArr:&arr];
+    
+    if(arr.count)
+    {
+        _selectedIndexList = arr;
+    }
+    
     [_tableView reloadData];
 }
 
@@ -104,9 +113,17 @@
     
     UISwitch * swiBtn = [[UISwitch alloc] init];
     swiBtn.frame = CGRectMake(SCREENWIDTH - W(swiBtn) - 14, (66 - H(swiBtn)) / 2, 100, 20);
-    swiBtn.on = ms.isReceive;
-    [swiBtn addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+    if(!_selectedIndexList.count)
+    {
+        swiBtn.on = ms.isReceive;
+    }
+    else
+    {
+        swiBtn.on = NO;
+    }
     
+    [swiBtn addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+
     [cell.contentView addSubview:swiBtn];
     
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 65, [UIScreen mainScreen].bounds.size.width, 0.5)];
@@ -118,7 +135,57 @@
     cell.backgroundColor = [UIColor colorWithHexString:@"#2f2e33"];
     [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
+    for(Group * me in _selectedIndexList)
+    {
+        if(ms.workGroupId == me.workGroupId)
+        {
+            swiBtn.on = YES;
+            
+            break;
+        }
+    }
+    
     return cell;
+}
+
+- (void)addIndexPathToCopyToArray:(NSIndexPath*)indexPath
+{
+    NSInteger row = indexPath.row;
+    
+    BOOL isEx = NO;
+    
+    Group* me = _dataArray[row];
+    
+    if (_selectedIndexList.count > 0) {
+        for (Group* ip in _selectedIndexList) {
+            if (ip.workGroupId == me.workGroupId) {
+                isEx = YES;
+                break;
+            }
+        }
+        if (!isEx) {
+            [_selectedIndexList addObject:me];
+        }
+    }
+    else{
+        [_selectedIndexList addObject:me];
+    }
+}
+
+- (void)removeIndexPathFromCopyToArray:(NSIndexPath*)indexPath
+{
+    NSInteger row = indexPath.row;
+    
+    Group* me = _dataArray[row];
+    
+    if (_selectedIndexList.count > 0) {
+        for (Group* ip in _selectedIndexList) {
+            if (ip.workGroupId == me.workGroupId) {
+                [_selectedIndexList removeObject:ip];
+                break;
+            }
+        }
+    }
 }
 
 - (void) switchAction:(id)sender
@@ -132,6 +199,15 @@
     Group* ms = [_dataArray objectAtIndex:indexPath.row];
     
     BOOL switchStatus = swiBtn.on;
+    
+    if(switchStatus)
+    {
+        [self addIndexPathToCopyToArray:indexPath];
+    }
+    else
+    {
+        [self removeIndexPathFromCopyToArray:indexPath];
+    }
     
     BOOL isOk = [Group updateWgSubscribeStatus:ms.workGroupId isReceive:switchStatus];
 
