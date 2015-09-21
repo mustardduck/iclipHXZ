@@ -41,12 +41,11 @@
     
     Mark * mark = _nameList[indexPath.section][indexPath.row][0];
     
-//    cell.textLabel.text = mark.labelName;
     cell.titleLbl.text = mark.labelName;
     cell.iconImg.image = [UIImage imageNamed:mark.labelImage];
     cell.backgroundColor = RGBCOLOR(31, 31, 31);
     
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 64.5, tableView.frame.size.width, 0.5)];
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 43.5, tableView.frame.size.width, 0.5)];
     [bottomLine setBackgroundColor:RGBCOLOR(74, 74, 74)];
     [cell.contentView addSubview:bottomLine];
     
@@ -58,6 +57,15 @@
     return cell;
     
 }
+//
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSLog(@"select row");
+//    
+//    SKSTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+//    
+//    
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -79,28 +87,29 @@
     {
         Mark * m = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
         
-        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 16, 15)];
+        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 16, 15)];
         [img setBackgroundColor:[UIColor clearColor]];
         [img setImage:[UIImage imageNamed:m.labelImage]];
         
         [cell.contentView addSubview:img];
         
-        UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(img)+ 20, 0, 200, 65)];
+        UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(img)+ 14, 0, 200, 44)];
         [name setBackgroundColor:[UIColor clearColor]];
         [name setText:m.labelName];
         [name setTextColor:RGBCOLOR(251, 251, 251)];
-        [name setFont:[UIFont systemFontOfSize:13]];
+        [name setFont:[UIFont systemFontOfSize:14]];
         [cell.contentView addSubview:name];
         
         cell.contentView.backgroundColor = RGBCOLOR(36, 36, 36);
         
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 64.5, tableView.frame.size.width, 0.5)];
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 43.5, tableView.frame.size.width, 0.5)];
         [bottomLine setBackgroundColor:RGBCOLOR(74, 74, 74)];
         [cell.contentView addSubview:bottomLine];
     }
     
     return cell;
 }
+
 
 
 - (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
@@ -112,75 +121,20 @@
     //[self dismissMenu];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    /*
-    NSInteger index = indexPath.row;
-    if (index != 0 && index != 6) {
-        UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        for (UIControl* control in cell.contentView.subviews) {
-            if (control.tag == 1020) {
-                ((UILabel*)control).textColor = [UIColor whiteColor];
-                break;
-            }
-        }
-        
-        if (index > 0 && index < 6) {
-            
-            if (_indexTime != nil) {
-                cell = [tableView cellForRowAtIndexPath:_indexTime];
-                
-                for (UIControl* control in cell.contentView.subviews) {
-                    if (control.tag == 1020) {
-                        ((UILabel*)control).textColor = [UIColor grayColor];
-                        break;
-                    }
-                }
-            }
-            
-            
-            _indexTime = indexPath;
-        }
-        if (index > 6) {
-            
-            if (_indexType != nil) {
-                cell = [tableView cellForRowAtIndexPath:_indexType];
-                
-                for (UIControl* control in cell.contentView.subviews) {
-                    if (control.tag == 1020) {
-                        ((UILabel*)control).textColor = [UIColor grayColor];
-                        break;
-                    }
-                }
-            }
-            
-            _indexType = indexPath;
-        }
-        
-    }
-    
-    
-    
-    if ([self.delegate respondsToSelector:@selector(cdSliderCellClicked:)])
-        [self.delegate cdSliderCellClicked:indexPath.row];
-    //[self dismissMenu];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    */
-    
-}
+   }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 65;
+    return 44;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 65;
+    return 44;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
     return [_nameList count];
 }
 
@@ -204,64 +158,7 @@
     return [_nameList[indexPath.section][indexPath.row] count] - 1;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-    /*
-    NSInteger index = indexPath.row;
-    if (index != 0 && index != 6) {
-        UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        for (UIControl* control in cell.contentView.subviews) {
-            if (control.tag == 1020) {
-                ((UILabel*)control).textColor = [UIColor whiteColor];
-                break;
-            }
-        }
-        
-        if (index > 0 && index < 6) {
-            
-            if (_indexTime != nil) {
-                cell = [tableView cellForRowAtIndexPath:_indexTime];
-                
-                for (UIControl* control in cell.contentView.subviews) {
-                    if (control.tag == 1020) {
-                        ((UILabel*)control).textColor = [UIColor grayColor];
-                        break;
-                    }
-                }
-            }
-            
-            
-            _indexTime = indexPath;
-        }
-        if (index > 6) {
-            
-            if (_indexType != nil) {
-                cell = [tableView cellForRowAtIndexPath:_indexType];
-                
-                for (UIControl* control in cell.contentView.subviews) {
-                    if (control.tag == 1020) {
-                        ((UILabel*)control).textColor = [UIColor grayColor];
-                        break;
-                    }
-                }
-            }
-            
-            _indexType = indexPath;
-        }
-        
-    }
-   
-    
-    
-    if ([self.delegate respondsToSelector:@selector(cdSliderCellClicked:)])
-        [self.delegate cdSliderCellClicked:indexPath.row];
-    //[self dismissMenu];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    */
-//}
-
-#pragma mark - 
+#pragma mark -
 #pragma mark Init
 
 - (CDSideBarController*)initWithImages:(NSArray*)images  names:(NSArray*)nameList  menuButton:(UIButton*)button
@@ -294,12 +191,13 @@
     
     _viewWidth = view.frame.size.width;
     
-    CGRect tableFrame = CGRectMake(_viewWidth - 221, 0 , 221, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60 - 120);
+    CGRect tableFrame = CGRectMake(_viewWidth - 148, 0 , 148, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60 - 120);
     
     _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
     _mainTableView.showsVerticalScrollIndicator = NO;
     [_mainTableView setBackgroundColor:[UIColor blackColor]];
     [_mainTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _mainTableView.shouldExpandOnlyOneCell = YES;
     _mainTableView.SKSTableViewDelegate = self;
 
     [_backgroundMenuView addSubview:_mainTableView];

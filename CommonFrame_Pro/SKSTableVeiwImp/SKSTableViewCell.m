@@ -25,11 +25,11 @@
         self.expandable = YES;
         self.expanded = NO;
         
-        UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 16, 15)];
+        UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 16, 15)];
         [self.contentView addSubview:iconView];
         self.iconImg = iconView;
         
-        UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(iconView) + 20, 0, 200, 65)];
+        UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(iconView) + 14, 0, 200, 44)];
         titLbl.textColor = RGBCOLOR(251, 251, 251);
         titLbl.backgroundColor = [UIColor clearColor];
         titLbl.font = [UIFont systemFontOfSize:13];
