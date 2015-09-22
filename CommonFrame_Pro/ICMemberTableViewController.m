@@ -128,7 +128,14 @@
         selectBtn.frame = selectFrame;
         [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateNormal];
         [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateHighlighted];
-        [selectBtn setTitle:@"全选" forState:UIControlStateNormal];
+        if(_selectedCopyToMembersArray.count)
+        {
+            [selectBtn setTitle:@"取消" forState:UIControlStateNormal];
+        }
+        else
+        {
+            [selectBtn setTitle:@"全选" forState:UIControlStateNormal];
+        }
         selectBtn.titleLabel.font = Font(14);
         [selectBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateNormal];
         [selectBtn setTitleColor:RGBCOLOR(251, 251, 251) forState:UIControlStateHighlighted];

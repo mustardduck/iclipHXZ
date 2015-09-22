@@ -1625,9 +1625,21 @@
         
         //        if (ms.isAccessory) {
         
-        UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(backImgView)+ 0.569 * bianKuangWidth - 22, isFristIndex?192 + 34:192, 12, 10)];
-        attachment.image = [UIImage imageNamed:@"btn_fujianIcon"];
-        [cell.contentView addSubview:attachment];
+        UILabel* plLbl = [[UILabel alloc] init];
+        plLbl.textColor = RGBCOLOR(172, 172, 173);
+        plLbl.font = Font(10);
+        [plLbl setBackgroundColor:[UIColor clearColor]];
+        plLbl.text = [NSString stringWithFormat:@"评论 (%d)", ms.replayNum];
+        
+        CGFloat plWidth = [UICommon getWidthFromLabel:plLbl].width;
+        plLbl.frame = CGRectMake(SCREENWIDTH - 25 - plWidth, isFristIndex?192 + 34:192,plWidth, 12);
+        
+        [cell.contentView addSubview:plLbl];
+        
+        UIImageView* plIcon = [[UIImageView alloc] initWithFrame:CGRectMake(X(plLbl) - 4 - 12, Y(plLbl) - 2 , 12, 10)];
+        plIcon.image = [UIImage imageNamed:@"btn_pinglun"];
+        [cell.contentView addSubview:plIcon];
+        
         
         UILabel* fujianLbl = [[UILabel alloc] init];
         fujianLbl.textColor = RGBCOLOR(172, 172, 173);
@@ -1635,21 +1647,13 @@
         [fujianLbl setBackgroundColor:[UIColor clearColor]];
         fujianLbl.text = [NSString stringWithFormat:@"附件 (%d)", ms.accessoryNum];
         
-        fujianLbl.frame = CGRectMake(XW(attachment) + 4, Y(attachment) - 2, [UICommon getWidthFromLabel:fujianLbl].width, 12);
+        CGFloat fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
+        fujianLbl.frame = CGRectMake(X(plIcon) - 26 - fujianWidth, Y(plLbl), fujianWidth, 12);
         [cell.contentView addSubview:fujianLbl];
         
-        UIImageView* plIcon = [[UIImageView alloc] initWithFrame:CGRectMake(XW(fujianLbl) + 26, Y(attachment) , 12, 10)];
-        plIcon.image = [UIImage imageNamed:@"btn_pinglun"];
-        [cell.contentView addSubview:plIcon];
-        
-        UILabel* plLbl = [[UILabel alloc] init];
-        plLbl.textColor = RGBCOLOR(172, 172, 173);
-        plLbl.font = Font(10);
-        [plLbl setBackgroundColor:[UIColor clearColor]];
-        plLbl.text = [NSString stringWithFormat:@"评论 (%d)", ms.replayNum];
-        
-        plLbl.frame = CGRectMake(XW(plIcon) + 4, Y(attachment) - 2, [UICommon getWidthFromLabel:plLbl].width, 12);
-        [cell.contentView addSubview:plLbl];
+        UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl) - 2, 12, 10)];
+        attachment.image = [UIImage imageNamed:@"btn_fujianIcon"];
+        [cell.contentView addSubview:attachment];
         
         //[cell.contentView addSubview:pView];
         

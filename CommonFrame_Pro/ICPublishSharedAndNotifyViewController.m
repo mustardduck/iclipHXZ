@@ -751,7 +751,8 @@
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberTableViewController"];
         ((ICMemberTableViewController*)vc).controllerType = MemberViewFromControllerCopyTo;
         ((ICMemberTableViewController*)vc).icPublishMisonController = self;
-
+        ((ICMemberTableViewController*)vc).workgid = _workGroupId;
+        
         if (_ccopyToMembersArray.count > 0) {
             ((ICMemberTableViewController*)vc).selectedCopyToMembersArray = _ccopyToMembersArray;
         }

@@ -133,7 +133,8 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     
-    _dataArray = [Group getWorkGroupListByUserID:self.loginUserID selectArr:nil];
+    NSMutableArray * arr = [NSMutableArray array];
+    _dataArray = [Group getWorkGroupListByUserID:self.loginUserID selectArr:&arr];
     [_tableView reloadData];
     
 }
