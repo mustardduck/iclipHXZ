@@ -642,7 +642,7 @@
             content = [@"批示：" stringByAppendingString:content];
         }
         
-        height = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:14].height;
+        height = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:Font(14)].height;
         
         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 3)];
         id obj = [_reReplyDic valueForKey:key];
@@ -656,7 +656,7 @@
                 for (int i = 0; i< reArray.count; i++) {
                     NSString* cc = [reArray objectAtIndex:i];
 //                    CGFloat ch = [self contentHeight:cc vWidth:contentWidth contentFont:font];
-                    CGFloat ch = [UICommon getSizeFromString:cc withSize:CGSizeMake(contentWidth, 1000) withFont:14].height;
+                    CGFloat ch = [UICommon getSizeFromString:cc withSize:CGSizeMake(contentWidth, 1000) withFont:Font(14)].height;
 
                     height = height + ch;
                     
@@ -822,7 +822,7 @@
         
 //        CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
         
-        CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:14].height;
+        CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:Font(14)].height;
         
         __block CGFloat newcHeight = contentHeight + 35 + 16;
         
@@ -1021,7 +1021,7 @@
                         
 //                        CGFloat height = [self contentHeight:cStr vWidth:reContentWidth contentFont:font];
                         
-                        CGFloat height = [UICommon getSizeFromString:cStr withSize:CGSizeMake(reContentWidth, 1000) withFont:14].height;
+                        CGFloat height = [UICommon getSizeFromString:cStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
 
                         
                         if (j == 0) {
@@ -1095,7 +1095,7 @@
                 isGreen = YES;
             }
             
-            height = [UICommon getSizeFromString:mainStr withSize:CGSizeMake(reContentWidth, 1000) withFont:14].height;
+            height = [UICommon getSizeFromString:mainStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
             
             CGFloat y = 30;
             

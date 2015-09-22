@@ -114,7 +114,7 @@
                                     
                                     m.labelName = markName;
                                     m.labelId = [di valueForKey:@"labelId"];
-                                    m.labelImage = @"icon_youbiaoqian_2";
+                                    m.labelImage = @"icon_youbiaoqian_1";
                                     [tagArr addObject:m];
 //                                    [marks addObject:m];
                                 }

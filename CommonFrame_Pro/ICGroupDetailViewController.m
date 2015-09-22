@@ -304,7 +304,7 @@
     
     Mission* mi = [_contentArray objectAtIndex:indexPath.row];
     
-    CGFloat contentH = [UICommon getSizeFromString:mi.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
+    CGFloat contentH = [UICommon getSizeFromString:mi.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:Font(18)].height;
     
     CGFloat cellHeight = contentH + 70 + 42;
     
@@ -380,7 +380,7 @@
 //            cellHeight = cellHeight - 4;
 //        }
         
-        CGFloat contentH = [UICommon getSizeFromString:mi.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
+        CGFloat contentH = [UICommon getSizeFromString:mi.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:Font(18)].height;
         
         CGFloat cellHeight = contentH + 70 + 42;
         

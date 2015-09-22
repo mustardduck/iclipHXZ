@@ -25,7 +25,7 @@
         self.expandable = YES;
         self.expanded = NO;
         
-        UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 16, 15)];
+        UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 17, 17)];
         [self.contentView addSubview:iconView];
         self.iconImg = iconView;
         

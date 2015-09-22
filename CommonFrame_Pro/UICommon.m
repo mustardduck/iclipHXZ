@@ -60,7 +60,7 @@ static UIViewController *imagePicker = nil;
         [navController popToViewController:model animated:YES];
 }
 
-+ (CGSize) getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(CGFloat)fontsize
++ (CGSize) getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(UIFont*)font
 {
     CGSize size = CGSizeZero;
     
@@ -71,7 +71,7 @@ static UIViewController *imagePicker = nil;
 
         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         
-        NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:Font(fontsize),NSFontAttributeName,[NSParagraphStyle defaultParagraphStyle],NSParagraphStyleAttributeName, nil];
+        NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:font,NSFontAttributeName,[NSParagraphStyle defaultParagraphStyle],NSParagraphStyleAttributeName, nil];
         
         NSStringDrawingOptions options =  NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
         
@@ -84,7 +84,7 @@ static UIViewController *imagePicker = nil;
     }
     else
     {
-        size = [str sizeWithFont:Font(fontsize) constrainedToSize:cSize lineBreakMode:NSLineBreakByWordWrapping];
+        size = [str sizeWithFont:font constrainedToSize:cSize lineBreakMode:NSLineBreakByWordWrapping];
     }
     
     return size;

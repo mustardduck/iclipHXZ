@@ -330,7 +330,7 @@
 {
     Mission* ms = [_dataArray objectAtIndex:indexPath.row];
     
-    CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
+    CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:Font(18)].height;
     
     CGFloat cellHeight = contentH + 70 + 42;
     
@@ -398,7 +398,7 @@
         //        CGFloat cellHeight = _screenHeight * 0.321;
         Mission* ms = [_dataArray objectAtIndex:indexPath.row];
         
-        CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:18].height;
+        CGFloat contentH = [UICommon getSizeFromString:ms.main withSize:CGSizeMake(_screenWidth - (77.5 + 39), 80) withFont:Font(18)].height;
         
         CGFloat cellHeight = contentH + 70 + 42;
         

@@ -23,6 +23,8 @@ typedef void (^keyboardBlock) ();
 #define YH(obj) (Y(obj)+H(obj))
 #define heightScale 0.296
 #define Font(x) [UIFont systemFontOfSize:x]
+#define BFont(x) [UIFont boldSystemFontOfSize:x]
+
 
 #define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
@@ -32,7 +34,7 @@ typedef void (^keyboardBlock) ();
 
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;
-+ (CGSize)getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(CGFloat)fontsize;
++ (CGSize)getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(UIFont*)font;
 + (NSString *)dayAndHourFromString:(NSString *)dateString formatStyle:(NSString *)format;
 + (NSString*) formatTime:(NSString*)input withLength:(int)length;
 + (float)getSystemVersion;

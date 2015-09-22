@@ -57,15 +57,6 @@
     return cell;
     
 }
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSLog(@"select row");
-//    
-//    SKSTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-//    
-//    
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -87,7 +78,7 @@
     {
         Mark * m = _nameList[indexPath.section][indexPath.row][indexPath.subRow];
         
-        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 16, 15)];
+        UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 17, 17)];
         [img setBackgroundColor:[UIColor clearColor]];
         [img setImage:[UIImage imageNamed:m.labelImage]];
         
