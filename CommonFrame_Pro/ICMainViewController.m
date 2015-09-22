@@ -1709,10 +1709,10 @@
     [dirLine setBackgroundColor:RGBCOLOR(119, 119, 119)];
     [cell.selectedBackgroundView addSubview:dirLine];
     
-    
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * _screenWidth + 15, contentHeight - 1, _screenWidth - (0.156 * _screenWidth + 15) - 12, 0.5)];
-    [bottomLine setBackgroundColor:[UIColor whiteColor]];
-    [cell.selectedBackgroundView addSubview:bottomLine];
+//    
+//    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0.156 * _screenWidth + 15, contentHeight - 1, _screenWidth - (0.156 * _screenWidth + 15) - 12, 0.5)];
+//    [bottomLine setBackgroundColor:[UIColor whiteColor]];
+//    [cell.selectedBackgroundView addSubview:bottomLine];
     
     return YES;
 }
