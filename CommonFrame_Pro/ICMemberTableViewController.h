@@ -41,5 +41,6 @@ typedef enum{
 
 @property (nonatomic,strong) NSString*    workgid;
 @property (nonatomic, assign) BOOL justRead;
+@property (nonatomic, assign) BOOL isCC;
 
 @end

@@ -1061,7 +1061,7 @@
         //}
         
     }
-    else if(section == 0 && index == 2)
+    else if(section == 0 && index == 2)//抄送
     {
         //if (_participantsIndexPathArray.count > 0) {
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -1071,7 +1071,8 @@
             
             ((ICMemberTableViewController*)vc).selectedResponsibleDictionary = _responsibleDic;
             ((ICMemberTableViewController*)vc).workgid = self.workGroupId;
-            
+            ((ICMemberTableViewController*)vc).isCC = YES;
+
             if (_ccopyToMembersArray.count > 0) {
                 ((ICMemberTableViewController*)vc).selectedCopyToMembersArray = _ccopyToMembersArray;
             }
