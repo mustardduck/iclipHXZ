@@ -400,6 +400,8 @@
                     }
                 }
                 
+                cm.labelList = [dataDic objectForKey:@"labelList"];
+                
                 if (cm.isAccessory) {
                     
                     id accArr = [dataDic valueForKey:@"accessoryList"];
@@ -407,6 +409,12 @@
                     if ([accArr isKindOfClass:[NSArray class]])
                     {
                         NSMutableArray* accessoryArray = [NSMutableArray array];
+                        
+                        NSMutableArray * wordArr = [NSMutableArray array];
+                        NSMutableArray * excelArr = [NSMutableArray array];
+                        NSMutableArray * pptArr = [NSMutableArray array];
+                        NSMutableArray * pdfArr = [NSMutableArray array];
+                        NSMutableArray * imgArr = [NSMutableArray array];
                         
                         NSArray* aArr = (NSArray*)accArr;
                         
@@ -427,17 +435,56 @@
                                 acc.sourceId = [di valueForKey:@"sourceId"];
                                 acc.addTime = [di valueForKey:@"addTime"];
                                 
-                                [accessoryArray addObject:acc];
+                                NSRange range = [acc.name rangeOfString:@"."]; //现获取要截取的字符串位置
+                                NSString * fileType = [acc.name substringFromIndex:range.location + 1];
+                                NSString * fileNum = @"";
+                               
+                                if([fileType equalsIgnoreCase:@"doc"] || [fileType equalsIgnoreCase:@"docx"])
+                                {
+                                    fileNum = @"1";
+                                    
+                                    [wordArr addObject:acc];
+                                }
+                                else if ([fileType equalsIgnoreCase:@"xls"] || [fileType equalsIgnoreCase:@"xlsx"])
+                                {
+                                    fileNum = @"2";
+                                    [excelArr addObject:acc];
+                                }
+                                else if ([fileType equalsIgnoreCase:@"ppt"] || [fileType equalsIgnoreCase:@"pptx"])
+                                {
+                                    fileNum = @"3";
+                                    [pptArr addObject:acc];
+                                }
+                                else if ([fileType equalsIgnoreCase:@"pdf"])
+                                {
+                                    fileNum = @"4";
+                                    [pdfArr addObject:acc];
+                                }
+                                else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"])
+                                {
+                                    fileNum = @"5";
+                                    [imgArr addObject:acc];
+                                }
+                                acc.fileType = fileNum;
+                                
+//                                [accessoryArray addObject:acc];
                             }
                             
                         }
+                        
+//                        NSMutableArray * fileArr = [NSMutableArray array];
+                        
+                        [accessoryArray addObjectsFromArray:wordArr];
+                        [accessoryArray addObjectsFromArray:excelArr];
+                        [accessoryArray addObjectsFromArray:pptArr];
+                        [accessoryArray addObjectsFromArray:pdfArr];
+                        [accessoryArray addObjectsFromArray:imgArr];
                         
                         cm.accessoryList = [NSArray arrayWithArray:accessoryArray];
                         
                     }
                     
                 }
-                
                 
                 id comArr = [dataDic valueForKey:@"list"];
                 

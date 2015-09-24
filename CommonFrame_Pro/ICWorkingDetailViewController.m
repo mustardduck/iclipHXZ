@@ -145,9 +145,9 @@
     {
         NSInteger index = indexPath.row;
         
-        if(index >= 3)
+        if(index >= 1)
         {
-            Comment* comm = [_commentArray objectAtIndex:index - 3];
+            Comment* comm = [_commentArray objectAtIndex:index - 1];
             
             NSString * loginUserId = [LoginUser loginUserID];
             
@@ -199,7 +199,7 @@
 {
     NSInteger cIndex = actionSheet.tag;
     
-    Comment* comm = [_commentArray objectAtIndex:cIndex - 3];
+    Comment* comm = [_commentArray objectAtIndex:cIndex - 1];
     
     if(_showDelete)
     {
@@ -249,8 +249,6 @@
 {
     _replyList = [NSMutableArray array];
     [_replyList addObject:@""];
-    [_replyList addObject:@""];
-    [_replyList addObject:@""];
     
     _reReplyDic = [NSMutableDictionary dictionary];
     _currentMission = [Mission new];
@@ -265,12 +263,12 @@
         
         if(_currentMission.createUserId == [LoginUser loginUserID])
         {
-            UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
-            [rightButton setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
-            [rightButton addTarget:self action:@selector(btnMenu) forControlEvents:UIControlEventTouchUpInside];
-            
-            UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
-            self.navigationItem.rightBarButtonItem = rightBarButton;
+//            UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
+//            [rightButton setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
+//            [rightButton addTarget:self action:@selector(btnMenu) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+//            self.navigationItem.rightBarButtonItem = rightBarButton;
         }
         
         if (commentsArray.count > 0)
@@ -502,9 +500,9 @@
 {
     NSInteger cIndex = alertView.tag;
     
-    if(cIndex >= 3)
+    if(cIndex >= 1)
     {
-        Comment* comm = [_commentArray objectAtIndex:cIndex - 3];
+        Comment* comm = [_commentArray objectAtIndex:cIndex - 1];
         
         if (buttonIndex == 1)
         {
@@ -605,88 +603,15 @@
 {
     CGFloat height = 44;
     
-    NSInteger index = indexPath.row;
-    if (index == 0) {
-        height = 58;
-    }
-    else if (index == 1)
+    UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
+    if(cell)
     {
-        height = 38;
-    }
-    else if (index == 2) {
-        
-        
-        UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
         return cell.frame.size.height;
-        
-        //height = 280;
     }
     else
     {
-        //CGFloat contentWidth = _tableView.frame.size.width;
-        CGFloat contentWidth = [UIScreen mainScreen].bounds.size.width - 45 - 60 - 47;
-        
-        Comment * com = _replyList[index];
-        NSString *content = com.main;
-        
-//        content = [@"\t\t\t" stringByAppendingString:content];
-//        UIFont *font = [UIFont systemFontOfSize:14];
-//        height = [self contentHeight:content vWidth:contentWidth contentFont:font];
-        
-        if(com.level == 2 && com.parentName.length > 0)//评论
-        {
-            content = [NSString stringWithFormat:@"回复 %@ %@", com.parentName, com.main];
-        }
-        else if (com.level == 1)
-        {
-            content = [@"批示：" stringByAppendingString:content];
-        }
-        
-        height = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:Font(14)].height;
-        
-        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 3)];
-        id obj = [_reReplyDic valueForKey:key];
-        if ([obj isKindOfClass:[NSArray class]]) {
-            NSArray* reArray = [NSArray arrayWithArray:(NSArray *)obj];
-            if (reArray.count > 0) {
-                BOOL isAppend = NO;
-                
-                height = 60 + 8 * reArray.count;
-                
-                for (int i = 0; i< reArray.count; i++) {
-                    NSString* cc = [reArray objectAtIndex:i];
-//                    CGFloat ch = [self contentHeight:cc vWidth:contentWidth contentFont:font];
-                    CGFloat ch = [UICommon getSizeFromString:cc withSize:CGSizeMake(contentWidth, 1000) withFont:Font(14)].height;
-
-                    height = height + ch;
-                    
-                    if (ch > 20 && reArray.count == 1) {
-                        isAppend = YES;
-                    }
-                    
-                    //reHeight = reHeight + (reLabelHeight* (i + 1)) + height * i;
-                }
-                
-                if (isAppend) {
-                    height = height + 10;
-                }
-                
-                //height = height + 10;
-            }
-        }
-        
-        if (height < 34) {
-           
-            height = 60;
-
-        }
-        else
-        {
-            height = height + 35;
-        }
+        return height;
     }
- 
-    return height;
 }
 
 -(CGFloat)contentHeight:(NSString*)content vWidth:(CGFloat)width contentFont:(UIFont*)font
@@ -724,18 +649,7 @@
     NSInteger index = indexPath.row;
     CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
 
-    if (index == 0) {
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 58 - 0.5, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.selectedBackgroundView addSubview:bottomLine];
-    }
-    else if (index == 1)
-    {
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 38 - 0.5, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.selectedBackgroundView addSubview:bottomLine];
-    }
-    else if (index == 2)
+    if (index == 0)
     {
         CGFloat newcHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
 
@@ -743,7 +657,7 @@
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [cell.selectedBackgroundView addSubview:bottomLine];
     }
-    else if (index > 2)
+    else if (index > 0)
     {
         CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
 
@@ -775,27 +689,68 @@
     //CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
     
     if (index == 0) {
-        UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(11, 11, 36, 36)];
+        
+        UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
         [photo setBackgroundColor:[UIColor clearColor]];
         //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
         [photo setImageWithURL:[NSURL URLWithString:_currentMission.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [cell.contentView addSubview:photo];
         
-        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(52, 20, cWidth - 62, 20)];
-        [title setBackgroundColor:[UIColor clearColor]];
-        [title setText:[NSString stringWithFormat:@"%@  %@",_currentMission.userName,_currentMission.workGroupName]];
-        [title setTextColor:[UIColor whiteColor]];
-        [title setFont:[UIFont boldSystemFontOfSize:15]];
+        CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
         
-        [cell.contentView addSubview:title];
+        UILabel* userTitle = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 17, titleWidth, H(photo))];
+        [userTitle setBackgroundColor:[UIColor clearColor]];
+        userTitle.text = _currentMission.userName;
+        //        [title setText:[NSString stringWithFormat:@"%@  %@",_currentMission.userName,_currentMission.workGroupName]];
+        [userTitle setTextColor:RGBCOLOR(53, 159, 219)];
+        [userTitle setFont:Font(16)];
         
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 58 - 1, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.contentView addSubview:bottomLine];
-    }
-    else if (index == 1)
-    {
-        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(11, 0, cWidth - 11, 38)];
+        [cell.contentView addSubview:userTitle];
+        
+        
+        NSString * tagStr = @"";
+        
+        for (NSDictionary * dic in _currentMission.labelList)
+        {
+            NSString * lblName = [dic valueForKey:@"labelName"];
+            if(_currentMission.labelList.count == 1)
+            {
+                tagStr = lblName;
+            }
+            else
+            {
+                tagStr = [tagStr stringByAppendingString:[NSString stringWithFormat:@"%@ · ", lblName]];
+            }
+        }
+        if(tagStr.length >= 3)
+        {
+            NSString * pointTagStr = [tagStr substringFromIndex:tagStr.length - 3];
+            if([pointTagStr isEqualToString:@" · "])
+            {
+                tagStr = [tagStr substringToIndex:tagStr.length - 3];
+            }
+        }
+        
+        NSString * nameStr = [NSString stringWithFormat:@"%@   %@", _currentMission.workGroupName, tagStr];
+        
+        CGFloat tagWidth = SCREENWIDTH - 26 - 120;
+        
+        //        CGFloat tagHeight = [UICommon getSizeFromString:nameStr withSize:CGSizeMake(tagWidth, 1000) withFont:Font(10)].height;
+        
+        UILabel* tagLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(userTitle) + 14, Y(userTitle), tagWidth , H(photo))];
+        [tagLbl setBackgroundColor:[UIColor clearColor]];
+        [tagLbl setTextColor:RGBCOLOR(172, 172, 173)];
+        [tagLbl setFont:Font(10)];
+        [tagLbl setNumberOfLines:0];
+        tagLbl.minimumScaleFactor = 0.7;
+        //        tagLbl.textAlignment = NSTextAlignmentCenter;
+        
+        tagLbl.text = nameStr;
+        
+        [cell.contentView addSubview:tagLbl];
+        
+        //标题
+        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(26, YH(photo) + 18, SCREENWIDTH - 26 * 2, 38)];
         [title setBackgroundColor:[UIColor clearColor]];
         if(!_currentMission.title.length)
         {
@@ -806,109 +761,119 @@
             [title setText:_currentMission.title];
         }
         [title setTextColor:[UIColor whiteColor]];
-        [title setFont:[UIFont boldSystemFontOfSize:14]];
+        [title setFont:Font(17)];
         
         [cell.contentView addSubview:title];
-        
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 38 - 0.5, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.contentView addSubview:bottomLine];
-    }
-    else if (index == 2) {
         
         NSString* content = _currentMission.main;
-        CGFloat contentWidth = cWidth - 22;
-        UIFont* font = [UIFont boldSystemFontOfSize:14];
+        CGFloat contentWidth = cWidth - 26 * 2;
+        UIFont* font = Font(14);
         
-//        CGFloat contentHeight = [self contentHeight:content vWidth:contentWidth contentFont:font];
+        CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
+
+        //描述
+        UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(title), YH(title), contentWidth, contentHeight)];
+        [desLbl setBackgroundColor:[UIColor clearColor]];
+        [desLbl setNumberOfLines:0];
+        [desLbl setText:content];
+        [desLbl setTextColor:RGBCOLOR(172, 172, 173)];
+        [desLbl setFont:font];
+        [cell.contentView addSubview:desLbl];
+
         
-        CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:Font(14)].height;
-        
-        __block CGFloat newcHeight = contentHeight + 35 + 16;
-        
-        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(11, 11, contentWidth, contentHeight)];
-        [title setBackgroundColor:[UIColor clearColor]];
-        [title setNumberOfLines:0];
-        [title setText:content];
-        [title setTextColor:[UIColor grayColor]];
-        [title setFont:font];
-        [cell.contentView addSubview:title];
-        
+        CGFloat duiImgWidth = SCREENWIDTH - 14 * 2;
+
+        //文件
         BOOL hasAccessory = _currentMission.isAccessory;
         
+        CGFloat accHeight = (duiImgWidth - 40) / 3;
+        CGFloat intevalHeight = 8;
+        
+        NSArray* accArr = [NSArray arrayWithArray:_currentMission.accessoryList];
+
+        CGFloat attchHeight = ((accArr.count - 1) / 3 + 1) * (accHeight + intevalHeight);
+        UIView* attchView = [[UIView alloc] init];
+        if(accArr.count)
+        {
+            attchView.frame = CGRectMake(14, YH(desLbl) + 23, duiImgWidth, attchHeight);
+        }
+        else
+        {
+            attchView.frame = CGRectMake(14, YH(desLbl) + 23, duiImgWidth, 0);
+        }
+            
+        [attchView setBackgroundColor:[UIColor clearColor]];
+
         if (hasAccessory) {
-            NSArray* accArr = [NSArray arrayWithArray:_currentMission.accessoryList];
-            
-            CGFloat accHeight = 200;
-            CGFloat intevalHeight = 7;
-            
-            UIView* attchView = [[UIView alloc] initWithFrame:CGRectMake(11, contentHeight + title.frame.origin.y + 4, cWidth - 22, accArr.count * (accHeight + intevalHeight))];
-            [attchView setBackgroundColor:[UIColor clearColor]];
-            
-            __block CGFloat nextHeight = 0;
-            __block int i = 0;
-            for (Accessory* acc in accArr) {
+
+            for (int i = 0;i < accArr.count; i++)
+            {
+                int j = i / 3;
                 
-                UIView* acView = [[UIView alloc] initWithFrame:CGRectMake(0, (accHeight + intevalHeight) * i, attchView.frame.size.width, accHeight + intevalHeight)];
-                [acView setBackgroundColor:[UIColor clearColor]];
+                int k = i % 3;
                 
-                
+                Accessory * acc = accArr[i];
+
                 UIImageView* attachment;
-                attachment = [[UIImageView alloc] initWithFrame:CGRectMake(0, intevalHeight, acView.frame.size.width, accHeight)];
-                __weak typeof(attachment) attachmentWeak = attachment;
-                //[attachment setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:[UIImage imageNamed:@"bimg.jpg"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                __weak typeof (_tableView) _weakTable = _tableView;
-                [attachment setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:[UIImage imageNamed:@"bimg.jpg"] options:SDWebImageDelayPlaceholder
-                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      
-                                      CGSize size = image.size;
-                                      CGFloat w2h = size.width / size.height;
-                                      int nh = (cWidth - 22) / w2h;
-                                      
-                                      attachmentWeak.frame = CGRectMake(0, intevalHeight, attchView.frame.size.width, nh + intevalHeight);
-                                      acView.frame = CGRectMake(0, nextHeight, attchView.frame.size.width, nh + intevalHeight);
-                                      newcHeight =  newcHeight  + intevalHeight + nh + intevalHeight;
-                                      nextHeight = acView.frame.origin.y + intevalHeight + nh + intevalHeight;
-                                      
-                                      i++;
-                                      if (i == accArr.count) {
-                                          if (!_hasLoaded) {
-                                              _hasLoaded = YES;
-                                              [cell setFrame:CGRectMake(0, 0, attchView.frame.size.width, newcHeight)];
-                                              [_weakTable reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationMiddle];
-                                          }
-                                          
-                                      }
-                                      
-                                  } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                [attachment.layer setMasksToBounds:YES];
-                
-                /*
-                int nh = 0;
-                if (_attachmentImageHeightArray.count > 0) {
-                    nh = [[_attachmentImageHeightArray objectAtIndex:i] intValue];
+                attachment = [[UIImageView alloc] initWithFrame:CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight)];
+                // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
+                int fileType = [acc.fileType intValue];
+                if(fileType == 5)
+                {
+                    [attachment setImageWithURL:[NSURL URLWithString:acc.address]
+                               placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
+                                        options:SDWebImageDelayPlaceholder
+                    usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                 }
                 else
                 {
-                    CGImageSourceRef cImageSource = CGImageSourceCreateWithURL((__bridge CFURLRef)[NSURL URLWithString:acc.address], NULL);
-                    CGImageRef ir = CGImageSourceCreateImageAtIndex(cImageSource, 0, NULL);
-                    UIImage* ig = [UIImage imageWithCGImage:ir];
+                    NSString * imgName = @"";
+                    if(fileType == 1)
+                    {
+                        imgName = @"btn_word";
+                        
+                        attachment.backgroundColor = [UIColor blueColor];
+                    }
+                    else if (fileType == 2)
+                    {
+                        imgName = @"btn_excel";
+                        
+                        attachment.backgroundColor = [UIColor greenColor];
+                    }
+                    else if (fileType == 3)
+                    {
+                        imgName = @"btn_word";//ppt logo
+                        
+                        attachment.backgroundColor = [UIColor orangeColor];
+
+                    }
+                    else if (fileType == 4)
+                    {
+                        imgName = @"btn_pdf";
+                        
+                        attachment.backgroundColor = [UIColor purpleColor];
+
+                    }
                     
-                    CGSize size = ig.size;
+                    UIImageView * fileIcon = [[UIImageView alloc] initWithFrame:CGRectMake((accHeight - 40) / 2, 14, 40, 60)];
+                    fileIcon.image = [UIImage imageNamed:imgName];
                     
-                    CGFloat w2h = size.width / size.height;
-                    nh = (cWidth - 22) / w2h;
+                    [attachment addSubview:fileIcon];
+                    
+                    UILabel * fileNameLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, YH(fileIcon) + 14, (accHeight - 14 * 2) , 32)];
+                    fileNameLbl.backgroundColor = [UIColor clearColor];
+                    fileNameLbl.textColor = [UIColor whiteColor];
+                    fileNameLbl.numberOfLines = 2;
+                    fileNameLbl.font = Font(14);
+                    fileNameLbl.text = acc.name;
+                    
+                    [attachment addSubview:fileNameLbl];
                 }
-                attachment.frame = CGRectMake(0, (accHeight + intevalHeight) * i, attchView.frame.size.width, nh + intevalHeight);
-                */
+
                 
-                [acView addSubview:attachment];
-                
-//                UIImageView* attachmentIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 15, 13)];
-//                [attachmentIcon setImage:[UIImage imageNamed:@"icon_fujian"]];
-//                [acView addSubview:attachmentIcon];
-                
-                [attchView addSubview:acView];
+                [attachment.layer setMasksToBounds:YES];
+
+                [attchView addSubview:attachment];
                 
             }
             
@@ -916,44 +881,52 @@
         }
         
         //日期
-        UIView* bView = [[UIView alloc] initWithFrame:CGRectMake(0, newcHeight - 35, cWidth, 35)];
+        UIView* bView = [[UIView alloc] initWithFrame:CGRectMake(14, YH(attchView) - intevalHeight, duiImgWidth, 38)];
         [bView setBackgroundColor:[UIColor clearColor]];
         
-        UILabel* time = [[UILabel alloc] initWithFrame:CGRectMake(11, 14, 60, 12)];
+        UILabel* time = [[UILabel alloc] initWithFrame:CGRectMake(12, 14, 73, 12)];
         [time setBackgroundColor:[UIColor clearColor]];
         [time setNumberOfLines:0];
         [time setText:[NSString stringWithFormat:@"%@ %@",_currentMission.monthAndDay,_currentMission.hour]];
-        [time setTextAlignment:NSTextAlignmentRight];
+        [time setTextAlignment:NSTextAlignmentLeft];
         [time setTextColor:[UIColor whiteColor]];
-        [time setFont:[UIFont systemFontOfSize:10]];
+        [time setFont:Font(10)];
         [bView addSubview:time];
         
-        UIButton* btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(time.frame.origin.x + time.frame.size.width + 15, 14, 28, 12)];
-        [btnDelete setBackgroundColor:[UIColor clearColor]];
-        NSMutableAttributedString* attriNormal = [[NSMutableAttributedString alloc]
-                                                  initWithString:@"删除"
-                                                  attributes:@{
-                                                               NSFontAttributeName:[UIFont systemFontOfSize:13],
-                                                               NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#3c9ed7"]}];
-        NSMutableAttributedString* attriHig = [[NSMutableAttributedString alloc]
-                                               initWithString:@"删除" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
-        [btnDelete setAttributedTitle:attriNormal forState:UIControlStateNormal];
-        [btnDelete setAttributedTitle:attriHig forState:UIControlStateHighlighted];
-        //[bView addSubview:btnDelete];
-        
-        
-        UIButton* btnEdit = [[UIButton alloc] initWithFrame:CGRectMake(btnDelete.frame.origin.x + btnDelete.frame.size.width + 15, 14, 28, 12)];
-        [btnEdit setBackgroundColor:[UIColor clearColor]];
-        NSMutableAttributedString* eattriNormal = [[NSMutableAttributedString alloc]
-                                                  initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13],NSForegroundColorAttributeName:[UIColor colorWithRed:[self colorWithRGB:60] green:[self colorWithRGB:159] blue:[self colorWithRGB:215] alpha:1.0f]}];
-        NSMutableAttributedString* eattriHig = [[NSMutableAttributedString alloc]
-                                               initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
-        [btnEdit setAttributedTitle:eattriNormal forState:UIControlStateNormal];
-        [btnEdit setAttributedTitle:eattriHig forState:UIControlStateHighlighted];
-        //[bView addSubview:btnEdit];
-        
-        
-        UIButton* btnComment = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 27, 14, 15, 15)];
+        if (_currentMission != nil) {
+            
+            if(_currentMission.createUserId == [LoginUser loginUserID])
+            {
+                UIButton* btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(XW(time), 14, 28, 12)];
+                [btnDelete setBackgroundColor:[UIColor clearColor]];
+                NSMutableAttributedString* attriNormal = [[NSMutableAttributedString alloc]
+                                                          initWithString:@"删除"
+                                                          attributes:@{
+                                                                       NSFontAttributeName:[UIFont systemFontOfSize:12],
+                                                                       NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#3c9ed7"]}];
+                NSMutableAttributedString* attriHig = [[NSMutableAttributedString alloc]
+                                                       initWithString:@"删除" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]}];
+                [btnDelete setAttributedTitle:attriNormal forState:UIControlStateNormal];
+                [btnDelete setAttributedTitle:attriHig forState:UIControlStateHighlighted];
+                [btnDelete addTarget:self action:@selector(btnRemoveClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [bView addSubview:btnDelete];
+                
+                
+                UIButton* btnEdit = [[UIButton alloc] initWithFrame:CGRectMake(XW(time) + 38, 14, 28, 12)];
+                [btnEdit setBackgroundColor:[UIColor clearColor]];
+                NSMutableAttributedString* eattriNormal = [[NSMutableAttributedString alloc]
+                                                           initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor colorWithRed:[self colorWithRGB:60] green:[self colorWithRGB:159] blue:[self colorWithRGB:215] alpha:1.0f]}];
+                NSMutableAttributedString* eattriHig = [[NSMutableAttributedString alloc]
+                                                        initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]}];
+                [btnEdit setAttributedTitle:eattriNormal forState:UIControlStateNormal];
+                [btnEdit setAttributedTitle:eattriHig forState:UIControlStateHighlighted];
+                [btnEdit addTarget:self action:@selector(btnEditClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [bView addSubview:btnEdit];
+
+            }
+        }
+
+        UIButton* btnComment = [[UIButton alloc] initWithFrame:CGRectMake(duiImgWidth - 15 - 12, 14, 15, 15)];
         [btnComment setBackgroundColor:[UIColor clearColor]];
         [btnComment setImage:[UIImage imageNamed:@"btn_pinglun"] forState:UIControlStateNormal];
         [btnComment addTarget:self action:@selector(btnCommentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -961,18 +934,27 @@
         
         [cell.contentView addSubview:bView];
         
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight - 1, cWidth, 0.5)];
+        CGFloat duiImgHeight = 52 + contentHeight + 38 + H(attchView) + 23 - intevalHeight;
+        CGFloat newcHeight = 70 + duiImgHeight ;
+        
+        UIImageView * duiImageView = [[UIImageView alloc] initWithFrame:CGRectMake(14, YH(photo) + 7, duiImgWidth, duiImgHeight )];
+        duiImageView.image= [[UIImage imageNamed:@"bg_duihuakuang2"] stretchableImageWithLeftCapWidth:40 topCapHeight:30];
+        
+        [cell.contentView addSubview:duiImageView];
+        [cell.contentView sendSubviewToBack:duiImageView];
+
+        [cell setFrame:CGRectMake(0, 0, cWidth ,newcHeight + 34)];
+        
+        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight + 34 - 1, cWidth, 0.5)];
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:bottomLine];
-        
-        [cell setFrame:CGRectMake(0, 0, cWidth ,newcHeight)];
     }
-    else if (index > 2)
+    else if (index > 0)
     {
         //cell.textLabel.text = [_dataList objectAtIndex:index];
         if (cell.contentView.subviews.count < 4) {
             
-            NSInteger cIndex = index - 3;
+            NSInteger cIndex = index - 1;
             
             Comment* comm = [_commentArray objectAtIndex:cIndex];
             
@@ -1157,9 +1139,17 @@
 
             }
             
-            CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
+            if(height < 34)
+            {
+                height = 60;
+            }
+            else
+            {
+                height = height + 35;
+            }
+            [cell setFrame:CGRectMake(0, 0, cWidth ,height)];
             
-            UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, cHeight - 1, cWidth, 0.5)];
+            UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 1, cWidth, 0.5)];
             [bottomLine setBackgroundColor:[UIColor grayColor]];
             [cell.contentView addSubview:bottomLine];
             
@@ -1293,7 +1283,7 @@
                 
                 NSInteger index = _replyList.count - 1;
                 
-                NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 3)];
+                NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(index - 1)];
                 id obj = [_reReplyDic valueForKey:key];
                 if ([obj isKindOfClass:[NSArray class]]) {
                     NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
