@@ -134,7 +134,7 @@
     
     if(self.controllerType == MemberViewFromControllerCopyTo)
     {
-        CGRect selectFrame = CGRectMake(40, H(self.view) - 42 - 13 - 66, 136, 42);
+        CGRect selectFrame = CGRectMake(40, H(self.view) - 42 - 13 - 66, (SCREENWIDTH - 40 * 3)/2, 42);
         
         UIButton * selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectBtn.frame = selectFrame;
@@ -156,7 +156,7 @@
         [self.view addSubview:selectBtn];
         
         UIButton * selectOkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        selectFrame.origin.x = [UIScreen mainScreen].bounds.size.width - 40 - 136;
+        selectFrame.origin.x = SCREENWIDTH - 40 - selectFrame.size.width;
         selectOkBtn.frame = selectFrame;
         [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateNormal];
         [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateHighlighted];
