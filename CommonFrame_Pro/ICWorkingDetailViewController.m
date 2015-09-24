@@ -539,14 +539,26 @@
             //NSString* txt = btn.titleLabel.text;
             NSInteger iVal = comm.praiseNum;
             if (comm.isPraised)
+            {
                 iVal--;
+            }
             else
+            {
                 iVal++;
+            }
             btn.titleLabel.text = [NSString stringWithFormat:@"%ld",iVal];
             NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
                                                  initWithString:[NSString stringWithFormat:@"%ld",iVal] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
             [btn setAttributedTitle:parNor forState:UIControlStateNormal];
-            
+            if(iVal == 0)
+            {
+                [btn setBackgroundImage:[UIImage imageNamed:@"btn_zan"] forState:UIControlStateNormal];
+            }
+            else
+            {
+                [btn setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
+            }
+
             comm.praiseNum = iVal;
             comm.isPraised = !comm.isPraised;
             
@@ -694,6 +706,8 @@
         [photo setBackgroundColor:[UIColor clearColor]];
         //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
         [photo setImageWithURL:[NSURL URLWithString:_currentMission.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        photo.layer.cornerRadius = 5.0f;
+        photo.clipsToBounds = YES;
         [cell.contentView addSubview:photo];
         
         CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
@@ -818,7 +832,7 @@
                 attachment = [[UIImageView alloc] initWithFrame:CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight)];
                 // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
                 int fileType = [acc.fileType intValue];
-                if(fileType == 5)
+                if(fileType == 1)//to do
                 {
                     [attachment setImageWithURL:[NSURL URLWithString:acc.address]
                                placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
@@ -828,43 +842,76 @@
                 else
                 {
                     NSString * imgName = @"";
-                    if(fileType == 1)
+                    if(fileType == 5)//to do
                     {
                         imgName = @"btn_word";
                         
-                        attachment.backgroundColor = [UIColor blueColor];
+                        attachment.backgroundColor = RGBCOLOR(57, 161, 231);
                     }
                     else if (fileType == 2)
                     {
                         imgName = @"btn_excel";
                         
-                        attachment.backgroundColor = [UIColor greenColor];
+                        attachment.backgroundColor = RGBCOLOR(73, 204, 178);
                     }
                     else if (fileType == 3)
                     {
-                        imgName = @"btn_word";//ppt logo
+                        imgName = @"btn_ppt";
                         
-                        attachment.backgroundColor = [UIColor orangeColor];
+                        attachment.backgroundColor = RGBCOLOR(245, 124, 36);
 
                     }
                     else if (fileType == 4)
                     {
                         imgName = @"btn_pdf";
                         
-                        attachment.backgroundColor = [UIColor purpleColor];
+                        attachment.backgroundColor = RGBCOLOR(143, 57, 231);
 
                     }
+                    else if(fileType == 6)
+                    {
+                        imgName = @"btn_other";
+
+                        attachment.backgroundColor = RGBCOLOR(172, 172, 173);
+                    }
                     
-                    UIImageView * fileIcon = [[UIImageView alloc] initWithFrame:CGRectMake((accHeight - 40) / 2, 14, 40, 60)];
+                    UIImageView * fileIcon = [[UIImageView alloc] init];
                     fileIcon.image = [UIImage imageNamed:imgName];
-                    
                     [attachment addSubview:fileIcon];
                     
-                    UILabel * fileNameLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, YH(fileIcon) + 14, (accHeight - 14 * 2) , 32)];
+                    UILabel * fileNameLbl = [[UILabel alloc] init];
+                    
+                    if(SCREENWIDTH == 414)
+                    {
+                        fileIcon.frame = CGRectMake((accHeight - 37) / 2, 14, 37, 59);
+                        
+                        fileNameLbl.frame = CGRectMake(14, YH(fileIcon) + 11, (accHeight - 14 * 2) , 24);
+                        
+                        fileNameLbl.font = Font(10);
+
+                    }
+                    else if (SCREENWIDTH == 375)
+                    {
+                        fileIcon.frame = CGRectMake((accHeight - 37) / 2, 13, 33, 54);
+                        
+                        fileNameLbl.frame = CGRectMake(14, YH(fileIcon) + 8, (accHeight - 14 * 2) , 22);
+                        
+                        fileNameLbl.font = Font(9);
+
+                    }
+                    else if (SCREENWIDTH == 320)
+                    {
+                        fileIcon.frame = CGRectMake((accHeight - 31) / 2, 11, 28, 46);
+                        
+                        fileNameLbl.frame = CGRectMake(11, YH(fileIcon) + 5, (accHeight - 11 * 2) , 20);
+                        
+                        fileNameLbl.font = Font(8);
+                        
+                    }
+                    
                     fileNameLbl.backgroundColor = [UIColor clearColor];
                     fileNameLbl.textColor = [UIColor whiteColor];
                     fileNameLbl.numberOfLines = 2;
-                    fileNameLbl.font = Font(14);
                     fileNameLbl.text = acc.name;
                     
                     [attachment addSubview:fileNameLbl];
@@ -958,14 +1005,16 @@
             
             Comment* comm = [_commentArray objectAtIndex:cIndex];
             
-            UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(11, 11, 36, 36)];
+            UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
             //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
             [photo setImageWithURL:[NSURL URLWithString:comm.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            photo.layer.cornerRadius = 5.0f;
+            photo.clipsToBounds = YES;
             [cell.contentView addSubview:photo];
             
             UIFont* font = [UIFont systemFontOfSize:14];
             
-            UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(photo.frame.origin.x + photo.frame.size.width + 6, photo.frame.origin.y, 100, 15)];
+            UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 7, 20, 100, 15)];
             [name setBackgroundColor:[UIColor clearColor]];
             [name setText:comm.userName];
             [name setTextColor:[UIColor colorWithHexString:@"#3c9ed7"]];
@@ -974,7 +1023,7 @@
             
             [cell.contentView addSubview:name];
             
-            CGFloat reContentWidth = cWidth - 45 - 60;
+            CGFloat reContentWidth = cWidth - 70 - 52;
             CGFloat reHeight = name.frame.size.height + name.frame.origin.y;
             
             CGFloat reLabelHeight = 8;
@@ -1066,7 +1115,7 @@
             
             if(comm.level == 2 && comm.parentName.length > 0)//评论
             {
-                mainStr = [NSString stringWithFormat:@"回复 %@ %@", comm.parentName, comm.main];
+                mainStr = [NSString stringWithFormat:@"回复：%@  %@", comm.parentName, comm.main];
                 
                 isBlue = YES;
             }
@@ -1077,9 +1126,11 @@
                 isGreen = YES;
             }
             
+            mainStr = [mainStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  //去除掉首尾的空白字符和换行字符
+            
             height = [UICommon getSizeFromString:mainStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
             
-            CGFloat y = 30;
+            CGFloat y = YH(name) + 8;
             
             UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(X(name), y, reContentWidth, height)];
             [revContent setBackgroundColor:[UIColor clearColor]];
@@ -1093,7 +1144,7 @@
 
             if(mainStr.length > 0 && isBlue)
             {
-                NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#3c9ed7"] range:NSMakeRange(2, mainStr.length - 2 - comm.main.length)];
+                NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#3c9ed7"] range:NSMakeRange(3, mainStr.length - 3 - comm.main.length)];
                 
                 [revContent setAttributedText:attrStr];
             }
@@ -1106,24 +1157,32 @@
 
             [cell.contentView addSubview:revContent];
             
-            UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60, 7, 45, 15)];
+            UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60, 10, 46, 12)];
             [date setBackgroundColor:[UIColor clearColor]];
             [date setText:comm.hourStr];
             [date setTextColor:[UIColor colorWithRed:[self colorWithRGB:122] green:[self colorWithRGB:122] blue:[self colorWithRGB:122] alpha:1.0f]];
-            [date setFont:[UIFont systemFontOfSize:8]];
+            [date setFont:[UIFont systemFontOfSize:10]];
             [date setTextAlignment:NSTextAlignmentRight];
             
-            //[cell.contentView addSubview:date];
+            [cell.contentView addSubview:date];
             
             if(comm.level == 2)
             {
-                UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 50, date.frame.origin.y + date.frame.size.height + 5, 30, 20)];
+                UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 39, YH(date) + 20, 25, 20)];
                 //[par setTitle:@"20" forState:UIControlStateNormal];
                 [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [par setBackgroundColor:[UIColor clearColor]];
-                [par.layer setBorderWidth:0.5f];
-                [par.layer setCornerRadius:10];
-                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+                if(comm.praiseNum > 0)
+                {
+                    [par setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
+                }
+                else
+                {
+                    [par setBackgroundImage:[UIImage imageNamed:@"btn_zan"] forState:UIControlStateNormal];
+                }
+//                [par.layer setBorderWidth:0.5f];
+//                [par.layer setCornerRadius:10];
+//                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
                 [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [par setTag:cIndex];
                 
@@ -1141,11 +1200,11 @@
             
             if(height < 34)
             {
-                height = 60;
+                height = 78;
             }
             else
             {
-                height = height + 35;
+                height = height + 35 + 24;
             }
             [cell setFrame:CGRectMake(0, 0, cWidth ,height)];
             

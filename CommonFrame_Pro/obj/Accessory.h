@@ -26,7 +26,7 @@
 @property (nonatomic,strong) NSString*  jsonStr;
 @property (nonatomic,strong) NSString*  userName;
 @property (nonatomic,strong) NSString*  userImg;
-@property (nonatomic,strong) NSString* fileType;// 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
+@property (nonatomic,strong) NSString* fileType;// 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg 6:其他
 
 
 +(Accessory*)jsonToObj:(NSString*)jsonString;

@@ -415,7 +415,8 @@
                         NSMutableArray * pptArr = [NSMutableArray array];
                         NSMutableArray * pdfArr = [NSMutableArray array];
                         NSMutableArray * imgArr = [NSMutableArray array];
-                        
+                        NSMutableArray * otherArr = [NSMutableArray array];
+
                         NSArray* aArr = (NSArray*)accArr;
                         
                         for (id obj in aArr) {
@@ -465,6 +466,12 @@
                                     fileNum = @"5";
                                     [imgArr addObject:acc];
                                 }
+                                else
+                                {
+                                    fileNum = @"6";
+                                    [otherArr addObject:acc];
+                                    
+                                }
                                 acc.fileType = fileNum;
                                 
 //                                [accessoryArray addObject:acc];
@@ -479,6 +486,7 @@
                         [accessoryArray addObjectsFromArray:pptArr];
                         [accessoryArray addObjectsFromArray:pdfArr];
                         [accessoryArray addObjectsFromArray:imgArr];
+                        [accessoryArray addObjectsFromArray:otherArr];
                         
                         cm.accessoryList = [NSArray arrayWithArray:accessoryArray];
                         
