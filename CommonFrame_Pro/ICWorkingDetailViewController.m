@@ -1216,8 +1216,9 @@
         
     }
     
-    [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-    //[cell.contentView setBackgroundColor:[UIColor colorWithHexString:@"2f2e33"]];
+//    [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+    [cell.contentView setBackgroundColor:RGBCOLOR(47, 47, 47)];
+
     
     return cell;
 }
