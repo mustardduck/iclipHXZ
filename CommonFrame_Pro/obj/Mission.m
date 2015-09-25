@@ -485,8 +485,8 @@
                         [accessoryArray addObjectsFromArray:excelArr];
                         [accessoryArray addObjectsFromArray:pptArr];
                         [accessoryArray addObjectsFromArray:pdfArr];
-                        [accessoryArray addObjectsFromArray:imgArr];
                         [accessoryArray addObjectsFromArray:otherArr];
+                        [accessoryArray addObjectsFromArray:imgArr];
                         
                         cm.accessoryList = [NSArray arrayWithArray:accessoryArray];
                         

@@ -589,23 +589,23 @@
             
             NSLog(@"uitableview 加载完了");
             
-            if(_commentsId.length > 0)
-            {
-                for(NSInteger i = 0; i < _commentArray.count; i ++)
-                {
-                    Comment * cm = _commentArray[i];
-                    
-                    NSString * cmId = [NSString stringWithFormat:@"%@", cm.commentsId];
-                    
-                    if([_commentsId isEqualToString:cmId])
-                    {
-                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i + 3 inSection:0];
-                        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                        
-                        _commentsId = @"";
-                    }
-                }
-            }
+//            if(_commentsId.length > 0)
+//            {
+//                for(NSInteger i = 0; i < _commentArray.count; i ++)
+//                {
+//                    Comment * cm = _commentArray[i];
+//                    
+//                    NSString * cmId = [NSString stringWithFormat:@"%@", cm.commentsId];
+//                    
+//                    if([_commentsId isEqualToString:cmId])
+//                    {
+//                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i + 3 inSection:0];
+//                        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//                        
+//                        _commentsId = @"";
+//                    }
+//                }
+//            }
             
         });
     }
@@ -832,7 +832,7 @@
                 attachment = [[UIImageView alloc] initWithFrame:CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight)];
                 // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
                 int fileType = [acc.fileType intValue];
-                if(fileType == 1)//to do
+                if(fileType == 5)//to do
                 {
                     [attachment setImageWithURL:[NSURL URLWithString:acc.address]
                                placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
@@ -842,7 +842,7 @@
                 else
                 {
                     NSString * imgName = @"";
-                    if(fileType == 5)//to do
+                    if(fileType == 1)//to do
                     {
                         imgName = @"btn_word";
                         
