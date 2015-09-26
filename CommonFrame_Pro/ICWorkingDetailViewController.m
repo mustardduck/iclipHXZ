@@ -34,6 +34,7 @@
     
     UIActivityIndicatorView* acInd ;
 
+    
 }
 
 
@@ -1490,6 +1491,11 @@
         }
         else
             [self.icMainViewController setValue:nil forKey:@"strIndexForDetail"];
+    }
+    if (_workGroupId != nil ) {
+        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
+            [self.icMainViewController setValue:_workGroupId forKey:@"pubGroupId"];
+        }
     }
 }
 

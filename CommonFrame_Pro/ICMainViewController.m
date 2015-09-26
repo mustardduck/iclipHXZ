@@ -206,6 +206,9 @@
     }
     
     [_smView setFrame:CGRectMake(0, 0, _screenWidth, _screenHeight)];
+
+//    _smView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, _screenHeight - 64 - 120);
+
     
     NSArray* markArray = [NSArray array];
     NSMutableArray * muArr = [[NSMutableArray alloc] init];
@@ -507,8 +510,6 @@
         [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         [_tableView endUpdates];
     }
-    
-    
     if (_pubGroupId != nil )
     {
         _workGroupId = _pubGroupId;
@@ -561,10 +562,6 @@
     }
      */
     
-    [self resetRightMarkView];//刷新主页右边的标签
-    
-    [self loadBottomMenuView:nil isSearchBarOne:YES];//刷新主页底部的群组
-
 }
 
 - (void)resetRightMarkView
@@ -1684,7 +1681,8 @@
     ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
     ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
     ((ICWorkingDetailViewController*)vc).icMainViewController = self;
-    
+    ((ICWorkingDetailViewController*)vc).workGroupId = ms.workGroupId;
+
     [self.navigationController pushViewController:vc animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

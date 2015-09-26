@@ -29,4 +29,6 @@
 
 @property (nonatomic,strong) IBOutlet UITableView*       tableView;
 
+@property (nonatomic,strong) NSString*              workGroupId;
+
 @end

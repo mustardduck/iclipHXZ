@@ -48,7 +48,7 @@
     NSString*       _searchText;
     BOOL            _isFirstSearchBar;
     
-    UIView * _parView;
+    BOOL   _isUp;
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -73,9 +73,21 @@
     //[_mainView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
     [_mainView setBackgroundColor:[UIColor greenColor]];
 
-    _parView = parentView;
+//    CGFloat vHeight = 120;
+//    CGFloat dH = _pViewHeight - 64 - vHeight;
+//    CGRect rect = parentView.frame;
+//    rect.origin.y = dH;
+//    parentView.frame = rect;
+    
     _mainView = parentView;
     
+//    CGRect rect = parentView.frame;
+//    rect.origin.y = dH;
+//    _mainView.frame = rect;
+//    [parentView addSubview:_mainView];
+//    [parentView sendSubviewToBack:_mainView];
+    
+
     //创建手势
     UIPanGestureRecognizer *panGR =
     [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectDidDragged:)];
@@ -93,24 +105,68 @@
 
     
     [self showMenu];
-    
 
-//    parentView = _mainView;
+    parentView = _mainView;
 
     _isOpen = YES;
     return self;
 }
 
 - (void)objectDidDragged:(UIPanGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateChanged ||
-        sender.state == UIGestureRecognizerStateEnded) {
+    
+    CGFloat vHeight = 120;
+    
+    CGFloat dH = _pViewHeight - 64 - vHeight;
+    
+    if (sender.state == UIGestureRecognizerStateChanged) {
         //注意，这里取得的参照坐标系是该对象的上层View的坐标。
-        CGPoint offset = [sender translationInView:_parView];
-        UIView *draggableObj = [_parView viewWithTag:100];
+        CGPoint offset = [sender translationInView:_mainView];
+        UIView *draggableObj = [_mainView viewWithTag:100];
+        
+        CGPoint dragPoint = draggableObj.center;
+        
         //通过计算偏移量来设定draggableObj的新坐标
-        [draggableObj setCenter:CGPointMake(draggableObj.center.x + offset.x, draggableObj.center.y + offset.y)];
+        [draggableObj setCenter:CGPointMake(dragPoint.x, dragPoint.y + offset.y)];
         //初始化sender中的坐标位置。如果不初始化，移动坐标会一直积累起来。
-        [sender setTranslation:CGPointMake(0, 0) inView:_parView];
+        [sender setTranslation:CGPointMake(0, 0) inView:_mainView];
+        
+        if(offset.y < 0)
+        {
+            _isUp = YES;
+        }
+        else
+        {
+            _isUp = NO;
+        }
+        
+        if(Y(_mainView) < 0)
+        {
+            CGRect rect = draggableObj.frame;
+            rect.origin.y = 0;
+            draggableObj.frame = rect;
+            
+        }
+        else if (Y(_mainView) > dH)
+        {
+            CGRect rect = draggableObj.frame;
+            rect.origin.y = dH;
+            draggableObj.frame = rect;
+            
+        }
+    }
+    if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        [UIView beginAnimations:@"move" context:nil];
+        [UIView setAnimationDuration:0.4];
+        [UIView setAnimationDelegate:self];//改变它的frame的x,y的值
+        CGRect frame = _mainView.frame;
+        
+        frame.origin.y = _isUp ? 0 : dH;
+        
+        _mainView.frame = frame;
+        [UIView commitAnimations];
+        
+        [self showMenu];
     }
 }
 
@@ -163,14 +219,12 @@
     for (UIControl *control in _mainView.subviews) {
         [control removeFromSuperview];
     }
-    
-    
-    
+
     UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 1, _pViewWidth, 28)];
     mbutton.backgroundColor = [UIColor clearColor];
 
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
+//    [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
     [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
     
     
@@ -410,7 +464,6 @@
     }
     else
     {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:0.4 animations:^{
                 _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, _pViewHeight - 64 - vHeight);
