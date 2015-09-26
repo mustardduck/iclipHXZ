@@ -1113,7 +1113,7 @@
             
             BOOL isGreen = NO;
             
-            if(comm.level == 2 && comm.parentName.length > 0)//评论
+            if(comm.level == 2 && comm.parentName.length > 0 && ![comm.userName isEqualToString:comm.parentName])//评论
             {
                 mainStr = [NSString stringWithFormat:@"回复：%@  %@", comm.parentName, comm.main];
                 
@@ -1231,7 +1231,7 @@
     
     _oriIndexRow = 0;
     
-    if (indexPath.row < 3) {
+    if (indexPath.row < 1) {
         //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
         NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
         [_inputBar.textField becomeFirstResponder];
@@ -1243,7 +1243,7 @@
     {
         _indexRow = indexPath.row;
         BOOL hasLoad = NO;
-         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 3)];
+         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 1)];
         id obj = [_reReplyDic valueForKey:key];
         if ([obj isKindOfClass:[NSArray class]])
         {
@@ -1297,9 +1297,9 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL isChild = NO;
-            if (_oriIndexRow > 2) {
+            if (_oriIndexRow > 0) {
                 
-                Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow-3)]);
+                Comment* pc = ((Comment*)[_commentArray objectAtIndex:(_oriIndexRow - 1)]);
                 pc.commentsId = @"0";
                 
                 NSString* newCommentId = @"";
@@ -1383,8 +1383,8 @@
     }
     else
     {
-        if (_indexRow > 2) {
-            NSString * pid = ((Comment*)[_commentArray objectAtIndex:(_indexRow - 3)]).commentsId;
+        if (_indexRow > 0) {
+            NSString * pid = ((Comment*)[_commentArray objectAtIndex:(_indexRow - 1)]).commentsId;
             Comment* cm = [Comment new];
             cm.main = str;
             cm.parentId = pid==nil?@"0":pid;

@@ -47,6 +47,8 @@
     //Check search bar
     NSString*       _searchText;
     BOOL            _isFirstSearchBar;
+    
+    UIView * _parView;
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -71,7 +73,18 @@
     //[_mainView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
     [_mainView setBackgroundColor:[UIColor greenColor]];
 
+    _parView = parentView;
     _mainView = parentView;
+    
+    //创建手势
+    UIPanGestureRecognizer *panGR =
+    [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectDidDragged:)];
+    //限定操作的触点数
+    [panGR setMaximumNumberOfTouches:1];
+    [panGR setMinimumNumberOfTouches:1];
+    //将手势添加到draggableObj里
+    [_mainView addGestureRecognizer:panGR];
+    [_mainView setTag:100];
     
     _searchText = searchString;
     _isFirstSearchBar = isFirstBar;
@@ -82,11 +95,23 @@
     [self showMenu];
     
 
-    parentView = _mainView;
+//    parentView = _mainView;
 
-    //[parentView addSubview:_mainView];
     _isOpen = YES;
     return self;
+}
+
+- (void)objectDidDragged:(UIPanGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateChanged ||
+        sender.state == UIGestureRecognizerStateEnded) {
+        //注意，这里取得的参照坐标系是该对象的上层View的坐标。
+        CGPoint offset = [sender translationInView:_parView];
+        UIView *draggableObj = [_parView viewWithTag:100];
+        //通过计算偏移量来设定draggableObj的新坐标
+        [draggableObj setCenter:CGPointMake(draggableObj.center.x + offset.x, draggableObj.center.y + offset.y)];
+        //初始化sender中的坐标位置。如果不初始化，移动坐标会一直积累起来。
+        [sender setTranslation:CGPointMake(0, 0) inView:_parView];
+    }
 }
 
 - (void)addGestureRecognizer:(UIControl*)targetView
@@ -143,8 +168,7 @@
     
     UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 1, _pViewWidth, 28)];
     mbutton.backgroundColor = [UIColor clearColor];
-    //mbutton.titleLabel.textColor = [UIColor blackColor];
-    //mbutton.titleLabel.text = @"click";
+
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
     [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
@@ -152,7 +176,7 @@
     
     [_mainView addSubview:mbutton];
     
-    [self addGestureRecognizer:mbutton];
+//    [self addGestureRecognizer:mbutton];
     
     if (_isOpen) {
         
