@@ -73,8 +73,8 @@
     //[_mainView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
     [_mainView setBackgroundColor:[UIColor greenColor]];
 
-//    CGFloat vHeight = 120;
-//    CGFloat dH = _pViewHeight - 64 - vHeight;
+    CGFloat vHeight = 120;
+    CGFloat dH = _pViewHeight - 64 - vHeight;
 //    CGRect rect = parentView.frame;
 //    rect.origin.y = dH;
 //    parentView.frame = rect;
@@ -98,6 +98,7 @@
     [_mainView addGestureRecognizer:panGR];
     [_mainView setTag:100];
     
+    
     _searchText = searchString;
     _isFirstSearchBar = isFirstBar;
     
@@ -109,6 +110,7 @@
     parentView = _mainView;
 
     _isOpen = YES;
+
     return self;
 }
 
@@ -118,10 +120,11 @@
     
     CGFloat dH = _pViewHeight - 64 - vHeight;
     
+    UIView *draggableObj = [_mainView viewWithTag:100];
+
     if (sender.state == UIGestureRecognizerStateChanged) {
         //注意，这里取得的参照坐标系是该对象的上层View的坐标。
         CGPoint offset = [sender translationInView:_mainView];
-        UIView *draggableObj = [_mainView viewWithTag:100];
         
         CGPoint dragPoint = draggableObj.center;
         
@@ -130,14 +133,7 @@
         //初始化sender中的坐标位置。如果不初始化，移动坐标会一直积累起来。
         [sender setTranslation:CGPointMake(0, 0) inView:_mainView];
         
-        if(offset.y < 0)
-        {
-            _isUp = YES;
-        }
-        else
-        {
-            _isUp = NO;
-        }
+        _isUp = offset.y < 0 ? YES: NO;
         
         if(Y(_mainView) < 0)
         {
@@ -159,11 +155,11 @@
         [UIView beginAnimations:@"move" context:nil];
         [UIView setAnimationDuration:0.4];
         [UIView setAnimationDelegate:self];//改变它的frame的x,y的值
-        CGRect frame = _mainView.frame;
+        CGRect frame = draggableObj.frame;
         
         frame.origin.y = _isUp ? 0 : dH;
         
-        _mainView.frame = frame;
+        draggableObj.frame = frame;
         [UIView commitAnimations];
         
         [self showMenu];
@@ -234,11 +230,11 @@
     
     if (_isOpen) {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.4 animations:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [UIView animateWithDuration:0.4 animations:^{
                 _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
-            }];
-        });
+//            }];
+//        });
         
         topBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 28, [UIScreen mainScreen].bounds.size.width, 40)];
         topBar.barStyle = UIStatusBarStyleDefault;
@@ -464,11 +460,11 @@
     }
     else
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.4 animations:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [UIView animateWithDuration:0.4 animations:^{
                 _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, _pViewHeight - 64 - vHeight);
-            }];
-        });
+//            }];
+//        });
         
         top = 20;
         
