@@ -877,7 +877,10 @@
                     
                     UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
                     imgBtn.backgroundColor = [UIColor clearColor];
-                    imgBtn.tag = i;
+                    
+                    NSInteger fileCount = accArr.count - _imageArray.count;
+                    imgBtn.tag = fileCount > 0 ? i - fileCount : i;
+
                     [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
                     [attachment addSubview:imgBtn];
                 }
