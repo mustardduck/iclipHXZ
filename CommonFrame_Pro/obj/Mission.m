@@ -350,12 +350,12 @@
     return isOk;
 }
 
-+ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments
++ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments imgArr:(NSArray **)imgArr
 {
     Mission* cm = [Mission new];
     
     NSMutableArray* array = [NSMutableArray array];
-
+    NSMutableArray * imageArr = [NSMutableArray array];
     
     NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@",DETAIL_URL,taskId,[LoginUser loginUserID]]];
     
@@ -414,7 +414,6 @@
                         NSMutableArray * excelArr = [NSMutableArray array];
                         NSMutableArray * pptArr = [NSMutableArray array];
                         NSMutableArray * pdfArr = [NSMutableArray array];
-                        NSMutableArray * imgArr = [NSMutableArray array];
                         NSMutableArray * otherArr = [NSMutableArray array];
 
                         NSArray* aArr = (NSArray*)accArr;
@@ -464,7 +463,7 @@
                                 else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"])
                                 {
                                     fileNum = @"5";
-                                    [imgArr addObject:acc];
+                                    [imageArr addObject:acc];
                                 }
                                 else
                                 {
@@ -486,7 +485,7 @@
                         [accessoryArray addObjectsFromArray:pptArr];
                         [accessoryArray addObjectsFromArray:pdfArr];
                         [accessoryArray addObjectsFromArray:otherArr];
-                        [accessoryArray addObjectsFromArray:imgArr];
+                        [accessoryArray addObjectsFromArray:imageArr];
                         
                         cm.accessoryList = [NSArray arrayWithArray:accessoryArray];
                         
@@ -584,6 +583,8 @@
         }
         
     }
+    
+    *imgArr = imageArr;
     
     *comments = array;
     

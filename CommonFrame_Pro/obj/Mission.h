@@ -58,7 +58,7 @@ typedef enum {
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString*)wgId termString:(NSString*)termStr;
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;
 
-+ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments;
++ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments imgArr:(NSArray **)imgArr;
 
 //pusblish mission
 - (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId;

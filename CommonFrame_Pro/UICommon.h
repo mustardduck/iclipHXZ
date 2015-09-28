@@ -66,3 +66,4 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) cellHoverBackgroundColor;//列表点击时背景颜色；
 
 @end
+

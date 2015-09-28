@@ -1492,6 +1492,54 @@
             </objects>
             <point key="canvasLocation" x="1974" y="2648"/>
         </scene>
+        <!--Preview View Controller-->
+        <scene sceneID="vn6-Ot-29I">
+            <objects>
+                <viewController storyboardIdentifier="PreviewViewController" id="jVK-Rg-PKd" customClass="PreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DjZ-Gq-7dC"/>
+                        <viewControllerLayoutGuide type="bottom" id="UYO-6b-LRg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="64U-kY-m4o">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="ZOh-NG-ql6">
+                                <rect key="frame" x="141" y="516" width="39" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="39" id="1IN-eZ-UEy"/>
+                                    <constraint firstAttribute="height" constant="37" id="oME-op-GYg"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="1IN-eZ-UEy"/>
+                                        <exclude reference="oME-op-GYg"/>
+                                    </mask>
+                                </variation>
+                            </pageControl>
+                        </subviews>
+                        <color key="backgroundColor" red="0.13725490200000001" green="0.1333333333" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="UYO-6b-LRg" firstAttribute="top" secondItem="ZOh-NG-ql6" secondAttribute="bottom" constant="15" id="BLy-Wa-wW0"/>
+                            <constraint firstItem="ZOh-NG-ql6" firstAttribute="leading" secondItem="64U-kY-m4o" secondAttribute="leadingMargin" constant="125" id="LcB-Vq-Fjh"/>
+                            <constraint firstItem="UYO-6b-LRg" firstAttribute="top" secondItem="ZOh-NG-ql6" secondAttribute="bottom" constant="15" id="tMO-9X-Tlo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZOh-NG-ql6" secondAttribute="trailing" constant="124" id="xKT-yW-pdn"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="BLy-Wa-wW0"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="pageControl" destination="ZOh-NG-ql6" id="Q0d-B9-a7y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1eM-KC-TOQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2417" y="-49"/>
+        </scene>
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>

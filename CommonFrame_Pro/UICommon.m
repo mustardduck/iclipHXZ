@@ -77,7 +77,10 @@ static UIViewController *imagePicker = nil;
         
         size = [str boundingRectWithSize:cSize options:options attributes:attributes context:nil].size;
         
-        size.height = ceil(size.height);
+        if(size.height > cSize.height)
+        {
+            size.height = cSize.height;
+        }
         
         size.width = ceil(size.width);
 

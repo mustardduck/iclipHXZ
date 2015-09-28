@@ -12,6 +12,7 @@
 #import <CMPopTipView.h>
 #import "RRAttributedString.h"
 #import "UICommon.h"
+#import "PreviewViewController.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate>
 {
@@ -25,6 +26,7 @@
     
     NSInteger                   _oriIndexRow;
     NSMutableArray*             _commentArray;
+    NSMutableArray*                   _imageArray;
     NSMutableArray*             _attachmentImageHeightArray;
     BOOL                        _hasLoaded;
     CMPopTipView*               _navBarLeftButtonPopTipView;
@@ -258,7 +260,11 @@
     //self.taskId = @"1015072215290001";
     _commentArray = [NSMutableArray array];
     NSArray* commentsArray = [NSArray array];
-    _currentMission = [Mission detail:_taskId commentArray:&commentsArray];
+    
+    _imageArray = [NSMutableArray array];
+    NSArray * imgArr = [NSArray array];
+    
+    _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr];
     
     if (_currentMission != nil) {
         
@@ -271,10 +277,22 @@
 //            UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
 //            self.navigationItem.rightBarButtonItem = rightBarButton;
         }
+        if(imgArr.count)
+        {
+            for(Accessory * ac in imgArr)
+            {
+                NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+                [dic setObject:ac.address forKey:@"PictureUrl"];
+                
+                [_imageArray addObject:dic];
+            }
+        }
         
         if (commentsArray.count > 0)
         {
             _commentArray = [NSMutableArray arrayWithArray:commentsArray];
+            
+//            _imageArray = [NSMutableArray arrayWithArray:imgArr];
             
             int i = 0;
             
@@ -681,6 +699,17 @@
     return YES;
 }
 
+- (void) seeFullScreenImg:(id)sender
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"PreviewViewController"];
+    if(_imageArray.count)
+    {
+        ((PreviewViewController*)vc).dataArray = _imageArray;
+    }
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger index = indexPath.row;
@@ -835,10 +864,17 @@
                 int fileType = [acc.fileType intValue];
                 if(fileType == 5)//to do
                 {
+                    attachment.userInteractionEnabled = YES;
                     [attachment setImageWithURL:[NSURL URLWithString:acc.address]
                                placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
                                         options:SDWebImageDelayPlaceholder
                     usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    
+                    UIButton * imgBtn = [[UIButton alloc] initWithFrame:attachment.frame];
+                    imgBtn.backgroundColor = [UIColor clearColor];
+                    imgBtn.tag = i;
+                    [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
+                    [attachment addSubview:imgBtn];
                 }
                 else
                 {

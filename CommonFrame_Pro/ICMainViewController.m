@@ -1357,7 +1357,7 @@
     CGFloat cellHeight = 244;
     
     if (indexPath.row == 0) {
-        cellHeight = cellHeight + 33;
+        cellHeight += 33;
     }
     
     return cellHeight;
@@ -1600,19 +1600,18 @@
         
         [cell.contentView addSubview:titleLbl];
         
-        CGRect contentFrame = CGRectMake(X(photo), YH(titleLbl) + 14,
-                                         contentWidth - (X(photo) + 39),
-                                         20 * 4);
         CGSize maxSize = CGSizeMake(contentWidth - (X(photo) + 39),
-                                    20 * 4);
+                                    20 * 4 + 8);
+        CGRect contentFrame = CGRectMake(X(photo), YH(titleLbl) + 14,
+                                         maxSize.width,
+                                         maxSize.height);
         
         UILabel* content = [[UILabel alloc] init];
-        content.frame = contentFrame;
         content.textColor = [UIColor grayColor];
         content.font = Font(14);
         
         CGSize cSize = [UICommon getSizeFromString:ms.main withSize:maxSize withFont:Font(14)];
-        content.frame = CGRectMake(contentFrame.origin.x, contentFrame.origin.y, maxSize.width, cSize.height);
+        content.frame = CGRectMake(contentFrame.origin.x, contentFrame.origin.y, contentFrame.size.width, cSize.height);
         content.numberOfLines = 4;
         content.text = ms.main;
         
