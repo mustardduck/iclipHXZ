@@ -118,7 +118,7 @@
      CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 68 - 66)];
-    [_tableView setBackgroundColor:[UIColor blackColor]];
+    [_tableView setBackgroundColor:RGBCOLOR(31, 31, 31)];
      _tableView.showsVerticalScrollIndicator = NO;
     [_tableView setSectionIndexColor:[UIColor blueColor]];
     _tableView.delegate = self;
@@ -138,8 +138,8 @@
         
         UIButton * selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectBtn.frame = selectFrame;
-        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateNormal];
-        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateHighlighted];
+        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateNormal];
+        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateHighlighted];
         if(_selectedCopyToMembersArray.count)
         {
             [selectBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -149,8 +149,8 @@
             [selectBtn setTitle:@"全选" forState:UIControlStateNormal];
         }
         selectBtn.titleLabel.font = Font(14);
-        [selectBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateNormal];
-        [selectBtn setTitleColor:RGBCOLOR(251, 251, 251) forState:UIControlStateHighlighted];
+        [selectBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateHighlighted];
+        [selectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [selectBtn addTarget:self action:@selector(selectBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:selectBtn];
@@ -158,12 +158,12 @@
         UIButton * selectOkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectFrame.origin.x = SCREENWIDTH - 40 - selectFrame.size.width;
         selectOkBtn.frame = selectFrame;
-        [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateNormal];
-        [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateHighlighted];
+        [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateNormal];
+        [selectOkBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateHighlighted];
         [selectOkBtn setTitle:@"完成" forState:UIControlStateNormal];
         selectOkBtn.titleLabel.font = Font(14);
-        [selectOkBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateNormal];
-        [selectOkBtn setTitleColor:RGBCOLOR(251, 251, 251) forState:UIControlStateHighlighted];
+        [selectOkBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateHighlighted];
+        [selectOkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [selectOkBtn addTarget:self action:@selector(selectOkBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:selectOkBtn];
@@ -284,7 +284,7 @@
         _tableView.tableHeaderView = ({
             
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 220)];
-            [view setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+            [view setBackgroundColor:RGBCOLOR(31, 31, 31)];
             
             UIView* searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
             [searchView setBackgroundColor: [UIColor clearColor]];
@@ -427,7 +427,7 @@
         _tableView.tableHeaderView = ({
             
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
-            [view setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+            [view setBackgroundColor:RGBCOLOR(31, 31, 31)];
             
             UIView* searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
             [searchView setBackgroundColor: [UIColor blackColor]];
@@ -869,7 +869,7 @@
     
     //[cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
     
-    cell.backgroundColor = [UIColor blackColor];
+    cell.backgroundColor = RGBCOLOR(31, 31, 31);
     [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 59.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
