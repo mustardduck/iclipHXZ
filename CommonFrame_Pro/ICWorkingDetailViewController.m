@@ -701,12 +701,16 @@
 
 - (void) seeFullScreenImg:(id)sender
 {
+    UIButton * btn = (UIButton *)sender;
+    
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"PreviewViewController"];
     if(_imageArray.count)
     {
         ((PreviewViewController*)vc).dataArray = _imageArray;
     }
+    ((PreviewViewController*)vc).currentPage = btn.tag;
+    
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
@@ -857,9 +861,10 @@
                 int k = i % 3;
                 
                 Accessory * acc = accArr[i];
+                
+                CGRect attaFrame = CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight);
 
-                UIImageView* attachment;
-                attachment = [[UIImageView alloc] initWithFrame:CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight)];
+                UIImageView* attachment = [[UIImageView alloc] initWithFrame:attaFrame];
                 // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
                 int fileType = [acc.fileType intValue];
                 if(fileType == 5)//to do
@@ -870,7 +875,7 @@
                                         options:SDWebImageDelayPlaceholder
                     usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                     
-                    UIButton * imgBtn = [[UIButton alloc] initWithFrame:attachment.frame];
+                    UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
                     imgBtn.backgroundColor = [UIColor clearColor];
                     imgBtn.tag = i;
                     [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
