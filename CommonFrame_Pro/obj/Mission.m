@@ -435,7 +435,13 @@
                                 acc.sourceId = [di valueForKey:@"sourceId"];
                                 acc.addTime = [di valueForKey:@"addTime"];
                                 
-                                NSRange range = [acc.name rangeOfString:@"."]; //现获取要截取的字符串位置
+                                NSRange range = [acc.name rangeOfString:@"." options:NSBackwardsSearch];
+                                //现获取要截取的字符串位置
+                                //mask常用选项列表
+                                //NSCaseInsensitiveSearch   不区分字母大小写
+                                //NSLiteralSearch           对字符串进行字节单位的比较，一般可提高检索速度
+                                //NSBackwardsSearch         从范围的末尾开始检索
+                                //NSAnchoredSearch          仅检索制定范围的前部。忽略字符串中间的检索字符
                                 NSString * fileType = [acc.name substringFromIndex:range.location + 1];
                                 NSString * fileNum = @"";
                                
