@@ -1278,11 +1278,13 @@
     
     if (indexPath.row < 1) {
         //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
-        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-        [_inputBar.textField becomeFirstResponder];
-        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
-        _indexRow = 1099;
+        
+//        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+//        [_inputBar.textField becomeFirstResponder];
+//        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//        
+//        _indexRow = 1099;
     }
     else
     {
