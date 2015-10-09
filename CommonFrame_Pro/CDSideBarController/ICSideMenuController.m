@@ -220,7 +220,7 @@
     mbutton.backgroundColor = [UIColor clearColor];
 
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
-//    [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
+    [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
     [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
     
     
