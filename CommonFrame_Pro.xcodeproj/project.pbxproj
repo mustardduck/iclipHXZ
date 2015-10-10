@@ -22,6 +22,7 @@
 		4B1F2AB41BB9251F00D55BAE /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1F2A971BB9251F00D55BAE /* UIImage+WebP.m */; };
 		4B1F2AB51BB9251F00D55BAE /* UIImageView+MJWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1F2A991BB9251F00D55BAE /* UIImageView+MJWebCache.m */; };
 		4B1F2AB71BB9251F00D55BAE /* XLCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1F2A9D1BB9251F00D55BAE /* XLCycleScrollView.m */; };
+		4B293FF41BC7630D00EC4D95 /* XNDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B293FF31BC7630D00EC4D95 /* XNDownload.m */; settings = {ASSET_TAGS = (); }; };
 		4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3222B81B8DB64900957DEF /* PH_UITextView.m */; };
 		4B3222D01B8DBB6900957DEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */; };
 		4B3222D41B8DBB7900957DEF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3222D31B8DBB7900957DEF /* CoreTelephony.framework */; };
@@ -156,6 +157,8 @@
 		4B1F2A991BB9251F00D55BAE /* UIImageView+MJWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MJWebCache.m"; sourceTree = "<group>"; };
 		4B1F2A9C1BB9251F00D55BAE /* XLCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCycleScrollView.h; sourceTree = "<group>"; };
 		4B1F2A9D1BB9251F00D55BAE /* XLCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCycleScrollView.m; sourceTree = "<group>"; };
+		4B293FF21BC7630D00EC4D95 /* XNDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNDownload.h; sourceTree = "<group>"; };
+		4B293FF31BC7630D00EC4D95 /* XNDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNDownload.m; sourceTree = "<group>"; };
 		4B3222B71B8DB64900957DEF /* PH_UITextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PH_UITextView.h; sourceTree = "<group>"; };
 		4B3222B81B8DB64900957DEF /* PH_UITextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PH_UITextView.m; sourceTree = "<group>"; };
 		4B3222CF1B8DBB6900957DEF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -743,6 +746,8 @@
 				783176031B5DF8FB00446283 /* Authority.m */,
 				7851D6611B5F903C00C3D860 /* Comment.h */,
 				7851D6621B5F903C00C3D860 /* Comment.m */,
+				4B293FF21BC7630D00EC4D95 /* XNDownload.h */,
+				4B293FF31BC7630D00EC4D95 /* XNDownload.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -1006,6 +1011,7 @@
 				784A84BD1B462E4F000D6577 /* ICMemberNaviController.m in Sources */,
 				4BC66A071B74556300353789 /* UICommon.m in Sources */,
 				4B1F2AA71BB9251F00D55BAE /* MKAnnotationView+WebCache.m in Sources */,
+				4B293FF41BC7630D00EC4D95 /* XNDownload.m in Sources */,
 				7851D6631B5F903C00C3D860 /* Comment.m in Sources */,
 				78613FC71B3D48AD007ED169 /* ICMarkListViewController.m in Sources */,
 				4B1F2AA01BB9251F00D55BAE /* MJPhotoBrowser.m in Sources */,

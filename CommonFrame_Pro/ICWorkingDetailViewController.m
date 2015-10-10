@@ -13,8 +13,9 @@
 #import "RRAttributedString.h"
 #import "UICommon.h"
 #import "PreviewViewController.h"
+#import "XNDownload.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate>
+@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate>
 {
     
     
@@ -38,6 +39,8 @@
 
     
 }
+
+@property (retain, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 
 - (IBAction)btnBackButtonClicked:(id)sender;
@@ -699,6 +702,67 @@
     return YES;
 }
 
+- (void) previewFile:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    NSInteger index = btn.tag;
+    
+    NSArray* accArr = [NSArray arrayWithArray:_currentMission.accessoryList];
+    
+    Accessory * acc = accArr[index];
+    
+//    int fileType = btn.tag;
+    
+//    NSString * extension = @"";
+//    
+//    if(fileType == 1)//to do
+//    {
+//        extension = @"doc";
+//    }
+//    else if (fileType == 2)
+//    {
+//        extension = @"xls";
+//    }
+//    else if (fileType == 3)
+//    {
+//        extension = @"ppt";
+//    }
+//    else if (fileType == 4)
+//    {
+//        extension = @"pdf";
+//    }
+    
+    NSURL * fileUrl = [NSURL URLWithString:acc.address];
+    
+    XNDownload * d = [[XNDownload alloc] init];
+        
+    [d downloadWithURL:fileUrl progress:^(float progress) {
+        
+        if(progress == 1)
+        {
+            NSURL *URL=[NSURL fileURLWithPath:d.cachePath];
+            
+            if (URL) {
+                // Initialize Document Interaction Controller
+                self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
+                
+                // Configure Document Interaction Controller
+                [self.documentInteractionController setDelegate:self];
+                
+                // Preview PDF
+                [self.documentInteractionController presentPreviewAnimated:YES];
+            }
+        }
+    }];
+}
+
+#pragma mark -
+#pragma mark Document Interaction Controller Delegate Methods
+- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
+    return self;
+}
+
 - (void) seeFullScreenImg:(id)sender
 {
     UIButton * btn = (UIButton *)sender;
@@ -867,9 +931,11 @@
                 UIImageView* attachment = [[UIImageView alloc] initWithFrame:attaFrame];
                 // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
                 int fileType = [acc.fileType intValue];
+                
+                attachment.userInteractionEnabled = YES;
+
                 if(fileType == 5)//to do
                 {
-                    attachment.userInteractionEnabled = YES;
                     [attachment setImageWithURL:[NSURL URLWithString:acc.address]
                                placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
                                         options:SDWebImageDelayPlaceholder
@@ -892,6 +958,7 @@
                         imgName = @"btn_word";
                         
                         attachment.backgroundColor = RGBCOLOR(57, 161, 231);
+                        
                     }
                     else if (fileType == 2)
                     {
@@ -923,6 +990,13 @@
                     UIImageView * fileIcon = [[UIImageView alloc] init];
                     fileIcon.image = [UIImage imageNamed:imgName];
                     [attachment addSubview:fileIcon];
+                    
+                    UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+                    imgBtn.backgroundColor = [UIColor clearColor];
+                    imgBtn.tag = i;
+//                    imgBtn.tag = fileType;//文件类型
+                    [imgBtn addTarget:self action:@selector(previewFile:) forControlEvents:UIControlEventTouchUpInside];
+                    [attachment addSubview:imgBtn];
                     
                     UILabel * fileNameLbl = [[UILabel alloc] init];
                     
