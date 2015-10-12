@@ -7,7 +7,6 @@
 //
 
 #import "XNDownload.h"
-#import "CommonFile.h"
 
 typedef void(^ProgressBlock)(float percent);
 
@@ -107,16 +106,42 @@ typedef void(^ProgressBlock)(float percent);
     // 将dataM写入沙盒的缓存目录
     // 写入数据，NSURLConnection底层实现是用磁盘做的缓存
     
-//    [self.dataM writeToFile:self.cachePath atomically:YES];
-
     if (![[NSFileManager defaultManager] fileExistsAtPath:self.cachePath])
     {//新建
+        
         [self.dataM writeToFile:self.cachePath atomically:YES];
+//        [self transformEncodingFromFilePath:_cachePath];
+
     }
     else
     {//预览
         NSLog(@"sandbox已经有该文件了");
     }
+}
+
+//先拓展一下webView处理乱码的方法
+- (NSString *)examineTheFilePathStr:(NSString *)str{
+    NSStringEncoding *useEncodeing = nil;     //带编码头的如utf-8等，这里会识别出来
+    NSString *body = [NSString stringWithContentsOfFile:str usedEncoding:useEncodeing error:nil];     //识别不到，按GBK编码再解码一次.这里不能先按GB18030解码，否则会出现整个文档无换行bug
+    if (!body)
+    {
+        body = [NSString stringWithContentsOfFile:str encoding:0x80000632 error:nil];
+    }     //还是识别不到，按GB18030编码再解码一次.
+    if (!body)
+    {
+        body = [NSString stringWithContentsOfFile:str encoding:0x80000631 error:nil];
+    }
+    return body;//有值代表需要转换  为空表示不需要转换
+}
+
+- (void)transformEncodingFromFilePath:(NSString *)filePath{     //调用上述转码方法获取正常字符串
+    NSString *body = [self examineTheFilePathStr:filePath];     //转换为二进制
+    NSData *data = [body dataUsingEncoding:NSUTF16StringEncoding];     //覆盖原来的文件
+    [self.dataM setData:nil];
+    [self.dataM appendData:data];
+//    [data writeToFile:filePath atomically:YES];     //此时在读取该文件，就是正常格式啦
+    [self.dataM writeToFile:self.cachePath atomically:YES];
+
 }
 
 // 4. 出现错误

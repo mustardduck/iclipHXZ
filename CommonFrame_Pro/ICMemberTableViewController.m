@@ -70,11 +70,11 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    if (self.controllerType == MemberViewFromControllerPublishMissionParticipants) {
-        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonClicked:)];
-        [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
-        self.navigationItem.rightBarButtonItem = rightBarButton;
-    }
+//    if (self.controllerType == MemberViewFromControllerPublishMissionParticipants) {
+//        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(backButtonClicked:)];
+//        [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+//        self.navigationItem.rightBarButtonItem = rightBarButton;
+//    }
     
     NSString* wgid = _workgid;
     //wgid = @"1015070410020001";
@@ -132,7 +132,7 @@
     
     //全选+完成按钮
     
-    if(self.controllerType == MemberViewFromControllerCopyTo)
+    if(self.controllerType == MemberViewFromControllerCopyTo || self.controllerType == MemberViewFromControllerPublishMissionParticipants)
     {
         CGRect selectFrame = CGRectMake(40, H(self.view) - 42 - 13 - 66, (SCREENWIDTH - 40 * 3)/2, 42);
         
@@ -507,6 +507,13 @@
             {
                 NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 
+                if (_responsibleIndexPath != nil) {
+                    if (indexPath.section == _responsibleIndexPath.section && indexPath.row == _responsibleIndexPath.row)
+                    {
+                        break;
+                    }
+                }
+                
                 [self addIndexPathToCopyToArray:indexPath];
 
             }
@@ -546,6 +553,15 @@
             }
         }
     }
+    if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
+    {
+        if(_selectedIndexList.count)
+        {
+            if ([self.icPublishMisonController respondsToSelector:@selector(setParticipantsIndexPathArray:)]) {
+                [self.icPublishMisonController setValue:_selectedIndexList forKey:@"participantsIndexPathArray"];
+            }
+        }
+    }
 
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -563,12 +579,12 @@
         }
 
     }
-    else if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
-    {
-        if ([self.icPublishMisonController respondsToSelector:@selector(setParticipantsIndexPathArray:)]) {
-            [self.icPublishMisonController setValue:_selectedIndexList forKey:@"participantsIndexPathArray"];
-        }
-    }
+//    else if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
+//    {
+//        if ([self.icPublishMisonController respondsToSelector:@selector(setParticipantsIndexPathArray:)]) {
+//            [self.icPublishMisonController setValue:_selectedIndexList forKey:@"participantsIndexPathArray"];
+//        }
+//    }
 //    else if(self.controllerType == MemberViewFromControllerCopyTo)
 //    {
 //        if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
@@ -796,43 +812,7 @@
         cell.contentView.tag = indexPath.section;
         
     }
-    else if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
-    {
-        CGFloat width = [UIScreen mainScreen].bounds.size.width;
-        
-        BOOL isResponsible = NO;
-        
-        if (_responsibleIndexPath != nil) {
-            if (section == _responsibleIndexPath.section && index == _responsibleIndexPath.row) {
-                
-                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(width - 140, 22, 100, 15)];
-                [name setBackgroundColor:[UIColor clearColor]];
-                [name setText:@"已定责任人"];
-                [name setTextColor:[UIColor grayColor]];
-                [name setFont:[UIFont systemFontOfSize:15]];
-                [name setTag:112];
-                
-                [cell.contentView addSubview:name];
-                
-                isResponsible = YES;
-            }
-        }
-        
-        if (!isResponsible)
-        {
-            
-            if ([self hasExitsInPartcipathsArray:indexPath]){
-                choseImg.tag = 1011;
-                choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
-            }
-            else
-                choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
-
-            
-            cell.contentView.tag = indexPath.section;
-        }
-    }
-    else if(self.controllerType == MemberViewFromControllerCopyTo)
+    else if(self.controllerType == MemberViewFromControllerCopyTo || self.controllerType == MemberViewFromControllerPublishMissionParticipants)
     {
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         
@@ -856,7 +836,6 @@
         
         if (!isResponsible)
         {
-            
             if ([self hasExitsInPartcipathsArray:indexPath])
                 choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
             else

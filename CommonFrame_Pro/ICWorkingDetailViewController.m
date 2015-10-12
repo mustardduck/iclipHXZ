@@ -14,6 +14,7 @@
 #import "UICommon.h"
 #import "PreviewViewController.h"
 #import "XNDownload.h"
+#import "SVProgressHUD.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate>
 {
@@ -40,7 +41,7 @@
     
 }
 
-@property (retain, nonatomic) UIDocumentInteractionController *documentInteractionController;
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 
 - (IBAction)btnBackButtonClicked:(id)sender;
@@ -712,41 +713,29 @@
     
     Accessory * acc = accArr[index];
     
-//    int fileType = btn.tag;
-    
-//    NSString * extension = @"";
-//    
-//    if(fileType == 1)//to do
-//    {
-//        extension = @"doc";
-//    }
-//    else if (fileType == 2)
-//    {
-//        extension = @"xls";
-//    }
-//    else if (fileType == 3)
-//    {
-//        extension = @"ppt";
-//    }
-//    else if (fileType == 4)
-//    {
-//        extension = @"pdf";
-//    }
-    
     NSURL * fileUrl = [NSURL URLWithString:acc.address];
     
     XNDownload * d = [[XNDownload alloc] init];
         
     [d downloadWithURL:fileUrl progress:^(float progress) {
         
+        if(progress < 1)
+        {
+            int prog = progress * 100;
+            
+            [SVProgressHUD showProgress:progress status:[NSString stringWithFormat:@"%d%@", prog, @"%"]];
+        }
+        
         if(progress == 1)
         {
+            [SVProgressHUD dismiss];
+            
             NSURL *URL=[NSURL fileURLWithPath:d.cachePath];
             
             if (URL) {
                 // Initialize Document Interaction Controller
                 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
-                
+                                
                 // Configure Document Interaction Controller
                 [self.documentInteractionController setDelegate:self];
                 
@@ -761,6 +750,18 @@
 #pragma mark Document Interaction Controller Delegate Methods
 - (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
     return self;
+}
+
+- (UIView*)documentInteractionControllerViewForPreview:(UIDocumentInteractionController*)controller
+
+{
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController*)controller
+
+{
+    return self.view.frame;
 }
 
 - (void) seeFullScreenImg:(id)sender
