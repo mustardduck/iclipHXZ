@@ -779,6 +779,60 @@
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
+- (void) jumpToCreaterPersonInfo:(id)sender
+{
+    Member * me = [Member new];
+    
+    me.workGroupId = @"0";
+    
+    NSMutableArray * dataArr = [NSMutableArray array];
+    
+    BOOL isOk = [Mission findWgPeopleTrends:_currentMission.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+
+    if(isOk)
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc;
+        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
+        ((ICMemberInfoViewController*)vc).memberObj = me;
+        ((ICMemberInfoViewController*)vc).dataListArr = dataArr;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+}
+
+- (void) jumpToPersonInfo:(id)sender
+{
+    UIView *v = [sender superview];//获取父类view
+    UITableViewCell *cell = (UITableViewCell *)[v superview];//获取cell
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];//获取cell对应的section
+    
+    Comment * mi = _commentArray[indexPath.row - 1];
+    
+    Member * me = [Member new];
+    
+    me.workGroupId = @"0";
+    
+    NSMutableArray * dataArr = [NSMutableArray array];
+    
+    NSString * userId = mi.userId;
+    
+    BOOL isOk = [Mission findWgPeopleTrends:userId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+    
+    if(isOk)
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc;
+        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
+        ((ICMemberInfoViewController*)vc).memberObj = me;
+        ((ICMemberInfoViewController*)vc).dataListArr = dataArr;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger index = indexPath.row;
@@ -808,6 +862,13 @@
         photo.layer.cornerRadius = 5.0f;
         photo.clipsToBounds = YES;
         [cell.contentView addSubview:photo];
+        
+        UIButton * photoBtn = [[UIButton alloc]init];
+        photoBtn.backgroundColor = [UIColor clearColor];
+        photoBtn.frame = photo.frame;
+        [photoBtn addTarget:self action:@selector(jumpToCreaterPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell.contentView addSubview:photoBtn];
         
         CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
         
@@ -1131,6 +1192,13 @@
             photo.layer.cornerRadius = 5.0f;
             photo.clipsToBounds = YES;
             [cell.contentView addSubview:photo];
+            
+            UIButton * photoBtn = [[UIButton alloc] init];
+            photoBtn.frame = photo.frame;
+            photoBtn.backgroundColor = [UIColor clearColor];
+            [photoBtn addTarget:self action:@selector(jumpToPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell.contentView addSubview:photoBtn];
             
             UIFont* font = [UIFont systemFontOfSize:14];
             
