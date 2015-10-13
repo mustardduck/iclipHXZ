@@ -553,7 +553,7 @@
 }
 
 - (void) seeFullScreenImg:(id)sender
-{    
+{
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"PreviewViewController"];
     if(_imageArray.count)
