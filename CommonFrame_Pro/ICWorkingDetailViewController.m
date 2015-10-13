@@ -1318,7 +1318,7 @@
 
             }
             
-            if(height < 34)
+            if(height < 33)
             {
                 height = 78;
             }
