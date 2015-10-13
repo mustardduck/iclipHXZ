@@ -10,6 +10,7 @@
 #import "UIColor+HexString.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
 #import <MessageUI/MessageUI.h>
+#import "PreviewViewController.h"
 
 @interface ICMemberInfoViewController() <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 {
@@ -24,6 +25,8 @@
     NSInteger               _pageRowCount;
     
     NSMutableArray*         _dataArray;
+    NSMutableArray*         _imageArray;
+
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender;
@@ -85,6 +88,16 @@
         [photo setImageWithURL:[NSURL URLWithString:_memberObj.img] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
         [infoView addSubview:photo];
+        
+        _imageArray = [NSMutableArray array];
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        [dic setObject:_memberObj.img forKey:@"PictureUrl"];
+        [_imageArray addObject:dic];
+        
+        UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(photo), H(photo))];
+        imgBtn.backgroundColor = [UIColor clearColor];
+        [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
+        [infoView addSubview:imgBtn];
         
         UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(photo.frame.size.width+photo.frame.origin.x + 20, 20, 75, 15)];
         [name setBackgroundColor:[UIColor clearColor]];
@@ -474,7 +487,6 @@
         [photo setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:photo];
         
-        
         CGRect nameFrame =CGRectMake(photo.frame.origin.x + photo.frame.size.width + 6, photo.frame.origin.y + 10,
                                      contentWidth - (photo.frame.origin.x + photo.frame.size.width + 6 + 39) , 21);
         UILabel* name = [[UILabel alloc] initWithFrame: nameFrame];
@@ -538,6 +550,18 @@
     //cell.textLabel.text = @"aaáâ";
     
     return cell;
+}
+
+- (void) seeFullScreenImg:(id)sender
+{    
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"PreviewViewController"];
+    if(_imageArray.count)
+    {
+        ((PreviewViewController*)vc).dataArray = _imageArray;
+    }
+    
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
