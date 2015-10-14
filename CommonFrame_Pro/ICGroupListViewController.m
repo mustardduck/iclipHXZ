@@ -11,6 +11,7 @@
 #import "UIColor+HexString.h"
 #import "Group.h"
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "MQPublishMissionController.h"
 
 @interface ICGroupListViewController() <UITableViewDataSource,UITableViewDelegate,InputTextDelegate,UITextFieldDelegate>
 {
@@ -238,14 +239,23 @@
     UIViewController* vc;
     
     if (self.currentViewGroupType == GroupTypeMission) {
+//        
+//        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
+//       
+//        if (_dataArray.count > 0) {
+//            Group * g = [_dataArray objectAtIndex:indexPath.row];
+//           ((ICPublishMissionViewController*)vc).workGroupId = g.workGroupId;
+//            ((ICPublishMissionViewController*)vc).userId = self.loginUserID;
+//             ((ICPublishMissionViewController*)vc).icGroupViewController = self;
+//        }
         
-        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
-       
+        vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+        
         if (_dataArray.count > 0) {
             Group * g = [_dataArray objectAtIndex:indexPath.row];
-           ((ICPublishMissionViewController*)vc).workGroupId = g.workGroupId;
-            ((ICPublishMissionViewController*)vc).userId = self.loginUserID;
-             ((ICPublishMissionViewController*)vc).icGroupViewController = self;
+//            ((MQPublishMissionController*)vc).workGroupId = g.workGroupId;
+//            ((MQPublishMissionController*)vc).userId = self.loginUserID;
+//            ((MQPublishMissionController*)vc).icGroupViewController = self;
         }
     }
     else if (self.currentViewGroupType == GroupTypeSharedAndNotify) {
