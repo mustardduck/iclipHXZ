@@ -1180,6 +1180,8 @@
     _TermString = @"";
     [_tableView.header beginRefreshing];
     
+    [_tableView.footer resetNoMoreData];
+    
     UIButton* button = (UIButton*)sender;
     NSInteger index = button.tag;
     

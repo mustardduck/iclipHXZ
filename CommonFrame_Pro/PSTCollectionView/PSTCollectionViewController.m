@@ -68,8 +68,6 @@
     }
 }
 
-MTA_viewDidAppear()
-MTA_viewDidDisappear()
 - (void)viewDidLoad {
     [super viewDidLoad];
 
