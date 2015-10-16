@@ -752,7 +752,7 @@
         ((ICMemberTableViewController*)vc).controllerType = MemberViewFromControllerCopyTo;
         ((ICMemberTableViewController*)vc).icPublishMisonController = self;
         ((ICMemberTableViewController*)vc).workgid = _workGroupId;
-        ((ICMemberTableViewController*)vc).isCC = YES;
+        ((ICMemberTableViewController*)vc).isKJFW = YES;
 
         if (_ccopyToMembersArray.count > 0) {
             ((ICMemberTableViewController*)vc).selectedCopyToMembersArray = _ccopyToMembersArray;

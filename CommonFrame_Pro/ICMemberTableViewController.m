@@ -91,6 +91,10 @@
         }
         else
         {
+            if(_isKJFW)
+            {
+                [self fillAllMember];
+            }
             if (self.selectedParticipantsDictionary.count > 0) {
                 NSMutableArray* sectionArray = [NSMutableArray array];
                 NSArray*        memberArray = [Member getAllMembers:&sectionArray participantsArray:self.selectedParticipantsDictionary];
@@ -99,7 +103,7 @@
                 _rows = memberArray;
             }
             else
-            {
+            {//邀请时用的
                 NSMutableArray* sectionArray = [NSMutableArray array];
                 NSArray*        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil workGroupId:_workgid];
                 

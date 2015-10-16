@@ -288,6 +288,25 @@ static UIViewController *imagePicker = nil;
 
 @end
 
+#pragma mark - UIView
+@implementation UIView (RCMethod)
+
+- (void)setRoundCorner:(float)cornerRadius
+{
+    self.layer.masksToBounds = YES;
+    self.layer.borderWidth = 0.5f;
+//    self.layer.borderColor = RGBCOLOR(197, 197, 197).CGColor;
+    self.layer.cornerRadius = cornerRadius;
+}
+
+- (void)setBorderWithColor:(UIColor *)color
+{
+    self.layer.borderWidth = 0.5f;
+    self.layer.borderColor = color.CGColor;
+}
+
+@end
+
 @implementation UIViewController (expanded)
 
 - (void) hiddenKeyboard{}

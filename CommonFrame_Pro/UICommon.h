@@ -31,6 +31,8 @@ typedef void (^keyboardBlock) ();
 
 #define SCREENWIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height)
+/** 边界 */
+- (void)setBorderWithColor:(UIColor *)color;
 
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;
@@ -49,6 +51,15 @@ typedef void (^keyboardBlock) ();
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
 
 + (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize;
+
+@end
+
+#pragma mark - UIView
+@interface UIView (RCMethod)
+
+/** 边界 */
+- (void)setBorderWithColor:(UIColor *)color;
+- (void)setRoundCorner:(float)cornerRadius;
 
 @end
 

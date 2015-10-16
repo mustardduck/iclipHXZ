@@ -39,6 +39,8 @@
 		4B4BDE741BCE5F4000D6B23E /* PSTGridLayoutItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BDE651BCE5F4000D6B23E /* PSTGridLayoutItem.m */; settings = {ASSET_TAGS = (); }; };
 		4B4BDE751BCE5F4000D6B23E /* PSTGridLayoutRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BDE671BCE5F4000D6B23E /* PSTGridLayoutRow.m */; settings = {ASSET_TAGS = (); }; };
 		4B4BDE761BCE5F4000D6B23E /* PSTGridLayoutSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BDE691BCE5F4000D6B23E /* PSTGridLayoutSection.m */; settings = {ASSET_TAGS = (); }; };
+		4B4BDE7A1BCF4FEE00D6B23E /* AddPictureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BDE781BCF4FEE00D6B23E /* AddPictureCell.m */; settings = {ASSET_TAGS = (); }; };
+		4B4BDE7B1BCF4FEE00D6B23E /* AddPictureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B4BDE791BCF4FEE00D6B23E /* AddPictureCell.xib */; settings = {ASSET_TAGS = (); }; };
 		4B831C2A1BA81E6200B01D20 /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B831C291BA81E6200B01D20 /* VPImageCropperViewController.m */; };
 		4B8AE4251BB910C9002B0143 /* ICFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8AE4241BB910C9002B0143 /* ICFileViewController.m */; };
 		4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */; };
@@ -205,6 +207,9 @@
 		4B4BDE671BCE5F4000D6B23E /* PSTGridLayoutRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutRow.m; sourceTree = "<group>"; };
 		4B4BDE681BCE5F4000D6B23E /* PSTGridLayoutSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutSection.h; sourceTree = "<group>"; };
 		4B4BDE691BCE5F4000D6B23E /* PSTGridLayoutSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutSection.m; sourceTree = "<group>"; };
+		4B4BDE771BCF4FEE00D6B23E /* AddPictureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPictureCell.h; sourceTree = "<group>"; };
+		4B4BDE781BCF4FEE00D6B23E /* AddPictureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPictureCell.m; sourceTree = "<group>"; };
+		4B4BDE791BCF4FEE00D6B23E /* AddPictureCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPictureCell.xib; sourceTree = "<group>"; };
 		4B831C281BA81E6200B01D20 /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
 		4B831C291BA81E6200B01D20 /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 		4B8AE4231BB910C9002B0143 /* ICFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICFileViewController.h; sourceTree = "<group>"; };
@@ -605,6 +610,9 @@
 		7823E1881B38FC4D00061DAF /* Publish */ = {
 			isa = PBXGroup;
 			children = (
+				4B4BDE771BCF4FEE00D6B23E /* AddPictureCell.h */,
+				4B4BDE781BCF4FEE00D6B23E /* AddPictureCell.m */,
+				4B4BDE791BCF4FEE00D6B23E /* AddPictureCell.xib */,
 				4B8AE4231BB910C9002B0143 /* ICFileViewController.h */,
 				4B8AE4241BB910C9002B0143 /* ICFileViewController.m */,
 				7823E1A71B39447600061DAF /* ICPublishSharedAndNotifyViewController.h */,
@@ -979,6 +987,7 @@
 				7830DDF91B3BD3E800D956C9 /* bimg.jpg in Resources */,
 				4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */,
 				78CB22421B2926F8003B6707 /* PPDragDropBadgeView.bundle in Resources */,
+				4B4BDE7B1BCF4FEE00D6B23E /* AddPictureCell.xib in Resources */,
 				4BB33A8E1B9EC5CF009D80E2 /* expandableImage@2x.png in Resources */,
 				781C1B1E1B1ED1CF008ECABF /* menuMap.png in Resources */,
 				781C1B211B1EF0E7008ECABF /* avatar@2x.jpg in Resources */,
@@ -1084,6 +1093,7 @@
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
 				78354CD01B40E03000E2F00A /* ICMemberAccessControlViewContoller.m in Sources */,
 				784B061B1B43BADA0033C0EA /* ICNavigationController.m in Sources */,
+				4B4BDE7A1BCF4FEE00D6B23E /* AddPictureCell.m in Sources */,
 				4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */,
 				783D2C3D1B5CF73D007B197E /* PrintObject.m in Sources */,
 				78613FCA1B3D4D72007ED169 /* ICMarkClassifyViewController.m in Sources */,
