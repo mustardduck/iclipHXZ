@@ -110,6 +110,14 @@
     return _pickedUrls.count + 1;
 }
 
+//点击add图片
+- (void)clickImage:(UIButton *)button{
+    [self.view endEditing:YES];
+    _currentItem = -1;
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"相机拍摄" otherButtonTitles:@"从相册中选择", nil];
+    [sheet showInView:self.view];
+}
+
 - (PSTCollectionViewCell *)collectionView:(PSTCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     AddPictureCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AddPictureCell" forIndexPath:indexPath];

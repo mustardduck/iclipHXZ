@@ -95,24 +95,26 @@
             {
                 [self fillAllMember];
             }
-            if (self.selectedParticipantsDictionary.count > 0) {
-                NSMutableArray* sectionArray = [NSMutableArray array];
-                NSArray*        memberArray = [Member getAllMembers:&sectionArray participantsArray:self.selectedParticipantsDictionary];
-                
-                _sections = sectionArray;
-                _rows = memberArray;
-            }
             else
-            {//邀请时用的
-                NSMutableArray* sectionArray = [NSMutableArray array];
-                NSArray*        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil workGroupId:_workgid];
-                
-                _sections = sectionArray;
-                _rows = memberArray;
+            {
+                if (self.selectedParticipantsDictionary.count > 0) {
+                    NSMutableArray* sectionArray = [NSMutableArray array];
+                    NSArray*        memberArray = [Member getAllMembers:&sectionArray participantsArray:self.selectedParticipantsDictionary];
+                    
+                    _sections = sectionArray;
+                    _rows = memberArray;
+                }
+                else
+                {//邀请时用的
+                    NSMutableArray* sectionArray = [NSMutableArray array];
+                    NSArray*        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil workGroupId:_workgid];
+                    
+                    _sections = sectionArray;
+                    _rows = memberArray;
+                }
             }
-        }
 
-      
+        }      
     }
     else
     {
