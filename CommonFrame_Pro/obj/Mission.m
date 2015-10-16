@@ -429,6 +429,7 @@
                                 acc.isComplete = [[di valueForKey:@"isComplete"] boolValue];
                                 acc.status = [[di valueForKey:@"status"] boolValue];
                                 acc.address = [di valueForKey:@"address"];
+                                acc.allUrl = [di valueForKey:@"allUrl"];
                                 acc.name = [di valueForKey:@"name"];
                                 acc.accessoryId = [di valueForKey:@"accessoryId"];
                                 acc.type = [[di valueForKey:@"type"] integerValue];

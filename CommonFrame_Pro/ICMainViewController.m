@@ -1546,8 +1546,11 @@
 
         [cell.contentView addSubview:name];
         
+        CGFloat width = [UICommon getSizeFromString:ms.userName withSize:CGSizeMake(100, name.frame.size.height) withFont:Font(16)].width;
+        
         CGRect btnRect = name.frame;
         btnRect.origin.y = 0;
+        btnRect.size.width = width;
         btnRect.size.height = YH(name);
         
         photoBtn = [[UIButton alloc] initWithFrame:btnRect];
