@@ -42,12 +42,25 @@
         // 替换为中等尺寸图片
         MJPhoto *photo = [[MJPhoto alloc] init];
         NSString *pictureUrlStr = [_dataArray[i] valueForKey:@"PictureUrl"];
+        NSString * originUrlStr = [_dataArray[i] valueForKey:@"OriginUrl"];
+        NSString * originSize = [_dataArray[i] valueForKey:@"OriginSize"];
+
         if (!pictureUrlStr.length || [pictureUrlStr isKindOfClass:[NSNull class]]) {
-//            photo.image = [UICommon getIos4OffsetY] ? [UIImage imageNamed:@"iphone5.png"] :[UIImage imageNamed:@"iphone4.png"];
-//            UIImageView *imgview = [UICommon getIos4OffsetY] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iphone5.png"]] : [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iphone4.png"]];
-//            photo.srcImageView = imgview;
-        } else {
+        }
+        else {
             photo.url = [NSURL URLWithString:pictureUrlStr]; // 图片路径
+        }
+        if (!originUrlStr.length || [originUrlStr isKindOfClass:[NSNull class]]) {
+        }
+        else
+        {
+            photo.originUrl = [NSURL URLWithString:originUrlStr]; // 原图路径
+        }
+        if (!originSize.length || [originSize isKindOfClass:[NSNull class]]) {
+        }
+        else
+        {
+            photo.originSize = originSize; // 原图大小
         }
         [photos addObject:photo];
     }

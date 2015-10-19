@@ -287,6 +287,14 @@
             {
                 NSMutableDictionary * dic = [NSMutableDictionary dictionary];
                 [dic setObject:ac.address forKey:@"PictureUrl"];
+                if(ac.allUrl)
+                {
+                    [dic setObject:ac.allUrl forKey:@"OriginUrl"];
+                }
+                if(ac.originImageSize)
+                {
+                    [dic setObject:ac.originImageSize forKey:@"OriginSize"];
+                }
                 
                 [_imageArray addObject:dic];
             }

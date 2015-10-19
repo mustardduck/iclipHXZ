@@ -11,6 +11,7 @@
 #import "MJPhotoView.h"
 #import "MJPhotoToolbar.h"
 //#import "RTLabel.h"
+#import "UICommon.h"
 
 #define kPadding 10
 #define kPhotoViewTagOffset 1000
@@ -28,6 +29,8 @@
     
     // 一开始的状态栏
     BOOL _statusBarHiddenInited;
+    
+    UIButton * _oriBtn;
 }
 @end
 
@@ -54,12 +57,103 @@
     // 2.创建工具条
     [self createToolbar];
     
+    //3.查看原图
+    [self createSeeOriginImage];
+    
     //3.加水印
 //    if(_isShowLogo)
 //    {
 //        [self createLogoBar];
 //    }
 }
+
+- (void) createSeeOriginImage
+{
+    if(!_oriBtn)
+    {
+        _oriBtn = [[UIButton alloc] init];
+        CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
+        CGFloat screenH = [UIScreen mainScreen].bounds.size.height;
+        _oriBtn.frame = CGRectMake((screenW - 111)/2, (screenH - 26 - 14), 111, 26);
+        [_oriBtn setTitle:@"查看原图" forState:UIControlStateNormal];
+        [_oriBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_oriBtn setTitleColor:RGBACOLOR(255, 255, 255, 0.7) forState:UIControlStateHighlighted];
+        [_oriBtn setBackgroundImage:[UIImage imageNamed:@"btn_chakan"] forState:UIControlStateNormal];
+        [_oriBtn setBackgroundImage:[UIImage imageNamed:@"btn_chakan_2"] forState:UIControlStateHighlighted];
+        _oriBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        
+        [self.view addSubview:_oriBtn];
+        
+        [_oriBtn addTarget:self action:@selector(jumpToOriginImage:) forControlEvents:UIControlEventTouchUpInside];
+        
+        _oriBtn.hidden = YES;
+    }
+}
+
+- (BOOL)URLSavedInDisk:(NSURL *)url
+{
+//    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+//    [manager diskImageExistsForURL:url]
+//    if ([manager diskImageExistsForURL:url]) {
+//        return YES;
+//    }else{
+//        return NO;
+//    }
+    return YES;
+}
+
+- (void)jumpToOriginImage:(id)sender
+{
+    NSLog(@"下载原图");
+    
+    NSInteger index = _oriBtn.tag;
+    
+    MJPhoto *photo = _photos[index];//_photos[index]
+    
+    for (MJPhotoView *photoView in _visiblePhotoViews) {
+        if (kPhotoViewIndex(photoView) == index) {
+            [_visiblePhotoViews removeObject:photoView];
+        }
+    }
+
+    MJPhotoView *photoView = [self dequeueReusablePhotoView];
+    if (!photoView) { // 添加新的图片view
+        photoView = [[MJPhotoView alloc] init];
+        photoView.photoViewDelegate = self;
+    }
+    // 调整当期页的frame
+    CGRect bounds = _photoScrollView.bounds;
+    CGRect photoViewFrame = bounds;
+    photoViewFrame.size.width -= (2 * kPadding);
+    photoViewFrame.origin.x = (bounds.size.width * index) + kPadding;
+    photoView.tag = kPhotoViewTagOffset + index;
+    
+    photoView.frame = photoViewFrame;
+    photoView.photo = photo;
+    
+    if([self URLSavedInDisk:photo.originUrl])
+    {
+        photo.showedOriginImage = YES;
+    }
+    else
+    {
+        photo.showedOriginImage = NO;
+    }
+    
+    [_visiblePhotoViews addObject:photoView];
+    
+    NSInteger tag = kPhotoViewTagOffset + index;
+    
+    [[_photoScrollView viewWithTag:tag] removeFromSuperview];
+    
+    [_photoScrollView addSubview:photoView];
+    
+    NSString * str = [NSString stringWithFormat:@"查看原图 (%@)", photo.originSize];
+    [_oriBtn setTitle:str forState:UIControlStateNormal];
+    _oriBtn.hidden = photo.originUrl ? NO : YES;//momo
+
+}
+
 
 - (void)show
 {
@@ -254,9 +348,15 @@
     MJPhoto *photo = _photos[index];
     photoView.frame = photoViewFrame;
     photoView.photo = photo;
-    
+
     [_visiblePhotoViews addObject:photoView];
     [_photoScrollView addSubview:photoView];
+    
+    [self createSeeOriginImage];
+    NSString * str = [NSString stringWithFormat:@"查看原图 (%@)", photo.originSize];
+    [_oriBtn setTitle:str forState:UIControlStateNormal];
+    _oriBtn.hidden = photo.originUrl ? NO : YES;//momo
+    _oriBtn.tag = index;
     
     [self loadImageNearIndex:index];
 }
@@ -266,6 +366,7 @@
 {
     if (index > 0) {
         MJPhoto *photo = _photos[index - 1];
+        
         [SDWebImageManager downloadWithURL:photo.url];
     }
     
@@ -300,7 +401,6 @@
 {
     _currentPhotoIndex = _photoScrollView.contentOffset.x / _photoScrollView.frame.size.width;
     _toolbar.currentPhotoIndex = _currentPhotoIndex;
-    
 }
 
 #pragma mark - UIScrollView Delegate

@@ -69,15 +69,25 @@
         _imageView.image = _photo.placeholder; // 占位图片
         _photo.srcImageView.image = nil;
         
+        //momo
+        NSURL * photoUrl = _photo.url;
+        if(_photo.showedOriginImage)
+        {
+            photoUrl = _photo.originUrl;
+        }
+        
         // 不是gif，就马上开始下载
-        if (![_photo.url.absoluteString hasSuffix:@"gif"]) {
+        if (![photoUrl.absoluteString hasSuffix:@"gif"]) {
             __unsafe_unretained MJPhotoView *photoView = self;
             __unsafe_unretained MJPhoto *photo = _photo;
-            [_imageView setImageWithURL:_photo.url placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+
+            [_imageView sd_setImageWithURL:photoUrl placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
                 photo.image = image;
                 
                 // 调整frame参数
                 [photoView adjustFrame];
+                
             }];
         }
     } else {
@@ -103,21 +113,18 @@
         __unsafe_unretained MJPhotoView *photoView = self;
         __unsafe_unretained MJPhotoLoadingView *loading = _photoLoadingView;
         
-        [_imageView sd_setImageWithURL:_photo.url placeholderImage:_photo.srcImageView.image options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        NSURL * photoUrl = _photo.url;
+        if(_photo.showedOriginImage)
+        {
+            photoUrl = _photo.originUrl;
+        }
+        [_imageView sd_setImageWithURL:photoUrl placeholderImage:_photo.srcImageView.image options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             if (receivedSize > kMinProgress) {
                 loading.progress = (float)receivedSize/expectedSize;
             }
         } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             [photoView photoDidFinishLoadWithImage:image];
         }];
-
-//        [_imageView sd_setImageWithURL:_photo.url placeholderImage:_photo.srcImageView.image options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSUInteger receivedSize, NSInteger expectedSize) {
-//            if (receivedSize > kMinProgress) {
-//                loading.progress = (float)receivedSize/expectedSize;
-//            }
-//        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//            [photoView photoDidFinishLoadWithImage:image];
-//        }];
     }
 }
 
@@ -263,6 +270,7 @@
 - (void)dealloc
 {
     // 取消请求
-    [_imageView setImageWithURL:[NSURL URLWithString:@"file:///abc"]];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:@"file:///abc"]];
+
 }
 @end
