@@ -62,6 +62,17 @@
     [self showImage];
 }
 
+- (BOOL)URLSavedInDisk:(NSURL *)url
+{
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    if ([manager diskImageExistsForURL:url]) {
+        return YES;
+    }else{
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark 显示图片
 - (void)showImage
 {
@@ -71,9 +82,12 @@
         
         //momo
         NSURL * photoUrl = _photo.url;
+        
         if(_photo.showedOriginImage)
         {
             photoUrl = _photo.originUrl;
+//            NSURL * url = [NSURL URLWithString:@"http://www.iclip365.com:8080/clip_basic/static/file/10151016170500011444986332278.jpg"];
+//            photoUrl = url;
         }
         
         // 不是gif，就马上开始下载
@@ -81,7 +95,12 @@
             __unsafe_unretained MJPhotoView *photoView = self;
             __unsafe_unretained MJPhoto *photo = _photo;
             
-
+//            [_imageView setImageWithURL:photoUrl placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//                photo.image = image;
+//                
+//                // 调整frame参数
+//                [photoView adjustFrame];
+//            }];
             [_imageView sd_setImageWithURL:photoUrl placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
                 photo.image = image;
                 
@@ -118,6 +137,16 @@
         {
             photoUrl = _photo.originUrl;
         }
+        
+//        [_imageView setImageWithURL:photoUrl placeholderImage:_photo.srcImageView.image options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSUInteger receivedSize, long long expectedSize) {
+//            if (receivedSize > kMinProgress) {
+//                loading.progress = (float)receivedSize/expectedSize;
+//            }
+//        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//            [photoView photoDidFinishLoadWithImage:image];
+//
+//        }];
+        
         [_imageView sd_setImageWithURL:photoUrl placeholderImage:_photo.srcImageView.image options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
             if (receivedSize > kMinProgress) {
                 loading.progress = (float)receivedSize/expectedSize;
@@ -270,6 +299,7 @@
 - (void)dealloc
 {
     // 取消请求
+//    [_imageView setImageWithURL:[NSURL URLWithString:@"file:///abc"]];
     [_imageView sd_setImageWithURL:[NSURL URLWithString:@"file:///abc"]];
 
 }

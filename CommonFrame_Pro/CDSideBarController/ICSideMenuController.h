@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "ICMemberTableViewController.h"
 #import "Member.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @protocol ICSideMenuControllerDelegate <NSObject>
 

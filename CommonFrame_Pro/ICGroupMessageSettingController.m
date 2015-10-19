@@ -9,7 +9,7 @@
 #import "ICGroupMessageSettingController.h"
 #import "UIColor+HexString.h"
 #import "Group.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "UICommon.h"
 #import "SVProgressHUD.h"
 

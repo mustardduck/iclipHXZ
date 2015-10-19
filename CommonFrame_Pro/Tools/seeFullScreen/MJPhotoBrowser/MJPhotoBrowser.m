@@ -90,18 +90,6 @@
     }
 }
 
-- (BOOL)URLSavedInDisk:(NSURL *)url
-{
-//    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-//    [manager diskImageExistsForURL:url]
-//    if ([manager diskImageExistsForURL:url]) {
-//        return YES;
-//    }else{
-//        return NO;
-//    }
-    return YES;
-}
-
 - (void)jumpToOriginImage:(id)sender
 {
     NSLog(@"下载原图");
@@ -129,17 +117,10 @@
     photoView.tag = kPhotoViewTagOffset + index;
     
     photoView.frame = photoViewFrame;
+    photo.showedOriginImage = YES;
+    photo.firstShow = YES;
     photoView.photo = photo;
-    
-    if([self URLSavedInDisk:photo.originUrl])
-    {
-        photo.showedOriginImage = YES;
-    }
-    else
-    {
-        photo.showedOriginImage = NO;
-    }
-    
+        
     [_visiblePhotoViews addObject:photoView];
     
     NSInteger tag = kPhotoViewTagOffset + index;

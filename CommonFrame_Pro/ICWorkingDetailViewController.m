@@ -7,7 +7,7 @@
 //
 
 #import "ICWorkingDetailViewController.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <MJRefresh.h>
 #import <CMPopTipView.h>
 #import "RRAttributedString.h"

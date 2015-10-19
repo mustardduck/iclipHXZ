@@ -10,7 +10,7 @@
 #import "InputText.h"
 #import "UIColor+HexString.h"
 #import "Group.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "MQPublishMissionController.h"
 
 @interface ICGroupListViewController() <UITableViewDataSource,UITableViewDelegate,InputTextDelegate,UITextFieldDelegate>

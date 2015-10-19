@@ -8,7 +8,7 @@
 
 #import "ICSettingGroupViewController.h"
 #import "UIColor+HexString.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 //#import <AVOSCloud/AVOSCloud.h>
 
 @interface ICSettingGroupViewController()<UITableViewDataSource,UITableViewDelegate>

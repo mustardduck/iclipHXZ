@@ -8,7 +8,7 @@
 
 #import "ICSearchViewController.h"
 #import "UIColor+HexString.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "InputText.h"
 
 @interface ICSearchViewController() <UITableViewDataSource,UITableViewDelegate,InputTextDelegate,UITextFieldDelegate>

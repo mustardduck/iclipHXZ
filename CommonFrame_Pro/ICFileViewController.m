@@ -9,7 +9,7 @@
 #import "ICFileViewController.h"
 #import "UIColor+HexString.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 #define BASE_URL @"http://120.26.113.44:8080/clip_basic"
 

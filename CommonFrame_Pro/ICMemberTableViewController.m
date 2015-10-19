@@ -9,7 +9,7 @@
 #import "ICMemberTableViewController.h"
 #import <AIMTableViewIndexBar.h>
 #import "InputText.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "UICommon.h"
 
 @interface ICMemberTableViewController() <UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate>

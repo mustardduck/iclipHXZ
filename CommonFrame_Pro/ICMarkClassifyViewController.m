@@ -7,7 +7,7 @@
 //
 
 #import "ICMarkClassifyViewController.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface ICMarkClassifyViewController()<UITableViewDataSource,UITableViewDelegate>
 {

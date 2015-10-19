@@ -11,7 +11,7 @@
 #import "ICAccountViewController.h"
 #import <MJRefresh.h>
 #import <UIActivityIndicator-for-SDWebImage+UIButton/UIImageView+UIActivityIndicatorForSDWebImage.h>
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "PPDragDropBadgeView.h"
 #import "UICommon.h"
 #import <Reachability.h>

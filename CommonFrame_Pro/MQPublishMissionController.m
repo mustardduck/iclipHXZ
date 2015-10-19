@@ -10,7 +10,7 @@
 #import "UICommon.h"
 #import "PSTCollectionView.h"
 #import "AddPictureCell.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface MQPublishMissionController ()<PSTCollectionViewDelegate, PSTCollectionViewDataSource>
 {

@@ -8,7 +8,7 @@
 
 #import "ICGroupDetailViewController.h"
 #import "UIColor+HexString.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <MJRefresh.h>
 #import "Mission.h"
 #import "UICommon.h"

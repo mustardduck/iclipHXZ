@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "UIButton+WebCache.h"
-//#import "SDImageCache.h"
+#import "UIButton+WebCache.h"
+#import "SDImageCache.h"
 
 @interface UIButton (UIActivityIndicatorForSDWebImage)
 

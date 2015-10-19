@@ -9,7 +9,7 @@
 #import "ICPersonalInfoViewController.h"
 #import <SlideNavigationController.h>
 #import "LoginUser.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <ZYQAssetPickerController.h>
 #import "VPImageCropperViewController.h"
 

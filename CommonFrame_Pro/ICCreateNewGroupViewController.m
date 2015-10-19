@@ -9,7 +9,7 @@
 #import "ICCreateNewGroupViewController.h"
 #import "InputText.h"
 #import <ZYQAssetPickerController.h>
-#import <UIButton+UIActivityIndicatorForSDWebImage.h>
+#import "UIButton+UIActivityIndicatorForSDWebImage.h"
 #import "ICMainViewController.h"
 #import "VPImageCropperViewController.h"
 

@@ -8,7 +8,7 @@
 
 #import "ICMemberInfoViewController.h"
 #import "UIColor+HexString.h"
-#import <UIImageView+UIActivityIndicatorForSDWebImage.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <MessageUI/MessageUI.h>
 #import "PreviewViewController.h"
 

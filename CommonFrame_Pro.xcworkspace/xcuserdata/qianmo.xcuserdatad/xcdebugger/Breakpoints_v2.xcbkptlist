@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
+            timestampString = "466944877.338674"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
             landmarkName = "-showPhotoViewAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
+            timestampString = "466944877.338674"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
+            startingLineNumber = "352"
+            endingLineNumber = "352"
             landmarkName = "-loadImageNearIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
+            timestampString = "466944877.338674"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "376"
-            endingLineNumber = "376"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
             landmarkName = "-loadImageNearIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
+            timestampString = "466944877.338674"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "-showPhotoViewAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -112,47 +112,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
+            timestampString = "466944043.205283"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "-jumpToOriginImage:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-jumpToOriginImage:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "-jumpToOriginImage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -164,11 +132,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
-            timestampString = "466935430.174461"
+            timestampString = "466944043.205283"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "-showImage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
+            timestampString = "466945007.807404"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "-showImage"
             landmarkType = "5">
          </BreakpointContent>
@@ -180,11 +164,75 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
-            timestampString = "466935532.001702"
+            timestampString = "466945007.807404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "-photoStartLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
+            timestampString = "466944877.338674"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "-jumpToOriginImage:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
+            timestampString = "466944737.598464"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "-showImage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
+            timestampString = "466945062.471379"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "-showImage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
+            timestampString = "466945230.504613"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "-photoStartLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,29 +244,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
-            timestampString = "466935561.656498"
+            timestampString = "466945286.001859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "-photoStartLoad"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-showImage"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoBrowser.m"
-            timestampString = "466939806.056105"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "-jumpToOriginImage:"
-            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[MJPhotoView showImage]"
+                  moduleName = "&#x56de;&#x5f62;&#x9488;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qianmo/Documents/iclipHXZ/CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
+                  timestampString = "466945286.003457"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "539">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__24-[MJPhotoView showImage]_block_invoke"
+                  moduleName = "&#x56de;&#x5f62;&#x9488;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qianmo/Documents/iclipHXZ/CommonFrame_Pro/Tools/seeFullScreen/MJPhotoBrowser/MJPhotoView.m"
+                  timestampString = "466945286.003619"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "110">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

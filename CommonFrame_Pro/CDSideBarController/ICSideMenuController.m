@@ -11,7 +11,7 @@
 #import "InputText.h"
 #import <AIMTableViewIndexBar.h>
 #import "UIColor+HexString.h"
-#import <UIButton+UIActivityIndicatorForSDWebImage.h>
+#import "UIButton+UIActivityIndicatorForSDWebImage.h"
 
 @interface ICSideMenuController()<UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
 {
