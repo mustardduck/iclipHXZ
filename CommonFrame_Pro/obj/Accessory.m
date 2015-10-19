@@ -14,9 +14,9 @@
 
 @implementation Accessory
 
-+(Accessory*)jsonToObj:(NSString *)jsonString
++(Accessory*)jsonToObj:(NSData *)jsonString
 {
-    id val = [CommonFile json:jsonString];
+    id val = [CommonFile jsonNSDATA:jsonString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -51,12 +51,12 @@
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&userId=%@",Accessory_INFO, workGroupId, [LoginUser loginUserID]]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&userId=%@",Accessory_INFO, workGroupId, [LoginUser loginUserID]]];
     
     if (responseString == nil) {
         return array;
     }
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;

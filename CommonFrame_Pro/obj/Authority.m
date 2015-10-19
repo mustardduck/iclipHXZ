@@ -19,12 +19,12 @@
 {
     NSMutableArray *array = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&workContactsId=%@",CURL,workgroupId,contractId]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&workContactsId=%@",CURL,workgroupId,contractId]];
     
     if (responseString == nil) {
         return array;
     }
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -92,13 +92,13 @@
         [dic setObject:contractId forKey:@"workContactsId"];
         [dic setObject:auStr forKey:@"str"];
         
-        NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:CHANGE_AUTHORITY postData:dic];
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CHANGE_AUTHORITY postData:dic];
         
         if (responseString == nil) {
             return re;
         }
         
-        id val = [CommonFile json:responseString];
+        id val = [CommonFile jsonNSDATA:responseString];
         
         if ([val isKindOfClass:[NSDictionary class]]) {
             NSDictionary* dic = (NSDictionary*)val;

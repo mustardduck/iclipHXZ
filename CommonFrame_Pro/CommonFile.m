@@ -7,8 +7,7 @@
 //
 
 #import "CommonFile.h"
-#import <SBJson4Parser.h>
-
+//#import <SBJson4Parser.h>
 
 @implementation CommonFile
 
@@ -26,35 +25,42 @@
             ]; 
 }
 
-+ (id)json:(NSString*)jsonString
++ (id)jsonNSDATA:(NSData*)response
 {
-    __block id reVal;
+    id val = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
     
-    SBJson4ValueBlock block = ^(id v,BOOL *STOP)
-    {
-        BOOL isArray = [v isKindOfClass:[NSArray class]];
-        NSLog(@"Found: %@", isArray ? @"Array" : @"Object");
-        reVal = v;
-    };
-    
-    SBJson4ErrorBlock eh = ^(NSError* err) {
-        NSLog(@"OOPS: %@", err);
-    };
-    
-    id parser = [SBJson4Parser multiRootParserWithBlock:block
-                                           errorHandler:eh];
-    
-    id data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    [parser parse:data];
-    
-    NSArray* aa = @[@"aaaa",@"bbb"];
-    
-    NSData *data1 = [NSKeyedArchiver archivedDataWithRootObject:aa];
-    [parser parse:data1];
-    
-    return reVal;
-
+    return val;
 }
+
+//+ (id)json:(NSString*)jsonString
+//{
+//    __block id reVal;
+//    
+//    SBJson4ValueBlock block = ^(id v,BOOL *STOP)
+//    {
+//        BOOL isArray = [v isKindOfClass:[NSArray class]];
+//        NSLog(@"Found: %@", isArray ? @"Array" : @"Object");
+//        reVal = v;
+//    };
+//    
+//    SBJson4ErrorBlock eh = ^(NSError* err) {
+//        NSLog(@"OOPS: %@", err);
+//    };
+//    
+//    id parser = [SBJson4Parser multiRootParserWithBlock:block
+//                                           errorHandler:eh];
+//    
+//    id data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+//    [parser parse:data];
+//    
+//    NSArray* aa = @[@"aaaa",@"bbb"];
+//    
+//    NSData *data1 = [NSKeyedArchiver archivedDataWithRootObject:aa];
+//    [parser parse:data1];
+//    
+//    return reVal;
+//
+//}
 
 + (NSString*)toJson:(id)theData
 {

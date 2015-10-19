@@ -17,6 +17,8 @@
 + (id)json:(NSString*)jsonString;
 + (NSString*)toJson:(id)obj;
 
++ (id)jsonNSDATA:(NSData*)response;
+
 + (void)saveInfoWithKey:(id)value withKey:(NSString*)key;
 + (id)getInfoWithKey:(NSString*)key;
 + (void)removeInfoWithKey:(NSString*)key;

@@ -9,7 +9,7 @@
 #import "LoginUser.h"
 #import "HttpBaseFile.h"
 #import "CommonFile.h"
-#import <SBJson4Parser.h>
+//#import <SBJson4Parser.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #define CURL                @"/user/loginUser.hz"
@@ -37,13 +37,13 @@
         [dic setObject:self.version forKey:@"productVersion"];
         [dic setObject:self.systemVersion forKey:@"systemVersion"];
         
-        NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
         
         if (responseString == nil) {
             return hasLogined;
         }
         
-        id val = [CommonFile json:responseString];
+        id val = [CommonFile jsonNSDATA:responseString];
         
         if ([val isKindOfClass:[NSDictionary class]]) {
             NSDictionary* dic1 = (NSDictionary*)val;
@@ -126,9 +126,9 @@
     NSString* userid = [LoginUser loginUserID];
     
     if (userid != nil) {
-        NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",QUIT_URL,userid]];
+        NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",QUIT_URL,userid]];
         
-        id val = [CommonFile json:responseString];
+        id val = [CommonFile jsonNSDATA:responseString];
         
         if ([val isKindOfClass:[NSDictionary class]]) {
             NSDictionary* dic = (NSDictionary*)val;
@@ -159,13 +159,13 @@
         [dic setObject:sourceStr forKey:@"sourceStr"];
         [dic setObject:code forKey:@"code"];
         
-        NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:REG_URL postData:dic];
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:REG_URL postData:dic];
         
         if (responseString == nil) {
             return re;
         }
         
-        id val = [CommonFile json:responseString];
+        id val = [CommonFile jsonNSDATA:responseString];
         
         if ([val isKindOfClass:[NSDictionary class]]) {
             NSDictionary* dic = (NSDictionary*)val;
@@ -199,13 +199,13 @@
         [dic setObject:userid forKey:@"userId"];
        
         
-        NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:PWD_URL postData:dic];
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:PWD_URL postData:dic];
         
         if (responseString == nil) {
             return re;
         }
         
-        id val = [CommonFile json:responseString];
+        id val = [CommonFile jsonNSDATA:responseString];
         
         if ([val isKindOfClass:[NSDictionary class]]) {
             NSDictionary* dic = (NSDictionary*)val;
@@ -233,13 +233,13 @@
         [dic setObject:sourceStr forKey:@"sourceStr"];
         [dic setObject:[NSString stringWithFormat:@"%ld",source] forKey:@"source"];
         
-        NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:FIND_PWD_URL postData:dic];
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:FIND_PWD_URL postData:dic];
         
         if (responseString == nil) {
             return re;
         }
         
-        id val = [CommonFile json:responseString];
+        id val = [CommonFile jsonNSDATA:responseString];
         
         if ([val isKindOfClass:[NSDictionary class]]) {
             NSDictionary* dic = (NSDictionary*)val;
@@ -265,13 +265,13 @@
     
     NSString* filePath = [CommonFile saveImageToDocument:data fileName:filename];
     
-    NSString* responseString = [HttpBaseFile requestImageWithSyncByPost:UPLOAD_IMAGE_URL withFilePath:filePath];
+    NSData* responseString = [HttpBaseFile requestImageWithSyncByPost:UPLOAD_IMAGE_URL withFilePath:filePath];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     NSString * strImg = @"";
     
@@ -314,13 +314,13 @@
     
     NSString* filePath = [CommonFile saveImageToDocument:data fileName:filename];
     
-    NSString* responseString = [HttpBaseFile requestImageWithSyncByPost:UPLOAD_IMAGE_URL withFilePath:filePath];
+    NSData* responseString = [HttpBaseFile requestImageWithSyncByPost:UPLOAD_IMAGE_URL withFilePath:filePath];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     NSString * strImg = @"";
     
@@ -357,13 +357,13 @@
     [dic setObject:[LoginUser loginUserID] forKey:@"userId"];
     [dic setObject:photo forKey:@"img"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:dic];
     
     if (responseString == nil) {
         return re;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;

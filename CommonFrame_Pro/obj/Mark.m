@@ -20,7 +20,7 @@
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* responseString = @"";
+    NSData* responseString = nil;
     
     if([url isEqualToString:CURL])
     {
@@ -34,7 +34,7 @@
     if (responseString == nil) {
         return array;
     }
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -86,13 +86,13 @@
     [dic setObject:labelName forKey:@"labelName"];
 
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:NEW_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:NEW_URL postData:dic];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -120,13 +120,13 @@
     [dic setObject:@"-1" forKey:@"status"];
     [dic setObject:wgid forKey:@"workGroupId"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:DELETE_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:DELETE_URL postData:dic];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -152,13 +152,13 @@
     [dic setObject:labelID forKey:@"labelId"];
     [dic setObject:name forKey:@"labelName"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:dic];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -197,13 +197,13 @@
     [dic setObject:workGroupId forKey:@"workGroupId"];
     [dic setObject:mIdStr forKey:@"str"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_MEM_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_MEM_URL postData:dic];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;

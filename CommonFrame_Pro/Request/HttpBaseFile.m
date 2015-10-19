@@ -21,9 +21,9 @@
     return BASE_URL;
 }
 
-+ (NSString*)requestDataWithSyncByPost:(NSString*)urlStr postData:(NSDictionary*)data
++ (NSData*)requestDataWithSyncByPost:(NSString*)urlStr postData:(NSDictionary*)data
 {
-    NSString* res = nil;
+    NSData* res = nil;
     
     NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BASE_URL,urlStr]];
     
@@ -38,14 +38,14 @@
     
     [requestForm startSynchronous];
     
-    res = [requestForm responseString];
+    res = [requestForm responseData];
     
     return res;
 }
 
-+ (NSString*)requestImageWithSyncByPost:(NSString*)urlStr withFilePath:(NSString *)filePath
++ (NSData*)requestImageWithSyncByPost:(NSString*)urlStr withFilePath:(NSString *)filePath
 {
-    NSString* res = nil;
+    NSData* res = nil;
     
     NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BASE_URL,urlStr]];
     
@@ -60,7 +60,7 @@
     
     [requestForm startSynchronous];
     
-    res = [requestForm responseString];
+    res = [requestForm responseData];
     
     return res;
 }
@@ -87,9 +87,9 @@
     return res;
 }
 
-+ (NSString*)requestDataWithSync:(NSString *)urlStr
++ (NSData*)requestDataWithSync:(NSString *)urlStr
 {
-    NSString *response = nil;
+    NSData *response = nil;
     
     urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -108,16 +108,16 @@
     NSError *error = [request error];
     
     if (!error) {
-        response = [request responseString];
+        response = [request responseData];
     }
     
     return response;
 }
 
 
-+ (NSString*)requestDataWithASyncByPost:(NSString*)urlStr postData:(NSDictionary*)data
++ (NSData*)requestDataWithASyncByPost:(NSString*)urlStr postData:(NSDictionary*)data
 {
-    __block NSString *resString = nil;
+    __block NSData *resString = nil;
     
     NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BASE_URL,urlStr]];
     
@@ -133,7 +133,7 @@
     
     [request setCompletionBlock:^{
         
-        resString = [request responseString];
+        resString = [request responseData];
         NSLog(@"%@",resString);
         //NSData* resData = [request responseData];
     }];
@@ -151,9 +151,9 @@
     return resString;
 }
 
-+ (NSString*)requestDataWithASync:(NSString*)urlStr
++ (NSData*)requestDataWithASync:(NSString*)urlStr
 {
-    __block NSString *resString = nil;
+    __block NSData *resString = nil;
     
      urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -165,7 +165,7 @@
     
     [request setCompletionBlock:^{
         
-        resString = [request responseString];
+        resString = [request responseData];
         //NSData* resData = [request responseData];
     }];
     

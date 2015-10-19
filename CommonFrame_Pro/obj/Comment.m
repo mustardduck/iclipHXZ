@@ -31,13 +31,13 @@
     [dic setObject:self.main forKey:@"main"];
     [dic setObject:self.parentId forKey:@"parentId"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithASyncByPost:CURL postData:dic];//requestDataWithASyncByPost("A")
+    NSData* responseString = [HttpBaseFile requestDataWithASyncByPost:CURL postData:dic];//requestDataWithASyncByPost("A")
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -66,13 +66,13 @@
     
     [dic setObject:taskId forKey:@"taskId"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:DELETECOMMENT_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:DELETECOMMENT_URL postData:dic];
 
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -102,13 +102,13 @@
     [dic setObject:self.main forKey:@"main"];
     [dic setObject:self.parentId forKey:@"parentId"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
     
     if (responseString == nil) {
         return isOk;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -143,13 +143,13 @@
     [dic setObject:wgid forKey:@"workGroupId"];
     [dic setObject:(isPraise?@"1":@"0") forKey:@"status"];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSyncByPost:PRAISE_URL postData:dic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:PRAISE_URL postData:dic];
     
     if (responseString == nil) {
         return NO;
     }
     
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;

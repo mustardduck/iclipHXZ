@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSString * originImageSize;//文件大小
 @property (nonatomic, strong) NSString * originFileName;//文件名字
 
-+(Accessory*)jsonToObj:(NSString*)jsonString;
++(Accessory*)jsonToObj:(NSData*)jsonString;
 
 + (NSArray*)getAccessoryListByWorkGroupID:(NSString*)workGroupId;
 
