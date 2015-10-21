@@ -1618,9 +1618,9 @@
                                                     <constraint firstAttribute="height" constant="0.5" id="ba8-oB-a7m"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3s-py-3UD">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3s-py-3UD" customClass="PH_UITextView">
                                                 <rect key="frame" x="0.0" y="43" width="320" height="156"/>
-                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="156" id="lSI-K3-lBq"/>
                                                 </constraints>
@@ -1917,6 +1917,8 @@
                         <outlet property="jiezhiDelBtn" destination="mkk-pq-3HU" id="NNA-Jh-Z2o"/>
                         <outlet property="jiezhiLbl" destination="tWK-OA-U3I" id="E2n-jg-AWQ"/>
                         <outlet property="jiezhiView" destination="YLd-fM-8kc" id="CVd-7F-8dm"/>
+                        <outlet property="mainScrollView" destination="zP6-iP-ZgB" id="sBd-sy-8iC"/>
+                        <outlet property="mainView" destination="tJJ-mq-Bhw" id="nl7-r4-bF3"/>
                         <outlet property="timeToTxtViewTopCons" destination="C9f-pm-Rl3" id="0WH-up-zT9"/>
                         <outlet property="timeView" destination="swH-dG-4Ke" id="9CN-GU-MLB"/>
                         <outlet property="titleTxt" destination="32K-E2-0W9" id="8wO-7s-QfF"/>

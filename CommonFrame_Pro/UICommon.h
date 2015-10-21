@@ -57,6 +57,22 @@ typedef void (^keyboardBlock) ();
 #pragma mark - UIView
 @interface UIView (RCMethod)
 
+@property CGPoint origin;
+@property CGSize size;
+
+@property (readonly) CGPoint bottomLeft;
+@property (readonly) CGPoint bottomRight;
+@property (readonly) CGPoint topRight;
+
+@property CGFloat height;
+@property CGFloat width;
+
+@property CGFloat top;
+@property CGFloat left;
+
+@property CGFloat bottom;
+@property CGFloat right;
+
 /** 边界 */
 - (void)setBorderWithColor:(UIColor *)color;
 - (void)setRoundCorner:(float)cornerRadius;
@@ -75,6 +91,8 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) disableGreyColor;//灰字不能点击
 + (UIColor *) greyStatusBarColor;//状态栏背景颜色
 + (UIColor *) cellHoverBackgroundColor;//列表点击时背景颜色；
++ (UIColor *) grayLineColor;//灰色线
++ (UIColor *) grayTitleColor;//灰色字
 
 @end
 

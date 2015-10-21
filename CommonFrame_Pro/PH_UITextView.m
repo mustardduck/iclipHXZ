@@ -106,7 +106,7 @@
             
         {
             
-            placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(2,12,self.bounds.size.width - 16,0)];
+            placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(14,12,self.bounds.size.width - 16,0)];
             
             placeHolderLabel.lineBreakMode = NSLineBreakByWordWrapping;
             

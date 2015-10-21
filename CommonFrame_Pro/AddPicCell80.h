@@ -1,15 +1,14 @@
 //
-//  AddPictureCell.h
-//  miaozhuan
+//  AddPicCell80.h
+//  CommonFrame_Pro
 //
-//  Created by 孙向前 on 14-11-18.
-//  Copyright (c) 2014年 zdit. All rights reserved.
+//  Created by 倩 莫 on 15/10/20.
+//  Copyright © 2015年 ionitech. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "PSTCollectionView.h"
 
-@interface AddPictureCell : PSTCollectionViewCell
+@interface AddPicCell80 : UICollectionViewCell
 
 @property (retain, nonatomic) IBOutlet UIImageView *imageView;
 @property (retain, nonatomic) IBOutlet UIButton *btnAdd;
