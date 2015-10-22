@@ -19,7 +19,7 @@
 //标签
 @property(nonatomic,strong) NSArray* cMarkAarry;
 //附件
-@property(nonatomic,strong) NSArray* cAccessoryArray;
+@property(nonatomic,strong) NSMutableArray* cAccessoryArray;
 //完成时间
 @property(nonatomic,strong) NSString* strFinishTime;
 //提醒时间

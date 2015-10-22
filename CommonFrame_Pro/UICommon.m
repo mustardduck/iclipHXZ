@@ -8,10 +8,47 @@
 
 #import "UICommon.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "NSStringEx.h"
 
 static UIViewController *imagePicker = nil;
 
 @implementation UICommon
+
++ (NSString *) findFileType:(NSString *) name
+{
+    NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
+
+    NSString * fileType = [name substringFromIndex:range.location + 1];
+
+     NSString * fileNum = @"";
+    
+    if([fileType equalsIgnoreCase:@"doc"] || [fileType equalsIgnoreCase:@"docx"])
+    {
+        fileNum = @"1";
+    }
+    else if ([fileType equalsIgnoreCase:@"xls"] || [fileType equalsIgnoreCase:@"xlsx"])
+    {
+        fileNum = @"2";
+
+    }
+    else if ([fileType equalsIgnoreCase:@"ppt"] || [fileType equalsIgnoreCase:@"pptx"])
+    {
+        fileNum = @"3";
+    }
+    else if ([fileType equalsIgnoreCase:@"pdf"])
+    {
+        fileNum = @"4";
+    }
+    else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"])
+    {
+        fileNum = @"0";
+    }
+    else
+    {
+        fileNum = @"6";
+    }
+    return fileNum;
+}
 
 + (CGSize)getWidthFromLabel:(UILabel *)label
 {
@@ -534,6 +571,27 @@ static UIViewController *imagePicker = nil;
 + (UIColor *) tagBlueBackColor
 {
     return RGBCOLOR(90, 112, 223);
+}
+
++ (UIColor *) pdfBackColor
+{
+    return RGBCOLOR(143, 57, 231);
+}
++ (UIColor *) wordBackColor
+{
+    return RGBCOLOR(57, 161, 231);
+}
++ (UIColor *) excelBackColor
+{
+    return RGBCOLOR(73, 204, 178);
+}
++ (UIColor *) qitaBackColor
+{
+    return RGBCOLOR(172, 172, 173);
+}
++ (UIColor *) pptBackColor
+{
+    return RGBCOLOR(245, 124, 36);
 }
 
 @end

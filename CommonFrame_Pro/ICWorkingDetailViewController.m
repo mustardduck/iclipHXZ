@@ -1027,34 +1027,34 @@
                     {
                         imgName = @"btn_word";
                         
-                        attachment.backgroundColor = RGBCOLOR(57, 161, 231);
+                        attachment.backgroundColor = [UIColor wordBackColor];
                         
                     }
                     else if (fileType == 2)
                     {
                         imgName = @"btn_excel";
                         
-                        attachment.backgroundColor = RGBCOLOR(73, 204, 178);
+                        attachment.backgroundColor = [UIColor excelBackColor];
                     }
                     else if (fileType == 3)
                     {
                         imgName = @"btn_ppt";
                         
-                        attachment.backgroundColor = RGBCOLOR(245, 124, 36);
+                        attachment.backgroundColor = [UIColor pptBackColor];
 
                     }
                     else if (fileType == 4)
                     {
                         imgName = @"btn_pdf";
                         
-                        attachment.backgroundColor = RGBCOLOR(143, 57, 231);
+                        attachment.backgroundColor = [UIColor pdfBackColor];
 
                     }
                     else if(fileType == 6)
                     {
                         imgName = @"btn_other";
 
-                        attachment.backgroundColor = RGBCOLOR(172, 172, 173);
+                        attachment.backgroundColor = [UIColor qitaBackColor];
                     }
                     
                     UIImageView * fileIcon = [[UIImageView alloc] init];

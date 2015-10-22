@@ -379,26 +379,26 @@ typedef enum {
     
     if ([self.icPublishMissionController respondsToSelector:@selector(setCAccessoryArray:)]) {
         
-        if (_hasUploadedFileArray.count > 0) {
-            
-            for (int i = 0; i < _hasUploadedFileArray.count; i++) {
-                Accessory* ac = [_hasUploadedFileArray objectAtIndex:i];
-                BOOL isEx = NO;
-                for (int j = 0; j < _AccessoryArray.count; j++) {
-                    Accessory* acc = [_AccessoryArray objectAtIndex:j];
-                    
-                    if ([ac.name isEqualToString:acc.name]) {
-                        isEx = YES;
-                        break;
-                    }
-                }
-                if (!isEx) {
-                    [_AccessoryArray addObject:ac];
-                }
-            }
-            
-            //[_AccessoryArray addObjectsFromArray:_hasUploadedFileArray];
-        }
+//        if (_hasUploadedFileArray.count > 0) {
+//            
+//            for (int i = 0; i < _hasUploadedFileArray.count; i++) {
+//                Accessory* ac = [_hasUploadedFileArray objectAtIndex:i];
+//                BOOL isEx = NO;
+//                for (int j = 0; j < _AccessoryArray.count; j++) {
+//                    Accessory* acc = [_AccessoryArray objectAtIndex:j];
+//                    
+//                    if ([ac.name isEqualToString:acc.name]) {
+//                        isEx = YES;
+//                        break;
+//                    }
+//                }
+//                if (!isEx) {
+//                    [_AccessoryArray addObject:ac];
+//                }
+//            }
+//            
+//            //[_AccessoryArray addObjectsFromArray:_hasUploadedFileArray];
+//        }
         
         if (!_isDone) {
             _AccessoryArray = [NSMutableArray arrayWithArray:_tmpData];
@@ -792,9 +792,39 @@ typedef enum {
 
             Accessory * acc = (Accessory *)obj;
             
+            if (_hasUploadedFileArray.count > 0) {
+                
+                for (int i = 0; i < _hasUploadedFileArray.count; i++) {
+                    Accessory* ac = [_hasUploadedFileArray objectAtIndex:i];
+                    BOOL isEx = NO;
+                    for (int j = 0; j < _AccessoryArray.count; j++) {
+                        Accessory* acc = [_AccessoryArray objectAtIndex:j];
+                        
+                        if ([ac.name isEqualToString:acc.name]) {
+                            isEx = YES;
+                            break;
+                        }
+                    }
+                    if (!isEx) {
+                        if(!_AccessoryArray.count)
+                        {
+                            _AccessoryArray = [NSMutableArray array];
+                            
+                        }
+                        [_AccessoryArray addObject:ac];
+                    }
+                }
+                
+                //[_AccessoryArray addObjectsFromArray:_hasUploadedFileArray];
+            }
+            
             if (acc != nil) {
                 
-                _AccessoryArray = [NSMutableArray array];
+                if(!_AccessoryArray.count)
+                {
+                    _AccessoryArray = [NSMutableArray array];
+
+                }
 
                 [_AccessoryArray addObject:acc];
                 

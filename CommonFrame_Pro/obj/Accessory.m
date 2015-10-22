@@ -9,6 +9,7 @@
 #import "Accessory.h"
 #import "CommonFile.h"
 #import "LoginUser.h"
+#import "UICommon.h"
 
 #define Accessory_INFO           @"/workgroup/findWgAccessory.hz"
 
@@ -84,7 +85,9 @@
                             cm.status = [[di valueForKey:@"status"] boolValue];
                             cm.address = [di valueForKey:@"address"];
                             cm.name = [di valueForKey:@"name"];
-                            cm.type = [[di valueForKey:@"type"] integerValue];
+//                            cm.type = [[di valueForKey:@"type"] integerValue];
+                            cm.type = [[UICommon findFileType:cm.name] integerValue];
+                            
                             cm.size = [di valueForKey:@"size"];
                             cm.sourceId = [di valueForKey:@"sourceId"];
                             cm.addTime = [di valueForKey:@"addTime"];

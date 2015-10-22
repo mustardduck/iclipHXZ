@@ -31,8 +31,10 @@ typedef void (^keyboardBlock) ();
 
 #define SCREENWIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height)
-/** 边界 */
-- (void)setBorderWithColor:(UIColor *)color;
+//取后缀名filetype
++ (NSString *) findFileType:(NSString *) name;
+
+
 
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;
@@ -102,5 +104,10 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) grayMarkHoverBackgroundColor;
 + (UIColor *) tagBlueBackColor;
 
++ (UIColor *) pdfBackColor;
++ (UIColor *) wordBackColor;
++ (UIColor *) excelBackColor;
++ (UIColor *) qitaBackColor;
++ (UIColor *) pptBackColor;
 @end
 

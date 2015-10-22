@@ -21,6 +21,7 @@
 #import "AddPicCell88.h"
 #import "MarkCell.h"
 #import "MarkTagCell.h"
+#import "SVProgressHUD.h"
 
 @interface MQPublishMissionController ()<UICollectionViewDelegate, UICollectionViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,UITextViewDelegate, UITextFieldDelegate,UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
@@ -47,6 +48,8 @@
     
     NSMutableArray * _tagList;
     
+    NSMutableArray * _imgUrls;
+    NSMutableArray * _fileUrls;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *titleTxt;
@@ -107,6 +110,14 @@
     [self initTableView];
     
     _isShowAllSection = _workGroupName ? YES : NO;
+    
+    _imgUrls = [NSMutableArray array];
+    _fileUrls = [NSMutableArray array];
+    
+    if(!_cAccessoryArray.count)
+    {
+        self.cAccessoryArray = [NSMutableArray array];
+    }
     
     [_tableView reloadData];
 }
@@ -296,11 +307,53 @@
         }
     }
     
-    if (self.cAccessoryArray != nil)
+    if (self.cAccessoryArray.count)
     {//附件
+        [self resetFileUrls];
         
+        [self refreshCollectionView];
     }
     
+}
+
+- (void) resetFileUrls
+{
+    [_fileUrls removeAllObjects];
+    
+//    for (NSInteger i = _cAccessoryArray.count; i > 0; i --)
+//    {
+//        Accessory * acc = _cAccessoryArray[i - 1];
+//        
+//        NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+//        [dic setObject:acc.address forKey:@"url"];
+//        if(acc.name)
+//        {
+//            [dic setObject:acc.name forKey:@"name"];
+//        }
+//        if(acc.type)
+//        {
+//            [dic setObject:[NSString stringWithFormat:@"%ld", acc.type] forKey:@"fileType"];
+//        }
+//        
+//        [_fileUrls addObject:dic];
+//    }
+    
+    for(Accessory * acc in _cAccessoryArray)
+    {
+        NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+        [dic setObject:acc.address forKey:@"url"];
+        if(acc.name)
+        {
+            [dic setObject:acc.name forKey:@"name"];
+        }
+        if(acc.type)
+        {
+            [dic setObject:[NSString stringWithFormat:@"%ld", acc.type] forKey:@"fileType"];
+        }
+        //            [dic setObject:acc.accessoryId forKey:@"accessoryId"];
+        
+        [_fileUrls addObject:dic];
+    }
 }
 
 #pragma -
@@ -709,7 +762,9 @@
 
     [_tagList removeObjectAtIndex:deleteIndex];
     
-    for(int index = 0; index < 4 ; index ++ )
+    NSInteger count = _markList.count > 4 ? 4 : _markList.count;
+    
+    for(int index = 0; index < count; index ++ )
     {
         Mark * m = _markList[index];
         
@@ -730,16 +785,21 @@
     
     NSInteger deleteIndex = btn.tag - 1000;
     
-    [_pickedUrls removeObjectAtIndex:deleteIndex];
+    NSInteger cIndex = deleteIndex - _imgUrls.count;
+    
+    if(cIndex >= 0)
+    {
+        [_cAccessoryArray removeObjectAtIndex:cIndex];
+        
+        [self resetFileUrls];
+    }
+    else
+    {
+        [_imgUrls removeObjectAtIndex:deleteIndex];
+    }
 
     [self refreshCollectionView];
     
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除提示"
-//                                                    message:nil
-//                                                   delegate:self
-//                                          cancelButtonTitle:@"取消"
-//                                          otherButtonTitles:@"删除", nil];
-//    [alert show];
 }
 
 
@@ -770,6 +830,8 @@
                 cell.imageView.hidden = YES;
                 cell.btnAdd.hidden = NO;
                 cell.delBtn.hidden = YES;
+                cell.fileVIew.hidden = YES;
+
                 [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
             } else {
                 cell.btnAdd.hidden = YES;
@@ -779,7 +841,62 @@
                 [cell.delBtn addTarget:self action:@selector(clickDelImage:) forControlEvents:UIControlEventTouchUpInside];
                 NSInteger index = indexPath.row;
                 
-                [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                NSDictionary * dic = _pickedUrls[index];
+                
+                NSString * url = [dic valueForKey:@"url"];
+                
+                NSString * fileType = [dic valueForKey:@"fileType"];
+                NSString * name = [dic valueForKey:@"name"];
+                //1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg 6:其他
+                if(fileType.length)
+                {
+                    int fileTypeNum = [[dic valueForKey:@"fileType"] intValue];
+                    
+                    cell.fileVIew.hidden = NO;
+                    
+                    NSString * iconName = @"";
+                    
+                    UIColor * color = [UIColor redColor];
+                    
+                    switch (fileTypeNum) {
+                        case 1:
+                            iconName = @"btn_word_edit";
+                            color = [UIColor wordBackColor];
+                            break;
+                        case 2:
+                            iconName = @"btn_excel_edit";
+                            color = [UIColor excelBackColor];
+
+                            break;
+                        case 3:
+                            iconName = @"btn_ppt_edit";
+                            color = [UIColor pptBackColor];
+
+                            break;
+                        case 4:
+                            iconName = @"btn_pdf_edit";
+                            color = [UIColor pdfBackColor];
+
+                            break;
+                        case 6:
+                            iconName = @"btn_qita_edit";
+                            color = [UIColor qitaBackColor];
+
+                            break;
+                        default:
+                            break;
+                    }
+                    cell.fileVIew.backgroundColor = color;
+                    cell.fileLbl.text = name;
+                    cell.iconView.image = [UIImage imageNamed:iconName];
+                }
+                else
+                {
+                    [cell.imageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    
+                    cell.fileVIew.hidden = YES;
+                }
+                
             }
             
             //    [cell.imageView setBorderWithColor:AppColor(204)];
@@ -1439,6 +1556,8 @@
     
     if (assets.count > 0) {
         
+        [SVProgressHUD showWithStatus:@"图片上传中"];
+        
         [picker dismissViewControllerAnimated:YES completion:^() {
             //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
             
@@ -1461,12 +1580,19 @@
             
             if(isOk)
             {
+                [SVProgressHUD dismiss];
+                
+                NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+                [dic setObject:userImgPath forKey:@"url"];
+                
                 if (_currentItem == -1) {
-                    [_pickedUrls addObject:userImgPath];
+                    [_imgUrls addObject:dic];
+                    
                 } else {
-                    [_pickedUrls removeObjectAtIndex:_currentItem];
-                    [_pickedUrls insertObject:userImgPath atIndex:_currentItem];
+                    [_imgUrls removeObjectAtIndex:_currentItem];
+                    [_imgUrls insertObject:dic atIndex:_currentItem];
                 }
+
                 [self refreshCollectionView];
             }
         }];
@@ -1499,6 +1625,10 @@
 
 - (void) refreshCollectionView
 {
+    [_pickedUrls removeAllObjects];
+    [_pickedUrls addObjectsFromArray:_imgUrls];
+    [_pickedUrls addObjectsFromArray:_fileUrls];
+    
     _collectionview.hidden = _pickedUrls.count ? NO : YES;
     
     if(!_collectionview.hidden)
