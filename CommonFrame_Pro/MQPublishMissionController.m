@@ -19,6 +19,8 @@
 #import "AddPicCell66.h"
 #import "AddPicCell80.h"
 #import "AddPicCell88.h"
+#import "MarkCell.h"
+#import "MarkTagCell.h"
 
 @interface MQPublishMissionController ()<UICollectionViewDelegate, UICollectionViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,UITextViewDelegate, UITextFieldDelegate,UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
@@ -37,6 +39,14 @@
     
     BOOL _isShowAllSection;
 
+    UICollectionView * _markCollectionView;
+    
+    UICollectionView * _TagCollView;
+    
+    NSArray * _markList;
+    
+    NSMutableArray * _tagList;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *titleTxt;
@@ -84,11 +94,21 @@
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = rightBarButton;
     
+//    [self.view setBackgroundColor:[UIColor backgroundColor]];
+    
     [self setTextViewStyle];
     
     [self _initPstCollectionView];
     
+    [self initMarkCollectionView];
+    
+    [self initTagCollectionView];
+    
     [self initTableView];
+    
+    _isShowAllSection = _workGroupName ? YES : NO;
+    
+    [_tableView reloadData];
 }
 
 - (void) viewDidLayoutSubviews
@@ -112,13 +132,23 @@
     _tableView.tag = 101;
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     _tableView.scrollEnabled = NO;
-    [self.view addSubview:_tableView];
+    [self.mainView addSubview:_tableView];
+    
+//    _tableView.hidden = YES;
 
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if(!_markList.count)
+    {
+        if(_workGroupId)
+        {
+            _markList = [Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:self.userId andUrl:ME_LABEL_CURL];
+        }
+    }
     
     [_tableView reloadData];
     
@@ -271,8 +301,6 @@
         
     }
     
-    [self resetScrollViewContenSize];
-    
 }
 
 #pragma -
@@ -303,28 +331,10 @@
     }
 }
 
-//- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    NSString * title = @"";
-//    
-//    if (section == 0) {
-//        title = @"选择群组";
-//    }
-//    else if (section == 1)
-//    {
-//        title = @"选择成员";
-//    }
-//    else if (section == 2)
-//    {
-//        title = @"分类";
-//    }
-//    return title;
-//}
-
-
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView* customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 44)];
+    customView.backgroundColor = [UIColor backgroundColor];
     
     UILabel * headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 26, 100, 14)];
     headerLabel.backgroundColor = [UIColor clearColor];
@@ -342,7 +352,7 @@
     }
     else if (section == 2)
     {
-        title = @"分类";
+        title = @"标签";
     }
     headerLabel.text = title;
     
@@ -389,7 +399,15 @@
         
         [photo setFrame:CGRectMake(14, 14, 17, 16)];
         [photo setImage:[UIImage imageNamed:@"icon_qunzu"]];
-        [lblText setText:@"群组"];
+        
+        if(_workGroupName)
+        {
+            [lblText setText:_workGroupName];
+        }
+        else
+        {
+            [lblText setText:@"群组"];
+        }
     }
     else if(section == 1 && index == 0) {
         UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
@@ -409,6 +427,10 @@
         [photo setFrame:CGRectMake(14, 11, 13, 18)];
         [photo setImage:[UIImage imageNamed:@"icon_chaosong"]];
         [lblText setText:@"抄送"];
+    }
+    else if (section == 2 && index == 0)
+    {
+        [cell.contentView addSubview:_markCollectionView];
     }
     
     if (!(section == 2 && index == 0))
@@ -433,8 +455,7 @@
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor grayMarkColor];
     
     return cell;
 }
@@ -581,6 +602,49 @@
     return 44;
 }
 
+- (void) initTagCollectionView
+{
+    _tagList = [[NSMutableArray alloc] init];
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    
+    layout.minimumInteritemSpacing = 12.f;
+    layout.minimumLineSpacing = 14.f;
+    UIEdgeInsets insets = {.top = 0,.left = 14,.bottom = 14,.right = 14};
+    layout.sectionInset = insets;
+    
+    _TagCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 41) collectionViewLayout:layout];
+    _TagCollView.delegate = self;
+    _TagCollView.dataSource = self;
+    _TagCollView.scrollEnabled = NO;
+    _TagCollView.backgroundColor = [UIColor grayMarkColor];
+    
+    [_TagCollView registerClass:[MarkTagCell class] forCellWithReuseIdentifier:@"MarkTagCell"];
+    
+    [self.mainView addSubview:_TagCollView];
+
+    _TagCollView.hidden = YES;
+    
+}
+
+- (void) initMarkCollectionView
+{
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    
+    layout.minimumInteritemSpacing = 15.f;
+    layout.minimumLineSpacing = 14.f;
+    UIEdgeInsets insets = {.top = 0,.left = 12,.bottom = 0,.right = 12};
+    layout.sectionInset = insets;
+
+    _markCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 80) collectionViewLayout:layout];
+    _markCollectionView.delegate = self;
+    _markCollectionView.dataSource = self;
+    _markCollectionView.scrollEnabled = NO;
+    _markCollectionView.backgroundColor = [UIColor backgroundColor];
+    
+    [_markCollectionView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
+
+}
 
 - (void)_initPstCollectionView
 {
@@ -596,20 +660,13 @@
     UIEdgeInsets insets = {.top = 0,.left = 14,.bottom = 14,.right = 14};
     layout.sectionInset = insets;
     
-    CGFloat pstY = YH(_txtView) + 14;
-    
-    if(!_jiezhiAndTixingView.hidden)
-    {
-        pstY = YH(_jiezhiAndTixingView);
-    }
-    
     CGFloat pstH = (SCREENWIDTH - 14 * 2 - 12 * 3)/4;
 
-    _collectionview = [[UICollectionView alloc] initWithFrame:CGRectMake(0, pstY, SCREENWIDTH, pstH + 14) collectionViewLayout:layout];
+    _collectionview = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, pstH + 14) collectionViewLayout:layout];
     _collectionview.delegate = self;
     _collectionview.dataSource = self;
     _collectionview.scrollEnabled = NO;
-    _collectionview.backgroundColor = [UIColor whiteColor];
+    _collectionview.backgroundColor = [UIColor grayMarkColor];
     NSString * idenStr = @"AddPicCell88";
     if(SCREENWIDTH == 375)
     {
@@ -620,14 +677,50 @@
         idenStr = @"AddPicCell66";
     }
     [_collectionview registerNib:[UINib nibWithNibName:idenStr bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:idenStr];
-    [self.view addSubview:_collectionview];
+    [self.mainView addSubview:_collectionview];
     
     _collectionview.hidden = YES;
 }
 
 #pragma mark - collectionview delegate / datasource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _pickedUrls.count + 1;
+    if(collectionView == _collectionview)
+    {
+        return _pickedUrls.count + 1;
+    }
+    else if (collectionView == _markCollectionView)
+    {
+        return _markList.count > 4 ? 4 : _markList.count;
+    }
+    else if (collectionView == _TagCollView)
+    {
+        return _tagList.count;
+    }
+    return 0;
+}
+
+- (void) delTagItem:(id)button
+{
+    UIButton * btn = (UIButton *)button;
+
+    NSInteger deleteIndex = btn.tag;
+    
+    Mark * mark = _tagList[deleteIndex];
+
+    [_tagList removeObjectAtIndex:deleteIndex];
+    
+    for(int index = 0; index < 4 ; index ++ )
+    {
+        Mark * m = _markList[index];
+        
+        if(mark.labelId == m.labelId)
+        {
+            [self resetMarkItem:index];
+        }
+    }
+    
+    [self refreshTagCollView];
+
 }
 
 //删除图片
@@ -660,106 +753,214 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString * idenStr = @"AddPicCell88";
-    
-    if(SCREENWIDTH == 375)
+    if(collectionView == _collectionview)
     {
-        idenStr = @"AddPicCell80";
+        NSString * idenStr = @"AddPicCell88";
         
-        AddPicCell80 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:idenStr forIndexPath:indexPath];
-
-        CGRect rect = cell.frame;
-        rect.origin.x = 0;
-        cell.contentView.frame = rect;
-        if (indexPath.row == _pickedUrls.count) {
-            cell.imageView.hidden = YES;
-            cell.btnAdd.hidden = NO;
-            cell.delBtn.hidden = YES;
-            [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            cell.btnAdd.hidden = YES;
-            cell.imageView.hidden = NO;
-            cell.delBtn.hidden = NO;
-            cell.delBtn.tag = 1000 + indexPath.row;
-            [cell.delBtn addTarget:self action:@selector(clickDelImage:) forControlEvents:UIControlEventTouchUpInside];
-            NSInteger index = indexPath.row;
+        if(SCREENWIDTH == 375)
+        {
+            idenStr = @"AddPicCell80";
             
-            [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            AddPicCell80 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:idenStr forIndexPath:indexPath];
+            
+            CGRect rect = cell.frame;
+            rect.origin.x = 0;
+            cell.contentView.frame = rect;
+            if (indexPath.row == _pickedUrls.count) {
+                cell.imageView.hidden = YES;
+                cell.btnAdd.hidden = NO;
+                cell.delBtn.hidden = YES;
+                [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                cell.btnAdd.hidden = YES;
+                cell.imageView.hidden = NO;
+                cell.delBtn.hidden = NO;
+                cell.delBtn.tag = 1000 + indexPath.row;
+                [cell.delBtn addTarget:self action:@selector(clickDelImage:) forControlEvents:UIControlEventTouchUpInside];
+                NSInteger index = indexPath.row;
+                
+                [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            }
+            
+            //    [cell.imageView setBorderWithColor:AppColor(204)];
+            
+            return cell;
         }
+        else if (SCREENWIDTH == 320)
+        {
+            idenStr = @"AddPicCell66";
+            
+            AddPicCell66 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:idenStr forIndexPath:indexPath];
+            
+            CGRect rect = cell.frame;
+            rect.origin.x = 0;
+            cell.contentView.frame = rect;
+            if (indexPath.row == _pickedUrls.count) {
+                cell.imageView.hidden = YES;
+                cell.btnAdd.hidden = NO;
+                [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                cell.btnAdd.hidden = YES;
+                cell.imageView.hidden = NO;
+                
+                NSInteger index = indexPath.row;
+                
+                [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            }
+            
+            //    [cell.imageView setBorderWithColor:AppColor(204)];
+            
+            return cell;
+        }
+        else
+        {
+            AddPicCell88 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:idenStr forIndexPath:indexPath];
+            CGRect rect = cell.frame;
+            rect.origin.x = 0;
+            cell.contentView.frame = rect;
+            if (indexPath.row == _pickedUrls.count) {
+                cell.imageView.hidden = YES;
+                cell.btnAdd.hidden = NO;
+                [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                cell.btnAdd.hidden = YES;
+                cell.imageView.hidden = NO;
+                
+                NSInteger index = indexPath.row;
+                
+                [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            }
+            
+            //    [cell.imageView setBorderWithColor:AppColor(204)];
+            
+            return cell;
+        }
+    }
+    else if (collectionView == _TagCollView)
+    {
+        static NSString *CellIdentifier = @"MarkTagCell";
+        MarkTagCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
-        //    [cell.imageView setBorderWithColor:AppColor(204)];
+        Mark * mark = _tagList[indexPath.row];
+        
+        cell.titleLbl.text = mark.labelName;
+        
+        [cell.delBtn addTarget:self action:@selector(delTagItem:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell setRoundCorner:3.3];
         
         return cell;
     }
-    else if (SCREENWIDTH == 320)
+    else if (collectionView == _markCollectionView)
     {
-        idenStr = @"AddPicCell66";
+        static NSString *CellIdentifier = @"MarkCell";
+        MarkCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
-        AddPicCell66 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:idenStr forIndexPath:indexPath];
-
-        CGRect rect = cell.frame;
-        rect.origin.x = 0;
-        cell.contentView.frame = rect;
-        if (indexPath.row == _pickedUrls.count) {
-            cell.imageView.hidden = YES;
-            cell.btnAdd.hidden = NO;
-            [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            cell.btnAdd.hidden = YES;
-            cell.imageView.hidden = NO;
-            
-            NSInteger index = indexPath.row;
-            
-            [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        }
+        Mark * mark = _markList[indexPath.row];
         
-        //    [cell.imageView setBorderWithColor:AppColor(204)];
+        [cell.markBtn setTitle:mark.labelName forState:UIControlStateNormal];
+        
+        [cell.markBtn addTarget:self action:@selector(clickMarkItem:) forControlEvents:UIControlEventTouchUpInside];
+        
+        cell.markBtn.tag = indexPath.row;
+        
+        [cell setRoundColorCorner:3.3];
+        
+        [cell setBorderWithColor:[UIColor grayLineColor]];
         
         return cell;
+
+    }
+    return nil;
+}
+
+- (void) resetMarkItem:(NSInteger)index
+{
+    
+    Mark * mark = _markList[index];
+
+    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    
+    MarkCell * cell = (MarkCell *)[_markCollectionView cellForItemAtIndexPath:indexPath];
+    
+    cell.markBtn.selected = !cell.markBtn.selected;
+    
+    if(cell.markBtn.selected)
+    {
+        [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
+        
+        [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
+        
+        [cell setBorderWithColor:[UIColor grayMarkLineColor]];
+        
+        [_tagList addObject:mark];
+        
     }
     else
     {
-        AddPicCell88 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:idenStr forIndexPath:indexPath];
-        CGRect rect = cell.frame;
-        rect.origin.x = 0;
-        cell.contentView.frame = rect;
-        if (indexPath.row == _pickedUrls.count) {
-            cell.imageView.hidden = YES;
-            cell.btnAdd.hidden = NO;
-            [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            cell.btnAdd.hidden = YES;
-            cell.imageView.hidden = NO;
-            
-            NSInteger index = indexPath.row;
-            
-            [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        }
+        [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
         
-        //    [cell.imageView setBorderWithColor:AppColor(204)];
+        [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
-        return cell;
+        [cell setBorderWithColor:[UIColor grayLineColor]];
+        
+        [_tagList removeObject:mark];
     }
+}
+
+- (void) clickMarkItem:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    NSInteger index = btn.tag;
+
+    [self resetMarkItem:index];
+    
+    [self refreshTagCollView];
 
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat pstH = (SCREENWIDTH - 14 * 2 - 12 * 3)/4;
-    
-    if(pstH > 88)
+    if(collectionView == _collectionview)
     {
-        pstH = 88;
+        CGFloat pstH = (SCREENWIDTH - 14 * 2 - 12 * 3)/4;
+        
+        if(pstH > 88)
+        {
+            pstH = 88;
+        }
+        
+        return CGSizeMake(pstH, pstH);
     }
-    
-    return CGSizeMake(pstH, pstH);
+    else if (collectionView == _markCollectionView)
+    {
+        CGFloat pstH = (SCREENWIDTH - 12 * 2 - 15 * 3)/4;
+
+        return CGSizeMake(pstH, 44);
+    }
+    else if (collectionView == _TagCollView)
+    {
+        NSInteger itemSpace = 22;
+        
+        if(SCREENWIDTH == 320)
+        {
+            itemSpace = 14;
+        }
+        else if (SCREENWIDTH == 375)
+        {
+            itemSpace = 12;
+        }
+        
+        CGFloat pstH = (SCREENWIDTH - 14 * 2 - itemSpace * 3)/4;
+
+        return CGSizeMake(pstH, 27);
+    }
+    return CGSizeZero;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-//    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"预览" otherButtonTitles:@"相机拍摄", @"从相册中选择", @"删除", nil] autorelease];
-//    sheet.tag = indexPath.row + 1000;
-//    [sheet showInView:self.view];
 }
 
 - (void) setTextViewStyle
@@ -770,7 +971,7 @@
     _txtView.textContainerInset = UIEdgeInsetsMake(14.0f, 9.0f, 50.0f, 9.0f);
     _txtView.placeholder = @"描述";
     _txtView.placeholderColor = RGBCOLOR(172, 172, 172);
-    _txtView.backgroundColor = [UIColor clearColor];
+    _txtView.backgroundColor = [UIColor grayMarkColor];
     
     
     //    textview 改变字体的行间距
@@ -793,6 +994,141 @@
 - (void)btnTodayClicked:(id)sender
 {
     [_datePicker setDate:[NSDate date]];
+}
+
+- (void) resetAllViewLayout:(UIView *)view
+{
+    if(view == _jiezhiAndTixingView)
+    {
+        if(!view.hidden)
+        {
+            _JTViewToTxtViewTopCons.constant = 0;
+        }
+        
+        if(_collectionview.hidden && _TagCollView.hidden)
+        {
+            _timeToTxtViewTopCons.constant = view.hidden ? 0 : H(view);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) : _txtView.bottom + H(view) + H(_timeView);
+        }
+        else if (!_collectionview.hidden && _TagCollView.hidden)
+        {
+            _collectionview.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) : H(view) + H(_collectionview);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview);
+
+        }
+        else if (_collectionview.hidden && !_TagCollView.hidden)
+        {
+            _TagCollView.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_TagCollView) :H(view) + H(_TagCollView);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView);
+
+        }
+        else if (!_collectionview.hidden && !_TagCollView.hidden)
+        {
+            _collectionview.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
+            
+            _TagCollView.top = view.hidden ? _txtView.bottom + H(_collectionview):_txtView.bottom + H(view) + H(_collectionview);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) + H(_TagCollView) :H(view) + H(_collectionview) + H(_TagCollView);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView)+ H(_collectionview);
+
+        }
+    }
+    else if(view == _collectionview)
+    {
+        if(_jiezhiAndTixingView.hidden && _TagCollView.hidden)
+        {
+            view.top = view.hidden ? 0 : _txtView.bottom;
+
+            _timeToTxtViewTopCons.constant = view.hidden ? 0 : H(view);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) : _txtView.bottom + H(view) + H(_timeView);
+        }
+        else if (!_jiezhiAndTixingView.hidden && _TagCollView.hidden)
+        {
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_jiezhiAndTixingView);
+
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) : H(view) + H(_jiezhiAndTixingView);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_jiezhiAndTixingView);
+            
+        }
+        else if (_jiezhiAndTixingView.hidden && !_TagCollView.hidden)
+        {
+            view.top = view.hidden ? 0 : _txtView.bottom;
+
+            _TagCollView.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_TagCollView) :H(view) + H(_TagCollView);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView);
+            
+        }
+        else if (!_jiezhiAndTixingView.hidden && !_TagCollView.hidden)
+        {
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_jiezhiAndTixingView);
+
+            _TagCollView.top = view.hidden ? _txtView.bottom + H(_jiezhiAndTixingView):_txtView.bottom + H(view) + H(_jiezhiAndTixingView);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) + H(_TagCollView) :H(view) + H(_jiezhiAndTixingView) + H(_TagCollView);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView)+ H(_jiezhiAndTixingView);
+            
+        }
+    }
+    else if (view == _TagCollView)
+    {
+        if(_jiezhiAndTixingView.hidden && _collectionview.hidden)
+        {
+            view.top = view.hidden ? 0 : _txtView.bottom;
+
+            _timeToTxtViewTopCons.constant = view.hidden ? 0 : H(view);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) : _txtView.bottom + H(view) + H(_timeView);
+        }
+        else if (!_jiezhiAndTixingView.hidden && _collectionview.hidden)
+        {
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_jiezhiAndTixingView);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) : H(view) + H(_jiezhiAndTixingView);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_jiezhiAndTixingView);
+            
+        }
+        else if (_jiezhiAndTixingView.hidden && !_collectionview.hidden)
+        {
+            [self countHeight];
+            
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview);
+
+            _collectionview.top = view.hidden ? _txtView.bottom : _txtView.bottom;
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) :H(view) + H(_collectionview);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview);
+            
+        }
+        else if (!_jiezhiAndTixingView.hidden && !_collectionview.hidden)
+        {
+            [self countHeight];
+
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview) + H(_jiezhiAndTixingView);
+
+            _collectionview.top = view.hidden ? _txtView.bottom + H(_jiezhiAndTixingView):_txtView.bottom + H(_jiezhiAndTixingView);
+            
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) + H(_collectionview) :H(view) + H(_jiezhiAndTixingView) + H(_collectionview);
+            
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview)+ H(_jiezhiAndTixingView);
+            
+        }
+    }
 }
 
 - (void)btnDatePickerClicked:(id)sender
@@ -853,20 +1189,7 @@
         
         _jiezhiAndTixingView.hidden = NO;
         _jiezhiView.hidden = NO;
-        
-        _JTViewToTxtViewTopCons.constant = 0;
-        
-        if(!_collectionview.hidden)
-        {
-            _collectionview.top = _jiezhiAndTixingView.hidden ? _txtView.bottom + 14 : _jiezhiAndTixingView.bottom;
-            
-            _timeToTxtViewTopCons.constant = H(_jiezhiAndTixingView) + H(_collectionview);
-        }
-        else
-        {
-            _timeToTxtViewTopCons.constant = H(_jiezhiAndTixingView);
 
-        }
     }
     else if (tag == 12)//提醒
     {
@@ -908,21 +1231,10 @@
         _tixingLbl.text = [NSString stringWithFormat:@"提醒时间：%@", strDate];
         _jiezhiAndTixingView.hidden = NO;
         _tixingView.hidden = NO;
-        
-        _JTViewToTxtViewTopCons.constant = 0;
-        
-        if(!_collectionview.hidden)
-        {
-            _collectionview.top = _jiezhiAndTixingView.hidden ? _txtView.bottom + 14 : _jiezhiAndTixingView.bottom;
-            
-            _timeToTxtViewTopCons.constant = H(_jiezhiAndTixingView) + H(_collectionview);
-        }
-        else
-        {
-            _timeToTxtViewTopCons.constant = H(_jiezhiAndTixingView);
-            
-        }
     }
+    
+    [self resetAllViewLayout:_jiezhiAndTixingView];
+    
 }
 
 - (IBAction)touchUpInsideOnBtn:(id)sender
@@ -1001,11 +1313,9 @@
         {
             _jiezhiAndTixingView.hidden = YES;
             
-            _timeToTxtViewTopCons.constant = _collectionview.hidden ? 0 : H(_collectionview) + 14;
-
         }
         
-        _collectionview.top = _jiezhiAndTixingView.hidden ? _txtView.bottom + 14 : _jiezhiAndTixingView.bottom;
+        [self resetAllViewLayout:_jiezhiAndTixingView];
         
         _strFinishTime = nil;
     }
@@ -1016,12 +1326,9 @@
         if(_jiezhiView.hidden)
         {
             _jiezhiAndTixingView.hidden = YES;
-            
-            _timeToTxtViewTopCons.constant = _collectionview.hidden ? 0 : H(_collectionview) + 14;
-
         }
         
-        _collectionview.top = _jiezhiAndTixingView.hidden ? _txtView.bottom + 14 : _jiezhiAndTixingView.bottom;
+        [self resetAllViewLayout:_jiezhiAndTixingView];
         
         _strRemindTime = nil;
     }
@@ -1166,6 +1473,30 @@
     }
 }
 
+- (void) refreshTagCollView
+{
+    _TagCollView.hidden = _tagList.count ? NO :YES;
+    
+    if(!_TagCollView.hidden)
+    {
+        [_TagCollView reloadData];
+        
+        [self countTagHeight];
+    }
+    
+    [self resetAllViewLayout:_TagCollView];
+}
+
+- (void) countTagHeight
+{
+    NSInteger count = _tagList.count;
+    NSInteger row = (count % 4) ? count / 4 + 1: count / 4;
+    
+    float height = row * (27 + 14);
+    
+    _collectionview.height = height;
+}
+
 - (void) refreshCollectionView
 {
     _collectionview.hidden = _pickedUrls.count ? NO : YES;
@@ -1176,15 +1507,9 @@
         
         [self countHeight];
         
-        _collectionview.top = _jiezhiAndTixingView.hidden ? _txtView.bottom + 14 : _jiezhiAndTixingView.bottom;
-        
-        _timeToTxtViewTopCons.constant = _jiezhiAndTixingView.hidden ? H(_collectionview) + 14 : H(_jiezhiAndTixingView) + H(_collectionview);
     }
-    else//图片hidden
-    {
-        _timeToTxtViewTopCons.constant = _jiezhiAndTixingView.hidden ? 0 : H(_jiezhiAndTixingView);
-
-    }
+    
+    [self resetAllViewLayout:_collectionview];
 }
 
 - (void)countHeight{
@@ -1372,7 +1697,7 @@
             [self.icGroupViewController setValue:_workGroupId forKey:@"groupId"];
         }
     }
-    
+
 }
 
 /*

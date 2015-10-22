@@ -19,7 +19,7 @@
 #import "APService.h"
 #import "ICMemberInfoViewController.h"
 #import "RRAttributedString.h"
-
+#import "MQPublishMissionController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -611,17 +611,24 @@
     if (index == 0) {//任务
         
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
-        ((ICGroupListViewController*)vc).icMainViewController = self;
-        /*
-         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
-         ((ICGroupListViewController*)vc).icPublishMissionResponsibleController = self;
-         ((ICGroupListViewController*)vc).responsibleDictionaryToPublish = _responsibleDic;
-         ((ICGroupListViewController*)vc).hasValue = @"0";
-         */
+
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+        
+        if (_currentGroup) {
+            ((MQPublishMissionController*)vc).workGroupId = _currentGroup.workGroupId;
+            ((MQPublishMissionController*)vc).workGroupName = _currentGroup.workGroupName;
+        }
+        
+        ((MQPublishMissionController*)vc).userId = self.loginUserID;
+        //            ((MQPublishMissionController*)vc).icGroupViewController = self;
         
         [self.navigationController pushViewController:vc animated:YES];
+        
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+//        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
+//        ((ICGroupListViewController*)vc).icMainViewController = self;
+        
     }
     else if (index == 1) {//问题
         _isTopMenuSharedButtonClicked = YES;

@@ -295,7 +295,15 @@ static UIViewController *imagePicker = nil;
 {
     self.layer.masksToBounds = YES;
     self.layer.borderWidth = 0.5f;
-//    self.layer.borderColor = RGBCOLOR(197, 197, 197).CGColor;
+    self.layer.cornerRadius = cornerRadius;
+}
+
+- (void)setRoundColorCorner:(float)cornerRadius
+{
+    self.layer.masksToBounds = YES;
+    self.layer.borderWidth = 0.5f;
+    self.layer.borderColor = [UIColor grayMarkLineColor].CGColor;
+    self.clipsToBounds = YES;
     self.layer.cornerRadius = cornerRadius;
 }
 
@@ -493,10 +501,39 @@ static UIViewController *imagePicker = nil;
     return RGBCOLOR(119, 119, 119);
 }
 
++ (UIColor *) grayMarkLineColor//灰色线
+{
+    return RGBCOLOR(69, 69, 69);
+}
+
 + (UIColor *) grayTitleColor//灰色线
 {
     return RGBCOLOR(172, 172, 173);
 }
 
++ (UIColor *) grayMarkColor
+{
+    return RGBCOLOR(64, 64, 64);
+}
+
++ (UIColor *) grayMarkHoverTitleColor
+{
+    return RGBACOLOR(255, 255, 255, 0.3);
+}
+
++ (UIColor *) grayMarkHoverBackgroundColor
+{
+    return RGBCOLOR(52, 52, 52);
+}
+
++ (UIColor *) backgroundColor
+{
+    return RGBCOLOR(47, 47, 47);
+}
+
++ (UIColor *) tagBlueBackColor
+{
+    return RGBCOLOR(90, 112, 223);
+}
 
 @end

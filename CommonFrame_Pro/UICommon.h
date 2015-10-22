@@ -76,6 +76,8 @@ typedef void (^keyboardBlock) ();
 /** 边界 */
 - (void)setBorderWithColor:(UIColor *)color;
 - (void)setRoundCorner:(float)cornerRadius;
+- (void)setRoundColorCorner:(float)cornerRadius;
+
 
 @end
 
@@ -93,6 +95,12 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) cellHoverBackgroundColor;//列表点击时背景颜色；
 + (UIColor *) grayLineColor;//灰色线
 + (UIColor *) grayTitleColor;//灰色字
++ (UIColor *) grayMarkColor;//灰色正常背景
++ (UIColor *) grayMarkHoverTitleColor;//灰色hover背景
++ (UIColor *) backgroundColor;
++ (UIColor *) grayMarkLineColor;//灰色线
++ (UIColor *) grayMarkHoverBackgroundColor;
++ (UIColor *) tagBlueBackColor;
 
 @end
 
