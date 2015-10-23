@@ -265,7 +265,8 @@
     UIButton* btn2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     btn2.titleLabel.textColor = [UIColor whiteColor];
     [btn2 setBackgroundColor:[UIColor clearColor]];
-    [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
+    [btn2 setTitle:@"发布" forState:UIControlStateNormal];
+//    [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
     
     NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_wenti"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_qita"]];
     NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"其它"];
@@ -281,9 +282,11 @@
 - (UIBarButtonItem *)loadRightMarkMenusView:(NSArray*)markArray;
 {
     //Right Menu
-    UIButton *button  = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 30, 30)];
+    UIButton *button  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];//30
     [button setBackgroundColor:[UIColor clearColor]];
-    
+    button.titleLabel.textColor = [UIColor whiteColor];
+    [button setTitle:@"查找" forState:UIControlStateNormal];
+
     
     UIBarButtonItem* barButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     

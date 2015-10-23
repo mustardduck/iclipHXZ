@@ -52,6 +52,7 @@ typedef enum {
 @property (nonatomic,strong) NSArray*   labelList;              //标签集合
 @property (nonatomic,strong) NSArray*   accessoryList;              //标签集合
 @property (nonatomic,assign) BOOL       isRead;                //是否读
+@property (nonatomic, assign) BOOL      isNewCom;           //新评论
 @property (nonatomic, assign) int       accessoryNum;//附件数
 @property (nonatomic, assign) int       replayNum;//评论数
 
