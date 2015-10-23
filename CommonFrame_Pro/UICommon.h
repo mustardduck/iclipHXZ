@@ -31,8 +31,10 @@ typedef void (^keyboardBlock) ();
 
 #define SCREENWIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height)
-/** 边界 */
-- (void)setBorderWithColor:(UIColor *)color;
+//取后缀名filetype
++ (NSString *) findFileType:(NSString *) name;
+
+
 
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;
@@ -57,9 +59,27 @@ typedef void (^keyboardBlock) ();
 #pragma mark - UIView
 @interface UIView (RCMethod)
 
+@property CGPoint origin;
+@property CGSize size;
+
+@property (readonly) CGPoint bottomLeft;
+@property (readonly) CGPoint bottomRight;
+@property (readonly) CGPoint topRight;
+
+@property CGFloat height;
+@property CGFloat width;
+
+@property CGFloat top;
+@property CGFloat left;
+
+@property CGFloat bottom;
+@property CGFloat right;
+
 /** 边界 */
 - (void)setBorderWithColor:(UIColor *)color;
 - (void)setRoundCorner:(float)cornerRadius;
+- (void)setRoundColorCorner:(float)cornerRadius;
+
 
 @end
 
@@ -75,6 +95,19 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) disableGreyColor;//灰字不能点击
 + (UIColor *) greyStatusBarColor;//状态栏背景颜色
 + (UIColor *) cellHoverBackgroundColor;//列表点击时背景颜色；
++ (UIColor *) grayLineColor;//灰色线
++ (UIColor *) grayTitleColor;//灰色字
++ (UIColor *) grayMarkColor;//灰色正常背景
++ (UIColor *) grayMarkHoverTitleColor;//灰色hover背景
++ (UIColor *) backgroundColor;
++ (UIColor *) grayMarkLineColor;//灰色线
++ (UIColor *) grayMarkHoverBackgroundColor;
++ (UIColor *) tagBlueBackColor;
 
++ (UIColor *) pdfBackColor;
++ (UIColor *) wordBackColor;
++ (UIColor *) excelBackColor;
++ (UIColor *) qitaBackColor;
++ (UIColor *) pptBackColor;
 @end
 

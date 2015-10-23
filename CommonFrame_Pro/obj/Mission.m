@@ -351,14 +351,14 @@
     return isOk;
 }
 
-+ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments imgArr:(NSArray **)imgArr
++ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments imgArr:(NSArray **)imgArr messageId:(NSString *)messageId
 {
     Mission* cm = [Mission new];
     
     NSMutableArray* array = [NSMutableArray array];
     NSMutableArray * imageArr = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@",DETAIL_URL,taskId,[LoginUser loginUserID]]];
+    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@&messageId=%@",DETAIL_URL,taskId,[LoginUser loginUserID], messageId]];
     
     if (responseString == nil) {
         return nil;

@@ -60,18 +60,7 @@
     
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    
-    //[_tableView addLegendHeaderWithRefreshingTarget:self refreshingAction:@selector(reloadTableData)];
-    //[_tableView.header beginRefreshing];
-    
-    //[_tableView addLegendFooterWithRefreshingBlock:^{
-    //    [_tableView.footer endRefreshing];
-    //}];
-    
-    //_tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
-    //_tableView.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0);
-    
-    
+
     [self addRefrish];
     
 }

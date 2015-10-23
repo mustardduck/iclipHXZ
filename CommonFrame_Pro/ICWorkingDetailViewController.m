@@ -268,7 +268,7 @@
     _imageArray = [NSMutableArray array];
     NSArray * imgArr = [NSArray array];
     
-    _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr];
+    _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
     
     if (_currentMission != nil) {
         
@@ -457,7 +457,6 @@
             ((ICPublishMissionViewController*)vc).titleName = m.title;
             ((ICPublishMissionViewController*)vc).content = m.main;
             ((ICPublishMissionViewController*)vc).taskId = m.taskId;
-            ((ICPublishMissionViewController*)vc).workGroupId = m.workGroupId;
             ((ICPublishMissionViewController*)vc).icDetailViewController = self;
             [self.navigationController pushViewController:vc animated:YES];
             break;

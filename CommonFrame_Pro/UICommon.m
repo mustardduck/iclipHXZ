@@ -8,10 +8,47 @@
 
 #import "UICommon.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "NSStringEx.h"
 
 static UIViewController *imagePicker = nil;
 
 @implementation UICommon
+
++ (NSString *) findFileType:(NSString *) name
+{
+    NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
+    
+    NSString * fileType = [name substringFromIndex:range.location + 1];
+    
+    NSString * fileNum = @"";
+    
+    if([fileType equalsIgnoreCase:@"doc"] || [fileType equalsIgnoreCase:@"docx"])
+    {
+        fileNum = @"1";
+    }
+    else if ([fileType equalsIgnoreCase:@"xls"] || [fileType equalsIgnoreCase:@"xlsx"])
+    {
+        fileNum = @"2";
+        
+    }
+    else if ([fileType equalsIgnoreCase:@"ppt"] || [fileType equalsIgnoreCase:@"pptx"])
+    {
+        fileNum = @"3";
+    }
+    else if ([fileType equalsIgnoreCase:@"pdf"])
+    {
+        fileNum = @"4";
+    }
+    else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"])
+    {
+        fileNum = @"0";
+    }
+    else
+    {
+        fileNum = @"6";
+    }
+    return fileNum;
+}
 
 + (CGSize)getWidthFromLabel:(UILabel *)label
 {
@@ -68,7 +105,7 @@ static UIViewController *imagePicker = nil;
     {
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-
+        
         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         
         NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:font,NSFontAttributeName,[NSParagraphStyle defaultParagraphStyle],NSParagraphStyleAttributeName, nil];
@@ -83,7 +120,7 @@ static UIViewController *imagePicker = nil;
         }
         
         size.width = ceil(size.width);
-
+        
     }
     else
     {
@@ -132,7 +169,7 @@ static UIViewController *imagePicker = nil;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];;
     [formatter setDateFormat:format];
     return [formatter stringFromDate:destDate];
-
+    
 }
 
 + (NSString*) formatTime:(NSString*)input withLength:(int)length{
@@ -295,7 +332,16 @@ static UIViewController *imagePicker = nil;
 {
     self.layer.masksToBounds = YES;
     self.layer.borderWidth = 0.5f;
-//    self.layer.borderColor = RGBCOLOR(197, 197, 197).CGColor;
+    self.layer.cornerRadius = cornerRadius;
+    self.clipsToBounds = YES;
+}
+
+- (void)setRoundColorCorner:(float)cornerRadius
+{
+    self.layer.masksToBounds = YES;
+    self.layer.borderWidth = 0.5f;
+    self.layer.borderColor = [UIColor grayMarkLineColor].CGColor;
+    self.clipsToBounds = YES;
     self.layer.cornerRadius = cornerRadius;
 }
 
@@ -303,6 +349,123 @@ static UIViewController *imagePicker = nil;
 {
     self.layer.borderWidth = 0.5f;
     self.layer.borderColor = color.CGColor;
+}
+- (CGPoint)origin
+{
+    return self.frame.origin;
+}
+
+- (void)setOrigin: (CGPoint) aPoint
+{
+    CGRect newframe = self.frame;
+    newframe.origin = aPoint;
+    self.frame = newframe;
+}
+
+- (CGSize)size
+{
+    return self.frame.size;
+}
+
+- (void)setSize: (CGSize) aSize
+{
+    CGRect newframe = self.frame;
+    newframe.size = aSize;
+    self.frame = newframe;
+}
+
+- (CGPoint)bottomRight
+{
+    CGFloat x = self.frame.origin.x + self.frame.size.width;
+    CGFloat y = self.frame.origin.y + self.frame.size.height;
+    return CGPointMake(x, y);
+}
+
+- (CGPoint)bottomLeft
+{
+    CGFloat x = self.frame.origin.x;
+    CGFloat y = self.frame.origin.y + self.frame.size.height;
+    return CGPointMake(x, y);
+}
+
+- (CGPoint)topRight
+{
+    CGFloat x = self.frame.origin.x + self.frame.size.width;
+    CGFloat y = self.frame.origin.y;
+    return CGPointMake(x, y);
+}
+
+- (CGFloat)height
+{
+    return self.frame.size.height;
+}
+
+- (void)setHeight: (CGFloat) newheight
+{
+    CGRect newframe = self.frame;
+    newframe.size.height = newheight;
+    self.frame = newframe;
+}
+
+- (CGFloat)width
+{
+    return self.frame.size.width;
+}
+
+- (void)setWidth: (CGFloat) newwidth
+{
+    CGRect newframe = self.frame;
+    newframe.size.width = newwidth;
+    self.frame = newframe;
+}
+
+- (CGFloat)top
+{
+    return self.frame.origin.y;
+}
+
+- (void)setTop:(CGFloat)newtop
+{
+    CGRect newframe = self.frame;
+    newframe.origin.y = newtop;
+    self.frame = newframe;
+}
+
+- (CGFloat)left
+{
+    return self.frame.origin.x;
+}
+
+- (void)setLeft: (CGFloat) newleft
+{
+    CGRect newframe = self.frame;
+    newframe.origin.x = newleft;
+    self.frame = newframe;
+}
+
+- (CGFloat)bottom
+{
+    return self.frame.origin.y + self.frame.size.height;
+}
+
+- (void)setBottom: (CGFloat) newbottom
+{
+    CGRect newframe = self.frame;
+    newframe.origin.y = newbottom - self.frame.size.height;
+    self.frame = newframe;
+}
+
+- (CGFloat)right
+{
+    return self.frame.origin.x + self.frame.size.width;
+}
+
+- (void)setRight: (CGFloat) newright
+{
+    CGFloat delta = newright - (self.frame.origin.x + self.frame.size.width);
+    CGRect newframe = self.frame;
+    newframe.origin.x += delta ;
+    self.frame = newframe;
 }
 
 @end
@@ -369,6 +532,67 @@ static UIViewController *imagePicker = nil;
 + (UIColor *) cellHoverBackgroundColor
 {
     return RGBCOLOR(43, 42, 47);
+}
+
++ (UIColor *) grayLineColor//灰色线
+{
+    return RGBCOLOR(119, 119, 119);
+}
+
++ (UIColor *) grayMarkLineColor//灰色线
+{
+    return RGBCOLOR(69, 69, 69);
+}
+
++ (UIColor *) grayTitleColor//灰色线
+{
+    return RGBCOLOR(172, 172, 173);
+}
+
++ (UIColor *) grayMarkColor
+{
+    return RGBCOLOR(64, 64, 64);
+}
+
++ (UIColor *) grayMarkHoverTitleColor
+{
+    return RGBACOLOR(255, 255, 255, 0.3);
+}
+
++ (UIColor *) grayMarkHoverBackgroundColor
+{
+    return RGBCOLOR(52, 52, 52);
+}
+
++ (UIColor *) backgroundColor
+{
+    return RGBCOLOR(47, 47, 47);
+}
+
++ (UIColor *) tagBlueBackColor
+{
+    return RGBCOLOR(90, 112, 223);
+}
+
++ (UIColor *) pdfBackColor
+{
+    return RGBCOLOR(143, 57, 231);
+}
++ (UIColor *) wordBackColor
+{
+    return RGBCOLOR(57, 161, 231);
+}
++ (UIColor *) excelBackColor
+{
+    return RGBCOLOR(73, 204, 178);
+}
++ (UIColor *) qitaBackColor
+{
+    return RGBCOLOR(172, 172, 173);
+}
++ (UIColor *) pptBackColor
+{
+    return RGBCOLOR(245, 124, 36);
 }
 
 @end

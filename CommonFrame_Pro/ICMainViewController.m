@@ -19,7 +19,7 @@
 #import "APService.h"
 #import "ICMemberInfoViewController.h"
 #import "RRAttributedString.h"
-
+#import "MegListController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -62,6 +62,8 @@
     BOOL                    _isMarkShow;
     NSString *              _markNameStr;
     NSInteger               _tagNum;
+    
+    NSString * _allNum;
     
 }
 
@@ -219,7 +221,11 @@
     
     [muArr addObject:gr];
     
-    [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray workGroupId:_workGroupId searchString:(isBarOne ? searchString : nil)]];
+    NSString * allnum = @"";
+    
+    [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray workGroupId:_workGroupId searchString:(isBarOne ? searchString : nil) allNum:&allnum]];
+    
+    _allNum = allnum;
     
     _bottomArray = [NSArray arrayWithArray:muArr];
     
@@ -449,6 +455,8 @@
         
         _pageNo = 1;
         
+        [self resetRightMarkView];
+
         NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
         
         NSMutableArray * newArr = [self fillContentArr:dic];
@@ -458,6 +466,7 @@
         _contentArray = newArr;
         
         NSLog(@"Header:%@",_contentArray);
+        
         
         [_tableView reloadData];
         
@@ -687,7 +696,15 @@
             [self markHeaderView];
         });
     }
-    
+    else
+    {
+        if([_allNum integerValue] > 0)
+        {
+            _tableView.tableHeaderView = ({
+                [self messageHeadView];
+            });
+        }
+    }
     [_tableView.header beginRefreshing];
 }
 
@@ -827,71 +844,23 @@
         //        [mainHeaderView addSubview:groupHeadView];
         
     }
-    
-    //    [mainHeaderView addSubview:_markHeadView];
-    
-    //markHeaderView
-    /*
-     if (!_markHeadView) {
-     _markHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 129, tableWidth, 40)];
-     [_markHeadView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-     
-     UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(12, 8, 80, 24)];
-     [name setText:_markNameStr];
-     [name setTextColor:[UIColor whiteColor]];
-     [name setTextAlignment:NSTextAlignmentCenter];
-     [name setBackgroundColor:[UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0]];
-     [name setFont:[UIFont systemFontOfSize:13]];
-     name.tag = _tagNum;
-     [_markHeadView addSubview:name];
-     
-     
-     UIButton* close = [[UIButton alloc] initWithFrame:CGRectMake(tableWidth - 40, 0, 40, 36)];
-     [close setImage:[UIImage imageNamed:@"btn_guanbi_1"] forState:UIControlStateNormal];
-     [close addTarget:self action:@selector(btnCloseClicked:) forControlEvents:UIControlEventTouchUpInside];
-     [_markHeadView addSubview:close];
-     
-     
-     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 39.5, tableWidth, 0.5)];
-     [bottomLine setBackgroundColor:[UIColor grayColor]];
-     [_markHeadView addSubview:bottomLine];
-     
-     }
-     else
-     {
-     BOOL hasEx = NO;
-     for (UIControl* control in _markHeadView.subviews) {
-     if ([control isKindOfClass:[UILabel class]]) {
-     UILabel* lbl = (UILabel*)control;
-     if (lbl.tag == _tagNum) {
-     hasEx = YES;
-     lbl.text = _markNameStr;
-     break;
-     }
-     }
-     }
-     if (!hasEx) {
-     
-     UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(102, 8, 80, 24)];
-     [name setText:_markNameStr];
-     [name setTextColor:[UIColor whiteColor]];
-     [name setTextAlignment:NSTextAlignmentCenter];
-     [name setBackgroundColor:[UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0]];
-     [name setFont:[UIFont systemFontOfSize:13]];
-     name.tag = _tagNum;
-     [_markHeadView addSubview:name];
-     }
-     }
-     */
+
     return groupHeadView;
     
 }
 
+- (void) jumpToMesView
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MegListController"];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (UIView *)groupHeaderView2
 {
     CGFloat width = SCREENWIDTH;
-    
+
     UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 95)];
     
     [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
@@ -974,67 +943,54 @@
     
     [groupHeadView addSubview:btnPhoto];
     
-    return groupHeadView;
+    
+    UIView * groupAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 95 + 30)];
+    
+    [groupAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
+    
+    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
+    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
+    UIButton * msgBtn = [[UIButton alloc] init];
+    msgBtn.frame = megView.frame;
+    msgBtn.backgroundColor = [UIColor clearColor];
+    msgBtn.titleLabel.textColor = [UIColor whiteColor];
+    msgBtn.titleLabel.font = Font(15);
+    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+    [msgBtn setTitle:str forState:UIControlStateNormal];
+    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
+    [megView addSubview:msgBtn];
+    
+    if([_allNum integerValue] > 0)
+    {
+        groupHeadView.top = 30;
+        
+        [groupAndMegView addSubview:groupHeadView];
+        
+        [groupAndMegView addSubview:megView];
+        
+        return groupAndMegView;
+    }
+    else
+    {
+        return groupHeadView;
+    }
 }
- 
 
-- (UIView *)groupHeaderView
+- (UIView *) messageHeadView
 {
-    CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
+    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
+    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
+    UIButton * msgBtn = [[UIButton alloc] init];
+    msgBtn.frame = megView.frame;
+    msgBtn.backgroundColor = [UIColor clearColor];
+    msgBtn.titleLabel.textColor = [UIColor whiteColor];
+    msgBtn.titleLabel.font = Font(15);
+    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+    [msgBtn setTitle:str forState:UIControlStateNormal];
+    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
+    [megView addSubview:msgBtn];
     
-    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 300 - 171)];
-    
-    [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
-    
-    UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256 - 171)];
-    [bgImage setBackgroundColor:[UIColor clearColor]];
-    //[bgImage setImage:[UIImage imageNamed:@"bimg.jpg"]];
-    [bgImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"bg_qunzutou_1"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    [groupHeadView addSubview:bgImage];
-    
-    UIView* sView = [[UIView alloc] initWithFrame:CGRectMake(tableWidth - 90, 196 - 171, 80, 80)];
-    [sView setBackgroundColor:[UIColor colorWithHexString:@"#393b48"]];
-    
-    UIImageView* sImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    [sImage setBackgroundColor:[UIColor clearColor]];
-    [sImage setImage:[UIImage imageNamed:@"icon_touxiang"]];
-    [sImage setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    UIButton* btnPhoto = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
-    [btnPhoto setBackgroundColor:[UIColor clearColor]];
-    [btnPhoto setBackgroundImage:sImage.image forState:UIControlStateNormal];
-    [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [sView addSubview:btnPhoto];
-    
-    [groupHeadView addSubview:sView];
-    
-    UILabel* gName = [[UILabel alloc ] initWithFrame:CGRectMake(20, 219 - 171, 190, 20)];
-    [gName setBackgroundColor:[UIColor clearColor]];
-    [gName setFont:[UIFont boldSystemFontOfSize:19]];
-    [gName setTextAlignment:NSTextAlignmentRight];
-    [gName setTextColor:[UIColor whiteColor]];
-    [gName setNumberOfLines:1];
-    
-    [gName setText:_currentGroup.workGroupName];
-    
-    [groupHeadView addSubview:gName];
-    
-    
-    
-    UILabel* lbl = [[UILabel alloc ] initWithFrame:CGRectMake(15, 276 - 171, tableWidth - 30, 20)];
-    [lbl setBackgroundColor:[UIColor clearColor]];
-    [lbl setFont:[UIFont systemFontOfSize:15]];
-    [lbl setTextAlignment:NSTextAlignmentRight];
-    [lbl setTextColor:[UIColor grayColor]];
-    [lbl setNumberOfLines:1];
-    
-    [lbl setText:_currentGroup.workGroupMain];
-    
-    [groupHeadView addSubview:lbl];
-    
-    return groupHeadView;
+    return megView;
 }
 
 - (UIView *) markHeaderView
@@ -1104,7 +1060,36 @@
         }
     }
     
-    return _markHeadView;
+    UIView * markAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40 + 30)];
+    
+    [markAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
+    
+    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
+    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
+    UIButton * msgBtn = [[UIButton alloc] init];
+    msgBtn.frame = megView.frame;
+    msgBtn.backgroundColor = [UIColor clearColor];
+    msgBtn.titleLabel.textColor = [UIColor whiteColor];
+    msgBtn.titleLabel.font = Font(15);
+    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+    [msgBtn setTitle:str forState:UIControlStateNormal];
+    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
+    [megView addSubview:msgBtn];
+    
+    if([_allNum integerValue] > 0)
+    {
+        _markHeadView.top = 30;
+        
+        [markAndMegView addSubview:_markHeadView];
+        
+        [markAndMegView addSubview:megView];
+        
+        return markAndMegView;
+    }
+    else
+    {
+        return _markHeadView;
+    }
 }
 
 - (void)btnCloseClicked:(UIButton*)btn
@@ -1208,7 +1193,7 @@
         [_sideMenu showMenu];
     }
     
-    [self resetRightMarkView];
+//    [self resetRightMarkView];
     
     NSLog(@"Clicked !!");
 }
@@ -1481,6 +1466,34 @@
             [cell.contentView addSubview:readLbl];
         }
         
+        //新评论
+        
+        BOOL isNewCom = ms.isNewCom;
+//        BOOL isNewCom = YES;
+        
+        UILabel* comLbl = [[UILabel alloc] initWithFrame:CGRectMake(1, YH(readLbl) + 7, 56, 18)];
+        comLbl.font = Font(16);
+        comLbl.textAlignment = NSTextAlignmentRight;
+        
+        if(isNewCom)
+        {
+            comLbl.text = @"新评论";
+            comLbl.font = Font(10);
+            comLbl.textColor = RGBCOLOR(76, 216, 100);
+            [cell.contentView addSubview:comLbl];
+            
+            UILabel* corner = [[UILabel alloc] initWithFrame:CGRectMake(14,YH(readLbl) + 13, 5, 5)];
+            corner.layer.cornerRadius = 2;
+            corner.backgroundColor = RGBCOLOR(76, 216, 100);
+            corner.layer.borderColor = RGBCOLOR(76, 216, 100).CGColor;
+            corner.layer.borderWidth = 1.0f;
+            corner.layer.rasterizationScale = [UIScreen mainScreen].scale;
+            corner.layer.masksToBounds = YES;
+            corner.clipsToBounds = YES;
+            [cell.contentView addSubview:corner];
+        }
+
+        //灰点
         UILabel* corner = [[UILabel alloc] initWithFrame:CGRectMake(69, isFristIndex?72:40, 5, 5)];
         corner.layer.cornerRadius = 2;
         corner.backgroundColor = RGBCOLOR(119, 119, 119);
