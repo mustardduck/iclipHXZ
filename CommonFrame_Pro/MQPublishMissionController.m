@@ -50,6 +50,11 @@
     
     NSMutableArray * _imgUrls;
     NSMutableArray * _fileUrls;
+    
+    CGFloat _cellHeight;
+    CGFloat _canyuHeight;
+    CGFloat _chaosongHeight;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *titleTxt;
@@ -129,6 +134,11 @@
 
 - (void) resetScrollViewContenSize
 {
+    if(_isShowAllSection)
+    {
+        _tableView.height = 430 - 44 * 2 + _canyuHeight + _chaosongHeight;
+    }
+    
     _mainView.height = YH(_tableView);
     
     [_mainScrollView setContentSize:CGSizeMake(SCREENWIDTH, H(_mainView))];
@@ -136,7 +146,7 @@
 
 - (void) initTableView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, SCREENHEIGHT - 66)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, 430)];
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -175,6 +185,7 @@
         
         NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)1 inSection:(NSInteger)1];
         UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
+        
         BOOL isEx = NO;
         for (UIControl* control in cell.contentView.subviews) {
             if (control.tag == 112) {
@@ -183,38 +194,42 @@
         }
         if (!isEx) {
             
-            UIFont* font = [UIFont systemFontOfSize:12];
+            UIFont* font = Font(14);
             
             CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
-            CGFloat x = 120;
-            CGFloat y = 15;
-            CGFloat inteval = 2;
+            CGFloat x = 86;
+            CGFloat y = 12;
+            CGFloat intevalX = 14;
+            CGFloat intevalY = 10;
             CGFloat lblTotalWidth = cWidth - x - 80;
             CGFloat nWidth = 0;
-            CGFloat lHeight = 15;
+            CGFloat lHeight = 26;
             
             int row = 1;
             
             for (int i = 0; i< self.participantsIndexPathArray.count; i++) {
                 Member* m = (Member*)[self.participantsIndexPathArray objectAtIndex:i];
                 CGSize size = [CommonFile contentSize:m.name vWidth:0 vHeight:lHeight contentFont:font];
-                CGFloat lwidth = size.width + 10;
-                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x + nWidth, y * row + (row - 1)* inteval, lwidth, lHeight)];
-                [name setBackgroundColor:[UIColor orangeColor]];
+                CGFloat lwidth = size.width + 13;
+                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x + nWidth,y + (lHeight + intevalY)* (row - 1), lwidth, lHeight)];
+                [name setBackgroundColor:[UIColor tagBlueBackColor]];
                 [name setText: m.name];
                 [name setTextColor:[UIColor whiteColor]];
                 [name setTextAlignment:NSTextAlignmentCenter];
                 [name setFont:font];
                 name.tag = 112;
+                [name setRoundCorner:5];
                 
                 [cell.contentView addSubview:name];
                 
-                nWidth = lwidth + nWidth + inteval;
+                nWidth = lwidth + nWidth + intevalX;
                 if (nWidth > lblTotalWidth) {
                     row++;
                     nWidth = 0;
                 }
             }
+            
+            
         }
     }
     
@@ -231,35 +246,35 @@
             }
         }
         if (!isEx) {
-            
-            
-            UIFont* font = [UIFont systemFontOfSize:12];
+            UIFont* font = Font(14);
             
             CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
-            CGFloat x = 120;
-            CGFloat y = 15;
-            CGFloat inteval = 2;
+            CGFloat x = 86;
+            CGFloat y = 12;
+            CGFloat intevalX = 14;
+            CGFloat intevalY = 10;
             CGFloat lblTotalWidth = cWidth - x - 80;
             CGFloat nWidth = 0;
-            CGFloat lHeight = 15;
+            CGFloat lHeight = 26;
             
             int row = 1;
             
             for (int i = 0; i< self.ccopyToMembersArray.count; i++) {
                 Member* m = (Member*)[self.ccopyToMembersArray objectAtIndex:i];
                 CGSize size = [CommonFile contentSize:m.name vWidth:0 vHeight:lHeight contentFont:font];
-                CGFloat lwidth = size.width + 10;
-                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x + nWidth, y * row + (row - 1)* inteval, lwidth, lHeight)];
-                [name setBackgroundColor:[UIColor orangeColor]];
+                CGFloat lwidth = size.width + 13;
+                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x + nWidth,y + (lHeight + intevalY)* (row - 1), lwidth, lHeight)];
+                [name setBackgroundColor:[UIColor tagBlueBackColor]];
                 [name setText: m.name];
                 [name setTextColor:[UIColor whiteColor]];
                 [name setTextAlignment:NSTextAlignmentCenter];
                 [name setFont:font];
                 name.tag = 112;
-                
+                [name setRoundCorner:5];
+
                 [cell.contentView addSubview:name];
                 
-                nWidth = lwidth + nWidth + inteval;
+                nWidth = lwidth + nWidth + intevalX;
                 if (nWidth > lblTotalWidth) {
                     row++;
                     nWidth = 0;
@@ -294,11 +309,11 @@
                     }
                 }
                 if (!isEx) {
-                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(140, 15, 100, 15)];
+                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(86, 0, SCREENWIDTH - 100, 44)];
                     [name setBackgroundColor:[UIColor clearColor]];
                     [name setText:mem.name];
                     [name setTextColor:[UIColor whiteColor]];
-                    [name setFont:[UIFont systemFontOfSize:15]];
+                    [name setFont:Font(15)];
                     [name setTag:112];
                     
                     [cell.contentView addSubview:name];
@@ -431,7 +446,9 @@
     for(UIView *view in cell.contentView.subviews) {
         [view removeFromSuperview];
     }
-
+    
+    
+    
     NSInteger index = indexPath.row;
     NSInteger section = indexPath.section;
     CGFloat tableWidth = SCREENWIDTH;
@@ -439,10 +456,10 @@
 
     UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(12, 11, 17, 20)];
     
-    UILabel* lblText = [[UILabel alloc] initWithFrame:CGRectMake(42, 12, 100, 22)];
+    UILabel* lblText = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, 44)];
     [lblText setBackgroundColor:[UIColor clearColor]];
-    [lblText setTextColor:[UIColor whiteColor]];
-    [lblText setFont:[UIFont systemFontOfSize:15]];
+    [lblText setTextColor:[UIColor grayTitleColor]];
+    [lblText setFont:Font(12)];
     [lblText setTextAlignment:NSTextAlignmentLeft];
     
     if (section == 0 && index == 0) {
@@ -453,13 +470,23 @@
         [photo setFrame:CGRectMake(14, 14, 17, 16)];
         [photo setImage:[UIImage imageNamed:@"icon_qunzu"]];
         
+        [lblText setText:@"群组"];
+        
+        UILabel* groupText = [[UILabel alloc] initWithFrame:CGRectMake(86, 0, SCREENWIDTH - 100, 44)];
+        [groupText setBackgroundColor:[UIColor clearColor]];
+        [groupText setTextColor:[UIColor whiteColor]];
+        [groupText setFont:Font(15)];
+        [groupText setTextAlignment:NSTextAlignmentLeft];
+        
+        [cell.contentView addSubview:groupText];
+        
         if(_workGroupName)
         {
-            [lblText setText:_workGroupName];
+            [groupText setText:_workGroupName];
         }
         else
         {
-            [lblText setText:@"群组"];
+            [groupText setText:@""];
         }
     }
     else if(section == 1 && index == 0) {
@@ -586,55 +613,68 @@
 {
     if (indexPath.row == 1 && indexPath.section == 1) {
         if (self.participantsIndexPathArray.count > 0) {
-            UIFont* font = [UIFont systemFontOfSize:12];
             
+            UIFont* font = Font(14);
             CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
-            CGFloat x = 120;
-            CGFloat inteval = 2;
+            CGFloat x = 86;
+            CGFloat y = 12;
+            CGFloat intevalX = 14;
+            CGFloat intevalY = 10;
             CGFloat lblTotalWidth = cWidth - x - 80;
             CGFloat nWidth = 0;
-            CGFloat lHeight = 15;
-            
+            CGFloat lHeight = 26;
             int row = 1;
             
             for (int i = 0; i< self.participantsIndexPathArray.count; i++) {
                 Member* m = (Member*)[self.participantsIndexPathArray objectAtIndex:i];
                 CGSize size = [CommonFile contentSize:m.name vWidth:0 vHeight:lHeight contentFont:font];
-                CGFloat lwidth = size.width + 10;
-                nWidth = lwidth + nWidth + inteval;
+                CGFloat lwidth = size.width + 13;
+                nWidth = lwidth + nWidth + intevalX;
                 if (nWidth > lblTotalWidth) {
                     row++;
                     nWidth = 0;
                 }
             }
+
             if (nWidth == 0) {
                 row--;
                 if (row < 1) {
                     row = 1;
                 }
             }
-            return  44 + (row - 1)*(lHeight + inteval);
+            
+            CGFloat cellHeight = y * 2 + row * lHeight + (row - 1) * intevalY;
+            
+            _canyuHeight = cellHeight;
+            
+            return cellHeight;
         }
+        else
+        {
+            _canyuHeight = 44;
+        }
+        
     }
     else if (indexPath.row == 2 && indexPath.section == 1) {
         
         if (self.ccopyToMembersArray.count > 0) {
-            UIFont* font = [UIFont systemFontOfSize:12];
             
+            UIFont* font = Font(14);
             CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
-            CGFloat x = 120;
-            CGFloat inteval = 2;
+            CGFloat x = 86;
+            CGFloat y = 12;
+            CGFloat intevalX = 14;
+            CGFloat intevalY = 10;
             CGFloat lblTotalWidth = cWidth - x - 80;
             CGFloat nWidth = 0;
-            CGFloat lHeight = 15;
-            
+            CGFloat lHeight = 26;
             int row = 1;
             
             for (int i = 0; i< self.ccopyToMembersArray.count; i++) {
                 Member* m = (Member*)[self.ccopyToMembersArray objectAtIndex:i];
                 CGSize size = [CommonFile contentSize:m.name vWidth:0 vHeight:lHeight contentFont:font];
-                CGFloat lwidth = size.width + 10;
-                nWidth = lwidth + nWidth + inteval;
+                CGFloat lwidth = size.width + 13;
+                nWidth = lwidth + nWidth + intevalX;
                 if (nWidth > lblTotalWidth) {
                     row++;
                     nWidth = 0;
@@ -648,9 +688,21 @@
                 }
             }
             
-            return  44 + (row - 1)*(lHeight + inteval);
+            CGFloat cellHeight = y * 2 + row * lHeight + (row - 1) * intevalY;
+            
+            _chaosongHeight = cellHeight;
+            
+            return cellHeight;
+        }
+        else
+        {
+            _chaosongHeight = 44;
         }
         
+    }
+    else if (indexPath.section == 2 && indexPath.row == 0)
+    {
+        return 80;
     }
     return 44;
 }
