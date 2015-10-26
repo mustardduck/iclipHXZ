@@ -176,18 +176,19 @@
     nameLbl.font = Font(14);
     nameLbl.tag = 1;
     
-    CGSize boundSize = CGSizeMake(SCREENWIDTH - 150 - 180 - 80 * 2, CGFLOAT_MAX);
+    CGSize boundSize = CGSizeMake(SCREENWIDTH - 50 - 60 - 53, CGFLOAT_MAX);
     
     UILabel * commentLbl = [[UILabel alloc] init];
     commentLbl.frame = CGRectMake(77, 37, boundSize.width, boundSize.height);
     commentLbl.backgroundColor = [UIColor clearColor];
     commentLbl.textColor = [UIColor whiteColor];
+//    NSString * com = @"哈咯后斤斤计较么哈咯后哈哈咯后斤斤计较哈咯哈咯后斤斤计较么哈咯后哈哈咯后斤斤计较哈咯后斤斤计较么哈咯后哈哈咯后斤斤计较么咯后斤斤计较么斤斤计较么么咯后斤斤计较么斤斤计较么后斤斤计较么哈咯后哈哈咯后斤斤计较么咯后斤斤计较么斤斤计较么么咯后斤斤计较么斤斤计较么";
     commentLbl.text = mc.commentText;
     commentLbl.font = Font(14);
     commentLbl.numberOfLines = 0;
     commentLbl.tag = 2;
     
-    UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(77, commentLbl.bottom + 10, SCREENWIDTH - 150 -180 - 80 * 2, 16)];
+    UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(77, commentLbl.bottom + 10, 200, 16)];
     dateLbl.backgroundColor = [UIColor clearColor];
     dateLbl.textColor = [UIColor grayTitleColor];
     NSString * dateStr = [UICommon dayAndHourFromString:mc.createTime formatStyle:@"MM月dd日 HH:mm"];
