@@ -358,7 +358,17 @@
     NSMutableArray* array = [NSMutableArray array];
     NSMutableArray * imageArr = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@&messageId=%@",DETAIL_URL,taskId,[LoginUser loginUserID], messageId]];
+    NSString * url = @"";
+    if(messageId.length)
+    {
+        url = [NSString stringWithFormat:@"%@?taskId=%@&userId=%@&messageId=%@",DETAIL_URL,taskId,[LoginUser loginUserID], messageId];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"%@?taskId=%@&userId=%@",DETAIL_URL,taskId,[LoginUser loginUserID]];
+    }
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:url];
     
     if (responseString == nil) {
         return nil;

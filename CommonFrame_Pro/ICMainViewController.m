@@ -527,8 +527,9 @@
     {
         _workGroupId = _pubGroupId;
         _TermString = @"";
-        [_tableView.header beginRefreshing];
     }
+    
+    [_tableView.header beginRefreshing];
     
     /*
     if (_hasCreatedNewGroup != nil) {
@@ -1201,8 +1202,6 @@
     if (!_sideMenu.isOpen) {
         [_sideMenu showMenu];
     }
-    
-//    [self resetRightMarkView];
     
     NSLog(@"Clicked !!");
 }

@@ -166,6 +166,7 @@
     photo.frame = CGRectMake(14, 14, 50, 50);
     [photo setRoundCorner:5];
     [photo setImageWithURL:[NSURL URLWithString:mc.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    photo.tag = 5;
     
     UILabel * nameLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 14, SCREENWIDTH - 150 -180 - 80 * 2, 16)];
     nameLbl.backgroundColor = [UIColor clearColor];
@@ -218,9 +219,9 @@
     if(mc.rightImg.length)
     {
         UIImageView * rightPhoto = [[UIImageView alloc] init];
-        photo.frame = CGRectMake(SCREENWIDTH - 60 - 14, 14, 60, 60);
-        [photo setImageWithURL:[NSURL URLWithString:mc.rightImg] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
+        rightPhoto.frame = CGRectMake(SCREENWIDTH - 60 - 14, 14, 60, 60);
+        [rightPhoto setImageWithURL:[NSURL URLWithString:mc.rightImg] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        rightPhoto.tag = 6;
         [cell.contentView addSubview:rightPhoto];
     }
     else

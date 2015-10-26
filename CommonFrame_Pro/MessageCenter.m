@@ -20,12 +20,12 @@
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld",MESSAGECENTER_LIST_URL,[LoginUser loginUserID], page, rowCount]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld",MESSAGECENTER_LIST_URL,[LoginUser loginUserID], page, rowCount]];
     
     if (responseString == nil) {
         return array;
     }
-    id val = [CommonFile json:responseString];
+    id val = [CommonFile jsonNSDATA:responseString];
     
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
@@ -55,7 +55,7 @@
                                 MessageCenter* cm = [MessageCenter new];
                                 
                                 cm.commentText = [di valueForKey:@"content"];
-                                cm.megId = [di valueForKey:@"id"];
+                                cm.megId = [[di valueForKey:@"id"] stringValue];
                                 cm.createTime = [di valueForKey:@"createTime"];
                                 cm.taskId = [di valueForKey:@"taskId"];
                                 cm.source = [di valueForKey:@"source"];
