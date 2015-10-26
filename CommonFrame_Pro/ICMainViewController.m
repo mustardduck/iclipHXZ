@@ -429,6 +429,7 @@
                 cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
                 cm.totalPages = totalPages;
                 cm.isRead = [[di valueForKey:@"isRead"] boolValue];
+                cm.isNewCom = [[di valueForKey:@"isNewCom"] boolValue];
                 cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
                 cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
                 cm.labelList = [di objectForKey:@"labelList"];
