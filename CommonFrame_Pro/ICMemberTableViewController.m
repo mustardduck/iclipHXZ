@@ -516,12 +516,12 @@
                 if (_responsibleIndexPath != nil) {
                     if (indexPath.section == _responsibleIndexPath.section && indexPath.row == _responsibleIndexPath.row)
                     {
-                        break;
+                    }
+                    else
+                    {
+                        [self addIndexPathToCopyToArray:indexPath];
                     }
                 }
-                
-                [self addIndexPathToCopyToArray:indexPath];
-
             }
         }
         

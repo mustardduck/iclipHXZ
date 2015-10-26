@@ -32,6 +32,7 @@
 		4B4114D91BD4F5A10003B56C /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114D81BD4F5A10003B56C /* UIView+WebCacheOperation.m */; settings = {ASSET_TAGS = (); }; };
 		4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114DE1BD4F6010003B56C /* NSData+ImageContentType.m */; settings = {ASSET_TAGS = (); }; };
 		4B4114EA1BD4F6010003B56C /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114E41BD4F6010003B56C /* UIImageView+HighlightedWebCache.m */; settings = {ASSET_TAGS = (); }; };
+		4B5F59CB1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */; settings = {ASSET_TAGS = (); }; };
 		4B7A89221BD4F05F00E42F7C /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7A89071BD4F05E00E42F7C /* SDImageCache.m */; settings = {ASSET_TAGS = (); }; };
 		4B7A89231BD4F05F00E42F7C /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7A89091BD4F05E00E42F7C /* SDWebImageCompat.m */; settings = {ASSET_TAGS = (); }; };
 		4B7A89241BD4F05F00E42F7C /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7A890B1BD4F05E00E42F7C /* SDWebImageDecoder.m */; settings = {ASSET_TAGS = (); }; };
@@ -202,6 +203,8 @@
 		4B4114DE1BD4F6010003B56C /* NSData+ImageContentType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ImageContentType.m"; sourceTree = "<group>"; };
 		4B4114E31BD4F6010003B56C /* UIImageView+HighlightedWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+HighlightedWebCache.h"; sourceTree = "<group>"; };
 		4B4114E41BD4F6010003B56C /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
+		4B5F59C91BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPublishSharedAndNotifyController.h; sourceTree = "<group>"; };
+		4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPublishSharedAndNotifyController.m; sourceTree = "<group>"; };
 		4B7A89061BD4F05E00E42F7C /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		4B7A89071BD4F05E00E42F7C /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
 		4B7A89081BD4F05E00E42F7C /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageCompat.h; sourceTree = "<group>"; };
@@ -671,6 +674,8 @@
 				7823E1A81B39447600061DAF /* ICPublishSharedAndNotifyViewController.m */,
 				4BEC06BD1BCCDE3B009AFB5F /* MQPublishMissionController.h */,
 				4BEC06BE1BCCDE3B009AFB5F /* MQPublishMissionController.m */,
+				4B5F59C91BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.h */,
+				4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */,
 				4BE1F5861BD7A157007CF6C4 /* MarkCell.h */,
 				4BE1F5871BD7A157007CF6C4 /* MarkCell.m */,
 				4BE1F58B1BD88E91007CF6C4 /* MarkTagCell.h */,
@@ -1202,6 +1207,7 @@
 				783AC2DE1B56543900EE3E37 /* Member.m in Sources */,
 				4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */,
 				78BE76CF1B1FEEA6008AF8AD /* ICAccountViewController.m in Sources */,
+				4B5F59CB1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m in Sources */,
 				783176041B5DF8FB00446283 /* Authority.m in Sources */,
 				4BB33A911B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m in Sources */,
 			);
@@ -1331,8 +1337,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1351,7 +1357,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
+				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
@@ -1364,8 +1370,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1384,7 +1390,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
+				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";

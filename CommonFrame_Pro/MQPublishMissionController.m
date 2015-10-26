@@ -127,19 +127,12 @@
 
 - (void) viewDidLayoutSubviews
 {
-    [self resetScrollViewContenSize];
+//    [self resetScrollViewContenSize];
 }
 
 - (void) resetScrollViewContenSize
 {
-    if(_isShowAllSection)
-    {
-        _tableView.height = 430 - 44 * 2 + _canyuHeight + _chaosongHeight;
-    }
-    
-    _mainView.height = YH(_tableView);
-    
-    [_mainScrollView setContentSize:CGSizeMake(SCREENWIDTH, H(_mainView))];
+
 }
 
 - (void) initTableView
@@ -181,6 +174,13 @@
     if(_isShowAllSection)
     {
         [_tableView reloadData];
+
+        _tableView.height = 430 - 44 * 2 + _canyuHeight + _chaosongHeight;
+        
+        _mainView.height = YH(_tableView);
+        
+        [_mainScrollView setContentSize:CGSizeMake(SCREENWIDTH, H(_mainView))];
+        
     }
     
     if (_strFinishTime != nil)
