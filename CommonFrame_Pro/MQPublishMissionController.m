@@ -38,8 +38,6 @@
     
     UITableView*            _tableView;
     
-    BOOL _isShowAllSection;
-
     UICollectionView * _markCollectionView;
     
     UICollectionView * _TagCollView;
@@ -114,7 +112,7 @@
     
     [self initTableView];
     
-    _isShowAllSection = _workGroupName ? YES : NO;
+    self.isShowAllSection = _workGroupName ? YES : NO;
     
     _imgUrls = [NSMutableArray array];
     _fileUrls = [NSMutableArray array];
@@ -162,7 +160,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+
     if(!_markList.count)
     {
         if(_workGroupId)
@@ -170,8 +169,19 @@
             _markList = [Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:self.userId andUrl:ME_LABEL_CURL];
         }
     }
+    else if (_isRefreshMarkData && _workGroupId)
+    {
+        _markList = [Mark getMarkListByWorkGroupID:self.workGroupId loginUserID:self.userId andUrl:ME_LABEL_CURL];
+        
+        [_markCollectionView reloadData];
+        
+        self.isRefreshMarkData = NO;
+    }
     
-    [_tableView reloadData];
+    if(_isShowAllSection)
+    {
+        [_tableView reloadData];
+    }
     
     if (_strFinishTime != nil)
     {
@@ -549,9 +559,12 @@
     
     if(section == 0 && index == 0)
     {
-        _isShowAllSection = YES;
-        
-        [_tableView reloadData];
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
+        ((ICGroupListViewController*)vc).icMQPublishViewController = self;
+        [self.navigationController pushViewController:vc animated:YES];
+
 
     }
     if(section == 1 && index == 0)

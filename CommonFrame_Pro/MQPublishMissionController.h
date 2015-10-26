@@ -32,6 +32,9 @@
 @property(nonatomic,strong) NSString* userId;
 @property(nonatomic,strong) NSString* titleName;
 
+@property(nonatomic,assign) BOOL isShowAllSection;
+@property(nonatomic,assign) BOOL isRefreshMarkData;
+
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;
 

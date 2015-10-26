@@ -144,15 +144,34 @@
 {
     [super viewWillDisappear:animated];
     //[self.navigationController setNavigationBarHidden:YES];
+    
     if (_groupId != nil ) {
-        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
-            [self.icMainViewController setValue:_groupId forKey:@"pubGroupId"];
+        if ([self.icMQPublishViewController respondsToSelector:@selector(setWorkGroupId:)]) {
+            [self.icMQPublishViewController setValue:_groupId forKey:@"workGroupId"];
+
+        }
+        if ([self.icMQPublishViewController respondsToSelector:@selector(setWorkGroupName:)]) {
+            [self.icMQPublishViewController setValue:_groupName forKey:@"workGroupName"];
+            
+        }
+        if ([self.icMQPublishViewController respondsToSelector:@selector(setIsShowAllSection:)]) {
+            [self.icMQPublishViewController setValue:@"1" forKey:@"isShowAllSection"];
+            
+        }
+        if ([self.icMQPublishViewController respondsToSelector:@selector(setIsRefreshMarkData:)]) {
+            [self.icMQPublishViewController setValue:@"1" forKey:@"isRefreshMarkData"];
+            
         }
     }
-    
-    if ([self.icMainViewController respondsToSelector:@selector(setHasCreatedNewGroup:)]) {
-        [self.icMainViewController setValue:@"0" forKey:@"hasCreatedNewGroup"];
-    }
+//    if (_groupId != nil ) {
+//        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
+//            [self.icMainViewController setValue:_groupId forKey:@"pubGroupId"];
+//        }
+//    }
+//
+//    if ([self.icMainViewController respondsToSelector:@selector(setHasCreatedNewGroup:)]) {
+//        [self.icMainViewController setValue:@"0" forKey:@"hasCreatedNewGroup"];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -240,23 +259,19 @@
     
     if (self.currentViewGroupType == GroupTypeMission) {
         
-        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
-       
-        if (_dataArray.count > 0) {
-            Group * g = [_dataArray objectAtIndex:indexPath.row];
-           ((ICPublishMissionViewController*)vc).workGroupId = g.workGroupId;
-            ((ICPublishMissionViewController*)vc).userId = self.loginUserID;
-             ((ICPublishMissionViewController*)vc).icGroupViewController = self;
-        }
+        Group * g = [_dataArray objectAtIndex:indexPath.row];
+
+        self.groupId = g.workGroupId;
+        self.groupName = g.workGroupName;
         
-//        vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
-//        
+        [self.navigationController popViewControllerAnimated:YES];
+//        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
+//       
 //        if (_dataArray.count > 0) {
 //            Group * g = [_dataArray objectAtIndex:indexPath.row];
-//            ((MQPublishMissionController*)vc).workGroupId = g.workGroupId;
-//            ((MQPublishMissionController*)vc).workGroupName = g.workGroupName;
-//            ((MQPublishMissionController*)vc).userId = self.loginUserID;
-//            ((MQPublishMissionController*)vc).icGroupViewController = self;
+//           ((ICPublishMissionViewController*)vc).workGroupId = g.workGroupId;
+//            ((ICPublishMissionViewController*)vc).userId = self.loginUserID;
+//             ((ICPublishMissionViewController*)vc).icGroupViewController = self;
 //        }
     }
     else if (self.currentViewGroupType == GroupTypeSharedAndNotify) {

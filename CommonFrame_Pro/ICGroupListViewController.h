@@ -28,7 +28,11 @@ typedef enum{
 @property (nonatomic,assign) NSInteger isShared; //1: 问题  2：建议  3：其它
 @property(nonatomic,strong) NSString* loginUserID;
 @property(nonatomic,strong) NSString* groupId;
+@property(nonatomic,strong) NSString* groupName;
 
-@property (nonatomic,strong) id icMainViewController;
+
+//@property (nonatomic,strong) id icMainViewController;
+@property (nonatomic,strong) id icMQPublishViewController;
+
 
 @end
