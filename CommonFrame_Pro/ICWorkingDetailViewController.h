@@ -30,6 +30,8 @@
 @property (nonatomic,strong) IBOutlet UITableView*       tableView;
 
 @property (nonatomic,strong) NSString*              workGroupId;
+@property (nonatomic,assign) BOOL              isFromAllGroup;
+
 @property (nonatomic,strong) NSString*              messageId;
 
 

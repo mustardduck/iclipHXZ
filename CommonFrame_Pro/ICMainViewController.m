@@ -1710,8 +1710,8 @@
     ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
     ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
     ((ICWorkingDetailViewController*)vc).icMainViewController = self;
-    ((ICWorkingDetailViewController*)vc).workGroupId = ms.workGroupId;
-
+    ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+    
     [self.navigationController pushViewController:vc animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
