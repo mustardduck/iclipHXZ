@@ -240,13 +240,13 @@ typedef enum {
             [request setShowAccurateProgress:YES];
             [request setTag:i];
 
-            __block NSString*  resString = nil;
+            __block NSData*  resString = nil;
             __block NSError*    error;
             __block NSInteger  tag;
             
             [request setCompletionBlock:^{
                 
-                resString = [request responseString];
+                resString = [request responseData];
                 tag = request.tag;
                 NSLog(@"%ld finished: %@",(long)tag,resString);
                 
