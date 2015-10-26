@@ -19,7 +19,7 @@
 
 @implementation Group
 
-+ (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str 
++ (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str allNum:(NSString **)allNum
 {
     NSMutableArray* array = [NSMutableArray array];
     NSMutableArray* marks = [NSMutableArray array];
@@ -31,6 +31,8 @@
     }
     id val = [CommonFile jsonNSDATA:responseString];
     
+    NSString * allNumStr = @"";
+    
     if ([val isKindOfClass:[NSDictionary class]]) {
         NSDictionary* dic = (NSDictionary*)val;
         
@@ -41,6 +43,8 @@
                 
                 if ([dataDic isKindOfClass:[NSDictionary class]])
                 {
+                    allNumStr = [dataDic valueForKey:@"allNum"];
+                    
                     id dataArr = [dataDic valueForKey:@"wglist"];
                     if ([dataArr isKindOfClass:[NSArray class]])
                     {
@@ -135,6 +139,8 @@
     }
     
     *markArray = marks;
+    
+    *allNum = allNumStr;
     
     return array;
 }

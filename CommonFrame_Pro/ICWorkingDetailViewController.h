@@ -30,5 +30,8 @@
 @property (nonatomic,strong) IBOutlet UITableView*       tableView;
 
 @property (nonatomic,strong) NSString*              workGroupId;
+@property (nonatomic,strong) NSString*              messageId;
+
+
 
 @end

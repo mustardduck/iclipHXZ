@@ -145,6 +145,7 @@
                                 cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
                                 cm.totalPages = totalPages;
                                 cm.isRead = [[di valueForKey:@"isRead"] boolValue];
+                                cm.isNewCom = [[di valueForKey:@"isNewCom"] boolValue];
                                 cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
                                 cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
                                 cm.labelList = [di objectForKey:@"labelList"];
@@ -350,14 +351,14 @@
     return isOk;
 }
 
-+ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments imgArr:(NSArray **)imgArr
++ (Mission*)detail:(NSString*)taskId commentArray:(NSArray**)comments imgArr:(NSArray **)imgArr messageId:(NSString *)messageId
 {
     Mission* cm = [Mission new];
     
     NSMutableArray* array = [NSMutableArray array];
     NSMutableArray * imageArr = [NSMutableArray array];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@",DETAIL_URL,taskId,[LoginUser loginUserID]]];
+    NSString* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@&messageId=%@",DETAIL_URL,taskId,[LoginUser loginUserID], messageId]];
     
     if (responseString == nil) {
         return nil;

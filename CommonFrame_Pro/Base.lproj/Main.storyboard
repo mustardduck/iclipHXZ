@@ -1968,6 +1968,31 @@
             </objects>
             <point key="canvasLocation" x="1611" y="1288"/>
         </scene>
+        <!--消息-->
+        <scene sceneID="pGp-XG-YUH">
+            <objects>
+                <viewController storyboardIdentifier="MegListController" id="fIi-yH-UNf" customClass="MegListController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="yk6-MR-TWe">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="消息" id="FEK-pT-Gq2">
+                        <barButtonItem key="leftBarButtonItem" title="返回" id="iY8-5q-ebQ">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="backButtonClicked:" destination="fIi-yH-UNf" id="oVJ-Ki-LB9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="_tableView" destination="yk6-MR-TWe" id="uYz-hQ-4o0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n5P-1f-gBS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1603" y="2536"/>
+        </scene>
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>

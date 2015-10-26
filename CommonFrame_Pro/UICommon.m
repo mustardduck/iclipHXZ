@@ -17,10 +17,10 @@ static UIViewController *imagePicker = nil;
 + (NSString *) findFileType:(NSString *) name
 {
     NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
-
+    
     NSString * fileType = [name substringFromIndex:range.location + 1];
-
-     NSString * fileNum = @"";
+    
+    NSString * fileNum = @"";
     
     if([fileType equalsIgnoreCase:@"doc"] || [fileType equalsIgnoreCase:@"docx"])
     {
@@ -29,7 +29,6 @@ static UIViewController *imagePicker = nil;
     else if ([fileType equalsIgnoreCase:@"xls"] || [fileType equalsIgnoreCase:@"xlsx"])
     {
         fileNum = @"2";
-
     }
     else if ([fileType equalsIgnoreCase:@"ppt"] || [fileType equalsIgnoreCase:@"pptx"])
     {
@@ -105,7 +104,7 @@ static UIViewController *imagePicker = nil;
     {
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-
+        
         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         
         NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:font,NSFontAttributeName,[NSParagraphStyle defaultParagraphStyle],NSParagraphStyleAttributeName, nil];
@@ -120,7 +119,7 @@ static UIViewController *imagePicker = nil;
         }
         
         size.width = ceil(size.width);
-
+        
     }
     else
     {
@@ -169,7 +168,7 @@ static UIViewController *imagePicker = nil;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];;
     [formatter setDateFormat:format];
     return [formatter stringFromDate:destDate];
-
+    
 }
 
 + (NSString*) formatTime:(NSString*)input withLength:(int)length{

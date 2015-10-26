@@ -156,7 +156,7 @@
 {
     //UIButton *button  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     
-    [button setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
+//    [button setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     
     //barButton = [[UIBarButtonItem alloc] initWithCustomView:button];
