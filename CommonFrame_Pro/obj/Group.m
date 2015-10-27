@@ -256,7 +256,7 @@
     [dic setObject:workGroupName forKey:@"workGroupName"];
     [dic setObject:workGroupMain forKey:@"workGroupMain"];
     [dic setObject:img forKey:@"img"];
-    [dic setObject:@"1015050511520001" forKey:@"orgId"];
+    [dic setObject:[LoginUser loginUserOrgID] forKey:@"orgId"];
     
     NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:NEW_GROUP postData:dic];
     

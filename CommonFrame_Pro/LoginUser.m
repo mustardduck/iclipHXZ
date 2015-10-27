@@ -86,6 +86,11 @@
          user.token = [dic valueForKey:@"token"];
          user.type = [[dic valueForKey:@"type"] integerValue];
          user.userId = [dic valueForKey:@"userId"];
+        
+        NSString * orgID = [dic valueForKey:@"orgId"];
+        
+        user.orgId = orgID.length ? orgID : @"1015050511520001";
+
     }
     
     return user;
@@ -102,6 +107,11 @@
 + (NSString*)loginUserID
 {
     return [self getLoginInfo].userId;
+}
+
++ (NSString*)loginUserOrgID
+{
+    return [self getLoginInfo].orgId;
 }
 
 + (NSString*)loginUserName

@@ -9,12 +9,12 @@
 #import "Member.h"
 #import "LoginUser.h"
 
-#define CURL                @"/org/findOrgContactByInitial.hz?orgId=1015050511520001"
+#define CURL                @"/org/findOrgContactByInitial.hz"
 #define WORKGROUP_URL       @"/workgroup/findWgPeopleListByInitial.hz"
 #define MEMBER_INFO_URL     @"/workgroup/findWgPeopleDetail.hz"
 #define MARK_URL            @"/workgroup/findWgPeopleListByLabel.hz"
 #define UPDATEWGPEOPLESTRUS_URL   @"/workgroup/updateWgPeopleStrtus.hz"
-#define INVITE_URL          @"/org/findOrgContactByWork.hz?orgId=1015050511520001"
+#define INVITE_URL          @"/org/findOrgContactByWork.hz"
 
 @implementation Member
 
@@ -24,8 +24,9 @@
     NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
     NSMutableArray* sectionArray = [NSMutableArray array];
     
+    NSString * urlstr = [NSString stringWithFormat:@"%@?orgId=%@", CURL, [LoginUser loginUserOrgID]];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? CURL : [NSString stringWithFormat:@"%@&str=%@",CURL,searchString])];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? urlstr : [NSString stringWithFormat:@"%@&str=%@",urlstr,searchString])];
     
     if (responseString == nil) {
         return array;
@@ -107,8 +108,9 @@
     NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
     NSMutableArray* sectionArray = [NSMutableArray array];
     
+    NSString * urlstr = [NSString stringWithFormat:@"%@?orgId=%@", INVITE_URL, [LoginUser loginUserOrgID]];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? [NSString stringWithFormat:@"%@&workGroupId=%@",INVITE_URL, groupId] : [NSString stringWithFormat:@"%@&workGroupId=%@&str=%@",INVITE_URL, groupId,searchString])];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? [NSString stringWithFormat:@"%@&workGroupId=%@",urlstr, groupId] : [NSString stringWithFormat:@"%@&workGroupId=%@&str=%@",urlstr, groupId,searchString])];
     
     if (responseString == nil) {
         return array;

@@ -35,12 +35,16 @@
 @property (nonatomic,assign) NSInteger       source;
 @property (nonatomic,strong) NSString*       img;
 
+@property (nonatomic,strong) NSString*       orgId;//群组id
+
+
 - (BOOL)hasLogin;
 + (BOOL)quit;
 + (BOOL)registeNewUser:(NSInteger)source sourceVale:(NSString*)sourceStr inviteCode:(NSString*)code password:(NSString*)pwd;
 + (LoginUser*)getLoginInfo;
 + (NSDictionary*)getLoginInfoWithNSDictionary;
 + (NSString*)loginUserID;
++ (NSString*)loginUserOrgID;
 + (NSString*)loginUserName;
 + (NSString*)loginUserPwd;
 + (NSString*)loginUserPhoto;
