@@ -2002,6 +2002,39 @@
             </objects>
             <point key="canvasLocation" x="1603" y="2536"/>
         </scene>
+        <!--新任务-->
+        <scene sceneID="GIE-Sa-WOX">
+            <objects>
+                <viewController storyboardIdentifier="MQPublishMissionMainController" id="hHb-Vb-T0i" customClass="MQPublishMissionMainController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="m4R-Th-9GH"/>
+                        <viewControllerLayoutGuide type="bottom" id="tvS-C7-0Se"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Rkn-6k-PFq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.1843137255" green="0.1843137255" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="新任务" id="UO5-MW-1X8">
+                        <barButtonItem key="leftBarButtonItem" title="返回" id="UTP-ld-9i7">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="btnBackButtonClicked:" destination="hHb-Vb-T0i" id="ZD3-Yz-J5I"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="发布" id="LHD-RG-Zc0">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="btnDoneButtonClicked:" destination="hHb-Vb-T0i" id="VuN-Ee-LIs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o7G-Ts-tzC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1611" y="1288"/>
+        </scene>
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>

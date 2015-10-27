@@ -10,6 +10,7 @@
 
 #define CURL                    @"/index/findIndexTrends.hz"
 #define PUBLISH_MISSION_URL     @"/task/createTaskApp.hz"
+#define PUBLISH_ALL_MISSION_URL  @"/task/createTask.hz"
 #define PERSION_INFO            @"/workgroup/findWgPeopleTrends.hz"
 #define DETAIL_URL              @"/task/findTaskDetail.hz"
 #define TERM_URL                @"/index/findIndexTrendsByTerm.hz"
