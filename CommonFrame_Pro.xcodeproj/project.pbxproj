@@ -33,6 +33,7 @@
 		4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114DE1BD4F6010003B56C /* NSData+ImageContentType.m */; settings = {ASSET_TAGS = (); }; };
 		4B4114EA1BD4F6010003B56C /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114E41BD4F6010003B56C /* UIImageView+HighlightedWebCache.m */; settings = {ASSET_TAGS = (); }; };
 		4B5F59CB1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */; settings = {ASSET_TAGS = (); }; };
+		4B5F59D11BDF54C60017FD9D /* MQPublishMissionMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F59D01BDF54C60017FD9D /* MQPublishMissionMainController.m */; settings = {ASSET_TAGS = (); }; };
 		4B7A89221BD4F05F00E42F7C /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7A89071BD4F05E00E42F7C /* SDImageCache.m */; settings = {ASSET_TAGS = (); }; };
 		4B7A89231BD4F05F00E42F7C /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7A89091BD4F05E00E42F7C /* SDWebImageCompat.m */; settings = {ASSET_TAGS = (); }; };
 		4B7A89241BD4F05F00E42F7C /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7A890B1BD4F05E00E42F7C /* SDWebImageDecoder.m */; settings = {ASSET_TAGS = (); }; };
@@ -205,6 +206,8 @@
 		4B4114E41BD4F6010003B56C /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
 		4B5F59C91BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPublishSharedAndNotifyController.h; sourceTree = "<group>"; };
 		4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPublishSharedAndNotifyController.m; sourceTree = "<group>"; };
+		4B5F59CF1BDF54C60017FD9D /* MQPublishMissionMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPublishMissionMainController.h; sourceTree = "<group>"; };
+		4B5F59D01BDF54C60017FD9D /* MQPublishMissionMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPublishMissionMainController.m; sourceTree = "<group>"; };
 		4B7A89061BD4F05E00E42F7C /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		4B7A89071BD4F05E00E42F7C /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
 		4B7A89081BD4F05E00E42F7C /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageCompat.h; sourceTree = "<group>"; };
@@ -674,6 +677,8 @@
 				7823E1A81B39447600061DAF /* ICPublishSharedAndNotifyViewController.m */,
 				4BEC06BD1BCCDE3B009AFB5F /* MQPublishMissionController.h */,
 				4BEC06BE1BCCDE3B009AFB5F /* MQPublishMissionController.m */,
+				4B5F59CF1BDF54C60017FD9D /* MQPublishMissionMainController.h */,
+				4B5F59D01BDF54C60017FD9D /* MQPublishMissionMainController.m */,
 				4B5F59C91BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.h */,
 				4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */,
 				4BE1F5861BD7A157007CF6C4 /* MarkCell.h */,
@@ -1203,6 +1208,7 @@
 				4B7A89251BD4F05F00E42F7C /* SDWebImageDownloader.m in Sources */,
 				78613FC11B3D2805007ED169 /* ICCreateMarkViewController.m in Sources */,
 				786644921B54B07B00DBB189 /* HttpBaseFile.m in Sources */,
+				4B5F59D11BDF54C60017FD9D /* MQPublishMissionMainController.m in Sources */,
 				4B7A89261BD4F05F00E42F7C /* SDWebImageDownloaderOperation.m in Sources */,
 				783AC2DE1B56543900EE3E37 /* Member.m in Sources */,
 				4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */,
