@@ -75,6 +75,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *timeToTxtViewTopCons;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeightCons;
 
 @end
 
@@ -100,7 +101,9 @@
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = rightBarButton;
     
-//    [self.view setBackgroundColor:[UIColor backgroundColor]];
+    [self.view setBackgroundColor:[UIColor backgroundColor]];
+
+    [self.mainScrollView setDelaysContentTouches:NO];
     
     [self setTextViewStyle];
     
@@ -123,6 +126,7 @@
     }
     
     [_tableView reloadData];
+    
 }
 
 - (void) viewDidLayoutSubviews
@@ -137,7 +141,7 @@
 
 - (void) initTableView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, 430)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, 390)];
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -175,12 +179,10 @@
     {
         [_tableView reloadData];
 
-        _tableView.height = 430 - 44 * 2 + _canyuHeight + _chaosongHeight;
+        _tableView.height = 390 - 44 * 2 + _canyuHeight + _chaosongHeight;
         
-        _mainView.height = YH(_tableView);
-        
-        [_mainScrollView setContentSize:CGSizeMake(SCREENWIDTH, H(_mainView))];
-        
+        _mainViewHeightCons.constant = YH(_tableView);
+
     }
     
     if (_strFinishTime != nil)
@@ -1311,6 +1313,10 @@
             
         }
     }
+    
+    _tableView.height = 390 - 44 * 2 + _canyuHeight + _chaosongHeight;
+    _mainViewHeightCons.constant = YH(_tableView);
+    
 }
 
 - (void)btnDatePickerClicked:(id)sender
