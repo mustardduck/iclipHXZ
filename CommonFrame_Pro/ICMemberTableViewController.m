@@ -522,6 +522,10 @@
                         [self addIndexPathToCopyToArray:indexPath];
                     }
                 }
+                else
+                {
+                    [self addIndexPathToCopyToArray:indexPath];
+                }
             }
         }
         
