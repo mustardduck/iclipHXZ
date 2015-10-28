@@ -632,11 +632,11 @@
     
     if (index == 0) {//任务
         
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
-        
-        [self.navigationController pushViewController:vc animated:YES];
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
+//        
+//        [self.navigationController pushViewController:vc animated:YES];
 
         
 //        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -653,11 +653,11 @@
         
 //        [self.navigationController pushViewController:vc animated:YES];
         
-//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-//        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
-//        ((ICGroupListViewController*)vc).icMainViewController = self;
-//        [self.navigationController pushViewController:vc animated:YES];
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
+        ((ICGroupListViewController*)vc).icMainViewController = self;
+        [self.navigationController pushViewController:vc animated:YES];
 
     }
     else if (index == 1) {//问题

@@ -10,6 +10,7 @@
 #import "MQPublishMissionMainCell.h"
 #import "Mission.h"
 #import "UICommon.h"
+#import "PH_UITextView.h"
 
 @interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 {
@@ -47,7 +48,22 @@
     
     [self.view setBackgroundColor:[UIColor backgroundColor]];
     
+    _mainTableView.tableHeaderView = ({
+        [self setHeaderView];
+    });
+    
     _dataCount = 1;
+}
+
+- (UIView *) setHeaderView
+{
+    UIView * topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 116)];
+    
+    topView.backgroundColor = [UIColor backgroundColor];
+    
+//    PH_UITextView * txtView = [PH_UITextView alloc] initWithFrame:CGRectMake(14, 20, SCREENWIDTH - 14 * 2, <#CGFloat height#>)
+    
+    return topView;
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
