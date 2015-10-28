@@ -129,16 +129,6 @@
     
 }
 
-- (void) viewDidLayoutSubviews
-{
-//    [self resetScrollViewContenSize];
-}
-
-- (void) resetScrollViewContenSize
-{
-
-}
-
 - (void) initTableView
 {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, 390)];
@@ -1360,7 +1350,7 @@
             }
             NSComparisonResult  dataCompare= [fdate compare:tdate];
             if (dataCompare != NSOrderedDescending) {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之后" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之后" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert show];
                 return;
             }
@@ -1490,8 +1480,20 @@
     }
     else if (btn == _fujianBtn)
     {
-        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取", nil];
-        [as showInView:self.view];
+        if(_workGroupId)
+        {
+            UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取", nil];
+            [as showInView:self.view];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"请先选择群组!"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
     }
     else if (btn == _jiezhiDelBtn)
     {
