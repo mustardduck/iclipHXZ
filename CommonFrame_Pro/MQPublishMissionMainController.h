@@ -10,4 +10,8 @@
 
 @interface MQPublishMissionMainController : UIViewController
 
+@property(nonatomic,strong) NSString* workGroupId;
+@property(nonatomic, strong)NSString * workGroupName;
+@property(nonatomic, strong)NSMutableDictionary * mainMissionDic;
+
 @end

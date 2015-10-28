@@ -11,17 +11,24 @@
 #import "Mission.h"
 #import "UICommon.h"
 #import "PH_UITextView.h"
+#import "MQPublishMissionController.h"
 
-@interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate>
 {
     NSMutableArray * _dataArray;
     
     NSInteger _dataCount;
     
-    UITextField * _currentField;
+    UIView * _currentView;
+    
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *mainTableView;
+@property (weak, nonatomic) IBOutlet UIView *topTxtView;
+@property (weak, nonatomic) IBOutlet PH_UITextView *mainTextView;
+@property (weak, nonatomic) IBOutlet UIView *rightTxtView;
+@property (weak, nonatomic) IBOutlet UIButton *rightTxtBtn;
+@property (weak, nonatomic) IBOutlet UIView *jiaView;
 
 
 @end
@@ -48,22 +55,51 @@
     
     [self.view setBackgroundColor:[UIColor backgroundColor]];
     
-    _mainTableView.tableHeaderView = ({
-        [self setHeaderView];
-    });
+    [self setHeaderView];
     
     _dataCount = 1;
 }
 
-- (UIView *) setHeaderView
+- (void) textViewDidBeginEditing:(UITextView *)textView
 {
-    UIView * topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 116)];
+    _rightTxtView.hidden = NO;
     
-    topView.backgroundColor = [UIColor backgroundColor];
+    _currentView = _mainTextView;
     
-//    PH_UITextView * txtView = [PH_UITextView alloc] initWithFrame:CGRectMake(14, 20, SCREENWIDTH - 14 * 2, <#CGFloat height#>)
+    _jiaView.hidden = YES;
+}
+
+- (void) setHeaderView
+{
+    [_topTxtView setRoundColorCorner:5.0 withColor:[UIColor grayLineColor]];
+    [_rightTxtBtn addTarget:self action:@selector(topRightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_mainTextView setPlaceholder:@"请编写任务标题!"];
     
-    return topView;
+    [self addDoneToKeyboard:_mainTextView];
+}
+
+- (void)topRightBtnClicked:(id)sender
+{
+    [self hiddenKeyboard];
+    
+    if(!_mainMissionDic)
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+        
+        if (_workGroupId) {
+            ((MQPublishMissionController*)vc).workGroupId = _workGroupId;
+            ((MQPublishMissionController*)vc).workGroupName = _workGroupName;
+        }
+        
+        ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
+        ((MQPublishMissionController*)vc).icGroupViewController = self;
+        ((MQPublishMissionController*)vc).isMainMission = YES;
+
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -130,7 +166,7 @@
     else
     {
         cell.addView.hidden = YES;
-
+        
         UIView * line = [cell viewWithTag:1];
         if(!line)
         {
@@ -153,20 +189,32 @@
         [self addDoneToKeyboard:cell.titleLbl];
     }
 //    Mission* ms = [_dataArray objectAtIndex:indexPath.row];
+    
+    NSInteger tag = indexPath.row;
+    
+    cell.titleLbl.tag = tag + 100;
 
     [cell.titleView setRoundColorCorner:5 withColor:[UIColor grayLineColor]];
-    
     return cell;
 }
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField
 {
-    _currentField = textField;
+    _currentView = textField;
+    
+    NSIndexPath * indexpath = [NSIndexPath indexPathForRow:textField.tag - 100 inSection:0];
+    
+    MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexpath];
+    
+    if(cell)
+    {
+        cell.rightView.hidden = NO;
+    }
 }
 
 - (void) hiddenKeyboard
 {
-    [_currentField resignFirstResponder];
+    [_currentView resignFirstResponder];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -179,6 +227,39 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(_dataCount - 1 == indexPath.row)
+    {
+        return UITableViewCellEditingStyleNone;
+    }
+    return UITableViewCellEditingStyleDelete;
+
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"移除";
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        _dataCount --;
+        
+        MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexPath];
+        
+        cell.titleLbl.text = @"";
+        
+        cell.rightView.hidden = YES;
+        
+        [tableView reloadData];
+    }
+}
+
 
 - (void) addMissionCell:(id)sender
 {

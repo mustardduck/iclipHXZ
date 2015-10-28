@@ -1814,24 +1814,100 @@
     else
         m.isAccessory = 0;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    [self setData:m];
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        
+//        NSString * taskId = @"";
+//        
+//        BOOL isSendOK = [m sendMission:YES taksId:&taskId];
+//
+//        if (isSendOK) {
+//            
+//            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"任务创建成功！" delegate:self
+//                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            
+//            [self hiddenKeyboard];
+//            _btnDoneClicked = YES;
+//            [self.navigationController popViewControllerAnimated:YES];
+//        }
+//        
+//    });
+    
+}
+
+- (void)setData:(Mission *)mission
+{
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    [dic setObject:mission.createUserId forKey:@"userId"];
+    
+    if (mission.taskId != nil) {
+        [dic setObject:self.taskId forKey:@"taskId"];
+    }
+    
+    [dic setObject:mission.workGroupId forKey:@"workGroupId"];
+    [dic setObject:mission.main forKey:@"main"];
+    [dic setObject:mission.title forKey:@"title"];
+    
+    BOOL isMission = YES;
+    
+    if (isMission) {
+        [dic setObject:mission.liableUserId forKey:@"lableUserId"];
+        if(mission.partList != nil)
+            [dic setObject:mission.partList forKey:@"partList"];
+        if(mission.cclist != nil)
+            [dic setObject:mission.cclist forKey:@"ccList"];
         
-        NSString * taskId = @"";
         
-        BOOL isSendOK = [m sendMission:YES taksId:&taskId];
+        [dic setObject:mission.finishTime forKey:@"finishTime"];
         
-        if (isSendOK) {
+        if(mission.remindTime != nil)
+            [dic setObject:mission.remindTime forKey:@"remindTime"];
+    }
+    
+    [dic setObject:[NSString stringWithFormat:@"%d",mission.isLabel?1:0] forKey:@"isLabel"];
+
+    if(mission.cclist.count > 0)
+    {
+        [dic setObject:mission.cclist forKey:@"ccList"];
+    }
+    
+    if (mission.isLabel)
+        [dic setObject:mission.labelList forKey:@"labelList"];
+    [dic setObject:[NSString stringWithFormat:@"%d",mission.isAccessory?1:0]  forKey:@"isAccessory"];
+    if (mission.isAccessory) {
+        //[dic setObject:self.accessoryList forKey:@"accessoryList"];
+        NSMutableArray* tA = [NSMutableArray array];
+        for (int i = 0; i < mission.accessoryList.count; i++) {
+            NSMutableDictionary* di = [NSMutableDictionary dictionary];
             
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"任务创建成功！" delegate:self
-                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+            Accessory* acc = [mission.accessoryList objectAtIndex:i];
             
-            [self hiddenKeyboard];
-            _btnDoneClicked = YES;
-            [self.navigationController popViewControllerAnimated:YES];
+            [di setObject:acc.name forKey:@"name"];
+            [di setObject:acc.address forKey:@"address"];
+            [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
+            [tA addObject:di];
         }
-        
-    });
+        [dic setObject:tA forKey:@"accessoryList"];
+    }
+    [dic setObject:[NSString stringWithFormat:@"%ld",mission.type] forKey:@"type"];
+    
+    if(!mission.taskId)
+    {
+        [dic setObject:@"2" forKey:@"platform"];//来源平台：1：web  2：IOs  3：android  4:微信
+    }
+
+    if(_isMainMission)
+    {
+        [dic setObject:@"1" forKey:@"parentId"];//1是主任务 0子任务
+    }
+    else
+    {
+        [dic setObject:@"0" forKey:@"parentId"];//1是主任务 0子任务
+    }
+    
     
 }
 

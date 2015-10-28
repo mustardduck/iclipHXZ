@@ -259,21 +259,21 @@
     
     if (self.currentViewGroupType == GroupTypeMission) {
         
-//        Group * g = [_dataArray objectAtIndex:indexPath.row];
-//
-//        self.groupId = g.workGroupId;
-//        self.groupName = g.workGroupName;
-//        
-//        [self.navigationController popViewControllerAnimated:YES];
+        Group * g = [_dataArray objectAtIndex:indexPath.row];
+
+        self.groupId = g.workGroupId;
+        self.groupName = g.workGroupName;
         
-        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
-       
-        if (_dataArray.count > 0) {
-            Group * g = [_dataArray objectAtIndex:indexPath.row];
-           ((ICPublishMissionViewController*)vc).workGroupId = g.workGroupId;
-            ((ICPublishMissionViewController*)vc).userId = self.loginUserID;
-             ((ICPublishMissionViewController*)vc).icGroupViewController = self;
-        }
+        [self.navigationController popViewControllerAnimated:YES];
+        
+//        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
+//       
+//        if (_dataArray.count > 0) {
+//            Group * g = [_dataArray objectAtIndex:indexPath.row];
+//           ((ICPublishMissionViewController*)vc).workGroupId = g.workGroupId;
+//            ((ICPublishMissionViewController*)vc).userId = self.loginUserID;
+//             ((ICPublishMissionViewController*)vc).icGroupViewController = self;
+//        }
     }
     else if (self.currentViewGroupType == GroupTypeSharedAndNotify) {
         

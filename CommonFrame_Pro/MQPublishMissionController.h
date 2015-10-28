@@ -34,6 +34,7 @@
 
 @property(nonatomic,assign) BOOL isShowAllSection;
 @property(nonatomic,assign) BOOL isRefreshMarkData;
+@property(nonatomic, assign) BOOL isMainMission;
 
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;

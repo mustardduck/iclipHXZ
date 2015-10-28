@@ -632,32 +632,21 @@
     
     if (index == 0) {//任务
         
-//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        
-//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
-//        
-//        [self.navigationController pushViewController:vc animated:YES];
-
-        
-//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//
-//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
-//        
-//        if (_currentGroup) {
-//            ((MQPublishMissionController*)vc).workGroupId = _currentGroup.workGroupId;
-//            ((MQPublishMissionController*)vc).workGroupName = _currentGroup.workGroupName;
-//        }
-//        
-//        ((MQPublishMissionController*)vc).userId = self.loginUserID;
-        //            ((MQPublishMissionController*)vc).icGroupViewController = self;
-        
-//        [self.navigationController pushViewController:vc animated:YES];
-        
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
-        ((ICGroupListViewController*)vc).icMainViewController = self;
+        
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
+        if (_currentGroup) {
+            ((MQPublishMissionMainController*)vc).workGroupId = _currentGroup.workGroupId;
+            ((MQPublishMissionMainController*)vc).workGroupName = _currentGroup.workGroupName;
+        }
+        
         [self.navigationController pushViewController:vc animated:YES];
+
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+//        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
+//        ((ICGroupListViewController*)vc).icMainViewController = self;
+//        [self.navigationController pushViewController:vc animated:YES];
 
     }
     else if (index == 1) {//问题
