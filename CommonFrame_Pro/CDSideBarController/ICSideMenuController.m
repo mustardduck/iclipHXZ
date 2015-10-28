@@ -383,7 +383,17 @@
                 
                 //[menuButton setImage:[_imageList objectAtIndex:index] forState:UIControlStateNormal];
                 
-                [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                if(index == _imageList.count - 1)
+                {
+                    [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_1"] forState:UIControlStateNormal];
+                    [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
+
+                }
+                else
+                {
+                    [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                }
+
                 [menuButton setBackgroundColor:[UIColor clearColor]];
                 [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [menuButton setTag:index];
@@ -501,8 +511,18 @@
             UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake((menuWidth - 44) / 2, 5, 44, 44)];
             
             //[menuButton setImage:[_imageList objectAtIndex:index] forState:UIControlStateNormal];
-
-            [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            
+            if(index == _imageList.count - 1)
+            {
+                [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_1"] forState:UIControlStateNormal];
+                [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
+                
+            }
+            else
+            {
+                [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            }
+            
             [menuButton setBackgroundColor:[UIColor clearColor]];
             [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [menuButton setTag:index];

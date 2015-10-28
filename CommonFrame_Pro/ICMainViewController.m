@@ -229,6 +229,12 @@
     
     _allNum = allnum;
     
+    Group * gc = [[Group alloc] init];
+    gc.workGroupId = @"-1";
+    gc.workGroupName = @"创建群组";
+    gc.messageCount = @"0";
+    [muArr addObject:gc];
+    
     _bottomArray = [NSArray arrayWithArray:muArr];
     
     if (_bottomArray.count > 0) {
@@ -1179,6 +1185,15 @@
 
 - (void)icSideMenuClicked:(id)sender
 {
+    UIButton * btn = (UIButton *)sender;
+    
+    if(btn.tag == _bottomArray.count - 1)
+    {
+        [self btnCreateNewGroup:nil];
+        
+        return;
+    }
+    
     _pubGroupId = nil;
 
     _tableView.tableHeaderView = nil;
