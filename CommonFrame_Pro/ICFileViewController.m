@@ -792,6 +792,18 @@ typedef enum {
 
             Accessory * acc = (Accessory *)obj;
             
+            if (acc != nil) {
+                
+                if(!_AccessoryArray.count)
+                {
+                    _AccessoryArray = [NSMutableArray array];
+                    
+                }
+                
+                [_AccessoryArray addObject:acc];
+                
+            }
+            
             if (_hasUploadedFileArray.count > 0) {
                 
                 for (int i = 0; i < _hasUploadedFileArray.count; i++) {
@@ -818,17 +830,7 @@ typedef enum {
                 //[_AccessoryArray addObjectsFromArray:_hasUploadedFileArray];
             }
             
-            if (acc != nil) {
-                
-                if(!_AccessoryArray.count)
-                {
-                    _AccessoryArray = [NSMutableArray array];
 
-                }
-
-                [_AccessoryArray addObject:acc];
-                
-            }
 
             
             [self.navigationController popViewControllerAnimated:YES];
