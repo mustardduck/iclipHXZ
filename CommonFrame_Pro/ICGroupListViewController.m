@@ -163,15 +163,15 @@
             
         }
     }
-//    if (_groupId != nil ) {
-//        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
-//            [self.icMainViewController setValue:_groupId forKey:@"pubGroupId"];
-//        }
-//    }
-//
-//    if ([self.icMainViewController respondsToSelector:@selector(setHasCreatedNewGroup:)]) {
-//        [self.icMainViewController setValue:@"0" forKey:@"hasCreatedNewGroup"];
-//    }
+    if (_groupId != nil ) {
+        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
+            [self.icMainViewController setValue:_groupId forKey:@"pubGroupId"];
+        }
+    }
+
+    if ([self.icMainViewController respondsToSelector:@selector(setHasCreatedNewGroup:)]) {
+        [self.icMainViewController setValue:@"0" forKey:@"hasCreatedNewGroup"];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -265,6 +265,7 @@
         self.groupName = g.workGroupName;
         
         [self.navigationController popViewControllerAnimated:YES];
+        
 //        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICPublishMissionViewController"];
 //       
 //        if (_dataArray.count > 0) {

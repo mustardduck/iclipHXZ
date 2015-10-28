@@ -31,7 +31,7 @@ typedef enum{
 @property(nonatomic,strong) NSString* groupName;
 
 
-//@property (nonatomic,strong) id icMainViewController;
+@property (nonatomic,strong) id icMainViewController;
 @property (nonatomic,strong) id icMQPublishViewController;
 
 

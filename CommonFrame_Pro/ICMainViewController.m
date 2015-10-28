@@ -21,6 +21,7 @@
 #import "RRAttributedString.h"
 #import "MQPublishMissionController.h"
 #import "MegListController.h"
+#import "MQPublishMissionMainController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -626,18 +627,25 @@
     if (index == 0) {//任务
         
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
         
-        if (_currentGroup) {
-            ((MQPublishMissionController*)vc).workGroupId = _currentGroup.workGroupId;
-            ((MQPublishMissionController*)vc).workGroupName = _currentGroup.workGroupName;
-        }
-        
-        ((MQPublishMissionController*)vc).userId = self.loginUserID;
-        //            ((MQPublishMissionController*)vc).icGroupViewController = self;
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
         
         [self.navigationController pushViewController:vc animated:YES];
+
+        
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+//        
+//        if (_currentGroup) {
+//            ((MQPublishMissionController*)vc).workGroupId = _currentGroup.workGroupId;
+//            ((MQPublishMissionController*)vc).workGroupName = _currentGroup.workGroupName;
+//        }
+//        
+//        ((MQPublishMissionController*)vc).userId = self.loginUserID;
+        //            ((MQPublishMissionController*)vc).icGroupViewController = self;
+        
+//        [self.navigationController pushViewController:vc animated:YES];
         
 //        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 //        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];

@@ -79,6 +79,7 @@ typedef void (^keyboardBlock) ();
 - (void)setBorderWithColor:(UIColor *)color;
 - (void)setRoundCorner:(float)cornerRadius;
 - (void)setRoundColorCorner:(float)cornerRadius;
+- (void)setRoundColorCorner:(float)cornerRadius withColor:(UIColor *)color;
 
 
 @end

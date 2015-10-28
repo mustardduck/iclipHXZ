@@ -344,6 +344,15 @@ static UIViewController *imagePicker = nil;
     self.layer.cornerRadius = cornerRadius;
 }
 
+- (void)setRoundColorCorner:(float)cornerRadius withColor:(UIColor *)color
+{
+    self.layer.masksToBounds = YES;
+    self.layer.borderWidth = 0.5f;
+    self.layer.borderColor = color.CGColor;
+    self.layer.cornerRadius = cornerRadius;
+    self.clipsToBounds = YES;
+}
+
 - (void)setBorderWithColor:(UIColor *)color
 {
     self.layer.borderWidth = 0.5f;
