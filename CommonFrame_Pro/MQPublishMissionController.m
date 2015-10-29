@@ -227,10 +227,10 @@
         {
             _selectedIndexTagArr = [NSMutableArray array];
         }
-        else
-        {
-            [_selectedIndexTagArr removeAllObjects];
-        }
+//        else
+//        {
+//            [_selectedIndexTagArr removeAllObjects];
+//        }
         
         for(NSInteger index = 0; index < _markList.count; index ++)
         {
@@ -239,9 +239,14 @@
             {
                 if(ma.labelId == markId)
                 {
-                    [_tagList addObject:ma];
+                    NSNumber * num = [NSNumber numberWithInteger:index];
                     
-                    [_selectedIndexTagArr addObject:[NSNumber numberWithInteger:index]];
+                    if(![_selectedIndexTagArr containsObject:num])
+                    {
+                        [_tagList addObject:ma];
+                        
+                        [_selectedIndexTagArr addObject:num];
+                    }
                 }
             }
         }
@@ -841,7 +846,7 @@
     _markCollectionView.dataSource = self;
     _markCollectionView.scrollEnabled = NO;
     _markCollectionView.backgroundColor = [UIColor backgroundColor];
-    _markCollectionView.tag = 1111;
+    _markCollectionView.tag = 1112;
     
     [_markCollectionView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
 
