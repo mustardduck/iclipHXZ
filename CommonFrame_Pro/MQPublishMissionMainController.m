@@ -490,13 +490,21 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    if(_mainMissionDic)
+    NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
+    
+    if([mainDic allKeys].count)
     {
         _mainTextView.text = [_mainMissionDic valueForKey:@"title"];
         
         _rightTxtView.hidden = NO;
         
         _jiaView.hidden = YES;
+    }
+    else
+    {
+        _rightTxtView.hidden = YES;
+        
+        _jiaView.hidden = NO;
     }
     if(_childMissionArr.count)
     {
