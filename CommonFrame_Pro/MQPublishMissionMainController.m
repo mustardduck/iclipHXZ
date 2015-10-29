@@ -196,7 +196,7 @@
         }
         [cell.contentView addSubview:line2];
         
-        [cell.addBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
     }
     else
     {
@@ -223,8 +223,8 @@
         
         [self addDoneToKeyboard:cell.titleLbl];
         
-        [cell.addBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        cell.addBtn.tag = tag + 100;
+        [cell.rightBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        cell.rightBtn.tag = tag + 100;
     }
     
     cell.titleLbl.tag = tag + 100;

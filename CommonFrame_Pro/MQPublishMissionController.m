@@ -275,12 +275,55 @@
 
     }
     
-    if (_strFinishTime != nil)
-    {
+    if (self.responsibleDic.count > 0){
+        NSLog(@"%@",self.responsibleDic);
         
-    }
-    if (_strRemindTime != nil) {
-        
+        if (self.responsibleDic.count > 0) {
+            NSMutableArray* arr = (NSMutableArray*)self.responsibleDic;
+            
+            if (arr.count == 1) {
+                
+                Member* mem = arr[0];
+                
+                NSMutableArray * arr = [NSMutableArray arrayWithArray:_participantsIndexPathArray];
+                
+                if(arr.count > 0)
+                {
+                    for (Member * meb in arr)
+                    {
+                        if(meb.userId == mem.userId)
+                        {
+                            [arr removeObject:meb];
+                            
+                            break;
+                        }
+                    }
+                }
+                
+                self.participantsIndexPathArray = arr;
+                
+                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)0 inSection:(NSInteger)1];
+                UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
+                BOOL isEx = NO;
+                for (UIControl* control in cell.contentView.subviews) {
+                    if (control.tag == 112) {
+                        ((UILabel*)control).text = mem.name;
+                        isEx = YES;
+                        break;
+                    }
+                }
+                if (!isEx) {
+                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(86, 0, SCREENWIDTH - 100, 44)];
+                    [name setBackgroundColor:[UIColor clearColor]];
+                    [name setText:mem.name];
+                    [name setTextColor:[UIColor whiteColor]];
+                    [name setFont:Font(15)];
+                    [name setTag:112];
+                    
+                    [cell.contentView addSubview:name];
+                }
+            }
+        }
     }
     if (self.participantsIndexPathArray != nil) {
         NSLog(@"%@",self.participantsIndexPathArray);
@@ -380,40 +423,6 @@
                 if (nWidth > lblTotalWidth) {
                     row++;
                     nWidth = 0;
-                }
-            }
-        }
-    }
-    
-    if (self.responsibleDic.count > 0){
-        NSLog(@"%@",self.responsibleDic);
-        
-        if (self.responsibleDic.count > 0) {
-            NSMutableArray* arr = (NSMutableArray*)self.responsibleDic;
-            
-            if (arr.count == 1) {
-                
-                Member* mem = arr[0];
-                
-                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)0 inSection:(NSInteger)1];
-                UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
-                BOOL isEx = NO;
-                for (UIControl* control in cell.contentView.subviews) {
-                    if (control.tag == 112) {
-                        ((UILabel*)control).text = mem.name;
-                        isEx = YES;
-                        break;
-                    }
-                }
-                if (!isEx) {
-                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(86, 0, SCREENWIDTH - 100, 44)];
-                    [name setBackgroundColor:[UIColor clearColor]];
-                    [name setText:mem.name];
-                    [name setTextColor:[UIColor whiteColor]];
-                    [name setFont:Font(15)];
-                    [name setTag:112];
-                    
-                    [cell.contentView addSubview:name];
                 }
             }
         }
@@ -1541,6 +1550,8 @@
 
 - (IBAction)touchUpInsideOnBtn:(id)sender
 {
+    [self hiddenKeyboard];
+    
     UIButton * btn = (UIButton *)sender;
     
     if(btn == _jiezhiBtn || btn == _tixingBtn)
