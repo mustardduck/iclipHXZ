@@ -83,11 +83,13 @@
     {
         if(_isCC)
         {
-            NSMutableArray* sectionArray = [NSMutableArray array];
-            NSArray*        memberArray = [Member getAllMembers:&sectionArray participantsArray:self.selectedParticipantsDictionary];
-            
-            _sections = sectionArray;
-            _rows = memberArray;
+            [self fillAllMember];
+
+//            NSMutableArray* sectionArray = [NSMutableArray array];
+//            NSArray*        memberArray = [Member getAllMembers:&sectionArray participantsArray:self.selectedParticipantsDictionary];
+//            
+//            _sections = sectionArray;
+//            _rows = memberArray;
         }
         else
         {
