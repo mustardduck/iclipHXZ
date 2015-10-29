@@ -55,6 +55,7 @@
     
     NSMutableArray * _selectedIndexTagArr;
     
+    NSString * _responName;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *titleTxt;
@@ -176,12 +177,11 @@
         
         self.cMarkAarry = [_currentMissionDic objectForKey:@"labelList"];
         
+        self.responsibleDic = [_currentMissionDic valueForKey:@"respoDic"];
+        self.participantsIndexPathArray = [_currentMissionDic objectForKey:@"partiArr"];
+        self.ccopyToMembersArray = [_currentMissionDic objectForKey:@"ccopyArr"];
         
         [self resetAllViewLayout:_jiezhiAndTixingView];
-        
-//        _pickedUrls
-//        _markList
-//        _tagList
     }
 }
 
@@ -2041,6 +2041,19 @@
     else
     {
         [dic setObject:@"0" forKey:@"parentId"];//1是主任务 0子任务
+    }
+    
+    if(_responsibleDic)
+    {
+        [dic setObject:_responsibleDic forKey:@"respoDic"];
+    }
+    if(_participantsIndexPathArray.count)
+    {
+        [dic setObject:_participantsIndexPathArray forKey:@"partiArr"];
+    }
+    if(_ccopyToMembersArray.count)
+    {
+        [dic setObject:_ccopyToMembersArray forKey:@"ccopyArr"];
     }
     
     [self saveData:dic];

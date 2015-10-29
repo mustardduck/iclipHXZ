@@ -203,8 +203,9 @@
     NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
     NSMutableArray* sectionArray = [NSMutableArray array];
     
+    NSString * urlstr = [NSString stringWithFormat:@"%@?orgId=%@", CURL, [LoginUser loginUserOrgID]];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:CURL];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:urlstr];
     
     if (responseString == nil) {
         return array;
