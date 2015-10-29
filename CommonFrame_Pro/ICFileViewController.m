@@ -812,7 +812,7 @@ typedef enum {
                     for (int j = 0; j < _AccessoryArray.count; j++) {
                         Accessory* acc = [_AccessoryArray objectAtIndex:j];
                         
-                        if ([ac.name isEqualToString:acc.name]) {
+                        if ([ac.address isEqualToString:acc.address]) {
                             isEx = YES;
                             break;
                         }

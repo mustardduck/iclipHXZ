@@ -46,8 +46,8 @@
     
     NSMutableArray * _tagList;
     
-    NSMutableArray * _imgUrls;
-    NSMutableArray * _fileUrls;
+//    NSMutableArray * _imgUrls;
+//    NSMutableArray * _fileUrls;
     
     CGFloat _cellHeight;
     CGFloat _canyuHeight;
@@ -71,7 +71,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *tixingLbl;
 @property (weak, nonatomic) IBOutlet UIButton *tixingDelBtn;
 
-@property (nonatomic, retain) NSMutableArray *pickedUrls;
+//@property (nonatomic, retain) NSMutableArray *pickedUrls;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *JTViewToTxtViewTopCons;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *timeToTxtViewTopCons;
@@ -119,8 +119,8 @@
     
     self.isShowAllSection = _workGroupName ? YES : NO;
     
-    _imgUrls = [NSMutableArray array];
-    _fileUrls = [NSMutableArray array];
+//    _imgUrls = [NSMutableArray array];
+//    _fileUrls = [NSMutableArray array];
     
     if(!_cAccessoryArray.count)
     {
@@ -169,7 +169,7 @@
         {//附件
             _collectionview.hidden = NO;
             
-            [self resetFileUrls];
+//            [self resetFileUrls];
             
             [self refreshCollectionView];
         }
@@ -421,7 +421,7 @@
     
     if (self.cAccessoryArray.count)
     {//附件
-        [self resetFileUrls];
+//        [self resetFileUrls];
         
         [self refreshCollectionView];
     }
@@ -430,26 +430,9 @@
 
 - (void) resetFileUrls
 {
-    [_fileUrls removeAllObjects];
-    
-//    for (NSInteger i = _cAccessoryArray.count; i > 0; i --)
-//    {
-//        Accessory * acc = _cAccessoryArray[i - 1];
-//        
-//        NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-//        [dic setObject:acc.address forKey:@"url"];
-//        if(acc.name)
-//        {
-//            [dic setObject:acc.name forKey:@"name"];
-//        }
-//        if(acc.type)
-//        {
-//            [dic setObject:[NSString stringWithFormat:@"%ld", acc.type] forKey:@"fileType"];
-//        }
-//        
-//        [_fileUrls addObject:dic];
-//    }
-    
+//    [_fileUrls removeAllObjects];
+//    [_imgUrls removeAllObjects];
+
     for(Accessory * acc in _cAccessoryArray)
     {
         NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
@@ -460,11 +443,15 @@
         }
         if(acc.type)
         {
+
             [dic setObject:[NSString stringWithFormat:@"%ld", acc.type] forKey:@"fileType"];
+            
+//            [_fileUrls addObject:dic];
         }
-        //            [dic setObject:acc.accessoryId forKey:@"accessoryId"];
-        
-        [_fileUrls addObject:dic];
+        else
+        {
+//            [_imgUrls addObject:dic];
+        }
     }
 }
 
@@ -857,7 +844,9 @@
     _currentItem = -1;
     _deleteIndex = -1;
     
-    self.pickedUrls = [NSMutableArray arrayWithCapacity:0];
+    self.cAccessoryArray = [NSMutableArray array];
+    
+//    self.pickedUrls = [NSMutableArray arrayWithCapacity:0];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     
@@ -892,7 +881,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if(collectionView == _collectionview)
     {
-        return _pickedUrls.count + 1;
+        return _cAccessoryArray.count + 1;
     }
     else if (collectionView == _markCollectionView)
     {
@@ -938,18 +927,19 @@
     
     NSInteger deleteIndex = btn.tag - 1000;
     
-    NSInteger cIndex = deleteIndex - _imgUrls.count;
+//    NSInteger cIndex = deleteIndex - _imgUrls.count;
+//    
+//    if(cIndex >= 0)
+//    {
+//        [self resetFileUrls];
+//    }
+//    else
+//    {
+//        [_imgUrls removeObjectAtIndex:deleteIndex];
+//    }
     
-    if(cIndex >= 0)
-    {
-        [_cAccessoryArray removeObjectAtIndex:cIndex];
-        
-        [self resetFileUrls];
-    }
-    else
-    {
-        [_imgUrls removeObjectAtIndex:deleteIndex];
-    }
+    [_cAccessoryArray removeObjectAtIndex:deleteIndex];
+
 
     [self refreshCollectionView];
     
@@ -979,7 +969,7 @@
             CGRect rect = cell.frame;
             rect.origin.x = 0;
             cell.contentView.frame = rect;
-            if (indexPath.row == _pickedUrls.count) {
+            if (indexPath.row == _cAccessoryArray.count) {
                 cell.imageView.hidden = YES;
                 cell.btnAdd.hidden = NO;
                 cell.delBtn.hidden = YES;
@@ -994,16 +984,17 @@
                 [cell.delBtn addTarget:self action:@selector(clickDelImage:) forControlEvents:UIControlEventTouchUpInside];
                 NSInteger index = indexPath.row;
                 
-                NSDictionary * dic = _pickedUrls[index];
+//                NSDictionary * dic = _pickedUrls[index];
+                Accessory * acc = _cAccessoryArray[index];
                 
-                NSString * url = [dic valueForKey:@"url"];
-                
-                NSString * fileType = [dic valueForKey:@"fileType"];
-                NSString * name = [dic valueForKey:@"name"];
+//                NSString * url = [dic valueForKey:@"url"];
+//                
+//                NSString * fileType = [dic valueForKey:@"fileType"];
+//                NSString * name = [dic valueForKey:@"name"];
                 //1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg 6:其他
-                if(fileType.length)
+                if(acc.type)
                 {
-                    int fileTypeNum = [[dic valueForKey:@"fileType"] intValue];
+                    NSInteger fileTypeNum = acc.type;
                     
                     cell.fileVIew.hidden = NO;
                     
@@ -1040,12 +1031,12 @@
                             break;
                     }
                     cell.fileVIew.backgroundColor = color;
-                    cell.fileLbl.text = name;
+                    cell.fileLbl.text = acc.name;
                     cell.iconView.image = [UIImage imageNamed:iconName];
                 }
                 else
                 {
-                    [cell.imageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                     
                     cell.fileVIew.hidden = YES;
                 }
@@ -1065,7 +1056,7 @@
             CGRect rect = cell.frame;
             rect.origin.x = 0;
             cell.contentView.frame = rect;
-            if (indexPath.row == _pickedUrls.count) {
+            if (indexPath.row == _cAccessoryArray.count) {
                 cell.imageView.hidden = YES;
                 cell.btnAdd.hidden = NO;
                 [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
@@ -1075,7 +1066,9 @@
                 
                 NSInteger index = indexPath.row;
                 
-                [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                Accessory * acc = _cAccessoryArray[index];
+                
+                [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             }
             
             //    [cell.imageView setBorderWithColor:AppColor(204)];
@@ -1088,7 +1081,7 @@
             CGRect rect = cell.frame;
             rect.origin.x = 0;
             cell.contentView.frame = rect;
-            if (indexPath.row == _pickedUrls.count) {
+            if (indexPath.row == _cAccessoryArray.count) {
                 cell.imageView.hidden = YES;
                 cell.btnAdd.hidden = NO;
                 [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
@@ -1098,7 +1091,9 @@
                 
                 NSInteger index = indexPath.row;
                 
-                [cell.imageView setImageWithURL:[NSURL URLWithString:_pickedUrls[index]] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                Accessory * acc = _cAccessoryArray[index];
+                
+                [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             }
             
             //    [cell.imageView setBorderWithColor:AppColor(204)];
@@ -1788,11 +1783,17 @@
                 [dic setObject:userImgPath forKey:@"url"];
                 
                 if (_currentItem == -1) {
-                    [_imgUrls addObject:dic];
+//                    [_imgUrls addObject:dic];
+                    
+                    Accessory * acc = [Accessory new];
+                    acc.address = userImgPath;
+                    acc.name = _currentFileName;
+                    
+                    [self.cAccessoryArray addObject:acc];
                     
                 } else {
-                    [_imgUrls removeObjectAtIndex:_currentItem];
-                    [_imgUrls insertObject:dic atIndex:_currentItem];
+//                    [_imgUrls removeObjectAtIndex:_currentItem];
+//                    [_imgUrls insertObject:dic atIndex:_currentItem];
                 }
 
                 [self refreshCollectionView];
@@ -1827,11 +1828,14 @@
 
 - (void) refreshCollectionView
 {
-    [_pickedUrls removeAllObjects];
-    [_pickedUrls addObjectsFromArray:_imgUrls];
-    [_pickedUrls addObjectsFromArray:_fileUrls];
+//    [_pickedUrls removeAllObjects];
+//    [_pickedUrls addObjectsFromArray:_imgUrls];
+//    [_pickedUrls addObjectsFromArray:_fileUrls];
     
-    _collectionview.hidden = _pickedUrls.count ? NO : YES;
+//    _collectionview.hidden = _pickedUrls.count ? NO : YES;
+    
+    _collectionview.hidden = _cAccessoryArray.count ? NO : YES;
+
     
     if(!_collectionview.hidden)
     {
@@ -1847,7 +1851,7 @@
 - (void)countHeight{
     //计算高度
     
-    NSInteger count = _pickedUrls.count + 1;
+    NSInteger count = _cAccessoryArray.count + 1;
     NSInteger row = (count % 4) ? (count / 4 + 1) : count / 4;
     
     CGFloat pstH = (SCREENWIDTH - 14 * 2 - 12 * 3)/4;
