@@ -2153,7 +2153,7 @@
                                                             <rect key="frame" x="166" y="0.0" width="100" height="44"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjU-80-gOA">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="44"/>
+                                                                    <rect key="frame" x="65" y="0.0" width="35" height="44"/>
                                                                 </button>
                                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y7p-lD-AKZ">
                                                                     <rect key="frame" x="23" y="7" width="30" height="30"/>

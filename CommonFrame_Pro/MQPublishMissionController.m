@@ -134,6 +134,10 @@
 
 - (void) resetData
 {
+    if(_missionDic)
+    {
+        _currentMissionDic = [_missionDic objectForKey:@"missionDic"];
+    }
     if(_currentMissionDic)
     {
         _titleTxt.text = [_currentMissionDic valueForKey:@"title"];
@@ -182,6 +186,10 @@
         self.ccopyToMembersArray = [_currentMissionDic objectForKey:@"ccopyArr"];
         
         [self resetAllViewLayout:_jiezhiAndTixingView];
+    }
+    else
+    {
+        _titleTxt.text = [_missionDic valueForKey:@"title"];
     }
 }
 
@@ -2074,18 +2082,17 @@
 {
     if(!_isMainMission)
     {
-        NSMutableArray * arr = [NSMutableArray array];
+        NSMutableDictionary * misDic = [NSMutableDictionary dictionary];
+        
+        [misDic setObject:dic forKey:@"missionDic"];
+        
+        [misDic setObject:[dic valueForKey:@"title"] forKey:@"title"];
+        
+        [_savedChildMissionArr replaceObjectAtIndex:_currentEditChildIndex withObject:misDic];
         
         if(_savedChildMissionArr.count)
         {
-            [arr addObjectsFromArray:_savedChildMissionArr];
-        }
-        
-        [arr addObject:dic];
-        
-        if(arr.count)
-        {
-            [self.icMissionMainViewController setValue:arr forKey:@"childMissionArr"];
+            [self.icMissionMainViewController setValue:_savedChildMissionArr forKey:@"childMissionArr"];
         }
     }
     else

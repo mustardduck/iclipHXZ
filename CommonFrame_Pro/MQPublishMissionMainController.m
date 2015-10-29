@@ -15,11 +15,17 @@
 
 @interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate>
 {
-    NSInteger _dataCount;
+//    NSInteger _dataCount;
     
     UIView * _currentView;
     
     BOOL _isMainMission;
+    
+    BOOL _isEditChildMission;
+    
+    NSInteger _currentEditChildIndex;
+    
+//    NSMutableArray * _titleNameList;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *mainTableView;
@@ -56,9 +62,12 @@
     
     [self setHeaderView];
     
+    
+    self.childMissionArr = [NSMutableArray array];
+    
     _mainMissionDic = [NSMutableDictionary dictionary];
     
-    _dataCount = 1;
+//    _dataCount = 1;
 }
 
 - (void) textViewDidBeginEditing:(UITextView *)textView
@@ -83,7 +92,9 @@
 - (void)rightBtnClicked:(id)sender
 {
     [self hiddenKeyboard];
-    NSDictionary * dic ;
+    
+    NSDictionary * dic;
+    
     UIButton * btn = (UIButton *)sender;
     if(btn.tag == 99)
     {
@@ -102,6 +113,7 @@
         }
         
         dic = _mainMissionDic;
+
     }
     else
     {
@@ -109,7 +121,14 @@
         
         dic = _childMissionArr[index];
         
+        NSDictionary * missionDic = [dic objectForKey:@"missionDic"];
+        
+        _isEditChildMission = missionDic ? YES : NO;
+        
+        _currentEditChildIndex = index;
+        
     }
+
     [self jumpToMission:dic];
 
 }
@@ -129,8 +148,10 @@
     ((MQPublishMissionController*)vc).icMissionMainViewController = self;
     ((MQPublishMissionController*)vc).isMainMission = _isMainMission;
     ((MQPublishMissionController*)vc).savedChildMissionArr = _childMissionArr;
-    ((MQPublishMissionController*)vc).currentMissionDic = dic;
-    
+    ((MQPublishMissionController*)vc).missionDic = dic;
+    ((MQPublishMissionController*)vc).isEditChildMission = _isEditChildMission;
+    ((MQPublishMissionController*)vc).currentEditChildIndex = _currentEditChildIndex;
+
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -144,7 +165,7 @@
 
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
-    
+    NSLog(@"%@",_childMissionArr);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -161,7 +182,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataCount;
+    return _childMissionArr.count + 1;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -174,9 +195,73 @@
     
     NSInteger tag = indexPath.row;
     
-    if(indexPath.row == _dataCount - 1)
+    if(_childMissionArr.count)
     {
-        cell.addView.hidden = NO;        
+        if(indexPath.row == _childMissionArr.count)
+        {
+            cell.addView.hidden = NO;
+            UIView * line = [cell viewWithTag:1];
+            if(!line)
+            {
+                line = [[UIView alloc] initWithFrame:CGRectMake(26.5, 0, 0.5, 35)];
+                line.backgroundColor = [UIColor grayLineColor];
+                line.tag = 1;
+            }
+            line.height = 35;
+            [cell.contentView addSubview:line];
+            
+            UIView * line2 = [cell viewWithTag:2];
+            if(!line2)
+            {
+                line2 = [[UIView alloc] initWithFrame:CGRectMake(27, 35.5, 13, 0.5)];
+                line2.backgroundColor = [UIColor grayLineColor];
+                line2.tag = 2;
+            }
+            [cell.contentView addSubview:line2];
+            
+            //        cell.addBtn.tag = 2222;
+            
+            [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        else
+        {
+            cell.addView.hidden = YES;
+            
+            UIView * line = [cell viewWithTag:1];
+            if(!line)
+            {
+                line = [[UIView alloc] initWithFrame:CGRectMake(26.5, 0, 0.5, 60)];
+                line.backgroundColor = [UIColor grayLineColor];
+                line.tag = 1;
+            }
+            line.height = 60;
+            [cell.contentView addSubview:line];
+            
+            UIView * line2 = [cell viewWithTag:2];
+            if(!line2)
+            {
+                line2 = [[UIView alloc] initWithFrame:CGRectMake(27, 35.5, 13, 0.5)];
+                line2.backgroundColor = [UIColor grayLineColor];
+                line2.tag = 2;
+            }
+            [cell.contentView addSubview:line2];
+            
+            [self addDoneToKeyboard:cell.titleLbl];
+            
+            [cell.rightBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            cell.rightBtn.tag = tag + 100;
+            
+            NSDictionary * dic = _childMissionArr[indexPath.row];
+            
+            if(dic)
+            {
+                cell.titleLbl.text = [dic valueForKey:@"title"];
+            }
+        }
+    }
+    else
+    {
+        cell.addView.hidden = NO;
         UIView * line = [cell viewWithTag:1];
         if(!line)
         {
@@ -196,36 +281,12 @@
         }
         [cell.contentView addSubview:line2];
         
+        //        cell.addBtn.tag = 2222;
+        
         [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
     }
-    else
-    {
-        cell.addView.hidden = YES;
-        
-        UIView * line = [cell viewWithTag:1];
-        if(!line)
-        {
-            line = [[UIView alloc] initWithFrame:CGRectMake(26.5, 0, 0.5, 60)];
-            line.backgroundColor = [UIColor grayLineColor];
-            line.tag = 1;
-        }
-        line.height = 60;
-        [cell.contentView addSubview:line];
-        
-        UIView * line2 = [cell viewWithTag:2];
-        if(!line2)
-        {
-            line2 = [[UIView alloc] initWithFrame:CGRectMake(27, 35.5, 13, 0.5)];
-            line2.backgroundColor = [UIColor grayLineColor];
-            line2.tag = 2;
-        }
-        [cell.contentView addSubview:line2];
-        
-        [self addDoneToKeyboard:cell.titleLbl];
-        
-        [cell.rightBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        cell.rightBtn.tag = tag + 100;
-    }
+    
+
     
     cell.titleLbl.tag = tag + 100;
 
@@ -247,6 +308,26 @@
     }
 }
 
+- (void) textFieldDidEndEditing:(UITextField *)textField
+{
+    NSInteger index = textField.tag - 100;
+    NSDictionary * childDic = _childMissionArr[index];
+
+    
+    NSMutableDictionary * mDic = [NSMutableDictionary dictionary];
+    
+    [mDic setObject:textField.text forKey:@"title"];
+    
+    NSDictionary * miDic = [childDic objectForKey:@"missionDic"];
+    if(miDic)
+    {
+        [mDic setObject:miDic forKey:@"missionDic"];
+    }
+    
+    [_childMissionArr replaceObjectAtIndex:index withObject:mDic];
+
+}
+
 - (void) hiddenKeyboard
 {
     [_currentView resignFirstResponder];
@@ -265,7 +346,7 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(_dataCount - 1 == indexPath.row)
+    if(_childMissionArr.count == indexPath.row)
     {
         return UITableViewCellEditingStyleNone;
     }
@@ -283,46 +364,32 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        _dataCount --;
-        
-        MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexPath];
-        
-        cell.titleLbl.text = @"";
-        
-        cell.rightView.hidden = YES;
-        
+        [_childMissionArr removeObjectAtIndex:indexPath.row];
         [tableView reloadData];
+        
     }
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    if(_childMissionArr.count)
-    {
-//        for(NSDictionary * dic in _missionArr)
-//        {
-//            BOOL isParent = [[dic valueForKey:@"parentId"] boolValue];
-//            
-//            if(isParent)
-//            {
-//                _mainTextView.text = [dic valueForKey:@"title"];
-//                
-//                self.mainMissionDic = dic;
-//                
-//                break;
-//            }
-//        }
-    }
     if(_mainMissionDic)
     {
         _mainTextView.text = [_mainMissionDic valueForKey:@"title"];
+    }
+    if(_childMissionArr.count)
+    {
+        [_mainTableView reloadData];
     }
 }
 
 
 - (void) addMissionCell:(id)sender
 {
-    _dataCount ++;
+//    _dataCount ++;
+    NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+    [dic setObject:@"" forKey:@"title"];
+
+    [_childMissionArr addObject:dic];
     
     [_mainTableView reloadData];
 }
