@@ -160,8 +160,11 @@
         }
         if ([self.icMQPublishViewController respondsToSelector:@selector(setIsRefreshMarkData:)]) {
             [self.icMQPublishViewController setValue:@"1" forKey:@"isRefreshMarkData"];
-            
         }
+        if ([self.icMQPublishViewController respondsToSelector:@selector(setIsChangeGroup:)]) {
+            [self.icMQPublishViewController setValue:@"1" forKey:@"isChangeGroup"];
+        }
+        
     }
     if (_groupId != nil ) {
         if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
@@ -263,6 +266,11 @@
 
         self.groupId = g.workGroupId;
         self.groupName = g.workGroupName;
+        
+        if ([self.icMQPublishViewController respondsToSelector:@selector(setCMarkAarry:)]) {
+            [self.icMQPublishViewController setValue:nil forKey:@"CMarkAarry"];
+            
+        }
         
         [self.navigationController popViewControllerAnimated:YES];
         

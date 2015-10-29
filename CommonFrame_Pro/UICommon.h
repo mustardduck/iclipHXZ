@@ -40,6 +40,7 @@ typedef void (^keyboardBlock) ();
 + (CGSize)getHeightFromLabel:(UILabel *)label;
 + (CGSize)getSizeFromString:(NSString *)str withSize:(CGSize)cSize withFont:(UIFont*)font;
 + (NSString *)dayAndHourFromString:(NSString *)dateString formatStyle:(NSString *)format;
++ (NSDate *) formatDate:(NSString *)input;
 + (NSString*) formatTime:(NSString*)input withLength:(int)length;
 + (float)getSystemVersion;
 

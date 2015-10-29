@@ -171,6 +171,29 @@ static UIViewController *imagePicker = nil;
     
 }
 
++ (NSDate *) formatDate:(NSString *)input
+{
+    if ([input length] == 0) {
+        
+        return nil;
+    }
+    
+    NSString *text = [input stringByReplacingOccurrencesOfString:@"T" withString:@" "];
+    
+    if ([text length] > 16) {
+        
+        text = [text substringToIndex:16];
+    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+
+    NSDate *destDate= [dateFormatter dateFromString:text];
+
+    return destDate;
+}
+
 + (NSString*) formatTime:(NSString*)input withLength:(int)length{
     
     if ([input length] == 0) {

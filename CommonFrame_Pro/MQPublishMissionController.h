@@ -32,11 +32,16 @@
 @property(nonatomic,strong) NSString* userId;
 @property(nonatomic,strong) NSString* titleName;
 
-@property(nonatomic,assign) BOOL isShowAllSection;
+@property(nonatomic,assign) BOOL isShowAllSection;//显示选择成员和标签
 @property(nonatomic,assign) BOOL isRefreshMarkData;
 @property(nonatomic, assign) BOOL isMainMission;
+@property(nonatomic, assign) BOOL isChangeGroup;
 
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;
+@property(nonatomic,strong) id       icMissionMainViewController;
+
+@property(nonatomic,strong) NSMutableArray* savedChildMissionArr;
+@property(nonatomic,strong) NSDictionary* currentMissionDic;
 
 @end

@@ -13,5 +13,5 @@
 @property(nonatomic,strong) NSString* workGroupId;
 @property(nonatomic, strong)NSString * workGroupName;
 @property(nonatomic, strong)NSMutableDictionary * mainMissionDic;
-
+@property(nonatomic, strong)NSMutableArray * childMissionArr;
 @end

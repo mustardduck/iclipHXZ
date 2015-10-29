@@ -15,12 +15,11 @@
 
 @interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate>
 {
-    NSMutableArray * _dataArray;
-    
     NSInteger _dataCount;
     
     UIView * _currentView;
     
+    BOOL _isMainMission;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *mainTableView;
@@ -57,6 +56,8 @@
     
     [self setHeaderView];
     
+    _mainMissionDic = [NSMutableDictionary dictionary];
+    
     _dataCount = 1;
 }
 
@@ -72,34 +73,66 @@
 - (void) setHeaderView
 {
     [_topTxtView setRoundColorCorner:5.0 withColor:[UIColor grayLineColor]];
-    [_rightTxtBtn addTarget:self action:@selector(topRightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_rightTxtBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    _rightTxtBtn.tag = 99;
     [_mainTextView setPlaceholder:@"请编写任务标题!"];
     
     [self addDoneToKeyboard:_mainTextView];
 }
 
-- (void)topRightBtnClicked:(id)sender
+- (void)rightBtnClicked:(id)sender
 {
     [self hiddenKeyboard];
-    
-    if(!_mainMissionDic)
+    NSDictionary * dic ;
+    UIButton * btn = (UIButton *)sender;
+    if(btn.tag == 99)
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
-        
-        if (_workGroupId) {
-            ((MQPublishMissionController*)vc).workGroupId = _workGroupId;
-            ((MQPublishMissionController*)vc).workGroupName = _workGroupName;
+        _isMainMission = YES;
+    }
+    else
+    {
+        _isMainMission = NO;
+    }
+    
+    if(_isMainMission)
+    {
+        if(_mainTextView.text.length)
+        {
+            [_mainMissionDic setObject:_mainTextView.text forKey:@"title"];
         }
         
-        ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
-        ((MQPublishMissionController*)vc).icGroupViewController = self;
-        ((MQPublishMissionController*)vc).isMainMission = YES;
-
-        [self.navigationController pushViewController:vc animated:YES];
-
+        dic = _mainMissionDic;
     }
+    else
+    {
+        NSInteger index = btn.tag - 100;
+        
+        dic = _childMissionArr[index];
+        
+    }
+    [self jumpToMission:dic];
+
+}
+
+- (void) jumpToMission:(NSDictionary *)dic
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+    
+    if (_workGroupId) {
+        ((MQPublishMissionController*)vc).workGroupId = _workGroupId;
+        ((MQPublishMissionController*)vc).workGroupName = _workGroupName;
+    }
+    
+    ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
+    ((MQPublishMissionController*)vc).icMissionMainViewController = self;
+    ((MQPublishMissionController*)vc).isMainMission = _isMainMission;
+    ((MQPublishMissionController*)vc).savedChildMissionArr = _childMissionArr;
+    ((MQPublishMissionController*)vc).currentMissionDic = dic;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -139,6 +172,8 @@
         cell = [[MQPublishMissionMainCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
+    NSInteger tag = indexPath.row;
+    
     if(indexPath.row == _dataCount - 1)
     {
         cell.addView.hidden = NO;        
@@ -161,7 +196,7 @@
         }
         [cell.contentView addSubview:line2];
         
-        [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.addBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     else
     {
@@ -187,10 +222,10 @@
         [cell.contentView addSubview:line2];
         
         [self addDoneToKeyboard:cell.titleLbl];
+        
+        [cell.addBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        cell.addBtn.tag = tag + 100;
     }
-//    Mission* ms = [_dataArray objectAtIndex:indexPath.row];
-    
-    NSInteger tag = indexPath.row;
     
     cell.titleLbl.tag = tag + 100;
 
@@ -257,6 +292,30 @@
         cell.rightView.hidden = YES;
         
         [tableView reloadData];
+    }
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    if(_childMissionArr.count)
+    {
+//        for(NSDictionary * dic in _missionArr)
+//        {
+//            BOOL isParent = [[dic valueForKey:@"parentId"] boolValue];
+//            
+//            if(isParent)
+//            {
+//                _mainTextView.text = [dic valueForKey:@"title"];
+//                
+//                self.mainMissionDic = dic;
+//                
+//                break;
+//            }
+//        }
+    }
+    if(_mainMissionDic)
+    {
+        _mainTextView.text = [_mainMissionDic valueForKey:@"title"];
     }
 }
 

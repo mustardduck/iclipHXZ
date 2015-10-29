@@ -53,6 +53,8 @@
     CGFloat _canyuHeight;
     CGFloat _chaosongHeight;
     
+    NSMutableArray * _selectedIndexTagArr;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *titleTxt;
@@ -125,8 +127,62 @@
         self.cAccessoryArray = [NSMutableArray array];
     }
     
-    [_tableView reloadData];
+    [self resetData];
     
+}
+
+- (void) resetData
+{
+    if(_currentMissionDic)
+    {
+        _titleTxt.text = [_currentMissionDic valueForKey:@"title"];
+        
+        _txtView.text = [_currentMissionDic valueForKey:@"main"];
+        
+        NSString * finishTimeStr = [_currentMissionDic valueForKey:@"finishTime"];
+        NSString * remindTimeStr = [_currentMissionDic valueForKey:@"remindTime"];
+        
+        if(finishTimeStr.length)
+        {
+            self.strFinishTime = finishTimeStr;
+            
+            NSString * finishDateStr = [UICommon dayAndHourFromString:finishTimeStr formatStyle:@"yyyy年MM月dd日"];
+
+            _jiezhiAndTixingView.hidden = NO;
+            _jiezhiView.hidden = NO;
+            _jiezhiLbl.text = finishDateStr;
+        }
+        if(remindTimeStr.length)
+        {
+            self.strRemindTime = remindTimeStr;
+            
+            NSString * remindDateStr = [UICommon dayAndHourFromString:remindTimeStr formatStyle:@"yyyy年MM月dd日 HH:mm"];
+            
+            _jiezhiAndTixingView.hidden = NO;
+            _tixingView.hidden = NO;
+            _tixingLbl.text = remindDateStr;
+        }
+        
+        self.cAccessoryArray = [_currentMissionDic objectForKey:@"accessoryList"];
+        
+        if (self.cAccessoryArray.count)
+        {//附件
+            _collectionview.hidden = NO;
+            
+            [self resetFileUrls];
+            
+            [self refreshCollectionView];
+        }
+        
+        self.cMarkAarry = [_currentMissionDic objectForKey:@"labelList"];
+        
+        
+        [self resetAllViewLayout:_jiezhiAndTixingView];
+        
+//        _pickedUrls
+//        _markList
+//        _tagList
+    }
 }
 
 - (void) initTableView
@@ -165,10 +221,49 @@
         self.isRefreshMarkData = NO;
     }
     
+    if(_cMarkAarry.count)
+    {
+        if(!_selectedIndexTagArr)
+        {
+            _selectedIndexTagArr = [NSMutableArray array];
+        }
+        else
+        {
+            [_selectedIndexTagArr removeAllObjects];
+        }
+        
+        for(NSInteger index = 0; index < _markList.count; index ++)
+        {
+            Mark * ma = _markList[index];
+            for (NSString * markId in _cMarkAarry)
+            {
+                if(ma.labelId == markId)
+                {
+                    [_tagList addObject:ma];
+                    
+                    [_selectedIndexTagArr addObject:[NSNumber numberWithInteger:index]];
+                }
+            }
+        }
+        
+        [self refreshTagCollView];
+    }
+    else if(!_cMarkAarry.count && _isChangeGroup)
+    {
+        [_selectedIndexTagArr removeAllObjects];
+
+        [_tagList removeAllObjects];
+        
+        [self refreshTagCollView];
+        
+        self.isChangeGroup = NO;
+        
+    }
+    
     if(_isShowAllSection)
     {
         [_tableView reloadData];
-
+        
         _tableView.height = 390 - 44 * 2 + _canyuHeight + _chaosongHeight;
         
         _mainViewHeightCons.constant = YH(_tableView);
@@ -283,11 +378,6 @@
                 }
             }
         }
-    }
-    
-    if (self.cMarkAarry != nil)
-    {
-        
     }
     
     if (self.responsibleDic.count > 0){
@@ -751,6 +841,7 @@
     _markCollectionView.dataSource = self;
     _markCollectionView.scrollEnabled = NO;
     _markCollectionView.backgroundColor = [UIColor backgroundColor];
+    _markCollectionView.tag = 1111;
     
     [_markCollectionView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
 
@@ -1042,6 +1133,34 @@
         
         [cell setBorderWithColor:[UIColor grayLineColor]];
         
+        if(_selectedIndexTagArr.count)
+        {
+            for(int i = 0; i < _selectedIndexTagArr.count; i ++)
+            {
+                NSInteger index = [_selectedIndexTagArr[i] integerValue];
+                
+                if(indexPath.row == index)
+                {
+                    cell.markBtn.selected = YES;
+                    
+                    [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
+                    
+                    [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
+                    
+                    [cell setBorderWithColor:[UIColor grayMarkLineColor]];
+                    
+                }
+            }
+        }
+        else
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayLineColor]];
+        }
+        
         return cell;
 
     }
@@ -1057,29 +1176,34 @@
     
     MarkCell * cell = (MarkCell *)[_markCollectionView cellForItemAtIndexPath:indexPath];
     
-    cell.markBtn.selected = !cell.markBtn.selected;
+    if(cell)
+    {
+        cell.markBtn.selected = !cell.markBtn.selected;
+        
+        if(cell.markBtn.selected)
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayMarkLineColor]];
+            
+            [_tagList addObject:mark];
+            
+        }
+        else
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayLineColor]];
+            
+            [_tagList removeObject:mark];
+        }
+
+    }
     
-    if(cell.markBtn.selected)
-    {
-        [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
-        
-        [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
-        
-        [cell setBorderWithColor:[UIColor grayMarkLineColor]];
-        
-        [_tagList addObject:mark];
-        
-    }
-    else
-    {
-        [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
-        
-        [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
-        [cell setBorderWithColor:[UIColor grayLineColor]];
-        
-        [_tagList removeObject:mark];
-    }
 }
 
 - (void) clickMarkItem:(id)sender
@@ -1793,14 +1917,14 @@
         m.cclist = [NSArray arrayWithArray:tAr];
     }
     
-    if (self.cMarkAarry.count > 0) {
+    if (_tagList.count > 0) {
         m.isLabel = 1;
         NSMutableArray* tAr = [NSMutableArray array];
-        if (self.cMarkAarry.count > 0) {
+        if (_tagList.count > 0) {
             m.labelList = [NSMutableArray array];
             
-            for (int i = 0; i < self.cMarkAarry.count; i++) {
-                Mark * cM = [self.cMarkAarry objectAtIndex:i];
+            for (int i = 0; i < _tagList.count; i++) {
+                Mark * cM = [_tagList objectAtIndex:i];
                 [tAr addObject:cM.labelId];
             }
             m.labelList = [NSArray arrayWithArray:tAr];
@@ -1880,19 +2004,19 @@
         [dic setObject:mission.labelList forKey:@"labelList"];
     [dic setObject:[NSString stringWithFormat:@"%d",mission.isAccessory?1:0]  forKey:@"isAccessory"];
     if (mission.isAccessory) {
-        //[dic setObject:self.accessoryList forKey:@"accessoryList"];
-        NSMutableArray* tA = [NSMutableArray array];
-        for (int i = 0; i < mission.accessoryList.count; i++) {
-            NSMutableDictionary* di = [NSMutableDictionary dictionary];
-            
-            Accessory* acc = [mission.accessoryList objectAtIndex:i];
-            
-            [di setObject:acc.name forKey:@"name"];
-            [di setObject:acc.address forKey:@"address"];
-            [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
-            [tA addObject:di];
-        }
-        [dic setObject:tA forKey:@"accessoryList"];
+        [dic setObject:mission.accessoryList forKey:@"accessoryList"];
+//        NSMutableArray* tA = [NSMutableArray array];
+//        for (int i = 0; i < mission.accessoryList.count; i++) {
+//            NSMutableDictionary* di = [NSMutableDictionary dictionary];
+//            
+//            Accessory* acc = [mission.accessoryList objectAtIndex:i];
+//            
+//            [di setObject:acc.name forKey:@"name"];
+//            [di setObject:acc.address forKey:@"address"];
+//            [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
+//            [tA addObject:di];
+//        }
+//        [dic setObject:tA forKey:@"accessoryList"];
     }
     [dic setObject:[NSString stringWithFormat:@"%ld",mission.type] forKey:@"type"];
     
@@ -1910,7 +2034,34 @@
         [dic setObject:@"0" forKey:@"parentId"];//1是主任务 0子任务
     }
     
-    
+    [self saveData:dic];
+}
+
+- (void)saveData:(NSMutableDictionary *)dic
+{
+    if(!_isMainMission)
+    {
+        NSMutableArray * arr = [NSMutableArray array];
+        
+        if(_savedChildMissionArr.count)
+        {
+            [arr addObjectsFromArray:_savedChildMissionArr];
+        }
+        
+        [arr addObject:dic];
+        
+        if(arr.count)
+        {
+            [self.icMissionMainViewController setValue:arr forKey:@"childMissionArr"];
+        }
+    }
+    else
+    {
+        [self.icMissionMainViewController setValue:dic forKey:@"mainMissionDic"];
+
+    }
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -1976,7 +2127,14 @@
             [self.icGroupViewController setValue:_workGroupId forKey:@"groupId"];
         }
     }
-
+    if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupId:)]) {
+        [self.icMissionMainViewController setValue:_workGroupId forKey:@"workGroupId"];
+        
+    }
+    if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupName:)]) {
+        [self.icMissionMainViewController setValue:_workGroupName forKey:@"workGroupName"];
+        
+    }
 }
 
 /*
