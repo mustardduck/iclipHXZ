@@ -168,7 +168,7 @@
             _tixingLbl.text = remindDateStr;
         }
         
-        self.cAccessoryArray = [_currentMissionDic objectForKey:@"accessoryList"];
+        self.cAccessoryArray = [_currentMissionDic objectForKey:@"accesList"];
         
         if (self.cAccessoryArray.count)
         {//附件
@@ -2032,19 +2032,19 @@
         [dic setObject:mission.labelList forKey:@"labelList"];
     [dic setObject:[NSString stringWithFormat:@"%d",mission.isAccessory?1:0]  forKey:@"isAccessory"];
     if (mission.isAccessory) {
-        [dic setObject:mission.accessoryList forKey:@"accessoryList"];
-//        NSMutableArray* tA = [NSMutableArray array];
-//        for (int i = 0; i < mission.accessoryList.count; i++) {
-//            NSMutableDictionary* di = [NSMutableDictionary dictionary];
-//            
-//            Accessory* acc = [mission.accessoryList objectAtIndex:i];
-//            
-//            [di setObject:acc.name forKey:@"name"];
-//            [di setObject:acc.address forKey:@"address"];
-//            [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
-//            [tA addObject:di];
-//        }
-//        [dic setObject:tA forKey:@"accessoryList"];
+        [dic setObject:mission.accessoryList forKey:@"accesList"];
+        NSMutableArray* tA = [NSMutableArray array];
+        for (int i = 0; i < mission.accessoryList.count; i++) {
+            NSMutableDictionary* di = [NSMutableDictionary dictionary];
+            
+            Accessory* acc = [mission.accessoryList objectAtIndex:i];
+            
+            [di setObject:acc.name forKey:@"name"];
+            [di setObject:acc.address forKey:@"address"];
+            [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
+            [tA addObject:di];
+        }
+        [dic setObject:tA forKey:@"accessoryList"];
     }
     [dic setObject:[NSString stringWithFormat:@"%ld",mission.type] forKey:@"type"];
     
@@ -2080,14 +2080,14 @@
 
 - (void)saveData:(NSMutableDictionary *)dic
 {
+    NSMutableDictionary * misDic = [NSMutableDictionary dictionary];
+    
+    [misDic setObject:dic forKey:@"missionDic"];
+    
+    [misDic setObject:[dic valueForKey:@"title"] forKey:@"title"];
+    
     if(!_isMainMission)
     {
-        NSMutableDictionary * misDic = [NSMutableDictionary dictionary];
-        
-        [misDic setObject:dic forKey:@"missionDic"];
-        
-        [misDic setObject:[dic valueForKey:@"title"] forKey:@"title"];
-        
         [_savedChildMissionArr replaceObjectAtIndex:_currentEditChildIndex withObject:misDic];
         
         if(_savedChildMissionArr.count)
@@ -2097,7 +2097,9 @@
     }
     else
     {
-        [self.icMissionMainViewController setValue:dic forKey:@"mainMissionDic"];
+        
+        
+        [self.icMissionMainViewController setValue:misDic forKey:@"mainMissionDic"];
 
     }
 

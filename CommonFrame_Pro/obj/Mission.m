@@ -251,6 +251,52 @@
     
 }
 
++ (BOOL)sendAllMission:(BOOL)isMission taksId:(NSString **)taskId withArr:(NSArray *)missionArr
+{
+    BOOL isOk = NO;
+    
+    NSString* jsonStr = [CommonFile toJson:missionArr];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString;
+    
+    responseString = [HttpBaseFile requestDataWithSyncByPost:PUBLISH_ALL_MISSION_URL postData:tmpDic];
+    
+//    if (taskId.length)
+//    {
+////        responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:tmpDic];
+//        responseString = nil;//修改
+//    }
+//    else
+//    {
+//        responseString = [HttpBaseFile requestDataWithSyncByPost:PUBLISH_ALL_MISSION_URL postData:tmpDic];
+//
+//    }
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    NSString * taStr = @"";
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        if ([[((NSDictionary*)val) valueForKey:@"state"] integerValue] == 1) {
+            
+            taStr = [((NSDictionary*)val) valueForKey:@"data"];
+            
+            isOk = YES;
+        }
+    }
+    
+    *taskId = taStr;
+    
+    return isOk;
+}
+
 - (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId
 {
     BOOL isOk = NO;

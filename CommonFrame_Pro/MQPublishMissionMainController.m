@@ -12,8 +12,9 @@
 #import "UICommon.h"
 #import "PH_UITextView.h"
 #import "MQPublishMissionController.h"
+#import "SVProgressHUD.h"
 
-@interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate>
+@interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate>
 {
 //    NSInteger _dataCount;
     
@@ -107,11 +108,14 @@
     
     if(_isMainMission)
     {
-        if(_mainTextView.text.length)
-        {
-            [_mainMissionDic setObject:_mainTextView.text forKey:@"title"];
-        }
+        NSString * str = _mainTextView.text;
         
+        if(!str.length)
+        {
+            str = @"";
+        }
+        [_mainMissionDic setObject:str forKey:@"title"];
+
         dic = _mainMissionDic;
 
     }
@@ -149,11 +153,47 @@
     ((MQPublishMissionController*)vc).isMainMission = _isMainMission;
     ((MQPublishMissionController*)vc).savedChildMissionArr = _childMissionArr;
     ((MQPublishMissionController*)vc).missionDic = dic;
-    ((MQPublishMissionController*)vc).isEditChildMission = _isEditChildMission;
     ((MQPublishMissionController*)vc).currentEditChildIndex = _currentEditChildIndex;
 
     [self.navigationController pushViewController:vc animated:YES];
     
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        NSDictionary * dic;
+        
+        if(alertView.tag == 123)
+        {
+            _isMainMission = YES;
+            
+            NSString * str = _mainTextView.text;
+            
+            if(!str.length)
+            {
+                str = @"";
+            }
+            [_mainMissionDic setObject:str forKey:@"title"];
+            
+            dic = _mainMissionDic;
+        }
+        else
+        {
+            NSInteger index = alertView.tag - 1000;
+            
+            _currentEditChildIndex = index;
+            
+            _isMainMission = NO;
+            
+            dic = _childMissionArr[index];
+            
+        }
+        
+        [self jumpToMission:dic];
+
+    }
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -166,6 +206,84 @@
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
     NSLog(@"%@",_childMissionArr);
+    
+    NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
+    
+    if(![mainDic allKeys].count)
+    {
+        NSString * msg = [NSString stringWithFormat:@"主任务未填写完整，不能发布任务"];
+        
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去填写", nil];
+        
+        alert.tag = 123;
+        
+        [alert show];
+        
+        return;
+    }
+    
+    NSMutableArray * childArr = [NSMutableArray array];
+    
+    NSMutableDictionary * mDic = [[NSMutableDictionary alloc] initWithDictionary:mainDic];
+    
+    [mDic removeObjectForKey:@"ccopyArr"];
+    [mDic removeObjectForKey:@"partiArr"];
+    [mDic removeObjectForKey:@"respoDic"];
+    [mDic removeObjectForKey:@"accesList"];
+    
+    [childArr addObject:mDic];
+    
+    for (int i = 0; i< _childMissionArr.count; i ++)
+    {
+        NSDictionary * dic = _childMissionArr[i];
+        
+        NSDictionary * missDic = [dic objectForKey:@"missionDic"];
+        
+        if(!missDic)
+        {
+            NSString * msg = [NSString stringWithFormat:@"第 %d 行子任务未填写完整，不能发布任务", i + 1];
+            
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去填写", nil];
+            
+            alert.tag = i + 1000;
+            
+            [alert show];
+            
+            return;
+        }
+        else
+        {
+            NSMutableDictionary * mmDic = [[NSMutableDictionary alloc] initWithDictionary:missDic];
+            
+            [mmDic removeObjectForKey:@"ccopyArr"];
+            [mmDic removeObjectForKey:@"partiArr"];
+            [mmDic removeObjectForKey:@"respoDic"];
+            [mmDic removeObjectForKey:@"accesList"];
+            
+            [childArr addObject:mmDic];
+        }
+    }
+    
+    NSLog(@"%@", childArr);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSString * taskId = @"";
+        
+//        BOOL isSendOK = [m sendMission:YES taksId:&taskId];
+        BOOL isSendOK = [Mission sendAllMission:YES taksId:&taskId withArr:childArr];
+        
+        if (isSendOK) {
+
+            [SVProgressHUD showSuccessWithStatus:@"任务发布成功"];
+            
+            [self hiddenKeyboard];
+//            _btnDoneCliked = YES;
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+    });
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -375,6 +493,10 @@
     if(_mainMissionDic)
     {
         _mainTextView.text = [_mainMissionDic valueForKey:@"title"];
+        
+        _rightTxtView.hidden = NO;
+        
+        _jiaView.hidden = YES;
     }
     if(_childMissionArr.count)
     {
