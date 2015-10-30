@@ -264,7 +264,7 @@
         }
     }
     
-    NSLog(@"%@", childArr);
+    NSLog(@"%@", childArr);    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         

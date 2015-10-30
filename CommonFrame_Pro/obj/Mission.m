@@ -254,7 +254,11 @@
 {
     BOOL isOk = NO;
     
-    NSString* jsonStr = [CommonFile toJson:missionArr];
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+
+    [dic setObject:missionArr forKey:@"CreateTaskApp"];
+    
+    NSString* jsonStr = [CommonFile toJson:dic];
     
     NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
     [tmpDic setObject:jsonStr forKey:@"json"];
