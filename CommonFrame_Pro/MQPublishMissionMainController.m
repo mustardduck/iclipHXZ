@@ -268,6 +268,8 @@
     
     NSLog(@"%@", childArr);    
     
+    [SVProgressHUD showWithStatus:@"任务发布中..."];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSString * taskId = @"";
@@ -276,6 +278,8 @@
         BOOL isSendOK = [Mission sendAllMission:YES taksId:&taskId withArr:childArr];
         
         if (isSendOK) {
+            
+            [SVProgressHUD dismiss];
 
             [SVProgressHUD showSuccessWithStatus:@"任务发布成功"];
             
