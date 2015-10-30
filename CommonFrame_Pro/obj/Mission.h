@@ -45,7 +45,8 @@ typedef enum {
 @property (nonatomic,strong) NSString*  userImg;
 @property (nonatomic,strong) NSString*  userName;
 @property (nonatomic,assign) NSInteger  totalPages;
-@property (nonatomic,assign) NSString*  liableUserId;           //责任人
+@property (nonatomic,strong) NSString*  liableUserId;           //责任人id
+@property (nonatomic,strong) NSString*  lableUserName;           //责任人名字
 @property (nonatomic,strong) NSArray*   partList;               //参与者
 @property (nonatomic,strong) NSArray*   cclist;                 //抄送者
 @property (nonatomic,assign) BOOL       isLabel;                //是否使用标签
@@ -55,6 +56,9 @@ typedef enum {
 @property (nonatomic, assign) BOOL      isNewCom;           //新评论
 @property (nonatomic, assign) int       accessoryNum;//附件数
 @property (nonatomic, assign) int       replayNum;//评论数
+@property (nonatomic, assign) int       childNum;//子任务数
+@property (nonatomic,strong) NSArray*   childTaskList;          //子任务集合
+
 
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString*)wgId termString:(NSString*)termStr;
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;

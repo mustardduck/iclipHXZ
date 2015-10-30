@@ -440,7 +440,13 @@
                 cm.accessoryNum = [[di valueForKey:@"accessoryNum"] intValue];
                 cm.replayNum = [[di valueForKey:@"replayNum"] intValue];
                 cm.labelList = [di objectForKey:@"labelList"];
-                
+                cm.childNum = [[di valueForKey:@"childNum"] intValue];
+                cm.childTaskList = [di objectForKey:@"childTaskList"];
+                cm.lableUserName = [di valueForKey:@"lableUserName"];
+                if(!cm.lableUserName.length)
+                {
+                    cm.lableUserName = @"未填写";
+                }
                 [array addObject:cm];
                 
             }
@@ -1546,10 +1552,18 @@
         photoBtn.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:photoBtn];
         
-        CGRect nameFrame =CGRectMake(XW(photo)+ 14, Y(photo), SCREENWIDTH - 196, 50);
+        UILabel * createNameLbl = [[UILabel alloc] init];
+        createNameLbl.frame = CGRectMake(XW(photo) + 14, Y(photo), 100, 20);
+        createNameLbl.backgroundColor = [UIColor clearColor];
+        createNameLbl.textColor = [UIColor blueTextColor];
+        createNameLbl.text = ms.userName;
+        createNameLbl.font = Font(17);
+        [cell.contentView addSubview:createNameLbl];
+        
+        CGRect nameFrame =CGRectMake(XW(photo)+ 14, YH(createNameLbl) + 17 , SCREENWIDTH - 196, 14);
         UILabel* name = [[UILabel alloc] initWithFrame: nameFrame];
-        name.textColor = RGBCOLOR(172, 172, 173);
-        name.font = Font(10);
+        name.textColor = [UIColor grayTitleColor];
+        name.font = Font(12);
         
         NSString * tagStr = @"";
         
@@ -1574,12 +1588,18 @@
                 tagStr = [tagStr substringToIndex:tagStr.length - 3];
             }
         }
+       //momo todo
+//        NSString * nameStr = [NSString stringWithFormat:@"%@   %@   %@",ms.userName, ms.workGroupName, tagStr];
         
-        NSString * nameStr = [NSString stringWithFormat:@"%@   %@   %@",ms.userName, ms.workGroupName, tagStr];
+        NSString * nameStr = [NSString stringWithFormat:@"%@          负责人：%@",ms.workGroupName, ms.lableUserName];
+
         
-        NSAttributedString *nameAttrStr = [RRAttributedString setText:nameStr font:Font(16) color:RGBCOLOR(53, 159, 219) range:NSMakeRange(0, ms.userName.length)];
+//        NSAttributedString *nameAttrStr = [RRAttributedString setText:nameStr font:Font(16) color:RGBCOLOR(53, 159, 219) range:NSMakeRange(0, ms.userName.length)];
+//        
+//        name.attributedText = nameAttrStr;
         
-        name.attributedText = nameAttrStr;
+        name.text = nameStr;
+        
 
         [cell.contentView addSubview:name];
         
@@ -1649,7 +1669,7 @@
                                          maxSize.height);
         
         UILabel* content = [[UILabel alloc] init];
-        content.textColor = [UIColor grayColor];
+        content.textColor = [UIColor grayTitleColor];
         content.font = Font(14);
         
         CGSize cSize = [UICommon getSizeFromString:ms.main withSize:maxSize withFont:Font(14)];
@@ -1658,7 +1678,39 @@
         content.text = ms.main;
         
         [content setBackgroundColor:[UIColor clearColor]];
-        [cell.contentView addSubview:content];
+        
+        if(ms.childNum > 0)
+        {
+
+            for (int i = 0; i < ms.childTaskList.count; i ++)
+            {
+                NSDictionary * dic = ms.childTaskList[i];
+                
+                UILabel * childLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(photo), YH(titleLbl) + 14 + i * 20, titleFrame.size.width - 27 - 64, 16)];
+                childLbl.backgroundColor = [UIColor clearColor];
+                childLbl.font = Font(14);
+                childLbl.textColor = [UIColor grayTitleColor];
+                
+                childLbl.text = [NSString stringWithFormat:@"%d. %@", i + 1, [dic valueForKey:@"title"]];
+                
+                [cell.contentView addSubview:childLbl];
+                
+                childLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(childLbl) + 27, YH(titleLbl) + 14 + i * 20, titleFrame.size.width - 27 - W(childLbl), 16)];
+                childLbl.backgroundColor = [UIColor clearColor];
+                childLbl.font = Font(14);
+                childLbl.textColor = [UIColor grayTitleColor];
+                
+                childLbl.text = [dic valueForKey:@"lableUserName"];
+                
+                [cell.contentView addSubview:childLbl];
+
+            }
+        }
+        else
+        {
+            [cell.contentView addSubview:content];
+
+        }
         
         
         //        if (ms.isAccessory) {
@@ -1674,7 +1726,7 @@
         
         [cell.contentView addSubview:plLbl];
         
-        UIImageView* plIcon = [[UIImageView alloc] initWithFrame:CGRectMake(X(plLbl) - 4 - 12, Y(plLbl) - 2 , 12, 10)];
+        UIImageView* plIcon = [[UIImageView alloc] initWithFrame:CGRectMake(X(plLbl) - 4 - 12, Y(plLbl) + 2 , 12, 10)];
         plIcon.image = [UIImage imageNamed:@"btn_pinglun"];
         [cell.contentView addSubview:plIcon];
         
@@ -1685,12 +1737,31 @@
         [fujianLbl setBackgroundColor:[UIColor clearColor]];
         fujianLbl.text = [NSString stringWithFormat:@"附件 (%d)", ms.accessoryNum];
         
+        int space = 17;
+        
         CGFloat fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
-        fujianLbl.frame = CGRectMake(X(plIcon) - 26 - fujianWidth, Y(plLbl), fujianWidth, 12);
+        fujianLbl.frame = CGRectMake(X(plIcon) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
         [cell.contentView addSubview:fujianLbl];
         
-        UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl) - 2, 12, 10)];
+        UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl) + 2, 12, 10)];
         attachment.image = [UIImage imageNamed:@"btn_fujianIcon"];
+        [cell.contentView addSubview:attachment];
+        
+        
+        //子任务
+        fujianLbl = [[UILabel alloc] init];
+        fujianLbl.textColor = RGBCOLOR(172, 172, 173);
+        fujianLbl.font = Font(10);
+        [fujianLbl setBackgroundColor:[UIColor clearColor]];
+        fujianLbl.text = [NSString stringWithFormat:@"子任务 (%d)", ms.childNum];
+        
+        fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
+
+        fujianLbl.frame = CGRectMake(X(attachment) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
+        [cell.contentView addSubview:fujianLbl];
+        
+        attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 12, 12)];
+        attachment.image = [UIImage imageNamed:@"icon_zirenwu_1"];
         [cell.contentView addSubview:attachment];
         
         //[cell.contentView addSubview:pView];
