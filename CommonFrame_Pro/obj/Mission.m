@@ -447,6 +447,7 @@
                         cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
                         cm.finishTime = [di valueForKey:@"finishTimeStr"];
                         cm.remindTime = [di valueForKey:@"remindTimeStr"];
+                        cm.createTime = [di valueForKey:@"createTimeStr"];
                         cm.createUserId = [di valueForKey:@"createUserId"];
                         cm.taskId = [di valueForKey:@"taskId"];
                         cm.workGroupId = [di valueForKey:@"workGroupId"];

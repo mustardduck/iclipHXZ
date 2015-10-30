@@ -58,6 +58,7 @@ typedef enum {
 @property (nonatomic, assign) int       replayNum;//评论数
 @property (nonatomic, assign) int       childNum;//子任务数
 @property (nonatomic,strong) NSArray*   childTaskList;          //子任务集合
+@property (nonatomic,strong) NSString*  createTime;//创建时间
 
 
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString*)wgId termString:(NSString*)termStr;

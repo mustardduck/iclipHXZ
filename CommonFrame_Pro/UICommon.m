@@ -162,6 +162,7 @@ static UIViewController *imagePicker = nil;
 + (NSString *)dayAndHourFromString:(NSString *)dateString formatStyle:(NSString *)format
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
     NSDate *destDate= [dateFormatter dateFromString:dateString];
     

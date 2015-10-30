@@ -879,7 +879,7 @@
         
         CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
         
-        UILabel* userTitle = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 17, titleWidth, H(photo))];
+        UILabel* userTitle = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 14, titleWidth, 18)];
         [userTitle setBackgroundColor:[UIColor clearColor]];
         userTitle.text = _currentMission.userName;
         //        [title setText:[NSString stringWithFormat:@"%@  %@",_currentMission.userName,_currentMission.workGroupName]];
@@ -918,15 +918,19 @@
         
         //        CGFloat tagHeight = [UICommon getSizeFromString:nameStr withSize:CGSizeMake(tagWidth, 1000) withFont:Font(10)].height;
         
-        UILabel* tagLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(userTitle) + 14, Y(userTitle), tagWidth , H(photo))];
+        UILabel* tagLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(userTitle), YH(userTitle) + 17, 250 , 14)];
         [tagLbl setBackgroundColor:[UIColor clearColor]];
-        [tagLbl setTextColor:RGBCOLOR(172, 172, 173)];
-        [tagLbl setFont:Font(10)];
-        [tagLbl setNumberOfLines:0];
+        [tagLbl setTextColor:[UIColor grayTitleColor]];
+        [tagLbl setFont:Font(12)];
+//        [tagLbl setNumberOfLines:0];
         tagLbl.minimumScaleFactor = 0.7;
         //        tagLbl.textAlignment = NSTextAlignmentCenter;
         
-        tagLbl.text = nameStr;
+//        tagLbl.text = nameStr;
+                
+        NSString * createStr = [UICommon dayAndHourFromString:_currentMission.createTime formatStyle:@"yyyy年MM月dd日 HH:mm"];
+        
+        tagLbl.text = [NSString stringWithFormat:@"创建时间：%@", createStr];
         
         [cell.contentView addSubview:tagLbl];
         
