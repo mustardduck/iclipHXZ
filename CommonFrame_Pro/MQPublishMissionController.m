@@ -316,6 +316,23 @@
                 
                 self.participantsIndexPathArray = arr;
                 
+                NSMutableArray * ccArr = [NSMutableArray arrayWithArray:_ccopyToMembersArray];
+                
+                if(ccArr.count > 0)
+                {
+                    for (Member * meb in ccArr)
+                    {
+                        if(meb.userId == mem.userId)
+                        {
+                            [ccArr removeObject:meb];
+                            
+                            break;
+                        }
+                    }
+                }
+                
+                self.ccopyToMembersArray = ccArr;
+                
                 NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)0 inSection:(NSInteger)1];
                 UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
                 BOOL isEx = NO;
@@ -344,6 +361,8 @@
         
         NSMutableArray * arr = [NSMutableArray arrayWithArray:_ccopyToMembersArray];
         
+        NSMutableArray * editArr = [NSMutableArray arrayWithArray:_ccopyToMembersArray];
+        
         if(arr.count > 0)
         {
             for (int i = 0; i < arr.count; i ++)
@@ -354,7 +373,7 @@
                 {
                     if(meb.userId == mem.userId)
                     {
-                        [arr removeObject:meb];
+                        [editArr removeObject:meb];
                         
                         break;
                     }
@@ -362,7 +381,7 @@
             }
         }
         
-        self.ccopyToMembersArray = arr;
+        self.ccopyToMembersArray = editArr;
         
         NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)1 inSection:(NSInteger)1];
         UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
@@ -550,6 +569,10 @@
     else if (section == 2)
     {
         title = @"标签";
+        
+        UIButton * moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 48, 0, 48, 44)];
+        moreBtn.backgroundColor = [UIColor clearColor];  
+        
     }
     headerLabel.text = title;
     
