@@ -230,6 +230,7 @@
     [mDic removeObjectForKey:@"partiArr"];
     [mDic removeObjectForKey:@"respoDic"];
     [mDic removeObjectForKey:@"accesList"];
+    [mDic removeObjectForKey:@"cMarkList"];
     
     [childArr addObject:mDic];
     
@@ -259,7 +260,8 @@
             [mmDic removeObjectForKey:@"partiArr"];
             [mmDic removeObjectForKey:@"respoDic"];
             [mmDic removeObjectForKey:@"accesList"];
-            
+            [mmDic removeObjectForKey:@"cMarkList"];
+
             [childArr addObject:mmDic];
         }
     }

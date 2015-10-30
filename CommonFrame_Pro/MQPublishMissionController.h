@@ -17,7 +17,7 @@
 //抄送
 @property(nonatomic,strong) NSArray* ccopyToMembersArray;
 //标签
-@property(nonatomic,strong) NSArray* cMarkAarry;
+@property(nonatomic,strong) NSMutableArray* cMarkAarry;
 //附件
 @property(nonatomic,strong) NSMutableArray* cAccessoryArray;
 //完成时间

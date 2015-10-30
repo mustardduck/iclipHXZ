@@ -105,6 +105,7 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) grayMarkLineColor;//灰色线
 + (UIColor *) grayMarkHoverBackgroundColor;
 + (UIColor *) tagBlueBackColor;
++ (UIColor *) blueTextColor;
 
 + (UIColor *) pdfBackColor;
 + (UIColor *) wordBackColor;

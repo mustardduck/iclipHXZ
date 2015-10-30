@@ -605,6 +605,11 @@ static UIViewController *imagePicker = nil;
     return RGBCOLOR(90, 112, 223);
 }
 
++ (UIColor *) blueTextColor
+{
+    return RGBCOLOR(53, 159, 219);
+}
+
 + (UIColor *) pdfBackColor
 {
     return RGBCOLOR(143, 57, 231);

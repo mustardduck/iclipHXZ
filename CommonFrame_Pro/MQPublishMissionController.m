@@ -128,6 +128,11 @@
         self.cAccessoryArray = [NSMutableArray array];
     }
     
+    if(!_cMarkAarry)
+    {
+        self.cMarkAarry = [NSMutableArray array];
+    }
+    
     [self resetData];
     
 }
@@ -179,7 +184,7 @@
             [self refreshCollectionView];
         }
         
-        self.cMarkAarry = [_currentMissionDic objectForKey:@"labelList"];
+        self.cMarkAarry = [_currentMissionDic objectForKey:@"cMarkList"];
         
         self.responsibleDic = [_currentMissionDic valueForKey:@"respoDic"];
         self.participantsIndexPathArray = [_currentMissionDic objectForKey:@"partiArr"];
@@ -235,17 +240,16 @@
         {
             _selectedIndexTagArr = [NSMutableArray array];
         }
-//        else
-//        {
-//            [_selectedIndexTagArr removeAllObjects];
-//        }
+        
+        [_tagList removeAllObjects];
+        [_selectedIndexTagArr removeAllObjects];
         
         for(NSInteger index = 0; index < _markList.count; index ++)
         {
             Mark * ma = _markList[index];
-            for (NSString * markId in _cMarkAarry)
+            for (Mark * markId in _cMarkAarry)
             {
-                if(ma.labelId == markId)
+                if(ma.labelId == markId.labelId)
                 {
                     NSNumber * num = [NSNumber numberWithInteger:index];
                     
@@ -260,6 +264,8 @@
         }
         
         [self refreshTagCollView];
+        
+        [_markCollectionView reloadData];
     }
     else if (_isChangeGroup)
     {
@@ -570,15 +576,46 @@
     {
         title = @"标签";
         
-        UIButton * moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 48, 0, 48, 44)];
-        moreBtn.backgroundColor = [UIColor clearColor];  
+        UIButton * moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 48, 10, 48, 44)];
+        moreBtn.backgroundColor = [UIColor clearColor];
+        [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
+        moreBtn.titleLabel.font = Font(12);
+        [moreBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+        [moreBtn addTarget:self action:@selector(moreMarkClick:) forControlEvents:UIControlEventTouchUpInside];
         
+        [customView addSubview:moreBtn];
     }
     headerLabel.text = title;
     
     [customView addSubview:headerLabel];
     
     return customView;
+}
+
+- (void) moreMarkClick:(id)sender
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMarkListViewController"];
+    ((ICMarkListViewController*)vc).parentControllerType = ParentControllerTypePublishMission;
+    ((ICMarkListViewController*)vc).parentController = self;
+    if(!_cMarkAarry.count)
+    {
+//        NSArray * arr = [NSArray arrayWithArray:_tagList];
+        NSMutableArray * arr = [NSMutableArray arrayWithArray:_tagList];
+        
+        _cMarkAarry = arr;
+        
+        ((ICMarkListViewController*)vc).selectedMarkArray = _cMarkAarry;
+
+    }
+    else
+    {
+        ((ICMarkListViewController*)vc).selectedMarkArray = _cMarkAarry;
+    }
+    ((ICMarkListViewController*)vc).workGroupId = self.workGroupId;
+    ((ICMarkListViewController*)vc).userId = self.userId;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -1201,6 +1238,14 @@
         
         [cell setBorderWithColor:[UIColor grayLineColor]];
         
+        cell.markBtn.selected = NO;
+        
+        [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
+        
+        [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [cell setBorderWithColor:[UIColor grayLineColor]];
+        
         if(_selectedIndexTagArr.count)
         {
             for(int i = 0; i < _selectedIndexTagArr.count; i ++)
@@ -1219,14 +1264,6 @@
                     
                 }
             }
-        }
-        else
-        {
-            [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
-            
-            [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
-            [cell setBorderWithColor:[UIColor grayLineColor]];
         }
         
         return cell;
@@ -1258,6 +1295,14 @@
             
             [_tagList addObject:mark];
             
+            NSNumber * num = [NSNumber numberWithInteger:index];
+            
+            if(!_selectedIndexTagArr)
+            {
+                _selectedIndexTagArr = [NSMutableArray array];
+            }
+            
+            [_selectedIndexTagArr addObject:num];
         }
         else
         {
@@ -1268,7 +1313,22 @@
             [cell setBorderWithColor:[UIColor grayLineColor]];
             
             [_tagList removeObject:mark];
+            
+            NSNumber * num = [NSNumber numberWithInteger:index];
+            if(!_selectedIndexTagArr)
+            {
+                _selectedIndexTagArr = [NSMutableArray array];
+            }
+            [_selectedIndexTagArr removeObject:num];
         }
+        
+        if(!_cMarkAarry)
+        {
+            self.cMarkAarry = [NSMutableArray array];
+        }
+        
+        [_cMarkAarry removeAllObjects];
+        [self.cMarkAarry addObjectsFromArray:_tagList];
 
     }
     
@@ -1878,9 +1938,10 @@
     
     if(!_TagCollView.hidden)
     {
+        [self countTagHeight];
+
         [_TagCollView reloadData];
         
-        [self countTagHeight];
     }
     
     [self resetAllViewLayout:_TagCollView];
@@ -1893,7 +1954,7 @@
     
     float height = row * (27 + 14);
     
-    _collectionview.height = height;
+    _TagCollView.height = height;
 }
 
 - (void) refreshCollectionView
@@ -2080,7 +2141,12 @@
     }
     
     if (mission.isLabel)
+    {
         [dic setObject:mission.labelList forKey:@"labelList"];
+
+        [dic setObject:_tagList forKey:@"cMarkList"];
+    }
+    
     [dic setObject:[NSString stringWithFormat:@"%d",mission.isAccessory?1:0]  forKey:@"isAccessory"];
     if (mission.isAccessory) {
         [dic setObject:mission.accessoryList forKey:@"accesList"];
