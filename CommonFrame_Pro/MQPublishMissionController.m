@@ -342,6 +342,28 @@
     if (self.participantsIndexPathArray != nil) {
         NSLog(@"%@",self.participantsIndexPathArray);
         
+        NSMutableArray * arr = [NSMutableArray arrayWithArray:_ccopyToMembersArray];
+        
+        if(arr.count > 0)
+        {
+            for (int i = 0; i < arr.count; i ++)
+            {
+                Member * meb = arr[i];
+                
+                for(Member * mem in _participantsIndexPathArray)
+                {
+                    if(meb.userId == mem.userId)
+                    {
+                        [arr removeObject:meb];
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        
+        self.ccopyToMembersArray = arr;
+        
         NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)1 inSection:(NSInteger)1];
         UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
         
