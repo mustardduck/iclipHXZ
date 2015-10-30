@@ -261,16 +261,22 @@
         
         [self refreshTagCollView];
     }
-    else if(!_cMarkAarry.count && _isChangeGroup)
+    else if (_isChangeGroup)
     {
-        [_selectedIndexTagArr removeAllObjects];
-
-        [_tagList removeAllObjects];
+        if(!_cMarkAarry.count)
+        {
+            [_selectedIndexTagArr removeAllObjects];
+            
+            [_tagList removeAllObjects];
+            
+            [self refreshTagCollView];
+            
+            self.isChangeGroup = NO;
+        }
         
-        [self refreshTagCollView];
-        
-        self.isChangeGroup = NO;
-        
+        self.participantsIndexPathArray = nil;
+        self.ccopyToMembersArray = nil;
+        self.responsibleDic = nil;
     }
     
     if(_isShowAllSection)
@@ -1489,9 +1495,9 @@
             {
                 tdate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime]];
             }
-            NSComparisonResult  dataCompare= [fdate compare:tdate];
+            NSComparisonResult  dataCompare= [tdate compare:fdate];
             if (dataCompare != NSOrderedDescending) {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之后" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert show];
                 return;
             }
@@ -1528,9 +1534,9 @@
             {
                 tdate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime]];
             }
-            NSComparisonResult  dataCompare= [fdate compare:tdate];
+            NSComparisonResult  dataCompare= [tdate compare:fdate];
             if (dataCompare != NSOrderedDescending) {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之后" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 return;
             }

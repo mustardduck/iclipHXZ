@@ -256,7 +256,7 @@
     
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
 
-    [dic setObject:missionArr forKey:@"CreateTaskApp"];
+    [dic setObject:missionArr forKey:@"list"];
     
     NSString* jsonStr = [CommonFile toJson:dic];
     

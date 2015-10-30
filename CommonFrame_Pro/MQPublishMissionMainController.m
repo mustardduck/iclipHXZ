@@ -502,9 +502,19 @@
     }
     else
     {
-        _rightTxtView.hidden = YES;
-        
-        _jiaView.hidden = NO;
+        if(_mainTextView.text.length)
+        {
+            _rightTxtView.hidden = NO;
+            
+            _jiaView.hidden = YES;
+        }
+        else
+        {
+            _rightTxtView.hidden = YES;
+            
+            _jiaView.hidden = NO;
+        }
+
     }
     if(_childMissionArr.count)
     {
