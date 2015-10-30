@@ -710,7 +710,7 @@
             ((ICMemberTableViewController*)vc).selectedCopyToMembersArray = _ccopyToMembersArray;
         }
         if (_participantsIndexPathArray.count > 0) {
-            //((ICMemberTableViewController*)vc).selectedParticipantsDictionary = _participantsIndexPathArray;
+            ((ICMemberTableViewController*)vc).selectedParticipantsDictionary = _participantsIndexPathArray;
         }
         [self.navigationController pushViewController:vc animated:YES];
     }

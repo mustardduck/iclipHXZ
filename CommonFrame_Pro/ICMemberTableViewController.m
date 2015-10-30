@@ -37,6 +37,8 @@
     //Group Members
     UITableViewCellEditingStyle _editingStyle;
     
+    NSMutableArray * _partiIndexPathArr;
+    
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -55,6 +57,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    _partiIndexPathArr = [NSMutableArray array];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -87,7 +90,7 @@
 
 //            NSMutableArray* sectionArray = [NSMutableArray array];
 //            NSArray*        memberArray = [Member getAllMembers:&sectionArray participantsArray:self.selectedParticipantsDictionary];
-//            
+//
 //            _sections = sectionArray;
 //            _rows = memberArray;
         }
@@ -255,6 +258,26 @@
                     }
                     if (hasFinded) {
                         break;
+                    }
+                }
+            }
+        }
+        //标记参与人indexpath
+        if (self.selectedResponsibleDictionary != nil) {
+            
+            NSMutableArray* arr = (NSMutableArray*)self.selectedParticipantsDictionary;
+            
+            for(Member * m in arr)
+            {
+                BOOL hasFinded = NO;
+                for (int i=0; i<_sections.count; i++) {
+                    for (int j= 0; j< ((NSArray*)_rows[i]).count;j++) {
+                        if (((Member*)_rows[i][j]).userId == m.userId) {
+                            hasFinded = YES;
+                            NSIndexPath * indexP = [NSIndexPath indexPathForRow:j inSection:i];
+                            
+                            [_partiIndexPathArr addObject:indexP];
+                        }
                     }
                 }
             }
@@ -515,18 +538,16 @@
             {
                 NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 
-                if (_responsibleIndexPath != nil) {
-                    if (indexPath.section == _responsibleIndexPath.section && indexPath.row == _responsibleIndexPath.row)
-                    {
-                    }
-                    else
+                UITableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
+                
+                if(cell)
+                {
+                    UIView * view = [cell.contentView viewWithTag:1010];
+
+                    if(view)
                     {
                         [self addIndexPathToCopyToArray:indexPath];
                     }
-                }
-                else
-                {
-                    [self addIndexPathToCopyToArray:indexPath];
                 }
             }
         }
@@ -542,7 +563,17 @@
             {
                 NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 
-                [self removeIndexPathFromCopyToArray:indexPath];
+                UITableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
+                
+                if(cell)
+                {
+                    UIView * view = [cell.contentView viewWithTag:1011];
+                    
+                    if(view)
+                    {
+                        [self removeIndexPathFromCopyToArray:indexPath];
+                    }
+                }
                 
             }
         }
@@ -787,17 +818,17 @@
     UIImageView* choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(x, 20, 17, 17)];
     if (self.controllerType == MemberViewFromControllerPublishMissionParticipants || self.controllerType == MemberViewFromControllerCopyTo)
     {
-        BOOL isResponsible = NO;
-        if (_responsibleIndexPath != nil) {
-            if (section == _responsibleIndexPath.section && index == _responsibleIndexPath.row) {
-                isResponsible = YES;
-            }
-        }
+//        BOOL isResponsible = NO;
+//        if (_responsibleIndexPath != nil) {
+//            if (section == _responsibleIndexPath.section && index == _responsibleIndexPath.row) {
+//                isResponsible = YES;
+//            }
+//        }
 
         choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
         choseImg.tag = 1010;
-        if (!isResponsible)
-            [cell.contentView addSubview:choseImg];
+//        if (!isResponsible)
+//            [cell.contentView addSubview:choseImg];
         
         x = x * 2 + 17;
     }
@@ -846,16 +877,47 @@
             }
         }
         
-        if (!isResponsible)
-        {
-            if ([self hasExitsInPartcipathsArray:indexPath])
-                choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
+        BOOL isParti = NO;
+        
+        if (_partiIndexPathArr != nil) {
+            
+            for (NSIndexPath * indexP in _partiIndexPathArr)
+            {
+                if(indexP.section == section && indexP.row == index)
+                {
+                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(width - 140, 22, 100, 15)];
+                    [name setBackgroundColor:[UIColor clearColor]];
+                    [name setText:@"已定参与人"];
+                    [name setTextColor:[UIColor grayColor]];
+                    [name setFont:[UIFont systemFontOfSize:15]];
+                    [name setTag:345];//112
+                    
+                    [cell.contentView addSubview:name];
+                    
+                    isParti = YES;
+                    
+                    break;
+                }
+            }
+            
+            if (isResponsible || isParti)
+            {
+            }
             else
-                choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
-            
-            
-            cell.contentView.tag = indexPath.section;
+            {
+                [cell.contentView addSubview:choseImg];
+
+                if ([self hasExitsInPartcipathsArray:indexPath])
+                    choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
+                else
+                    choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
+                
+                
+                cell.contentView.tag = indexPath.section;
+            }
         }
+        
+
     }
     
     //[cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
