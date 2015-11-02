@@ -39,6 +39,8 @@
     
     NSMutableArray * _partiIndexPathArr;
     
+    UIButton * _selectBtn;
+    
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -147,24 +149,35 @@
     {
         CGRect selectFrame = CGRectMake(40, H(self.view) - 42 - 13 - 66, (SCREENWIDTH - 40 * 3)/2, 42);
         
-        UIButton * selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        selectBtn.frame = selectFrame;
-        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateNormal];
-        [selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateHighlighted];
-        if(_selectedCopyToMembersArray.count)
+        _selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _selectBtn.frame = selectFrame;
+        [_selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu"] forState:UIControlStateNormal];
+        [_selectBtn setBackgroundImage:[UIImage imageNamed:@"btn_anniu2"] forState:UIControlStateHighlighted];
+        
+        BOOL showCancel = NO;
+        if(self.controllerType == MemberViewFromControllerCopyTo)
         {
-            [selectBtn setTitle:@"取消" forState:UIControlStateNormal];
+            showCancel = _selectedCopyToMembersArray.count ? YES : NO;
         }
         else
         {
-            [selectBtn setTitle:@"全选" forState:UIControlStateNormal];
+            showCancel = _selectedParticipantsDictionary.count ? YES : NO;
+
         }
-        selectBtn.titleLabel.font = Font(14);
-        [selectBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateHighlighted];
-        [selectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [selectBtn addTarget:self action:@selector(selectBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        if(showCancel)
+        {
+            [_selectBtn setTitle:@"取消" forState:UIControlStateNormal];
+        }
+        else
+        {
+            [_selectBtn setTitle:@"全选" forState:UIControlStateNormal];
+        }
+        _selectBtn.titleLabel.font = Font(14);
+        [_selectBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateHighlighted];
+        [_selectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_selectBtn addTarget:self action:@selector(selectBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         
-        [self.view addSubview:selectBtn];
+        [self.view addSubview:_selectBtn];
         
         UIButton * selectOkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectFrame.origin.x = SCREENWIDTH - 40 - selectFrame.size.width;
@@ -538,15 +551,23 @@
             {
                 NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 
-                UITableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
-                
-                if(cell)
-                {
-                    UIView * view = [cell.contentView viewWithTag:1010];
-
-                    if(view)
+                if (_responsibleIndexPath != nil) {
+                    if (indexPath.section == _responsibleIndexPath.section && indexPath.row == _responsibleIndexPath.row)
                     {
-                        [self addIndexPathToCopyToArray:indexPath];
+                    }
+                    else
+                    {
+                        for (NSIndexPath * indP in _partiIndexPathArr)
+                        {
+                            if(indexPath.section == indP.section && indexPath.row == indP.row)
+                            {
+                                [self removeIndexPathFromCopyToArray:indexPath];
+                            }
+                            else
+                            {
+                                [self addIndexPathToCopyToArray:indexPath];
+                            }
+                        }
                     }
                 }
             }
@@ -563,21 +584,11 @@
             {
                 NSIndexPath * indexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 
-                UITableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
-                
-                if(cell)
-                {
-                    UIView * view = [cell.contentView viewWithTag:1011];
-                    
-                    if(view)
-                    {
-                        [self removeIndexPathFromCopyToArray:indexPath];
-                    }
-                }
+                [self removeIndexPathFromCopyToArray:indexPath];
                 
             }
         }
-
+        
         [btn setTitle:@"全选" forState:UIControlStateNormal];
     }
     
