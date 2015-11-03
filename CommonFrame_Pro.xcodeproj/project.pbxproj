@@ -57,6 +57,8 @@
 		4B9AE10D1B94009100E2124D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE10C1B94009100E2124D /* Security.framework */; };
 		4B9AE10F1B94009800E2124D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE10E1B94009800E2124D /* libz.dylib */; };
 		4B9AE1121B94029F00E2124D /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B9AE1111B94029F00E2124D /* PushConfig.plist */; };
+		4B9C73961BE7407B0070135C /* DashesLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C73951BE7407B0070135C /* DashesLineView.m */; };
+		4B9C73991BE84FBF0070135C /* PartiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C73981BE84FBF0070135C /* PartiCell.m */; };
 		4BB33A8D1B9EC5CF009D80E2 /* expandableImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A851B9EC5CF009D80E2 /* expandableImage.png */; };
 		4BB33A8E1B9EC5CF009D80E2 /* expandableImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */; };
 		4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A881B9EC5CF009D80E2 /* SKSTableView.m */; };
@@ -248,6 +250,10 @@
 		4B9AE10C1B94009100E2124D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4B9AE10E1B94009800E2124D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		4B9AE1111B94029F00E2124D /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		4B9C73941BE7407B0070135C /* DashesLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashesLineView.h; sourceTree = "<group>"; };
+		4B9C73951BE7407B0070135C /* DashesLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashesLineView.m; sourceTree = "<group>"; };
+		4B9C73971BE84FBF0070135C /* PartiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartiCell.h; sourceTree = "<group>"; };
+		4B9C73981BE84FBF0070135C /* PartiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartiCell.m; sourceTree = "<group>"; };
 		4BB33A851B9EC5CF009D80E2 /* expandableImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expandableImage.png; sourceTree = "<group>"; };
 		4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expandableImage@2x.png"; sourceTree = "<group>"; };
 		4BB33A871B9EC5CF009D80E2 /* SKSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableView.h; sourceTree = "<group>"; };
@@ -568,6 +574,8 @@
 			children = (
 				4B1F2A671BB9251F00D55BAE /* seeFullScreen */,
 				4BC040291BABBF6E004C6F3B /* SVProgressHUD */,
+				4B9C73941BE7407B0070135C /* DashesLineView.h */,
+				4B9C73951BE7407B0070135C /* DashesLineView.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -690,6 +698,8 @@
 				4BE1F5871BD7A157007CF6C4 /* MarkCell.m */,
 				4BE1F58B1BD88E91007CF6C4 /* MarkTagCell.h */,
 				4BE1F58C1BD88E91007CF6C4 /* MarkTagCell.m */,
+				4B9C73971BE84FBF0070135C /* PartiCell.h */,
+				4B9C73981BE84FBF0070135C /* PartiCell.m */,
 			);
 			name = Publish;
 			sourceTree = "<group>";
@@ -1171,6 +1181,7 @@
 				789182671B0EDBC2004C6AF6 /* main.m in Sources */,
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
 				78354CD01B40E03000E2F00A /* ICMemberAccessControlViewContoller.m in Sources */,
+				4B9C73991BE84FBF0070135C /* PartiCell.m in Sources */,
 				784B061B1B43BADA0033C0EA /* ICNavigationController.m in Sources */,
 				4B1981B01BD4FBBB00174CFD /* UIView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				4BE1F5841BD6433F007CF6C4 /* AddPicCell66.m in Sources */,
@@ -1189,6 +1200,7 @@
 				4B6C5AA11BE1B06D00CEB8C4 /* MQPublishMissionMainCell.m in Sources */,
 				4B7A892D1BD4F05F00E42F7C /* UIImageView+WebCache.m in Sources */,
 				7823E1871B38F2B800061DAF /* YFInputBar.m in Sources */,
+				4B9C73961BE7407B0070135C /* DashesLineView.m in Sources */,
 				7844F6741B2145BB0021FFDF /* ICMemberTableViewController.m in Sources */,
 				4B1F2AB41BB9251F00D55BAE /* UIImage+WebP.m in Sources */,
 				4BE1F57F1BD642B1007CF6C4 /* AddPicCell80.m in Sources */,

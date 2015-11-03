@@ -458,9 +458,13 @@
                         cm.status = [[di valueForKey:@"status"] integerValue];
                         cm.userName = [di valueForKey:@"userName"];
                         cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
-
+                        cm.lableUserName = [di valueForKey:@"lableUserName"];
+                        cm.parentId = [di valueForKey:@"parentId"];
                     }
                 }
+                cm.partList = [dataDic objectForKey:@"peopleList"];
+                cm.childTaskList = [dataDic objectForKey:@"childTaskList"];
+                cm.isInstructions = [[dataDic valueForKey:@"isInstructions"] boolValue];
                 
                 cm.labelList = [dataDic objectForKey:@"labelList"];
                 

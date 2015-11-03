@@ -41,7 +41,7 @@ typedef enum {
 @property (nonatomic,strong) NSString*  main;
 @property (nonatomic,strong) NSString*  title;
 @property (nonatomic,assign) NSInteger  type;//
-@property (nonatomic,assign) NSInteger  status;
+@property (nonatomic,assign) NSInteger  status;//-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
 @property (nonatomic,strong) NSString*  userImg;
 @property (nonatomic,strong) NSString*  userName;
 @property (nonatomic,assign) NSInteger  totalPages;
@@ -59,6 +59,8 @@ typedef enum {
 @property (nonatomic, assign) int       childNum;//子任务数
 @property (nonatomic,strong) NSArray*   childTaskList;          //子任务集合
 @property (nonatomic,strong) NSString*  createTime;//创建时间
+@property (nonatomic, assign) BOOL      isInstructions;           //批示权限
+@property (nonatomic, strong) NSString * parentId;
 
 
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString*)wgId termString:(NSString*)termStr;

@@ -15,12 +15,11 @@
 #import "PreviewViewController.h"
 #import "XNDownload.h"
 #import "SVProgressHUD.h"
+#import "DashesLineView.h"
+#import "PartiCell.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate>
+@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate>
 {
-    
-    
-
     NSMutableDictionary*        _reReplyDic;
     Mission*                    _currentMission;
     
@@ -37,8 +36,19 @@
     BOOL                        _showDelete;
     
     UIActivityIndicatorView* acInd ;
-
     
+    UICollectionView * _partCollView;
+    
+    UIImageView * _duiimageview;
+    
+    BOOL _isShowAllPart;
+    NSArray * _partList;
+    UIButton * _jianTouBtn;
+    
+    BOOL _isShowAllChildMission;
+    NSArray * _childMissionList;
+    
+    UITableView * _childTableView;
 }
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
@@ -109,6 +119,13 @@
             _oriIndexRow = 0;
             [self.view addSubview:_tableView];
             
+//            _childTableView = [[UITableView alloc] init];
+//            _childTableView.scrollEnabled = NO;
+//            _childTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//            _childTableView.backgroundColor = [UIColor clearColor];
+//            _childTableView.dataSource = self;
+//            _childTableView.delegate = self;
+            
             UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
             lpgr.minimumPressDuration = 1.0; //seconds	设置响应时间
             lpgr.delegate = self;
@@ -134,8 +151,6 @@
     //_dataList = [NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10", nil];
     //_replyList = [NSMutableArray arrayWithObjects:@" ",@" ",@"回形针工具上线申请1！",@"回形针工具上线申请2！",@"回形针工具上线申请3！",@"回形针工具上线申请！",@"回形针工具上线申请！",@"回形针工具上线申请8！",@"回形针工具上线申请9！",@"回形针工具上线申请10！", nil];
 
-    
-   
 }
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
@@ -643,16 +658,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height = 44;
-    
-    UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
-    if(cell)
+    if(tableView == _childTableView)
     {
-        return cell.frame.size.height;
+        return 40;
     }
     else
     {
-        return height;
+        CGFloat height = 44;
+        
+        UITableViewCell *cell = [self tableView:_tableView cellForRowAtIndexPath:indexPath];
+        if(cell)
+        {
+            return cell.frame.size.height;
+        }
+        else
+        {
+            return height;
+        }
     }
 }
 
@@ -678,36 +700,51 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _replyList.count;
+    if(tableView == _childTableView)
+    {
+        return _childMissionList.count;
+    }
+    else
+    {
+        return _replyList.count;
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    UIView *selectionColor = [[UIView alloc] init];
-    selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
-    cell.selectedBackgroundView = selectionColor;
-    
-    NSInteger index = indexPath.row;
-    CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
-
-    if (index == 0)
+    if(tableView == _childTableView)
     {
-        CGFloat newcHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
-
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight - 1, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.selectedBackgroundView addSubview:bottomLine];
+        return YES;
     }
-    else if (index > 0)
+    else
     {
-        CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
-
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, cHeight - 1, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.selectedBackgroundView addSubview:bottomLine];
+        UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+        UIView *selectionColor = [[UIView alloc] init];
+        selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
+        cell.selectedBackgroundView = selectionColor;
+        
+        NSInteger index = indexPath.row;
+        CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
+        
+        if (index == 0)
+        {
+            CGFloat newcHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+            
+            UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight - 1, cWidth, 0.5)];
+            [bottomLine setBackgroundColor:[UIColor grayColor]];
+            [cell.selectedBackgroundView addSubview:bottomLine];
+        }
+        else if (index > 0)
+        {
+            CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
+            
+            UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, cHeight - 1, cWidth, 0.5)];
+            [bottomLine setBackgroundColor:[UIColor grayColor]];
+            [cell.selectedBackgroundView addSubview:bottomLine];
+        }
+        return YES;
     }
-    return YES;
+
 }
 
 - (void) previewFile:(id)sender
@@ -842,588 +879,958 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexPath.row;
-    
-    static NSString *cellId = @"WorkingDetailTableViewCellIdentitifer";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    
-    
-    for(UIView *view in cell.contentView.subviews) {
-        [view removeFromSuperview];
-    }
-    
-    CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
-    //CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
-    
-    if (index == 0) {
-        
-        UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
-        [photo setBackgroundColor:[UIColor clearColor]];
-        //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
-        [photo setImageWithURL:[NSURL URLWithString:_currentMission.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        photo.layer.cornerRadius = 5.0f;
-        photo.clipsToBounds = YES;
-        [cell.contentView addSubview:photo];
-        
-        UIButton * photoBtn = [[UIButton alloc]init];
-        photoBtn.backgroundColor = [UIColor clearColor];
-        photoBtn.frame = photo.frame;
-        [photoBtn addTarget:self action:@selector(jumpToCreaterPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell.contentView addSubview:photoBtn];
-        
-        CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
-        
-        UILabel* userTitle = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 14, titleWidth, 18)];
-        [userTitle setBackgroundColor:[UIColor clearColor]];
-        userTitle.text = _currentMission.userName;
-        //        [title setText:[NSString stringWithFormat:@"%@  %@",_currentMission.userName,_currentMission.workGroupName]];
-        [userTitle setTextColor:RGBCOLOR(53, 159, 219)];
-        [userTitle setFont:Font(16)];
-        
-        [cell.contentView addSubview:userTitle];
-        
-        
-        NSString * tagStr = @"";
-        
-        for (NSDictionary * dic in _currentMission.labelList)
-        {
-            NSString * lblName = [dic valueForKey:@"labelName"];
-            if(_currentMission.labelList.count == 1)
-            {
-                tagStr = lblName;
-            }
-            else
-            {
-                tagStr = [tagStr stringByAppendingString:[NSString stringWithFormat:@"%@ · ", lblName]];
-            }
-        }
-        if(tagStr.length >= 3)
-        {
-            NSString * pointTagStr = [tagStr substringFromIndex:tagStr.length - 3];
-            if([pointTagStr isEqualToString:@" · "])
-            {
-                tagStr = [tagStr substringToIndex:tagStr.length - 3];
-            }
-        }
-        
-        NSString * nameStr = [NSString stringWithFormat:@"%@   %@", _currentMission.workGroupName, tagStr];
-        
-        CGFloat tagWidth = SCREENWIDTH - 26 - 120;
-        
-        //        CGFloat tagHeight = [UICommon getSizeFromString:nameStr withSize:CGSizeMake(tagWidth, 1000) withFont:Font(10)].height;
-        
-        UILabel* tagLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(userTitle), YH(userTitle) + 17, 250 , 14)];
-        [tagLbl setBackgroundColor:[UIColor clearColor]];
-        [tagLbl setTextColor:[UIColor grayTitleColor]];
-        [tagLbl setFont:Font(12)];
-//        [tagLbl setNumberOfLines:0];
-        tagLbl.minimumScaleFactor = 0.7;
-        //        tagLbl.textAlignment = NSTextAlignmentCenter;
-        
-//        tagLbl.text = nameStr;
-                
-        NSString * createStr = [UICommon dayAndHourFromString:_currentMission.createTime formatStyle:@"yyyy年MM月dd日 HH:mm"];
-        
-        tagLbl.text = [NSString stringWithFormat:@"创建时间：%@", createStr];
-        
-        [cell.contentView addSubview:tagLbl];
-        
-        //标题
-        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(26, YH(photo) + 18, SCREENWIDTH - 26 * 2, 38)];
-        [title setBackgroundColor:[UIColor clearColor]];
-        if(!_currentMission.title.length)
-        {
-            title.text = @"无标题";
-        }
-        else
-        {
-            [title setText:_currentMission.title];
-        }
-        [title setTextColor:[UIColor whiteColor]];
-        [title setFont:Font(17)];
-        
-        [cell.contentView addSubview:title];
-        
-        NSString* content = _currentMission.main;
-        CGFloat contentWidth = cWidth - 26 * 2;
-        UIFont* font = Font(14);
-        
-        CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
-
-        //描述
-        UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(title), YH(title), contentWidth, contentHeight)];
-        [desLbl setBackgroundColor:[UIColor clearColor]];
-        [desLbl setNumberOfLines:0];
-        [desLbl setText:content];
-        [desLbl setTextColor:RGBCOLOR(172, 172, 173)];
-        [desLbl setFont:font];
-        [cell.contentView addSubview:desLbl];
-
-        
-        CGFloat duiImgWidth = SCREENWIDTH - 14 * 2;
-
-        //文件
-        BOOL hasAccessory = _currentMission.isAccessory;
-        
-        CGFloat accHeight = (duiImgWidth - 40) / 3;
-        CGFloat intevalHeight = 8;
-        
-        NSArray* accArr = [NSArray arrayWithArray:_currentMission.accessoryList];
-
-        CGFloat attchHeight = ((accArr.count - 1) / 3 + 1) * (accHeight + intevalHeight);
-        UIView* attchView = [[UIView alloc] init];
-        if(accArr.count)
-        {
-            attchView.frame = CGRectMake(14, YH(desLbl) + 23, duiImgWidth, attchHeight);
-        }
-        else
-        {
-            attchView.frame = CGRectMake(14, YH(desLbl) + 23, duiImgWidth, 0);
-        }
-            
-        [attchView setBackgroundColor:[UIColor clearColor]];
-
-        if (hasAccessory) {
-
-            for (int i = 0;i < accArr.count; i++)
-            {
-                int j = i / 3;
-                
-                int k = i % 3;
-                
-                Accessory * acc = accArr[i];
-                
-                CGRect attaFrame = CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight);
-
-                UIImageView* attachment = [[UIImageView alloc] initWithFrame:attaFrame];
-                // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
-                int fileType = [acc.fileType intValue];
-                
-                attachment.userInteractionEnabled = YES;
-
-                if(fileType == 5)//to do
-                {
-                    [attachment setImageWithURL:[NSURL URLWithString:acc.address]
-                               placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
-                                        options:SDWebImageDelayPlaceholder
-                    usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    
-                    UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
-                    imgBtn.backgroundColor = [UIColor clearColor];
-                    
-                    NSInteger fileCount = accArr.count - _imageArray.count;
-                    imgBtn.tag = fileCount > 0 ? i - fileCount : i;
-
-                    [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
-                    [attachment addSubview:imgBtn];
-                }
-                else
-                {
-                    NSString * imgName = @"";
-                    if(fileType == 1)//to do
-                    {
-                        imgName = @"btn_word";
-                        
-                        attachment.backgroundColor = [UIColor wordBackColor];
-                        
-                    }
-                    else if (fileType == 2)
-                    {
-                        imgName = @"btn_excel";
-                        
-                        attachment.backgroundColor = [UIColor excelBackColor];
-                    }
-                    else if (fileType == 3)
-                    {
-                        imgName = @"btn_ppt";
-                        
-                        attachment.backgroundColor = [UIColor pptBackColor];
-
-                    }
-                    else if (fileType == 4)
-                    {
-                        imgName = @"btn_pdf";
-                        
-                        attachment.backgroundColor = [UIColor pdfBackColor];
-
-                    }
-                    else if(fileType == 6)
-                    {
-                        imgName = @"btn_other";
-
-                        attachment.backgroundColor = [UIColor qitaBackColor];
-                    }
-                    
-                    UIImageView * fileIcon = [[UIImageView alloc] init];
-                    fileIcon.image = [UIImage imageNamed:imgName];
-                    [attachment addSubview:fileIcon];
-                    
-                    UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
-                    imgBtn.backgroundColor = [UIColor clearColor];
-                    imgBtn.tag = i;
-//                    imgBtn.tag = fileType;//文件类型
-                    [imgBtn addTarget:self action:@selector(previewFile:) forControlEvents:UIControlEventTouchUpInside];
-                    [attachment addSubview:imgBtn];
-                    
-                    UILabel * fileNameLbl = [[UILabel alloc] init];
-                    
-                    if(SCREENWIDTH == 414)
-                    {
-                        fileIcon.frame = CGRectMake((accHeight - 37) / 2, 14, 37, 59);
-                        
-                        fileNameLbl.frame = CGRectMake(14, YH(fileIcon) + 11, (accHeight - 14 * 2) , 24);
-                        
-                        fileNameLbl.font = Font(10);
-
-                    }
-                    else if (SCREENWIDTH == 375)
-                    {
-                        fileIcon.frame = CGRectMake((accHeight - 37) / 2, 13, 33, 54);
-                        
-                        fileNameLbl.frame = CGRectMake(14, YH(fileIcon) + 8, (accHeight - 14 * 2) , 22);
-                        
-                        fileNameLbl.font = Font(9);
-
-                    }
-                    else if (SCREENWIDTH == 320)
-                    {
-                        fileIcon.frame = CGRectMake((accHeight - 31) / 2, 11, 28, 46);
-                        
-                        fileNameLbl.frame = CGRectMake(11, YH(fileIcon) + 5, (accHeight - 11 * 2) , 20);
-                        
-                        fileNameLbl.font = Font(8);
-                        
-                    }
-                    
-                    fileNameLbl.backgroundColor = [UIColor clearColor];
-                    fileNameLbl.textColor = [UIColor whiteColor];
-                    fileNameLbl.numberOfLines = 2;
-                    fileNameLbl.text = acc.name;
-                    
-                    [attachment addSubview:fileNameLbl];
-                }
-
-                
-                [attachment.layer setMasksToBounds:YES];
-
-                [attchView addSubview:attachment];
-                
-            }
-            
-            [cell.contentView addSubview:attchView];
-        }
-        
-        //日期
-        UIView* bView = [[UIView alloc] initWithFrame:CGRectMake(14, YH(attchView) - intevalHeight, duiImgWidth, 38)];
-        [bView setBackgroundColor:[UIColor clearColor]];
-        
-        UILabel* time = [[UILabel alloc] initWithFrame:CGRectMake(12, 14, 73, 12)];
-        [time setBackgroundColor:[UIColor clearColor]];
-        [time setNumberOfLines:0];
-        [time setText:[NSString stringWithFormat:@"%@ %@",_currentMission.monthAndDay,_currentMission.hour]];
-        [time setTextAlignment:NSTextAlignmentLeft];
-        [time setTextColor:[UIColor whiteColor]];
-        [time setFont:Font(10)];
-        [bView addSubview:time];
-        
-        if (_currentMission != nil) {
-            
-            if(_currentMission.createUserId == [LoginUser loginUserID])
-            {
-                UIButton* btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(XW(time), 14, 28, 12)];
-                [btnDelete setBackgroundColor:[UIColor clearColor]];
-                NSMutableAttributedString* attriNormal = [[NSMutableAttributedString alloc]
-                                                          initWithString:@"删除"
-                                                          attributes:@{
-                                                                       NSFontAttributeName:[UIFont systemFontOfSize:12],
-                                                                       NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#3c9ed7"]}];
-                NSMutableAttributedString* attriHig = [[NSMutableAttributedString alloc]
-                                                       initWithString:@"删除" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]}];
-                [btnDelete setAttributedTitle:attriNormal forState:UIControlStateNormal];
-                [btnDelete setAttributedTitle:attriHig forState:UIControlStateHighlighted];
-                [btnDelete addTarget:self action:@selector(btnRemoveClicked:) forControlEvents:UIControlEventTouchUpInside];
-                [bView addSubview:btnDelete];
-                
-                
-                UIButton* btnEdit = [[UIButton alloc] initWithFrame:CGRectMake(XW(time) + 38, 14, 28, 12)];
-                [btnEdit setBackgroundColor:[UIColor clearColor]];
-                NSMutableAttributedString* eattriNormal = [[NSMutableAttributedString alloc]
-                                                           initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor colorWithRed:[self colorWithRGB:60] green:[self colorWithRGB:159] blue:[self colorWithRGB:215] alpha:1.0f]}];
-                NSMutableAttributedString* eattriHig = [[NSMutableAttributedString alloc]
-                                                        initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]}];
-                [btnEdit setAttributedTitle:eattriNormal forState:UIControlStateNormal];
-                [btnEdit setAttributedTitle:eattriHig forState:UIControlStateHighlighted];
-                [btnEdit addTarget:self action:@selector(btnEditClicked:) forControlEvents:UIControlEventTouchUpInside];
-                [bView addSubview:btnEdit];
-
-            }
-        }
-
-        UIButton* btnComment = [[UIButton alloc] initWithFrame:CGRectMake(duiImgWidth - 15 - 12, 14, 15, 15)];
-        [btnComment setBackgroundColor:[UIColor clearColor]];
-        [btnComment setImage:[UIImage imageNamed:@"btn_pinglun"] forState:UIControlStateNormal];
-        [btnComment addTarget:self action:@selector(btnCommentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [bView addSubview:btnComment];
-        
-        [cell.contentView addSubview:bView];
-        
-        CGFloat duiImgHeight = 52 + contentHeight + 38 + H(attchView) + 23 - intevalHeight;
-        CGFloat newcHeight = 70 + duiImgHeight ;
-        
-        UIImageView * duiImageView = [[UIImageView alloc] initWithFrame:CGRectMake(14, YH(photo) + 7, duiImgWidth, duiImgHeight )];
-        duiImageView.image= [[UIImage imageNamed:@"bg_duihuakuang2"] stretchableImageWithLeftCapWidth:40 topCapHeight:30];
-        
-        [cell.contentView addSubview:duiImageView];
-        [cell.contentView sendSubviewToBack:duiImageView];
-
-        [cell setFrame:CGRectMake(0, 0, cWidth ,newcHeight + 34)];
-        
-        UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight + 34 - 1, cWidth, 0.5)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [cell.contentView addSubview:bottomLine];
-    }
-    else if (index > 0)
+    if(tableView == _childTableView)
     {
-        //cell.textLabel.text = [_dataList objectAtIndex:index];
-        if (cell.contentView.subviews.count < 4) {
-            
-            NSInteger cIndex = index - 1;
-            
-            Comment* comm = [_commentArray objectAtIndex:cIndex];
+        static NSString *cellId = @"childMissCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        }
+        
+        for(UIView *view in cell.contentView.subviews) {
+            [view removeFromSuperview];
+        }
+        
+        NSDictionary * dic = _childMissionList[indexPath.row];
+        
+        UILabel * titleLbl = [[UILabel alloc] init];
+        titleLbl.frame = CGRectMake(13, 0, SCREENWIDTH -  13 * 4 - 118, 40);
+        titleLbl.backgroundColor = [UIColor clearColor];
+        titleLbl.font = Font(14);
+        titleLbl.textColor = [UIColor whiteColor];
+        titleLbl.text = [dic valueForKey:@"lableUserName"];
+        [cell.contentView addSubview:titleLbl];
+
+        return cell;
+    }
+    else
+    {
+        NSInteger index = indexPath.row;
+        
+        static NSString *cellId = @"WorkingDetailTableViewCellIdentitifer";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        }
+        
+        
+        for(UIView *view in cell.contentView.subviews) {
+            [view removeFromSuperview];
+        }
+        
+        CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
+        //CGFloat cHeight = [self tableView:_tableView heightForRowAtIndexPath:indexPath];
+        
+        if (index == 0) {
             
             UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
+            [photo setBackgroundColor:[UIColor clearColor]];
             //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
-            [photo setImageWithURL:[NSURL URLWithString:comm.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [photo setImageWithURL:[NSURL URLWithString:_currentMission.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             photo.layer.cornerRadius = 5.0f;
             photo.clipsToBounds = YES;
             [cell.contentView addSubview:photo];
             
-            UIButton * photoBtn = [[UIButton alloc] init];
-            photoBtn.frame = photo.frame;
+            UIButton * photoBtn = [[UIButton alloc]init];
             photoBtn.backgroundColor = [UIColor clearColor];
-            [photoBtn addTarget:self action:@selector(jumpToPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
+            photoBtn.frame = photo.frame;
+            [photoBtn addTarget:self action:@selector(jumpToCreaterPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
             
             [cell.contentView addSubview:photoBtn];
             
-            UIFont* font = [UIFont systemFontOfSize:14];
+            CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
             
-            UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 7, 20, 100, 15)];
-            [name setBackgroundColor:[UIColor clearColor]];
-            [name setText:comm.userName];
-            [name setTextColor:[UIColor colorWithHexString:@"#3c9ed7"]];
-            [name setFont:font];
-            [name setTextAlignment:NSTextAlignmentLeft];
+            UILabel* userTitle = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 14, titleWidth, 18)];
+            [userTitle setBackgroundColor:[UIColor clearColor]];
+            userTitle.text = _currentMission.userName;
+            [userTitle setTextColor:RGBCOLOR(53, 159, 219)];
+            [userTitle setFont:Font(16)];
             
-            [cell.contentView addSubview:name];
+            [cell.contentView addSubview:userTitle];
             
-            CGFloat reContentWidth = cWidth - 70 - 52;
-            CGFloat reHeight = name.frame.size.height + name.frame.origin.y;
+            //创建时间
+            UILabel* tagLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(userTitle), YH(userTitle) + 17, 250 , 14)];
+            [tagLbl setBackgroundColor:[UIColor clearColor]];
+            [tagLbl setTextColor:[UIColor grayTitleColor]];
+            [tagLbl setFont:Font(12)];
+            //        [tagLbl setNumberOfLines:0];
+            tagLbl.minimumScaleFactor = 0.7;
+            //        tagLbl.textAlignment = NSTextAlignmentCenter;
             
-            CGFloat reLabelHeight = 8;
+            //        tagLbl.text = nameStr;
             
-            NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)cIndex];
-            NSInteger reCount = 0;
-            CGFloat height = 15;
+            NSString * createStr = [UICommon dayAndHourFromString:_currentMission.createTime formatStyle:@"yyyy年MM月dd日 HH:mm"];
             
-            id obj = [_reReplyDic valueForKey:key];
-            if ([obj isKindOfClass:[NSArray class]] && comm.comments.count > 0)
+            tagLbl.text = [NSString stringWithFormat:@"创建时间：%@", createStr];
+            
+            [cell.contentView addSubview:tagLbl];
+            
+            //标题
+            UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(26, YH(photo) + 18, SCREENWIDTH - 26 * 2, 38)];
+            [title setBackgroundColor:[UIColor clearColor]];
+            if(!_currentMission.title.length)
             {
-                NSArray* reArray = [NSArray arrayWithArray:(NSArray *)obj];
-                reCount = reArray.count;
-                
-                if (reCount > 0) {
-                    
-                    //[name setText:[LoginUser loginUserName]];
-                    CGFloat teHeight = 0;
-                    CGFloat preControlHeight = 0;
-                    int j = 0;
-                    for (int i = (int)reArray.count - 1; i >= 0 ; i--)
-                    {
-                        NSString* cStr = [reArray objectAtIndex:j];
-                        
-//                        cStr = [@"\t\t\t" stringByAppendingString:cStr];
-                        
-//                        CGFloat height = [self contentHeight:cStr vWidth:reContentWidth contentFont:font];
-                        
-                        CGFloat height = [UICommon getSizeFromString:cStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
-
-                        
-                        if (j == 0) {
-                            teHeight = reHeight + (reLabelHeight* (j + 1)) + height * j + 20;
-                        }
-                        else
-                        {
-                            teHeight = teHeight + preControlHeight + 3;
-                        }
-                        
-                        preControlHeight = height;
-                        
-                        Comment* cComm = [comm.comments objectAtIndex:i];
-                        
-                        UILabel* rev = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.origin.x, teHeight, 90, 15)];
-                        [rev setBackgroundColor:[UIColor clearColor]];
-                        [rev setText:(cComm.level == 1 ? [NSString stringWithFormat:@"%@@批示:",cComm.userName]: [NSString stringWithFormat:@"%@@评论:",cComm.userName])];
-                        [rev setTextColor:[UIColor colorWithHexString:@"#09f4a6"]];
-                        [rev setFont:font];
-                        [rev setTextAlignment:NSTextAlignmentRight];
-                        
-                        [cell.contentView addSubview:rev];
-                        
-                        
-                        UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + 15, teHeight - 2, reContentWidth, height)];
-                        [revContent setBackgroundColor:[UIColor clearColor]];
-                        [revContent setText:cStr];
-                        [revContent setTextColor:[UIColor whiteColor]];
-                        [revContent setFont:font];
-                        [revContent setNumberOfLines:0];
-                        [revContent setTextAlignment:NSTextAlignmentLeft];
-                        
-                        [cell.contentView addSubview:revContent];
-                        
-                        if (reCount == (j+1)) {
-                            reHeight = teHeight;
-                        }
-                        j++;
-                    }
-                }
-            }
-            
-            reHeight =  reCount == 0 ? 34 : reHeight + reLabelHeight + height;
-            
-//            UILabel* rev = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.origin.x, 34, 50, height)];
-//
-//            [rev setBackgroundColor:[UIColor clearColor]];
-//            [rev setText:(comm.level == 1?@"批示：":(reCount < 0 ? [NSString stringWithFormat:@"%@:",comm.userName] : @""))];
-//            [rev setTextColor:comm.level == 1?[UIColor colorWithHexString:@"#09f4a6"]:[UIColor colorWithHexString:@"#3c9ed7"]];
-//            [rev setFont:font];
-//            [rev setTextAlignment:NSTextAlignmentLeft];
-//            
-//            [cell.contentView addSubview:rev];
-            
-            NSString * mainStr = comm.main;
-            
-            BOOL isBlue = NO;
-            
-            BOOL isGreen = NO;
-            
-            if(comm.level == 2 && comm.parentName.length > 0 && ![comm.userName isEqualToString:comm.parentName])//评论
-            {
-                mainStr = [NSString stringWithFormat:@"回复：%@  %@", comm.parentName, comm.main];
-                
-                isBlue = YES;
-            }
-            else if (comm.level == 1)//批示
-            {
-                mainStr = [NSString stringWithFormat:@"批示：%@", comm.main];
-                
-                isGreen = YES;
-            }
-            
-            mainStr = [mainStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  //去除掉首尾的空白字符和换行字符
-            
-            height = [UICommon getSizeFromString:mainStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
-            
-            CGFloat y = YH(name) + 8;
-            
-            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(X(name), y, reContentWidth, height)];
-            [revContent setBackgroundColor:[UIColor clearColor]];
-            [revContent setTextColor:[UIColor whiteColor]];
-            [revContent setFont:font];
-            [revContent setTextAlignment:NSTextAlignmentLeft];
-            [revContent setNumberOfLines:0];
-
-            
-            [revContent setText:mainStr];//momo todo
-
-            if(mainStr.length > 0 && isBlue)
-            {
-                NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#3c9ed7"] range:NSMakeRange(3, mainStr.length - 3 - comm.main.length)];
-                
-                [revContent setAttributedText:attrStr];
-            }
-            else if (mainStr.length > 0 && isGreen)
-            {
-                NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#09f4a6"] range:NSMakeRange(0, 3)];
-                
-                [revContent setAttributedText:attrStr];
-            }
-
-            [cell.contentView addSubview:revContent];
-            
-            UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60, 10, 46, 12)];
-            [date setBackgroundColor:[UIColor clearColor]];
-            [date setText:comm.hourStr];
-            [date setTextColor:[UIColor colorWithRed:[self colorWithRGB:122] green:[self colorWithRGB:122] blue:[self colorWithRGB:122] alpha:1.0f]];
-            [date setFont:[UIFont systemFontOfSize:10]];
-            [date setTextAlignment:NSTextAlignmentRight];
-            
-            [cell.contentView addSubview:date];
-            
-            if(comm.level == 2)
-            {
-                UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 39, YH(date) + 20, 25, 20)];
-                //[par setTitle:@"20" forState:UIControlStateNormal];
-                [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [par setBackgroundColor:[UIColor clearColor]];
-                if(comm.praiseNum > 0)
-                {
-                    [par setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
-                }
-                else
-                {
-                    [par setBackgroundImage:[UIImage imageNamed:@"btn_zan"] forState:UIControlStateNormal];
-                }
-//                [par.layer setBorderWidth:0.5f];
-//                [par.layer setCornerRadius:10];
-//                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-                [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
-                [par setTag:cIndex];
-                
-                NSMutableAttributedString* parHig = [[NSMutableAttributedString alloc]
-                                                     initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
-                [par setAttributedTitle:parHig forState:UIControlStateHighlighted];
-                
-                NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
-                                                     initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-                [par setAttributedTitle:parNor forState:UIControlStateNormal];
-                
-                [cell.contentView addSubview:par];
-
-            }
-            
-            if(height < 33)
-            {
-                height = 78;
+                title.text = @"无标题";
             }
             else
             {
-                height = height + 35 + 24;
+                [title setText:_currentMission.title];
             }
-            [cell setFrame:CGRectMake(0, 0, cWidth ,height)];
+            [title setTextColor:[UIColor whiteColor]];
+            [title setFont:Font(14)];
+            [cell.contentView addSubview:title];
             
-            UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 1, cWidth, 0.5)];
+            //描述
+            NSString* content = _currentMission.main;
+            
+            CGFloat contentWidth = cWidth - 26 * 2;
+            UIFont* font = Font(14);
+            
+            CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
+            
+            UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(title), YH(title) + 16, contentWidth, contentHeight)];
+            
+            if(content.length)
+            {
+                [desLbl setBackgroundColor:[UIColor clearColor]];
+                [desLbl setNumberOfLines:0];
+                [desLbl setText:content];
+                [desLbl setTextColor:RGBCOLOR(172, 172, 173)];
+                [desLbl setFont:font];
+                [cell.contentView addSubview:desLbl];
+            }
+            
+            
+            CGFloat duiImgWidth = SCREENWIDTH - 13 * 2;
+            
+            //文件
+            BOOL hasAccessory = _currentMission.isAccessory;
+            
+            CGFloat accHeight = (duiImgWidth - 40) / 3;
+            CGFloat intevalHeight = 8;
+            
+            NSArray* accArr = [NSArray arrayWithArray:_currentMission.accessoryList];
+            
+            CGFloat attchHeight = ((accArr.count - 1) / 3 + 1) * (accHeight + intevalHeight);
+            UIView* attchView = [[UIView alloc] init];
+            
+            CGFloat attchViewHeight = 0;
+            if(accArr.count)
+            {
+                attchViewHeight = attchHeight;
+            }
+            
+            CGFloat desY = YH(title) + 16;
+            if(content.length)
+            {
+                desY = YH(desLbl) + 23;
+            }
+            
+            attchView.frame = CGRectMake(14, desY, duiImgWidth, attchHeight);
+            
+            [attchView setBackgroundColor:[UIColor clearColor]];
+            
+            
+            if (hasAccessory) {
+                
+                for (int i = 0;i < accArr.count; i++)
+                {
+                    int j = i / 3;
+                    
+                    int k = i % 3;
+                    
+                    Accessory * acc = accArr[i];
+                    
+                    CGRect attaFrame = CGRectMake(12 + (accHeight + intevalHeight) * k, (accHeight + intevalHeight) * j, accHeight, accHeight);
+                    
+                    UIImageView* attachment = [[UIImageView alloc] initWithFrame:attaFrame];
+                    // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 5: png/jpg
+                    int fileType = [acc.fileType intValue];
+                    
+                    attachment.userInteractionEnabled = YES;
+                    
+                    if(fileType == 5)//to do
+                    {
+                        [attachment setImageWithURL:[NSURL URLWithString:acc.address]
+                                   placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
+                                            options:SDWebImageDelayPlaceholder
+                        usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                        
+                        UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+                        imgBtn.backgroundColor = [UIColor clearColor];
+                        
+                        NSInteger fileCount = accArr.count - _imageArray.count;
+                        imgBtn.tag = fileCount > 0 ? i - fileCount : i;
+                        
+                        [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
+                        [attachment addSubview:imgBtn];
+                    }
+                    else
+                    {
+                        NSString * imgName = @"";
+                        if(fileType == 1)//to do
+                        {
+                            imgName = @"btn_word";
+                            
+                            attachment.backgroundColor = [UIColor wordBackColor];
+                            
+                        }
+                        else if (fileType == 2)
+                        {
+                            imgName = @"btn_excel";
+                            
+                            attachment.backgroundColor = [UIColor excelBackColor];
+                        }
+                        else if (fileType == 3)
+                        {
+                            imgName = @"btn_ppt";
+                            
+                            attachment.backgroundColor = [UIColor pptBackColor];
+                            
+                        }
+                        else if (fileType == 4)
+                        {
+                            imgName = @"btn_pdf";
+                            
+                            attachment.backgroundColor = [UIColor pdfBackColor];
+                            
+                        }
+                        else if(fileType == 6)
+                        {
+                            imgName = @"btn_other";
+                            
+                            attachment.backgroundColor = [UIColor qitaBackColor];
+                        }
+                        
+                        UIImageView * fileIcon = [[UIImageView alloc] init];
+                        fileIcon.image = [UIImage imageNamed:imgName];
+                        [attachment addSubview:fileIcon];
+                        
+                        UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+                        imgBtn.backgroundColor = [UIColor clearColor];
+                        imgBtn.tag = i;
+                        //                    imgBtn.tag = fileType;//文件类型
+                        [imgBtn addTarget:self action:@selector(previewFile:) forControlEvents:UIControlEventTouchUpInside];
+                        [attachment addSubview:imgBtn];
+                        
+                        UILabel * fileNameLbl = [[UILabel alloc] init];
+                        
+                        if(SCREENWIDTH == 414)
+                        {
+                            fileIcon.frame = CGRectMake((accHeight - 37) / 2, 14, 37, 59);
+                            
+                            fileNameLbl.frame = CGRectMake(14, YH(fileIcon) + 11, (accHeight - 14 * 2) , 24);
+                            
+                            fileNameLbl.font = Font(10);
+                            
+                        }
+                        else if (SCREENWIDTH == 375)
+                        {
+                            fileIcon.frame = CGRectMake((accHeight - 37) / 2, 13, 33, 54);
+                            
+                            fileNameLbl.frame = CGRectMake(14, YH(fileIcon) + 8, (accHeight - 14 * 2) , 22);
+                            
+                            fileNameLbl.font = Font(9);
+                            
+                        }
+                        else if (SCREENWIDTH == 320)
+                        {
+                            fileIcon.frame = CGRectMake((accHeight - 31) / 2, 11, 28, 46);
+                            
+                            fileNameLbl.frame = CGRectMake(11, YH(fileIcon) + 5, (accHeight - 11 * 2) , 20);
+                            
+                            fileNameLbl.font = Font(8);
+                            
+                        }
+                        
+                        fileNameLbl.backgroundColor = [UIColor clearColor];
+                        fileNameLbl.textColor = [UIColor whiteColor];
+                        fileNameLbl.numberOfLines = 2;
+                        fileNameLbl.text = acc.name;
+                        
+                        [attachment addSubview:fileNameLbl];
+                    }
+                    
+                    
+                    [attachment.layer setMasksToBounds:YES];
+                    
+                    [attchView addSubview:attachment];
+                    
+                }
+                
+                [cell.contentView addSubview:attchView];
+            }
+            
+            CGFloat accY = YH(attchView) - intevalHeight;
+            
+            if(!hasAccessory)
+            {
+                accY = content.length ? YH(desLbl) + 23 : YH(title) + 16;
+            }
+            
+            //日期
+            
+            UIView * bFirstView = [[UIView alloc] init];
+            [bFirstView setBackgroundColor:[UIColor clearColor]];
+            
+            bFirstView.frame = CGRectMake(14, accY, duiImgWidth, 166);
+            
+            //        UIView* bFirstView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, duiImgWidth, 166)];
+            //        [bFirstView setBackgroundColor:[UIColor clearColor]];
+            //
+            //        [bView addSubview:bFirstView];
+            
+            UIImageView * groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, 14, 12, 12)];
+            groupIcon.image = [UIImage imageNamed:@"icon_qunzu"];
+            [bFirstView addSubview:groupIcon];
+            
+            
+            //        groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, 14, 14, 17)];
+            //        groupIcon.image = [UIImage imageNamed:@"icon_canyuren"];
+            //        [bView addSubview:groupIcon];
+            
+            
+            UILabel* groupName = [[UILabel alloc] initWithFrame:CGRectMake(32, 14, 200, 14)];
+            [groupName setBackgroundColor:[UIColor clearColor]];
+            [groupName setText:_currentMission.workGroupName];
+            [groupName setTextColor:[UIColor grayTitleColor]];
+            [groupName setFont:Font(12)];
+            [bFirstView addSubview:groupName];
+            
+            //标签
+            NSString * tagStr = @"";
+            
+            for (NSDictionary * dic in _currentMission.labelList)
+            {
+                NSString * lblName = [dic valueForKey:@"labelName"];
+                if(_currentMission.labelList.count == 1)
+                {
+                    tagStr = lblName;
+                }
+                else
+                {
+                    tagStr = [tagStr stringByAppendingString:[NSString stringWithFormat:@"%@ · ", lblName]];
+                }
+            }
+            if(tagStr.length >= 3)
+            {
+                NSString * pointTagStr = [tagStr substringFromIndex:tagStr.length - 3];
+                if([pointTagStr isEqualToString:@" · "])
+                {
+                    tagStr = [tagStr substringToIndex:tagStr.length - 3];
+                }
+            }
+            
+            CGSize maxSize = CGSizeMake(SCREENWIDTH - 28 - 13, 1000);
+            
+            tagLbl = [[UILabel alloc] init];
+            tagLbl.frame = CGRectMake(X(groupName), YH(groupName) + 14, maxSize.width, maxSize.height);
+            tagLbl.backgroundColor = [UIColor clearColor];
+            tagLbl.font = Font(12);
+            tagLbl.textColor = [UIColor grayTitleColor];
+            tagLbl.numberOfLines = 0;
+            tagLbl.text = tagStr;
+            
+            CGSize bSize = [UICommon getSizeFromString:tagStr withSize:maxSize withFont:Font(12)];
+            tagLbl.height = bSize.height;
+            [bFirstView addSubview:tagLbl];
+            
+            //虚线
+            DashesLineView * dashLine = [[DashesLineView alloc] init];
+            dashLine.frame = CGRectMake(0, YH(tagLbl) + 14, duiImgWidth, 0.5);
+            dashLine.backgroundColor = [UIColor clearColor];
+            [bFirstView addSubview:dashLine];
+            
+            DashesLineView * dashLine2 = [[DashesLineView alloc] init];
+            dashLine2.frame = CGRectMake(0, Y(dashLine) + 64, duiImgWidth, 0.5);
+            dashLine2.backgroundColor = [UIColor clearColor];
+            [bFirstView addSubview:dashLine2];
+            
+            
+            
+            //负责人
+            UIImageView * fzIcon = [[UIImageView alloc] init];
+            fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 16, 16);
+            fzIcon.image = [UIImage imageNamed:@"icon_fuzeren"];
+            [bFirstView addSubview:fzIcon];
+            
+            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(dashLine) + 14, duiImgWidth - X(groupName) * 2, 16)];
+            [title setBackgroundColor:[UIColor clearColor]];
+            [title setTextColor:[UIColor whiteColor]];
+            [title setFont:Font(14)];
+            NSString * responText = [NSString stringWithFormat:@"负责人：%@", _currentMission.lableUserName];
+            NSAttributedString *attrStr = [RRAttributedString setText:responText color:[UIColor grayTitleColor] range:NSMakeRange(0, 4)];
+            title.attributedText = attrStr;
+            [bFirstView addSubview:title];
+            
+            //截止时间
+            
+            fzIcon = [[UIImageView alloc] init];
+            fzIcon.frame = CGRectMake(13, YH(title) + 8, 16, 16);
+            fzIcon.image = [UIImage imageNamed:@"icon_jiezhishijian"];
+            [bFirstView addSubview:fzIcon];
+            
+            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon), SCREENWIDTH - 26 * 2, 16)];
+            [title setBackgroundColor:[UIColor clearColor]];
+            [title setTextColor:[UIColor grayTitleColor]];
+            [title setFont:Font(14)];
+            
+            NSString * finishTime = [UICommon dayAndHourFromString:_currentMission.finishTime formatStyle:@"yyyy年MM月dd日"];
+            
+            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+            NSString *statusStr = @"不知";
+            switch (_currentMission.status) {
+                case 0:
+                    statusStr = @"未开始";
+                    break;
+                case 1:
+                    statusStr = @"进行中";
+                    break;
+                case 2:
+                    statusStr = @"已完成";
+                    break;
+                default:
+                    break;
+            }
+            
+            responText = [NSString stringWithFormat:@"截止时间：%@", finishTime];
+            
+            if(finishTime.length)
+            {
+                attrStr = [RRAttributedString setText:responText color:[UIColor whiteColor] range:NSMakeRange(5, 11)];
+                title.attributedText = attrStr;
+            }
+            else
+            {
+                title.text = responText;
+            }
+            
+            [bFirstView addSubview:title];
+            
+            
+            responText = [NSString stringWithFormat:@"任务状态：%@", statusStr];
+            
+            UILabel * statusLbl = [[UILabel alloc] init];
+            statusLbl.frame = CGRectMake(duiImgWidth - 126, Y(title), 116, 16);
+            statusLbl.backgroundColor = [UIColor clearColor];
+            statusLbl.textColor = [UIColor grayTitleColor];
+            statusLbl.text = responText;
+            statusLbl.font = Font(14);
+            [bFirstView addSubview:statusLbl];
+            
+            //参与人
+            fzIcon = [[UIImageView alloc] init];
+            fzIcon.frame = CGRectMake(13, Y(dashLine2) + 14, 16, 16);
+            fzIcon.image = [UIImage imageNamed:@"icon_canyuren"];
+            [bFirstView addSubview:fzIcon];
+            
+            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
+            [title setBackgroundColor:[UIColor clearColor]];
+            [title setTextColor:[UIColor grayTitleColor]];
+            [title setFont:Font(14)];
+            
+            _partList=  _currentMission.partList;
+            responText = [NSString stringWithFormat:@"参与人 (%lu)", (unsigned long)_partList.count];
+            title.text = responText;
+            [bFirstView addSubview:title];
+            
+            if(_partList.count)
+            {
+                DashesLineView * dashLine3 = [[DashesLineView alloc] init];
+                dashLine3.frame = CGRectMake(0, Y(dashLine2) + 40, duiImgWidth, 0.5);
+                dashLine3.backgroundColor = [UIColor clearColor];
+                [bFirstView addSubview:dashLine3];
+                
+                bFirstView.height = 166 + 95;
+                
+                UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                
+                layout.minimumInteritemSpacing = 12.f;
+                layout.minimumLineSpacing = 14.f;
+                UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
+                layout.sectionInset = insets;
+                
+                _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine3), duiImgWidth, 95) collectionViewLayout:layout];
+                _partCollView.delegate = self;
+                _partCollView.dataSource = self;
+                _partCollView.scrollEnabled = NO;
+                _partCollView.backgroundColor = [UIColor clearColor];
+                
+                [_partCollView registerClass:[PartiCell class] forCellWithReuseIdentifier:@"PartiCell"];
+                
+                _partCollView.frame = CGRectMake(0, Y(dashLine3), duiImgWidth, 95);
+
+                [bFirstView addSubview:_partCollView];
+                
+                UIButton * moreBtn = [[UIButton alloc] init];
+                moreBtn.frame = CGRectMake(duiImgWidth - 50, Y(dashLine2), 50, 40);
+                moreBtn.backgroundColor = [UIColor clearColor];
+                [moreBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                [moreBtn addTarget:self action:@selector(clickMorePart:) forControlEvents:UIControlEventTouchUpInside];
+                moreBtn.titleLabel.font = Font(12);
+                [bFirstView addSubview:moreBtn];
+                
+                if(_partList.count > 5 && !_isShowAllPart)
+                {
+                    [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
+                    
+                    _partCollView.height = 95;
+                    
+                    bFirstView.height = 166 + _partCollView.height;
+                }
+                else if(_partList.count > 5 && _isShowAllPart)
+                {
+                    [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
+                    
+                    NSInteger count = _partList.count;
+                    NSInteger row = (count % 5) ? count / 5 + 1: count / 5;
+                    
+                    float height = row * (50 + 18 + 24);
+                    
+                    _partCollView.height = height;
+                    
+                    bFirstView.height = 166 + height;
+                    
+                }
+                else
+                {
+                    moreBtn.hidden = YES;
+                }
+            }
+            else
+            {
+                bFirstView.height = 166;
+            }
+            
+            
+            /*
+             if (_currentMission != nil) {
+             
+             if(_currentMission.createUserId == [LoginUser loginUserID])
+             {
+             UIButton* btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(XW(time), 14, 28, 12)];
+             [btnDelete setBackgroundColor:[UIColor clearColor]];
+             NSMutableAttributedString* attriNormal = [[NSMutableAttributedString alloc]
+             initWithString:@"删除"
+             attributes:@{
+             NSFontAttributeName:[UIFont systemFontOfSize:12],
+             NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#3c9ed7"]}];
+             NSMutableAttributedString* attriHig = [[NSMutableAttributedString alloc]
+             initWithString:@"删除" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]}];
+             [btnDelete setAttributedTitle:attriNormal forState:UIControlStateNormal];
+             [btnDelete setAttributedTitle:attriHig forState:UIControlStateHighlighted];
+             [btnDelete addTarget:self action:@selector(btnRemoveClicked:) forControlEvents:UIControlEventTouchUpInside];
+             [bView addSubview:btnDelete];
+             
+             
+             UIButton* btnEdit = [[UIButton alloc] initWithFrame:CGRectMake(XW(time) + 38, 14, 28, 12)];
+             [btnEdit setBackgroundColor:[UIColor clearColor]];
+             NSMutableAttributedString* eattriNormal = [[NSMutableAttributedString alloc]
+             initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor colorWithRed:[self colorWithRGB:60] green:[self colorWithRGB:159] blue:[self colorWithRGB:215] alpha:1.0f]}];
+             NSMutableAttributedString* eattriHig = [[NSMutableAttributedString alloc]
+             initWithString:@"编辑" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]}];
+             [btnEdit setAttributedTitle:eattriNormal forState:UIControlStateNormal];
+             [btnEdit setAttributedTitle:eattriHig forState:UIControlStateHighlighted];
+             [btnEdit addTarget:self action:@selector(btnEditClicked:) forControlEvents:UIControlEventTouchUpInside];
+             [bView addSubview:btnEdit];
+             
+             }
+             }
+             */
+            
+            
+            
+            //评论
+            UIButton* btnComment = [[UIButton alloc] initWithFrame:CGRectMake(duiImgWidth - 50, 14, 50, 26)];
+            [btnComment setBackgroundColor:[UIColor clearColor]];
+            [btnComment addTarget:self action:@selector(btnCommentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [bFirstView addSubview:btnComment];
+            
+            UIImageView * commIcon = [[UIImageView alloc]initWithFrame:CGRectMake(duiImgWidth - 50 - 8, 14, 15, 15)];
+            commIcon.image = [UIImage imageNamed:@"btn_pinglun"];
+            [bFirstView addSubview:commIcon];
+            
+            
+            UILabel * commLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(commIcon) + 3, Y(commIcon) -1, 30, 15)];
+            commLbl.backgroundColor = [UIColor clearColor];
+            commLbl.font = Font(12);
+            commLbl.text = @"评论";
+            commLbl.textColor = [UIColor grayTitleColor];
+            [bFirstView addSubview:commLbl];
+            
+            
+            [cell.contentView addSubview:bFirstView];
+            
+            CGFloat duiImgHeight = YH(bFirstView) + 14 - 78;
+            
+            _duiimageview = [[UIImageView alloc] init];
+            _duiimageview.image= [[UIImage imageNamed:@"bg_duihuakuang2"] stretchableImageWithLeftCapWidth:40 topCapHeight:30];
+            
+            _duiimageview.frame = CGRectMake(14, YH(photo) + 7, duiImgWidth, duiImgHeight );
+            
+            [cell.contentView addSubview:_duiimageview];
+            [cell.contentView sendSubviewToBack:_duiimageview];
+            
+            UIView * bSecondView = [[UIView alloc] init];
+            bSecondView.frame = CGRectMake(14, YH(_duiimageview) + 14, duiImgWidth, 40);
+            bSecondView.backgroundColor = [UIColor clearColor];
+            [bSecondView setRoundColorCorner:10 withColor:[UIColor grayLineColor]];
+            
+            BOOL isChildMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+            
+            if(isChildMission)//是主任务
+            {
+                [cell.contentView addSubview:bSecondView];
+            }
+            
+            //子任务
+            fzIcon = [[UIImageView alloc] init];
+            fzIcon.frame = CGRectMake(13, 13, 15, 15);
+            fzIcon.image = [UIImage imageNamed:@"icon_zirenwu_1"];
+            [bSecondView addSubview:fzIcon];
+            
+            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
+            [title setBackgroundColor:[UIColor clearColor]];
+            [title setTextColor:[UIColor grayTitleColor]];
+            [title setFont:Font(14)];
+            
+            _childMissionList =  _currentMission.childTaskList;
+            responText = [NSString stringWithFormat:@"子任务 (%lu)", (unsigned long)_childMissionList.count];
+            title.text = responText;
+            [bSecondView addSubview:title];
+            
+            _jianTouBtn = [[UIButton alloc] init];
+            _jianTouBtn.backgroundColor = [UIColor clearColor];
+            _jianTouBtn.frame = CGRectMake(duiImgWidth - 32 - 4, 0, 32, 40);
+            [_jianTouBtn addTarget:self action:@selector(clickJianTou:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [bSecondView addSubview:_jianTouBtn];
+            
+            if(_childMissionList.count)
+            {
+                DashesLineView * dashLine4 = [[DashesLineView alloc] init];
+                dashLine4.frame = CGRectMake(0, 40 - 0.5, duiImgWidth, 0.5);
+                dashLine4.backgroundColor = [UIColor clearColor];
+                [bSecondView addSubview:dashLine4];
+                
+//                _childTableView.frame = CGRectMake(0, Y(dashLine4), duiImgWidth, _childMissionList.count * 40);
+
+                if(_childMissionList.count && !_isShowAllChildMission)
+                {
+                    [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
+
+                }
+                else if(_childMissionList.count && _isShowAllChildMission)
+                {
+//                    bSecondView.height = 40 + H(_childTableView);
+//
+//                    [bSecondView addSubview:_childTableView];
+                    
+                    bSecondView.height = 40 + _childMissionList.count * 34 + 20;
+
+                    [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+                    
+                    for (int i = 0; i < _childMissionList.count; i ++)
+                    {
+                        NSDictionary * dic = _childMissionList[i];
+                        
+                        UIButton * cellBtn = [[UIButton alloc] init];
+                        cellBtn.frame = CGRectMake(0, Y(dashLine4) + 34 * i + 10, duiImgWidth, 34);
+                        cellBtn.backgroundColor = [UIColor clearColor];
+                        [cellBtn addTarget:self action:@selector(jumpToMissionDetail:) forControlEvents:UIControlEventTouchUpInside];
+                        cellBtn.tag = i + 100;
+                        [bSecondView addSubview:cellBtn];
+
+                        UILabel * titleLbl = [[UILabel alloc] init];
+                        titleLbl.frame = CGRectMake(13, Y(cellBtn), duiImgWidth -  13 * 2 - 118, 34);
+                        titleLbl.backgroundColor = [UIColor clearColor];
+                        titleLbl.font = Font(14);
+                        titleLbl.textColor = [UIColor whiteColor];
+                        titleLbl.text = [NSString stringWithFormat:@"%d. %@",i + 1, [dic valueForKey:@"title"]];
+                        [bSecondView addSubview:titleLbl];
+                        
+                        titleLbl = [[UILabel alloc] init];
+                        titleLbl.frame = CGRectMake(duiImgWidth - 70, Y(cellBtn), 50, 34);
+                        titleLbl.backgroundColor = [UIColor clearColor];
+                        titleLbl.font = Font(14);
+                        titleLbl.textColor = [UIColor grayTitleColor];
+                        titleLbl.text = [dic valueForKey:@"lableUserName"];
+                        [bSecondView addSubview:titleLbl];
+                        
+                        UIImageView * jiantou = [[UIImageView alloc] init];
+                        jiantou.frame = CGRectMake(duiImgWidth - 13 - 12, Y(cellBtn) + 11, 12, 12);
+                        jiantou.image = [UIImage imageNamed:@"btn_jiantou_1"];
+                        [bSecondView addSubview:jiantou];
+                    }
+                }
+                else
+                {
+                    _jianTouBtn.hidden = YES;
+                }
+            }
+            else
+            {
+                bSecondView.height = 40;
+            }
+            
+            CGFloat newcHeight = YH(bSecondView) + 34;
+
+            if(!isChildMission)//子任务
+            {
+                newcHeight = YH(_duiimageview) + 34;
+            }
+            
+            [cell setFrame:CGRectMake(0, 0, cWidth ,newcHeight)];
+            
+            UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight - 1, cWidth, 0.5)];
             [bottomLine setBackgroundColor:[UIColor grayColor]];
             [cell.contentView addSubview:bottomLine];
+        }
+        else if (index > 0)
+        {
+            //cell.textLabel.text = [_dataList objectAtIndex:index];
+            if (cell.contentView.subviews.count < 4) {
+                
+                NSInteger cIndex = index - 1;
+                
+                Comment* comm = [_commentArray objectAtIndex:cIndex];
+                
+                UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
+                //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
+                [photo setImageWithURL:[NSURL URLWithString:comm.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                photo.layer.cornerRadius = 5.0f;
+                photo.clipsToBounds = YES;
+                [cell.contentView addSubview:photo];
+                
+                UIButton * photoBtn = [[UIButton alloc] init];
+                photoBtn.frame = photo.frame;
+                photoBtn.backgroundColor = [UIColor clearColor];
+                [photoBtn addTarget:self action:@selector(jumpToPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
+                
+                [cell.contentView addSubview:photoBtn];
+                
+                UIFont* font = [UIFont systemFontOfSize:14];
+                
+                UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 7, 20, 100, 15)];
+                [name setBackgroundColor:[UIColor clearColor]];
+                [name setText:comm.userName];
+                [name setTextColor:[UIColor colorWithHexString:@"#3c9ed7"]];
+                [name setFont:font];
+                [name setTextAlignment:NSTextAlignmentLeft];
+                
+                [cell.contentView addSubview:name];
+                
+                CGFloat reContentWidth = cWidth - 70 - 52;
+                CGFloat reHeight = name.frame.size.height + name.frame.origin.y;
+                
+                CGFloat reLabelHeight = 8;
+                
+                NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)cIndex];
+                NSInteger reCount = 0;
+                CGFloat height = 15;
+                
+                id obj = [_reReplyDic valueForKey:key];
+                if ([obj isKindOfClass:[NSArray class]] && comm.comments.count > 0)
+                {
+                    NSArray* reArray = [NSArray arrayWithArray:(NSArray *)obj];
+                    reCount = reArray.count;
+                    
+                    if (reCount > 0) {
+                        
+                        //[name setText:[LoginUser loginUserName]];
+                        CGFloat teHeight = 0;
+                        CGFloat preControlHeight = 0;
+                        int j = 0;
+                        for (int i = (int)reArray.count - 1; i >= 0 ; i--)
+                        {
+                            NSString* cStr = [reArray objectAtIndex:j];
+                            
+                            //                        cStr = [@"\t\t\t" stringByAppendingString:cStr];
+                            
+                            //                        CGFloat height = [self contentHeight:cStr vWidth:reContentWidth contentFont:font];
+                            
+                            CGFloat height = [UICommon getSizeFromString:cStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
+                            
+                            
+                            if (j == 0) {
+                                teHeight = reHeight + (reLabelHeight* (j + 1)) + height * j + 20;
+                            }
+                            else
+                            {
+                                teHeight = teHeight + preControlHeight + 3;
+                            }
+                            
+                            preControlHeight = height;
+                            
+                            Comment* cComm = [comm.comments objectAtIndex:i];
+                            
+                            UILabel* rev = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.origin.x, teHeight, 90, 15)];
+                            [rev setBackgroundColor:[UIColor clearColor]];
+                            [rev setText:(cComm.level == 1 ? [NSString stringWithFormat:@"%@@批示:",cComm.userName]: [NSString stringWithFormat:@"%@@评论:",cComm.userName])];
+                            [rev setTextColor:[UIColor colorWithHexString:@"#09f4a6"]];
+                            [rev setFont:font];
+                            [rev setTextAlignment:NSTextAlignmentRight];
+                            
+                            [cell.contentView addSubview:rev];
+                            
+                            
+                            UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(rev.frame.origin.x + 15, teHeight - 2, reContentWidth, height)];
+                            [revContent setBackgroundColor:[UIColor clearColor]];
+                            [revContent setText:cStr];
+                            [revContent setTextColor:[UIColor whiteColor]];
+                            [revContent setFont:font];
+                            [revContent setNumberOfLines:0];
+                            [revContent setTextAlignment:NSTextAlignmentLeft];
+                            
+                            [cell.contentView addSubview:revContent];
+                            
+                            if (reCount == (j+1)) {
+                                reHeight = teHeight;
+                            }
+                            j++;
+                        }
+                    }
+                }
+                
+                reHeight =  reCount == 0 ? 34 : reHeight + reLabelHeight + height;
+                
+                //            UILabel* rev = [[UILabel alloc] initWithFrame:CGRectMake(name.frame.origin.x, 34, 50, height)];
+                //
+                //            [rev setBackgroundColor:[UIColor clearColor]];
+                //            [rev setText:(comm.level == 1?@"批示：":(reCount < 0 ? [NSString stringWithFormat:@"%@:",comm.userName] : @""))];
+                //            [rev setTextColor:comm.level == 1?[UIColor colorWithHexString:@"#09f4a6"]:[UIColor colorWithHexString:@"#3c9ed7"]];
+                //            [rev setFont:font];
+                //            [rev setTextAlignment:NSTextAlignmentLeft];
+                //
+                //            [cell.contentView addSubview:rev];
+                
+                NSString * mainStr = comm.main;
+                
+                BOOL isBlue = NO;
+                
+                BOOL isGreen = NO;
+                
+                if(comm.level == 2 && comm.parentName.length > 0 && ![comm.userName isEqualToString:comm.parentName])//评论
+                {
+                    mainStr = [NSString stringWithFormat:@"回复：%@  %@", comm.parentName, comm.main];
+                    
+                    isBlue = YES;
+                }
+                else if (comm.level == 1)//批示
+                {
+                    mainStr = [NSString stringWithFormat:@"批示：%@", comm.main];
+                    
+                    isGreen = YES;
+                }
+                
+                mainStr = [mainStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  //去除掉首尾的空白字符和换行字符
+                
+                height = [UICommon getSizeFromString:mainStr withSize:CGSizeMake(reContentWidth, 1000) withFont:Font(14)].height;
+                
+                CGFloat y = YH(name) + 8;
+                
+                UILabel* revContent = [[UILabel alloc] initWithFrame:CGRectMake(X(name), y, reContentWidth, height)];
+                [revContent setBackgroundColor:[UIColor clearColor]];
+                [revContent setTextColor:[UIColor whiteColor]];
+                [revContent setFont:font];
+                [revContent setTextAlignment:NSTextAlignmentLeft];
+                [revContent setNumberOfLines:0];
+                
+                
+                [revContent setText:mainStr];//momo todo
+                
+                if(mainStr.length > 0 && isBlue)
+                {
+                    NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#3c9ed7"] range:NSMakeRange(3, mainStr.length - 3 - comm.main.length)];
+                    
+                    [revContent setAttributedText:attrStr];
+                }
+                else if (mainStr.length > 0 && isGreen)
+                {
+                    NSAttributedString *attrStr = [RRAttributedString setText:mainStr color:[UIColor colorWithHexString:@"#09f4a6"] range:NSMakeRange(0, 3)];
+                    
+                    [revContent setAttributedText:attrStr];
+                }
+                
+                [cell.contentView addSubview:revContent];
+                
+                UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60, 10, 46, 12)];
+                [date setBackgroundColor:[UIColor clearColor]];
+                [date setText:comm.hourStr];
+                [date setTextColor:[UIColor colorWithRed:[self colorWithRGB:122] green:[self colorWithRGB:122] blue:[self colorWithRGB:122] alpha:1.0f]];
+                [date setFont:[UIFont systemFontOfSize:10]];
+                [date setTextAlignment:NSTextAlignmentRight];
+                
+                [cell.contentView addSubview:date];
+                
+                if(comm.level == 2)
+                {
+                    UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 39, YH(date) + 20, 25, 20)];
+                    //[par setTitle:@"20" forState:UIControlStateNormal];
+                    [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    [par setBackgroundColor:[UIColor clearColor]];
+                    if(comm.praiseNum > 0)
+                    {
+                        [par setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
+                    }
+                    else
+                    {
+                        [par setBackgroundImage:[UIImage imageNamed:@"btn_zan"] forState:UIControlStateNormal];
+                    }
+                    //                [par.layer setBorderWidth:0.5f];
+                    //                [par.layer setCornerRadius:10];
+                    //                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+                    [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
+                    [par setTag:cIndex];
+                    
+                    NSMutableAttributedString* parHig = [[NSMutableAttributedString alloc]
+                                                         initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
+                    [par setAttributedTitle:parHig forState:UIControlStateHighlighted];
+                    
+                    NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
+                                                         initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+                    [par setAttributedTitle:parNor forState:UIControlStateNormal];
+                    
+                    [cell.contentView addSubview:par];
+                    
+                }
+                
+                if(height < 33)
+                {
+                    height = 78;
+                }
+                else
+                {
+                    height = height + 35 + 24;
+                }
+                [cell setFrame:CGRectMake(0, 0, cWidth ,height)];
+                
+                UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 1, cWidth, 0.5)];
+                [bottomLine setBackgroundColor:[UIColor grayColor]];
+                [cell.contentView addSubview:bottomLine];
+                
+            }
             
         }
         
+        //    [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
+        [cell.contentView setBackgroundColor:RGBCOLOR(47, 47, 47)];
+        
+        
+        return cell;
     }
     
-//    [cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-    [cell.contentView setBackgroundColor:RGBCOLOR(47, 47, 47)];
-
-    
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.row == 0 && indexPath.section == 0)
+    {
+        return;
+    }
     if (_navBarLeftButtonPopTipView.hasShadow) {
         [_navBarLeftButtonPopTipView dismissAnimated:YES];
     }
@@ -1699,6 +2106,49 @@
     }
 }
 
+#pragma mark - collectionview delegate / datasource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return _partList.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"PartiCell";
+    PartiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    NSDictionary * partDic = _partList[indexPath.row];
+    
+    NSString * imageUrl = [partDic valueForKey:@"img"];
+    
+    [cell.photoView setImageWithURL:[NSURL URLWithString: imageUrl] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [cell.photoView setRoundCorner:3.3];
+    
+    cell.titleLbl.text = [partDic valueForKey:@"name"];
+    
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(50, 50 + 18);
+}
+
+- (void) clickMorePart:(id)sender
+{
+    _isShowAllPart = !_isShowAllPart;
+    
+    [_tableView reloadData];
+}
+
+- (void)clickJianTou:(id)sender
+{
+    _isShowAllChildMission = !_isShowAllChildMission;
+    
+//    [_childTableView reloadData];
+    [_tableView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -1707,6 +2157,26 @@
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [_inputBar.textField resignFirstResponder];
+}
+
+- (void)jumpToMissionDetail:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    NSInteger index = btn.tag - 100;
+    
+    NSDictionary * dic = _childMissionList[index];
+    
+    NSString * taskId = [dic valueForKey:@"taskId"];
+    
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+    ((ICWorkingDetailViewController*)vc).taskId = taskId;
+    ((ICWorkingDetailViewController*)vc).indexInMainArray = _indexInMainArray;
+    ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
+    ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

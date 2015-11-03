@@ -2297,7 +2297,7 @@
         <image name="btn_shanchu_2" width="8" height="8"/>
         <image name="btn_tixingshijian_1" width="36" height="30"/>
         <image name="btn_tixingshijian_2" width="36" height="31"/>
-        <image name="icon_jiezhishijian" width="8" height="8"/>
+        <image name="icon_jiezhishijian" width="26" height="26"/>
         <image name="icon_tianjia_1" width="15" height="15"/>
         <image name="icon_tianjia_2" width="15" height="15"/>
         <image name="icon_tixingshijian" width="8" height="8"/>
