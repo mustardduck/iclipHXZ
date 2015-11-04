@@ -2109,6 +2109,9 @@
                 
                 [self hiddenKeyboard];
                 _btnDoneClicked = YES;
+                
+                [self setData:m];
+                
                 [self.navigationController popViewControllerAnimated:YES];
             }
             else
@@ -2123,6 +2126,9 @@
     else
     {
         [self setData:m];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+
     }
     
 
@@ -2244,7 +2250,6 @@
 
     }
 
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -2325,8 +2330,22 @@
     if ([self.icMissionMainViewController respondsToSelector:@selector(setIsEdit:)]) {
         [self.icMissionMainViewController setValue:editStr forKey:@"isEdit"];
     }
+    
+    NSString * mainTaskId = @"";
+
+    if(_isEditMission)
+    {        
+        if(_isMainMission)
+        {
+            mainTaskId = _taskId;
+        }
+        else
+        {
+            mainTaskId = [_currentMissionDic valueForKey:@"parentId"];
+        }
+    }
     if ([self.icMissionMainViewController respondsToSelector:@selector(setTaskId:)]) {
-        [self.icMissionMainViewController setValue:_taskId forKey:@"taskId"];
+        [self.icMissionMainViewController setValue:mainTaskId forKey:@"taskId"];
     }
     if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupId:)]) {
         [self.icMissionMainViewController setValue:_workGroupId forKey:@"workGroupId"];

@@ -90,6 +90,8 @@
     ((MQPublishMissionMainController*)vc).taskId = _taskId;
     ((MQPublishMissionMainController*)vc).workGroupId = _currentMission.workGroupId;
     ((MQPublishMissionMainController*)vc).workGroupName = _currentMission.workGroupName;
+    ((MQPublishMissionMainController*)vc).icDetailViewController = self;
+
 
     [self.navigationController pushViewController:vc animated:YES];
 

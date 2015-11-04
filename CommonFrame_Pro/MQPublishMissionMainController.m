@@ -73,13 +73,15 @@
 //    _dataCount = 1;
     
     [self resetData];
+
+    
 }
 
 - (void) resetData
 {
     if(_isEdit)
     {
-        self.navigationItem.rightBarButtonItem = nil;
+//        self.navigationItem.rightBarButtonItem = nil;
         
         NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
         
@@ -89,6 +91,8 @@
         {
             _mainMissionDic = mdic;
         }
+        
+        [_childMissionArr removeAllObjects];
         
         [_childMissionArr addObjectsFromArray:childArr];
     }
@@ -180,9 +184,20 @@
     ((MQPublishMissionController*)vc).isMainMission = _isMainMission;
     ((MQPublishMissionController*)vc).savedChildMissionArr = _childMissionArr;
     ((MQPublishMissionController*)vc).currentEditChildIndex = _currentEditChildIndex;
+    NSDictionary * cmdic = _childMissionArr[_currentEditChildIndex];
+    NSDictionary * mDic = [cmdic valueForKey:@"missionDic"];
+    NSString * taskId = [mDic valueForKey:@"taskId"];
+    if(!taskId)
+    {
+        _isEdit = NO;
+    }
+    else
+    {
+        _isEdit = YES;
+    }
     ((MQPublishMissionController*)vc).isEditMission = _isEdit;
     ((MQPublishMissionController*)vc).taskId = _currTaskId;
-    
+
     if(!_isEdit)
     {
         ((MQPublishMissionController*)vc).missionDic = dic;
@@ -239,7 +254,7 @@
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
     NSLog(@"%@",_childMissionArr);
-    
+
     NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
     
     if(![mainDic allKeys].count)
@@ -257,6 +272,29 @@
     
     NSMutableArray * childArr = [NSMutableArray array];
     
+    NSMutableArray * childArray = [NSMutableArray array];
+    
+    for(NSDictionary * dic in _childMissionArr)
+    {
+        NSDictionary * mDic = [dic objectForKey:@"missionDic"];
+        
+        NSString * taskId = [mDic valueForKey:@"taskId"];
+        
+        if(!taskId)
+        {
+            [childArray addObject:dic];
+        }
+    }
+    
+    if(_isEdit && !childArray.count)
+    {
+        [SVProgressHUD showSuccessWithStatus:@"任务发布成功"];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        
+        return;
+    }
+    
     NSMutableDictionary * mDic = [[NSMutableDictionary alloc] initWithDictionary:mainDic];
     
     [mDic removeObjectForKey:@"ccopyArr"];
@@ -265,13 +303,26 @@
     [mDic removeObjectForKey:@"accesList"];
     [mDic removeObjectForKey:@"cMarkList"];
     
-    [childArr addObject:mDic];
+    NSString * taskId = [mainDic valueForKey:@"taskId"];
+    
+    NSString * parentId = @"";
+    
+    if(!taskId)
+    {
+        [childArr addObject:mDic];
+    }
+    else
+    {
+        parentId = taskId;
+    }
     
     for (int i = 0; i< _childMissionArr.count; i ++)
     {
         NSDictionary * dic = _childMissionArr[i];
         
         NSDictionary * missDic = [dic objectForKey:@"missionDic"];
+        
+        NSString * taskId = [missDic valueForKey:@"taskId"];
         
         if(!missDic)
         {
@@ -294,8 +345,16 @@
             [mmDic removeObjectForKey:@"respoDic"];
             [mmDic removeObjectForKey:@"accesList"];
             [mmDic removeObjectForKey:@"cMarkList"];
-
-            [childArr addObject:mmDic];
+            
+            if(parentId)
+            {
+                [mmDic setObject:parentId forKey:@"parentId"];
+            }
+            
+            if(!taskId)
+            {
+                [childArr addObject:mmDic];
+            }
         }
     }
     
@@ -535,8 +594,16 @@
     }
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
+        [self.icDetailViewController setValue:@"1" forKey:@"content"];
+    }
+}
+
 - (void) viewWillAppear:(BOOL)animated
 {
+
     NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
     
     if([mainDic allKeys].count)

@@ -1679,10 +1679,10 @@
         
         [content setBackgroundColor:[UIColor clearColor]];
         
-        if(ms.childNum > 0)
+        if(ms.childTaskList.count > 0)
         {
 
-            for (int i = 0; i < ms.childTaskList.count; i ++)
+            for (int i = 0; i < 3; i ++)
             {
                 NSDictionary * dic = ms.childTaskList[i];
                 

@@ -17,4 +17,6 @@
 @property(nonatomic, assign)BOOL isEdit;
 @property (nonatomic, strong) NSString * taskId;
 
+@property(nonatomic,strong) id       icDetailViewController;
+
 @end
