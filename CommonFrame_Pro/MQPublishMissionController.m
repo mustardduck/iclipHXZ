@@ -22,6 +22,7 @@
 #import "MarkCell.h"
 #import "MarkTagCell.h"
 #import "SVProgressHUD.h"
+#import "MQPublishMissionMainController.h"
 
 @interface MQPublishMissionController ()<UICollectionViewDelegate, UICollectionViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,UITextViewDelegate, UITextFieldDelegate,UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
@@ -142,59 +143,66 @@
     if(_missionDic)
     {
         _currentMissionDic = [_missionDic objectForKey:@"missionDic"];
-    }
-    if(_currentMissionDic)
-    {
-        _titleTxt.text = [_currentMissionDic valueForKey:@"title"];
         
-        _txtView.text = [_currentMissionDic valueForKey:@"main"];
-        
-        NSString * finishTimeStr = [_currentMissionDic valueForKey:@"finishTime"];
-        NSString * remindTimeStr = [_currentMissionDic valueForKey:@"remindTime"];
-        
-        if(finishTimeStr.length)
+        if(_currentMissionDic)
         {
-            self.strFinishTime = finishTimeStr;
+            _titleTxt.text = [_currentMissionDic valueForKey:@"title"];
             
-            NSString * finishDateStr = [UICommon dayAndHourFromString:finishTimeStr formatStyle:@"yyyy年MM月dd日"];
-
-            _jiezhiAndTixingView.hidden = NO;
-            _jiezhiView.hidden = NO;
-            _jiezhiLbl.text = finishDateStr;
+            _txtView.text = [_currentMissionDic valueForKey:@"main"];
+            
+            NSString * finishTimeStr = [_currentMissionDic valueForKey:@"finishTime"];
+            NSString * remindTimeStr = [_currentMissionDic valueForKey:@"remindTime"];
+            
+            if(finishTimeStr.length)
+            {
+                self.strFinishTime = finishTimeStr;
+                
+                NSString * finishDateStr = [UICommon dayAndHourFromString:finishTimeStr formatStyle:@"yyyy年MM月dd日"];
+                
+                _jiezhiAndTixingView.hidden = NO;
+                _jiezhiView.hidden = NO;
+                _jiezhiLbl.text = finishDateStr;
+            }
+            if(remindTimeStr.length)
+            {
+                self.strRemindTime = remindTimeStr;
+                
+                NSString * remindDateStr = [UICommon dayAndHourFromString:remindTimeStr formatStyle:@"yyyy年MM月dd日 HH:mm"];
+                
+                _jiezhiAndTixingView.hidden = NO;
+                _tixingView.hidden = NO;
+                _tixingLbl.text = remindDateStr;
+            }
+            
+            self.cAccessoryArray = [_currentMissionDic objectForKey:@"accesList"];
+            
+            if (self.cAccessoryArray.count)
+            {//附件
+                _collectionview.hidden = NO;
+                
+                //            [self resetFileUrls];
+                
+                [self refreshCollectionView];
+            }
+            
+            self.cMarkAarry = [_currentMissionDic objectForKey:@"cMarkList"];
+            
+            self.responsibleDic = [_currentMissionDic objectForKey:@"respoDic"];
+            self.participantsIndexPathArray = [_currentMissionDic objectForKey:@"partiArr"];
+            self.ccopyToMembersArray = [_currentMissionDic objectForKey:@"ccopyArr"];
+            
+            [self resetAllViewLayout:_jiezhiAndTixingView];
         }
-        if(remindTimeStr.length)
+        else
         {
-            self.strRemindTime = remindTimeStr;
-            
-            NSString * remindDateStr = [UICommon dayAndHourFromString:remindTimeStr formatStyle:@"yyyy年MM月dd日 HH:mm"];
-            
-            _jiezhiAndTixingView.hidden = NO;
-            _tixingView.hidden = NO;
-            _tixingLbl.text = remindDateStr;
+            _titleTxt.text = [_missionDic valueForKey:@"title"];
         }
-        
-        self.cAccessoryArray = [_currentMissionDic objectForKey:@"accesList"];
-        
-        if (self.cAccessoryArray.count)
-        {//附件
-            _collectionview.hidden = NO;
-            
-//            [self resetFileUrls];
-            
-            [self refreshCollectionView];
-        }
-        
-        self.cMarkAarry = [_currentMissionDic objectForKey:@"cMarkList"];
-        
-        self.responsibleDic = [_currentMissionDic valueForKey:@"respoDic"];
-        self.participantsIndexPathArray = [_currentMissionDic objectForKey:@"partiArr"];
-        self.ccopyToMembersArray = [_currentMissionDic objectForKey:@"ccopyArr"];
-        
-        [self resetAllViewLayout:_jiezhiAndTixingView];
     }
-    else
+    else if(_isEditMission && _taskId)
     {
-        _titleTxt.text = [_missionDic valueForKey:@"title"];
+        _missionDic = [Mission missionInfo:_taskId];
+        
+        [self resetData];
     }
 }
 
@@ -2080,26 +2088,44 @@
     else
         m.isAccessory = 0;
     
-    [self setData:m];
     
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        
-//        NSString * taskId = @"";
-//        
-//        BOOL isSendOK = [m sendMission:YES taksId:&taskId];
-//
-//        if (isSendOK) {
-//            
-//            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"任务创建成功！" delegate:self
-//                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//            
-//            [self hiddenKeyboard];
-//            _btnDoneClicked = YES;
-//            [self.navigationController popViewControllerAnimated:YES];
-//        }
-//        
-//    });
+    if(_isEditMission)
+    {
+        [self hiddenKeyboard];
+        
+        [SVProgressHUD showWithStatus:@"任务修改中..."];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSString * taskId = _taskId;
+            
+            BOOL isSendOK = [m sendMission:YES taksId:&taskId];
+            
+            if (isSendOK) {
+                
+                [SVProgressHUD dismiss];
+                
+                [SVProgressHUD showSuccessWithStatus:@"任务修改成功"];
+                
+                [self hiddenKeyboard];
+                _btnDoneClicked = YES;
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                [SVProgressHUD dismiss];
+
+                [SVProgressHUD showSuccessWithStatus:@"任务修改失败"];
+            }
+            
+        });
+    }
+    else
+    {
+        [self setData:m];
+    }
+    
+
     
 }
 
@@ -2214,8 +2240,6 @@
     }
     else
     {
-        
-        
         [self.icMissionMainViewController setValue:misDic forKey:@"mainMissionDic"];
 
     }
@@ -2277,9 +2301,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
-        [self.icDetailViewController setValue:@"1" forKey:@"content"];
-    }
     
     if (_btnDoneClicked) {
         if ([self.icGroupViewController respondsToSelector:@selector(setGroupId:)]) {
@@ -2294,6 +2315,32 @@
         [self.icMissionMainViewController setValue:_workGroupName forKey:@"workGroupName"];
         
     }
+    
+    if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
+        [self.icDetailViewController setValue:@"1" forKey:@"content"];
+    }
+    
+    NSString * editStr = _isEditMission ? @"1" : @"0";
+    
+    if ([self.icMissionMainViewController respondsToSelector:@selector(setIsEdit:)]) {
+        [self.icMissionMainViewController setValue:editStr forKey:@"isEdit"];
+    }
+    if ([self.icMissionMainViewController respondsToSelector:@selector(setTaskId:)]) {
+        [self.icMissionMainViewController setValue:_taskId forKey:@"taskId"];
+    }
+    if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupId:)]) {
+        [self.icMissionMainViewController setValue:_workGroupId forKey:@"workGroupId"];
+    }
+    if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupName:)]) {
+        [self.icMissionMainViewController setValue:_workGroupName forKey:@"workGroupName"];
+    }
+
+//    if ([self.icDetailViewController respondsToSelector:@selector(setIcMainViewController:)]) {
+//        [self.icDetailViewController setValue:_icMainViewController forKey:@"icMainViewController"];
+//    }
+//    if ([self.icDetailViewController respondsToSelector:@selector(setIndexInMainArray:)]) {
+//        [self.icDetailViewController setValue:[NSNumber numberWithInteger:_indexInMainArray] forKey:@"indexInMainArray"];
+//    }
 }
 
 /*

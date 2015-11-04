@@ -27,6 +27,8 @@
     NSInteger _currentEditChildIndex;
     
 //    NSMutableArray * _titleNameList;
+    
+    NSString * _currTaskId;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *mainTableView;
@@ -69,6 +71,27 @@
     _mainMissionDic = [NSMutableDictionary dictionary];
     
 //    _dataCount = 1;
+    
+    [self resetData];
+}
+
+- (void) resetData
+{
+    if(_isEdit)
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+        
+        NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
+        
+        NSArray * childArr = [Mission findTaskList:_taskId mainMissionDic:&mdic];
+        
+        if(mdic)
+        {
+            _mainMissionDic = mdic;
+        }
+        
+        [_childMissionArr addObjectsFromArray:childArr];
+    }
 }
 
 - (void) textViewDidBeginEditing:(UITextView *)textView
@@ -132,6 +155,10 @@
         _currentEditChildIndex = index;
         
     }
+    
+    NSDictionary * missionDic = [dic objectForKey:@"missionDic"];
+    
+    _currTaskId = [missionDic valueForKey:@"taskId"];
 
     [self jumpToMission:dic];
 
@@ -152,9 +179,15 @@
     ((MQPublishMissionController*)vc).icMissionMainViewController = self;
     ((MQPublishMissionController*)vc).isMainMission = _isMainMission;
     ((MQPublishMissionController*)vc).savedChildMissionArr = _childMissionArr;
-    ((MQPublishMissionController*)vc).missionDic = dic;
     ((MQPublishMissionController*)vc).currentEditChildIndex = _currentEditChildIndex;
-
+    ((MQPublishMissionController*)vc).isEditMission = _isEdit;
+    ((MQPublishMissionController*)vc).taskId = _currTaskId;
+    
+    if(!_isEdit)
+    {
+        ((MQPublishMissionController*)vc).missionDic = dic;
+    }
+    
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -380,6 +413,14 @@
             if(dic)
             {
                 cell.titleLbl.text = [dic valueForKey:@"title"];
+                if(cell.titleLbl.text.length)
+                {
+                    cell.rightView.hidden = NO;
+                }
+                else
+                {
+                    cell.rightView.hidden = YES;
+                }
             }
         }
     }

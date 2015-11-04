@@ -7,6 +7,7 @@
 //
 
 #import "Mission.h"
+#import "UICommon.h"
 
 #define CURL                    @"/index/findIndexTrends.hz"
 #define PUBLISH_MISSION_URL     @"/task/createTaskApp.hz"
@@ -17,6 +18,8 @@
 #define INFO_URL                @"/task/intoUpdateTaskMian.hz"
 #define UPDATE_URL              @"/task/updateTaskMian.hz"
 #define FIND_WGPEOPLE_TRENDS_URL  @"/user/findWgPeopleTrends.hz"
+#define UPDATE_TASK_STATUS_URL  @"/task/updateTaskStatus.hz"
+#define FIND_TASK_LIST_URL   @"/task/findTaskList.hz"
 
 @class LoginUser;
 
@@ -69,6 +72,112 @@
     }
     
     return dict;
+}
+
++ (BOOL)updateTaskStatus:(NSString*)taskId status:(NSInteger )status
+{
+    BOOL isOK = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    [dic setObject:taskId forKey:@"taskId"];
+    [dic setObject:[NSNumber numberWithInteger:status] forKey:@"status"];
+    [dic setObject:[LoginUser loginUserID] forKey:@"userId"];
+
+    NSString* jsonStr = [CommonFile toJson:dic];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_TASK_STATUS_URL postData:tmpDic];
+    
+    if (responseString == nil) {
+        return isOK;
+    }
+
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        if ([[((NSDictionary*)val) valueForKey:@"state"] integerValue] == 1) {
+            
+            isOK = YES;
+        }
+    }
+    
+    return isOK;
+}
+
++ (NSArray *)findTaskList:(NSString*)taskId mainMissionDic:(NSMutableDictionary **)mainMissionDic
+{
+    NSMutableDictionary * mainMDic = [NSMutableDictionary dictionary];
+    NSMutableArray * childArr = [NSMutableArray array];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@",FIND_TASK_LIST_URL,taskId ]];
+    
+    if (responseString == nil) {
+        return nil;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    Mission * ms = [Mission new];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                id dataArr = [dic objectForKey:@"data"];
+
+                if ([dataArr isKindOfClass:[NSArray class]])
+                {
+                    NSArray* dArr = (NSArray*)dataArr;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            
+                            NSDictionary* di = (NSDictionary*)data;
+                            ms.taskId = [di valueForKey:@"taskId"];
+                            ms.parentId = [di valueForKey:@"parentId"];
+                            ms.title = [di valueForKey:@"title"];
+                            ms.lableUserName = [di valueForKey:@"lableUserName"];
+                            ms.lableUserImg = [di valueForKey:@"lableUserImg"];
+                            
+                            NSMutableDictionary * mDic = [NSMutableDictionary dictionary];
+                            NSMutableDictionary * curDic = [NSMutableDictionary dictionary];
+                            
+                            [curDic setObject:ms.title forKey:@"title"];
+                            [curDic setObject:ms.taskId forKey:@"taskId"];
+                            [curDic setObject:ms.parentId forKey:@"parentId"];
+                            [curDic setObject:ms.lableUserName forKey:@"lableUserName"];
+                            [curDic setObject:ms.lableUserImg forKey:@"lableUserImg"];
+                            
+                            if([ms.parentId isEqualToString:@"0"])
+                            {
+                                [mainMDic setObject:ms.title forKey:@"title"];
+                                
+                                [mainMDic setObject:curDic forKey:@"missionDic"];
+                                
+                            }
+                            else
+                            {
+                                [mDic setObject:ms.title forKey:@"title"];
+
+                                [mDic setObject:curDic forKey:@"missionDic"];
+                                
+                                [childArr addObject:mDic];
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
+    *mainMissionDic = mainMDic;
+    
+    return childArr;
 }
 
 + (BOOL)findWgPeopleTrends:(NSString*)createUserId workGroupId:(NSString *)groupId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount dataListArr:(NSMutableArray **)dataListArr member:(Member **)member
@@ -696,6 +805,206 @@
     
     return isOk;
 }
+
++ (NSDictionary*)missionInfo:(NSString*)taskId
+{
+    NSMutableArray* resposibleArr = [NSMutableArray array];
+    NSMutableArray* participantArr = [NSMutableArray array];
+    NSMutableArray* copyToArr = [NSMutableArray array];
+    NSMutableArray* labelArr = [NSMutableArray array];
+    NSMutableArray* accessoryArr = [NSMutableArray array];
+    
+    Mission* cm = [Mission new];
+
+    NSMutableDictionary * mDic = [NSMutableDictionary dictionary];
+    NSMutableDictionary * curDic = [NSMutableDictionary dictionary];
+
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?taskId=%@&userId=%@",INFO_URL,taskId,[LoginUser loginUserID]]];
+    
+    if (responseString == nil) {
+        return nil;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSDictionary class]])
+                {
+                    id tDic = [dataDic valueForKey:@"task"];
+                    if ( [tDic isKindOfClass:[NSDictionary class]]) {
+                        NSDictionary* di = (NSDictionary*)tDic;
+                        
+                        cm.monthAndDay = [NSString stringWithFormat:@"%@/%@",[di valueForKey:@"monthStr"],[di valueForKey:@"dayStr"]];
+                        cm.hour = [di valueForKey:@"hourStr"];
+                        cm.planExecTime = [di valueForKey:@"planExecTime"];
+                        cm.type = [[di valueForKey:@"type"] integerValue];
+                        cm.isPlanTask = [[di valueForKey:@"isPlanTask"] boolValue];
+                        cm.finishTime = [di valueForKey:@"finishTimeStr"];
+                        cm.remindTime = [di valueForKey:@"remindTimeStr"];
+                        cm.createUserId = [di valueForKey:@"createUserId"];
+                        cm.taskId = [di valueForKey:@"taskId"];
+                        cm.workGroupId = [di valueForKey:@"workGroupId"];
+                        cm.workGroupName = [di valueForKey:@"wgName"];
+                        cm.main = [di valueForKey:@"main"];
+                        cm.userImg = [di valueForKey:@"userImg"];
+                        cm.status = [[di valueForKey:@"status"] integerValue];
+                        cm.userName = [di valueForKey:@"userName"];
+                        cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
+                        cm.title = [di valueForKey:@"title"];
+                        
+                    }
+                }
+                
+                [mDic setObject:cm.title forKey:@"title"];
+                
+                [curDic setObject:cm.main forKey:@"main"];
+                [curDic setObject:cm.finishTime forKey:@"finishTime"];
+                [curDic setObject:cm.remindTime forKey:@"remindTime"];
+                [curDic setObject:cm.title forKey:@"title"];
+
+                [mDic setObject:curDic forKey:@"missionDic"];
+                
+            if (cm.isAccessory) {
+                
+                id accArr = [dataDic valueForKey:@"accessList"];
+                
+                if ([accArr isKindOfClass:[NSArray class]])
+                {
+                    
+                    NSArray* aArr = (NSArray*)accArr;
+                    
+                    for (id obj in aArr) {
+                        
+                        if ( [obj isKindOfClass:[NSDictionary class]]) {
+                            NSDictionary* di = (NSDictionary*)obj;
+                            
+                            Accessory *acc = [Accessory new];
+                            
+                            acc.source = [[di valueForKey:@"source"] integerValue];
+                            acc.isComplete = [[di valueForKey:@"isComplete"] boolValue];
+                            acc.status = [[di valueForKey:@"status"] boolValue];
+                            acc.address = [di valueForKey:@"address"];
+                            acc.name = [di valueForKey:@"name"];
+                            acc.accessoryId = [di valueForKey:@"accessoryId"];
+                            acc.type = [[UICommon findFileType:acc.name] integerValue];
+                            acc.sourceId = [di valueForKey:@"sourceId"];
+                            acc.addTime = [di valueForKey:@"addTime"];
+                            
+                            [accessoryArr addObject:acc];
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+                
+                [curDic setObject:accessoryArr forKey:@"accesList"];
+
+            id resArr = [dataDic valueForKey:@"liableUser"];
+            
+            if ([resArr isKindOfClass:[NSDictionary class]])
+            {
+                
+                NSDictionary* di = (NSDictionary*)resArr;
+                
+                Member *acc = [Member new];
+                
+                acc.userId = [di valueForKey:@"userId"];
+                acc.name = [di valueForKey:@"name"];
+                acc.createTime = [di valueForKey:@"createTime"];
+                
+                [resposibleArr addObject:acc];
+                
+            }
+                
+                [curDic setObject:resposibleArr forKey:@"respoDic"];
+            
+            id comArr = [dataDic valueForKey:@"ccList"];
+
+            if ([comArr isKindOfClass:[NSArray class]])
+            {
+                
+                NSArray* aArr = (NSArray*)comArr;
+                
+                for (id obj in aArr) {
+                    
+                    if ( [obj isKindOfClass:[NSDictionary class]]) {
+                        NSDictionary* di = (NSDictionary*)obj;
+                        
+                        Member *acc = [Member new];
+                        
+                        acc.userId = [di valueForKey:@"userId"];
+                        acc.name = [di valueForKey:@"name"];
+                        acc.createTime = [di valueForKey:@"createTime"];
+                        
+                        [copyToArr addObject:acc];
+                    }
+                    
+                }
+            }
+                [curDic setObject:copyToArr forKey:@"ccopyArr"];
+            
+            id parAa = [dataDic valueForKey:@"partList"];
+            
+            if ([parAa isKindOfClass:[NSArray class]])
+            {
+                
+                NSArray* aArr = (NSArray*)parAa;
+                
+                for (id obj in aArr) {
+                    
+                    if ( [obj isKindOfClass:[NSDictionary class]]) {
+                        NSDictionary* di = (NSDictionary*)obj;
+                        
+                        Member *acc = [Member new];
+                        
+                        acc.userId = [di valueForKey:@"userId"];
+                        acc.name = [di valueForKey:@"name"];
+                        acc.createTime = [di valueForKey:@"createTime"];
+                        
+                        [participantArr addObject:acc];
+                    }
+                    
+                }
+            }
+                [curDic setObject:participantArr forKey:@"partiArr"];
+            
+            id lblArr = [dataDic valueForKey:@"taskLabelList"];
+            
+            if ([lblArr isKindOfClass:[NSArray class]])
+            {
+                NSArray* aArr = (NSArray*)lblArr;
+                
+                for (id obj in aArr) {
+                    
+                    if ( [obj isKindOfClass:[NSDictionary class]]) {
+                        NSDictionary* di = (NSDictionary*)obj;
+                        
+                        Mark *acc = [Mark new];
+                        
+                        acc.labelId = [di valueForKey:@"labelId"];
+                        acc.labelName = [di valueForKey:@"labelName"];
+                        
+                        [labelArr addObject:acc];
+                    }
+                    
+                }
+            }
+                [curDic setObject:labelArr forKey:@"cMarkList"];
+            }
+        }
+    }
+    
+    return mDic;
+}
+
 
 + (Mission*)missionInfo:(NSString*)taskId responsible:(NSArray**)responsibleArray participants:(NSArray**)participantArray copyTo:(NSArray**)copyToArray labels:(NSArray**)labelArray accessories:(NSArray**)accessoryArray;
 {

@@ -85,7 +85,6 @@
                             cm.status = [[di valueForKey:@"status"] boolValue];
                             cm.address = [di valueForKey:@"address"];
                             cm.name = [di valueForKey:@"name"];
-//                            cm.type = [[di valueForKey:@"type"] integerValue];
                             cm.type = [[UICommon findFileType:cm.name] integerValue];
                             
                             cm.size = [di valueForKey:@"size"];

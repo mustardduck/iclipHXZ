@@ -17,8 +17,10 @@
 #import "SVProgressHUD.h"
 #import "DashesLineView.h"
 #import "PartiCell.h"
+#import "MQPublishMissionController.h"
+#import "MQPublishMissionMainController.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
     NSMutableDictionary*        _reReplyDic;
     Mission*                    _currentMission;
@@ -49,6 +51,8 @@
     NSArray * _childMissionList;
     
     UITableView * _childTableView;
+    
+    BOOL _isMainMission;
 }
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
@@ -77,6 +81,160 @@
     
 }
 
+- (void) jumpToMissionMainEdit
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
+    ((MQPublishMissionMainController*)vc).isEdit = YES;
+    ((MQPublishMissionMainController*)vc).taskId = _taskId;
+    ((MQPublishMissionMainController*)vc).workGroupId = _currentMission.workGroupId;
+    ((MQPublishMissionMainController*)vc).workGroupName = _currentMission.workGroupName;
+
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
+- (void) jumpToMissionEdit
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+    ((MQPublishMissionController*)vc).isEditMission = YES;
+    ((MQPublishMissionController*)vc).taskId = _currentMission.taskId;
+    ((MQPublishMissionController*)vc).workGroupId = _currentMission.workGroupId;
+    ((MQPublishMissionController*)vc).workGroupName = _currentMission.workGroupName;
+    ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
+    ((MQPublishMissionController*)vc).icDetailViewController = self;
+//    ((MQPublishMissionController*)vc).icMainViewController = _icMainViewController;
+//    ((MQPublishMissionController*)vc).indexInMainArray = _indexInMainArray;
+
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet.tag == 111)//3项
+    {
+        if(buttonIndex == 0)
+        {
+            NSInteger status = _currentMission.status;
+            NSString * Dstr = @"";
+            if(status == 0)
+            {
+                Dstr = @"开始";
+            }
+            else if (status == 1 || status == -3)
+            {
+                Dstr = @"完成";
+            }
+            
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否%@该任务？", Dstr] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            alert.tag = 10;
+            [alert show];
+    
+        }
+        else if (buttonIndex == 1)//编辑
+        {
+            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+
+            if(_isMainMission)
+            {
+                [self jumpToMissionMainEdit];
+            }
+            else
+            {
+                [self jumpToMissionEdit];
+            }
+        }
+        else if (buttonIndex == 2)//删除
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否删除该任务？"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            alert.tag = 11;
+            [alert show];
+        }
+    }
+    else if (actionSheet.tag == 112)//2项
+    {
+        if (buttonIndex == 0)//编辑
+        {
+            
+        }
+        else if (buttonIndex == 1)//删除
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否删除该任务？"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            alert.tag = 11;
+            [alert show];
+        }
+    }
+    else
+    {
+        NSInteger cIndex = actionSheet.tag;
+        
+        Comment* comm = [_commentArray objectAtIndex:cIndex - 1];
+        
+        if(_showDelete)
+        {
+            if(buttonIndex == 0)//delete
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"确定删除该条评论吗？"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"不，请保留！"
+                                                      otherButtonTitles:@"是的", nil];
+                alert.tag = cIndex + 100;
+                [alert show];
+            }
+            else if (buttonIndex == 1)//copy
+            {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = comm.main;
+            }
+        }
+        else
+        {
+            if(buttonIndex == 0)//copy
+            {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = comm.main;
+            }
+        }
+    }
+}
+
+- (void) btnRightMoreClicked:(id)sender
+{
+    //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+    NSString *statusStr = @"";
+
+    if(_currentMission.status == 0)
+    {
+        statusStr = @"开始";
+    }
+    else if (_currentMission.status == 1 || _currentMission.status == -3)
+    {
+        statusStr = @"完成";
+    }
+    
+    if(statusStr.length)
+    {
+        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:statusStr, @"编辑",@"删除", nil];
+        as.destructiveButtonIndex= 2;
+        as.tag = 111;
+        [as showInView:self.view];
+
+    }
+    else
+    {
+        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"编辑",@"删除", nil];
+        as.destructiveButtonIndex= 1;
+        as.tag = 112;
+        [as showInView:self.view];
+    }
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -98,7 +256,7 @@
     [leftButton addSubview:ti];
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
-    
+
     acInd = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 40) / 2, [UIScreen mainScreen].bounds.size.height/ 2 - 80 , 40, 40)];
     [acInd setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [acInd setHidesWhenStopped:YES];
@@ -217,40 +375,6 @@
     //}
 }
 
-- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSInteger cIndex = actionSheet.tag;
-    
-    Comment* comm = [_commentArray objectAtIndex:cIndex - 1];
-    
-    if(_showDelete)
-    {
-        if(buttonIndex == 0)//delete
-        {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"确定删除该条评论吗？"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"不，请保留！"
-                                                  otherButtonTitles:@"是的", nil];
-            alert.tag = cIndex;
-            [alert show];
-        }
-        else if (buttonIndex == 1)//copy
-        {
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = comm.main;
-        }
-    }
-    else
-    {
-        if(buttonIndex == 0)//copy
-        {
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = comm.main;
-        }
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -284,6 +408,17 @@
     NSArray * imgArr = [NSArray array];
     
     _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
+    
+    if (_currentMission != nil) {
+        
+        if(_currentMission.createUserId == [LoginUser loginUserID] || _currentMission.liableUserId == [LoginUser loginUserID])
+        {
+            UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"更多操作" style:UIBarButtonItemStyleDone target:self action:@selector(btnRightMoreClicked:)];
+            [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+            self.navigationItem.rightBarButtonItem = rightBarButton;
+            
+        }
+    }
     
     if (_currentMission != nil) {
         
@@ -543,24 +678,51 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSInteger cIndex = alertView.tag;
-    
-    if(cIndex >= 1)
+    if(alertView.tag > 100)
     {
-        Comment* comm = [_commentArray objectAtIndex:cIndex - 1];
+        NSInteger cIndex = alertView.tag - 100;
         
-        if (buttonIndex == 1)
+        if(cIndex >= 1)
         {
-            BOOL isOk = [comm deleteTaskComment:comm.commentsId taskId:comm.taskId];
+            Comment* comm = [_commentArray objectAtIndex:cIndex - 1];
             
-            if(isOk)
+            if (buttonIndex == 1)
             {
-                [self loadData];
-                [_tableView reloadData];
+                BOOL isOk = [comm deleteTaskComment:comm.commentsId taskId:comm.taskId];
+                
+                if(isOk)
+                {
+                    [self loadData];
+                    [_tableView reloadData];
+                }
             }
         }
     }
-    else
+    else if(alertView.tag == 10)
+    {
+        if (buttonIndex == 1)
+        {
+            NSInteger status = _currentMission.status;
+            if(status == 0)
+            {
+                status = 1;
+            }
+            else if (status == 1 || status == -3)
+            {
+                status = 2;
+            }
+            
+            BOOL isOK = [Mission updateTaskStatus:_currentMission.taskId status:status];
+            
+            if(isOK)
+            {
+                [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
+                
+                [self loadData];
+            }
+        }
+    }
+    else if (alertView.tag == 11)
     {
         if (buttonIndex == 1) {
             BOOL isRemoved = [Mission reomveMission:_currentMission.taskId];
@@ -1479,9 +1641,9 @@
             bSecondView.backgroundColor = [UIColor clearColor];
             [bSecondView setRoundColorCorner:10 withColor:[UIColor grayLineColor]];
             
-            BOOL isChildMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
             
-            if(isChildMission)//是主任务
+            if(_isMainMission)//是主任务
             {
                 [cell.contentView addSubview:bSecondView];
             }
@@ -1578,7 +1740,7 @@
             
             CGFloat newcHeight = YH(bSecondView) + 34;
 
-            if(!isChildMission)//子任务
+            if(!_isMainMission)//子任务
             {
                 newcHeight = YH(_duiimageview) + 34;
             }

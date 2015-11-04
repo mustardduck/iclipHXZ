@@ -14,4 +14,7 @@
 @property(nonatomic, strong)NSString * workGroupName;
 @property(nonatomic, strong)NSMutableDictionary * mainMissionDic;
 @property(nonatomic, strong)NSMutableArray * childMissionArr;
+@property(nonatomic, assign)BOOL isEdit;
+@property (nonatomic, strong) NSString * taskId;
+
 @end

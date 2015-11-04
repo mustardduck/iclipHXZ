@@ -36,12 +36,17 @@
 @property(nonatomic,assign) BOOL isRefreshMarkData;
 @property(nonatomic, assign) BOOL isMainMission;
 @property(nonatomic, assign) BOOL isChangeGroup;
+@property(nonatomic, assign) BOOL isEditMission;
+
 @property(nonatomic,assign) NSInteger currentEditChildIndex;
 
 
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;
 @property(nonatomic,strong) id       icMissionMainViewController;
+//@property(nonatomic,strong) id       icMainViewController;
+//@property (nonatomic,assign) NSInteger  indexInMainArray;
+
 
 @property(nonatomic,strong) NSMutableArray* savedChildMissionArr;
 @property(nonatomic,strong) NSDictionary* currentMissionDic;

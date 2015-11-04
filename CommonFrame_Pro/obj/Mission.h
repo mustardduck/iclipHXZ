@@ -46,6 +46,7 @@ typedef enum {
 @property (nonatomic,strong) NSString*  userName;
 @property (nonatomic,assign) NSInteger  totalPages;
 @property (nonatomic,strong) NSString*  liableUserId;           //责任人id
+@property (nonatomic,strong) NSString*  lableUserImg;           //责任人头像url
 @property (nonatomic,strong) NSString*  lableUserName;           //责任人名字
 @property (nonatomic,strong) NSArray*   partList;               //参与者
 @property (nonatomic,strong) NSArray*   cclist;                 //抄送者
@@ -74,8 +75,12 @@ typedef enum {
 + (BOOL)reomveMission:(NSString*)taskId;
 + (Mission*)missionInfo:(NSString*)taskId responsible:(NSArray**)responsibleArray participants:(NSArray**)participantArray copyTo:(NSArray**)copyToArray labels:(NSArray**)labelArray accessories:(NSArray**)accessoryArray;
 
++ (NSDictionary*)missionInfo:(NSString*)taskId;
+
 + (BOOL)findWgPeopleTrends:(NSString*)createUserId workGroupId:(NSString *)groupId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount dataListArr:(NSMutableArray **)dataListArr member:(Member **)member;
 
 + (BOOL)sendAllMission:(BOOL)isMission taksId:(NSString **)taskId withArr:(NSArray *)missionArr;
 
++ (BOOL)updateTaskStatus:(NSString*)taskId status:(NSInteger )status;//3.12、更改任务状态(V1.1新增接口)POST
++ (NSArray *)findTaskList:(NSString*)taskId mainMissionDic:(NSMutableDictionary **)mainMissionDic;
 @end
