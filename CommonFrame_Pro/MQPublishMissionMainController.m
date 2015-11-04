@@ -47,6 +47,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
+    
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
@@ -75,6 +79,40 @@
     [self resetData];
 
     
+}
+
+- (void) keyboardWasShown:(NSNotification *) notif{
+    NSDictionary *info = [notif userInfo];
+    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    
+    //NSLog(@"keyBoard:%f", keyboardSize.height);  //216
+    //keyboardWasShown = YES;
+    CGRect frame = self.mainTableView.frame;
+    frame.size.height -= keyboardSize.height;
+    self.mainTableView.frame = frame;
+    
+    NSInteger index = _currentView.tag - 100;
+    
+    if(index >= 0)
+    {
+        NSIndexPath * localIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        
+        UITableViewCell *cell = [self.mainTableView cellForRowAtIndexPath:localIndexPath];
+        [self.mainTableView scrollRectToVisible:cell.frame animated:YES];
+    }
+
+}
+
+- (void) keyboardWasHidden:(NSNotification *) notif{
+    NSDictionary *info = [notif userInfo];
+    
+    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    NSLog(@"keyboardWasHidden keyBoard:%f", keyboardSize.height);
+    //keyboardWasShown = NO;
+    
+    self.mainTableView.frame = self.view.bounds;
 }
 
 - (void) resetData
@@ -576,6 +614,8 @@
     if(cell)
     {
         cell.rightView.hidden = NO;
+
+//        [_mainTableView scrollToRowAtIndexPath:indexpath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 

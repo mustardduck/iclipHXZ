@@ -2005,6 +2005,14 @@
 {
     [self hiddenKeyboard];
     
+    if(!_workGroupName.length)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择发布至的群组！" delegate:self
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
     if (_responsibleDic.count == 0) {
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择任务负责人！" delegate:self
                                               cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

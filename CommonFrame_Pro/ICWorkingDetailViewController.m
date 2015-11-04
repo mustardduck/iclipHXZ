@@ -882,6 +882,10 @@
     }
     else
     {
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            return NO;
+        }
         UITableViewCell *cell = (UITableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
         UIView *selectionColor = [[UIView alloc] init];
         selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
@@ -1351,7 +1355,6 @@
             groupIcon.image = [UIImage imageNamed:@"icon_qunzu"];
             [bFirstView addSubview:groupIcon];
             
-            
             //        groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, 14, 14, 17)];
             //        groupIcon.image = [UIImage imageNamed:@"icon_canyuren"];
             //        [bView addSubview:groupIcon];
@@ -1363,6 +1366,10 @@
             [groupName setTextColor:[UIColor grayTitleColor]];
             [groupName setFont:Font(12)];
             [bFirstView addSubview:groupName];
+            
+            groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, YH(groupName) + 14, 12, 12)];
+            groupIcon.image = [UIImage imageNamed:@"icon_biaoqian"];
+            [bFirstView addSubview:groupIcon];
             
             //标签
             NSString * tagStr = @"";
@@ -1391,7 +1398,7 @@
             CGSize maxSize = CGSizeMake(SCREENWIDTH - 28 - 13, 1000);
             
             tagLbl = [[UILabel alloc] init];
-            tagLbl.frame = CGRectMake(X(groupName), YH(groupName) + 14, maxSize.width, maxSize.height);
+            tagLbl.frame = CGRectMake(X(groupName), YH(groupName) + 12, maxSize.width, maxSize.height);
             tagLbl.backgroundColor = [UIColor clearColor];
             tagLbl.font = Font(12);
             tagLbl.textColor = [UIColor grayTitleColor];
