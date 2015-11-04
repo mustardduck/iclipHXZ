@@ -2026,6 +2026,13 @@
         [alert show];
         return;
     }
+    if(!_cMarkAarry.count)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择标签！" delegate:self
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     
     
     Mission* m = [Mission new];

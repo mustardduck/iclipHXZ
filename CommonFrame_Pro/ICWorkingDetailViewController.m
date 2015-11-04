@@ -1409,174 +1409,299 @@
             tagLbl.height = bSize.height;
             [bFirstView addSubview:tagLbl];
             
-            //虚线
-            DashesLineView * dashLine = [[DashesLineView alloc] init];
-            dashLine.frame = CGRectMake(0, YH(tagLbl) + 14, duiImgWidth, 0.5);
-            dashLine.backgroundColor = [UIColor clearColor];
-            [bFirstView addSubview:dashLine];
+            CGFloat newcHeight;
+            CGFloat duiImgHeight;
             
-            DashesLineView * dashLine2 = [[DashesLineView alloc] init];
-            dashLine2.frame = CGRectMake(0, Y(dashLine) + 64, duiImgWidth, 0.5);
-            dashLine2.backgroundColor = [UIColor clearColor];
-            [bFirstView addSubview:dashLine2];
-            
-            
-            
-            //负责人
-            UIImageView * fzIcon = [[UIImageView alloc] init];
-            fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 16, 16);
-            fzIcon.image = [UIImage imageNamed:@"icon_fuzeren"];
-            [bFirstView addSubview:fzIcon];
-            
-            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(dashLine) + 14, duiImgWidth - X(groupName) * 2, 16)];
-            [title setBackgroundColor:[UIColor clearColor]];
-            [title setTextColor:[UIColor whiteColor]];
-            [title setFont:Font(14)];
-            NSString * responText = [NSString stringWithFormat:@"负责人：%@", _currentMission.lableUserName];
-            NSAttributedString *attrStr = [RRAttributedString setText:responText color:[UIColor grayTitleColor] range:NSMakeRange(0, 4)];
-            title.attributedText = attrStr;
-            [bFirstView addSubview:title];
-            
-            //截止时间
-            
-            fzIcon = [[UIImageView alloc] init];
-            fzIcon.frame = CGRectMake(13, YH(title) + 8, 16, 16);
-            fzIcon.image = [UIImage imageNamed:@"icon_jiezhishijian"];
-            [bFirstView addSubview:fzIcon];
-            
-            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon), SCREENWIDTH - 26 * 2, 16)];
-            [title setBackgroundColor:[UIColor clearColor]];
-            [title setTextColor:[UIColor grayTitleColor]];
-            [title setFont:Font(14)];
-            
-            NSString * finishTime = [UICommon dayAndHourFromString:_currentMission.finishTime formatStyle:@"yyyy年MM月dd日"];
-            
-            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
-            NSString *statusStr = @"不知";
-            switch (_currentMission.status) {
-                case 0:
-                    statusStr = @"未开始";
-                    break;
-                case 1:
-                    statusStr = @"进行中";
-                    break;
-                case 2:
-                    statusStr = @"已完成";
-                    break;
-                default:
-                    break;
-            }
-            
-            responText = [NSString stringWithFormat:@"截止时间：%@", finishTime];
-            
-            if(finishTime.length)
+            if(_currentMission.type == 1)//任务
             {
-                attrStr = [RRAttributedString setText:responText color:[UIColor whiteColor] range:NSMakeRange(5, 11)];
+                //虚线
+                DashesLineView * dashLine = [[DashesLineView alloc] init];
+                dashLine.frame = CGRectMake(0, YH(tagLbl) + 14, duiImgWidth, 0.5);
+                dashLine.backgroundColor = [UIColor clearColor];
+                [bFirstView addSubview:dashLine];
+                
+                DashesLineView * dashLine2 = [[DashesLineView alloc] init];
+                dashLine2.frame = CGRectMake(0, Y(dashLine) + 64, duiImgWidth, 0.5);
+                dashLine2.backgroundColor = [UIColor clearColor];
+                [bFirstView addSubview:dashLine2];
+                
+                
+                
+                //负责人
+                UIImageView * fzIcon = [[UIImageView alloc] init];
+                fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 16, 16);
+                fzIcon.image = [UIImage imageNamed:@"icon_fuzeren"];
+                [bFirstView addSubview:fzIcon];
+                
+                title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(dashLine) + 14, duiImgWidth - X(groupName) * 2, 16)];
+                [title setBackgroundColor:[UIColor clearColor]];
+                [title setTextColor:[UIColor whiteColor]];
+                [title setFont:Font(14)];
+                NSString * responText = [NSString stringWithFormat:@"负责人：%@", _currentMission.lableUserName];
+                NSAttributedString *attrStr = [RRAttributedString setText:responText color:[UIColor grayTitleColor] range:NSMakeRange(0, 4)];
                 title.attributedText = attrStr;
-            }
-            else
-            {
-                title.text = responText;
-            }
-            
-            [bFirstView addSubview:title];
-            
-            
-            responText = [NSString stringWithFormat:@"任务状态：%@", statusStr];
-            
-            UILabel * statusLbl = [[UILabel alloc] init];
-            statusLbl.frame = CGRectMake(duiImgWidth - 126, Y(title), 116, 16);
-            statusLbl.backgroundColor = [UIColor clearColor];
-            statusLbl.textColor = [UIColor grayTitleColor];
-            statusLbl.text = responText;
-            statusLbl.font = Font(14);
-            [bFirstView addSubview:statusLbl];
-            
-            //参与人
-            fzIcon = [[UIImageView alloc] init];
-            fzIcon.frame = CGRectMake(13, Y(dashLine2) + 14, 16, 16);
-            fzIcon.image = [UIImage imageNamed:@"icon_canyuren"];
-            [bFirstView addSubview:fzIcon];
-            
-            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
-            [title setBackgroundColor:[UIColor clearColor]];
-            [title setTextColor:[UIColor grayTitleColor]];
-            [title setFont:Font(14)];
-            
-            _partList=  _currentMission.partList;
-            responText = [NSString stringWithFormat:@"参与人 (%lu)", (unsigned long)_partList.count];
-            title.text = responText;
-            [bFirstView addSubview:title];
-            
-            if(_partList.count)
-            {
-                DashesLineView * dashLine3 = [[DashesLineView alloc] init];
-                dashLine3.frame = CGRectMake(0, Y(dashLine2) + 40, duiImgWidth, 0.5);
-                dashLine3.backgroundColor = [UIColor clearColor];
-                [bFirstView addSubview:dashLine3];
+                [bFirstView addSubview:title];
                 
-                bFirstView.height = 166 + 95;
+                //截止时间
                 
-                UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                fzIcon = [[UIImageView alloc] init];
+                fzIcon.frame = CGRectMake(13, YH(title) + 8, 16, 16);
+                fzIcon.image = [UIImage imageNamed:@"icon_jiezhishijian"];
+                [bFirstView addSubview:fzIcon];
                 
-                layout.minimumInteritemSpacing = 12.f;
-                layout.minimumLineSpacing = 14.f;
-                UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
-                layout.sectionInset = insets;
+                title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon), SCREENWIDTH - 26 * 2, 16)];
+                [title setBackgroundColor:[UIColor clearColor]];
+                [title setTextColor:[UIColor grayTitleColor]];
+                [title setFont:Font(14)];
                 
-                _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine3), duiImgWidth, 95) collectionViewLayout:layout];
-                _partCollView.delegate = self;
-                _partCollView.dataSource = self;
-                _partCollView.scrollEnabled = NO;
-                _partCollView.backgroundColor = [UIColor clearColor];
+                NSString * finishTime = [UICommon dayAndHourFromString:_currentMission.finishTime formatStyle:@"yyyy年MM月dd日"];
                 
-                [_partCollView registerClass:[PartiCell class] forCellWithReuseIdentifier:@"PartiCell"];
-                
-                _partCollView.frame = CGRectMake(0, Y(dashLine3), duiImgWidth, 95);
-
-                [bFirstView addSubview:_partCollView];
-                
-                UIButton * moreBtn = [[UIButton alloc] init];
-                moreBtn.frame = CGRectMake(duiImgWidth - 50, Y(dashLine2), 50, 40);
-                moreBtn.backgroundColor = [UIColor clearColor];
-                [moreBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
-                [moreBtn addTarget:self action:@selector(clickMorePart:) forControlEvents:UIControlEventTouchUpInside];
-                moreBtn.titleLabel.font = Font(12);
-                [bFirstView addSubview:moreBtn];
-                
-                if(_partList.count > 5 && !_isShowAllPart)
-                {
-                    [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
-                    
-                    _partCollView.height = 95;
-                    
-                    bFirstView.height = 166 + _partCollView.height;
+                //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                NSString *statusStr = @"不知";
+                switch (_currentMission.status) {
+                    case 0:
+                        statusStr = @"未开始";
+                        break;
+                    case 1:
+                        statusStr = @"进行中";
+                        break;
+                    case 2:
+                        statusStr = @"已完成";
+                        break;
+                    default:
+                        break;
                 }
-                else if(_partList.count > 5 && _isShowAllPart)
+                
+                responText = [NSString stringWithFormat:@"截止时间：%@", finishTime];
+                
+                if(finishTime.length)
                 {
-                    [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
-                    
-                    NSInteger count = _partList.count;
-                    NSInteger row = (count % 5) ? count / 5 + 1: count / 5;
-                    
-                    float height = row * (50 + 18 + 24);
-                    
-                    _partCollView.height = height;
-                    
-                    bFirstView.height = 166 + height;
-                    
+                    attrStr = [RRAttributedString setText:responText color:[UIColor whiteColor] range:NSMakeRange(5, 11)];
+                    title.attributedText = attrStr;
                 }
                 else
                 {
-                    moreBtn.hidden = YES;
+                    title.text = responText;
                 }
+                
+                [bFirstView addSubview:title];
+                
+                responText = [NSString stringWithFormat:@"任务状态：%@", statusStr];
+                
+                UILabel * statusLbl = [[UILabel alloc] init];
+                statusLbl.frame = CGRectMake(duiImgWidth - 126, Y(title), 116, 16);
+                statusLbl.backgroundColor = [UIColor clearColor];
+                statusLbl.textColor = [UIColor grayTitleColor];
+                statusLbl.text = responText;
+                statusLbl.font = Font(14);
+                [bFirstView addSubview:statusLbl];
+                
+                //参与人
+                fzIcon = [[UIImageView alloc] init];
+                fzIcon.frame = CGRectMake(13, Y(dashLine2) + 14, 16, 16);
+                fzIcon.image = [UIImage imageNamed:@"icon_canyuren"];
+                [bFirstView addSubview:fzIcon];
+                
+                title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
+                [title setBackgroundColor:[UIColor clearColor]];
+                [title setTextColor:[UIColor grayTitleColor]];
+                [title setFont:Font(14)];
+                
+                _partList=  _currentMission.partList;
+                responText = [NSString stringWithFormat:@"参与人 (%lu)", (unsigned long)_partList.count];
+                title.text = responText;
+                [bFirstView addSubview:title];
+                
+                if(_partList.count)
+                {
+                    DashesLineView * dashLine3 = [[DashesLineView alloc] init];
+                    dashLine3.frame = CGRectMake(0, Y(dashLine2) + 40, duiImgWidth, 0.5);
+                    dashLine3.backgroundColor = [UIColor clearColor];
+                    [bFirstView addSubview:dashLine3];
+                    
+                    bFirstView.height = 166 + 95;
+                    
+                    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                    
+                    layout.minimumInteritemSpacing = 12.f;
+                    layout.minimumLineSpacing = 14.f;
+                    UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
+                    layout.sectionInset = insets;
+                    
+                    _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine3), duiImgWidth, 95) collectionViewLayout:layout];
+                    _partCollView.delegate = self;
+                    _partCollView.dataSource = self;
+                    _partCollView.scrollEnabled = NO;
+                    _partCollView.backgroundColor = [UIColor clearColor];
+                    
+                    [_partCollView registerClass:[PartiCell class] forCellWithReuseIdentifier:@"PartiCell"];
+                    
+                    _partCollView.frame = CGRectMake(0, Y(dashLine3), duiImgWidth, 95);
+                    
+                    [bFirstView addSubview:_partCollView];
+                    
+                    UIButton * moreBtn = [[UIButton alloc] init];
+                    moreBtn.frame = CGRectMake(duiImgWidth - 50, Y(dashLine2), 50, 40);
+                    moreBtn.backgroundColor = [UIColor clearColor];
+                    [moreBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                    [moreBtn addTarget:self action:@selector(clickMorePart:) forControlEvents:UIControlEventTouchUpInside];
+                    moreBtn.titleLabel.font = Font(12);
+                    [bFirstView addSubview:moreBtn];
+                    
+                    if(_partList.count > 5 && !_isShowAllPart)
+                    {
+                        [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
+                        
+                        _partCollView.height = 95;
+                        
+                        bFirstView.height = 166 + _partCollView.height;
+                    }
+                    else if(_partList.count > 5 && _isShowAllPart)
+                    {
+                        [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
+                        
+                        NSInteger count = _partList.count;
+                        NSInteger row = (count % 5) ? count / 5 + 1: count / 5;
+                        
+                        float height = row * (50 + 18 + 24);
+                        
+                        _partCollView.height = height;
+                        
+                        bFirstView.height = 166 + height;
+                        
+                    }
+                    else
+                    {
+                        moreBtn.hidden = YES;
+                    }
+                }
+                else
+                {
+                    bFirstView.height = 166;
+                }
+                
+                //子任务
+                UIView * bSecondView = [[UIView alloc] init];
+                bSecondView.frame = CGRectMake(14, YH(_duiimageview) + 14, duiImgWidth, 40);
+                bSecondView.backgroundColor = [UIColor clearColor];
+                [bSecondView setRoundColorCorner:10 withColor:[UIColor grayLineColor]];
+                
+                _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+                
+                if(_isMainMission)//是主任务
+                {
+                    [cell.contentView addSubview:bSecondView];
+                }
+                
+                
+                fzIcon = [[UIImageView alloc] init];
+                fzIcon.frame = CGRectMake(13, 13, 15, 15);
+                fzIcon.image = [UIImage imageNamed:@"icon_zirenwu_1"];
+                [bSecondView addSubview:fzIcon];
+                
+                title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
+                [title setBackgroundColor:[UIColor clearColor]];
+                [title setTextColor:[UIColor grayTitleColor]];
+                [title setFont:Font(14)];
+                
+                _childMissionList =  _currentMission.childTaskList;
+                responText = [NSString stringWithFormat:@"子任务 (%lu)", (unsigned long)_childMissionList.count];
+                title.text = responText;
+                [bSecondView addSubview:title];
+                
+                _jianTouBtn = [[UIButton alloc] init];
+                _jianTouBtn.backgroundColor = [UIColor clearColor];
+                _jianTouBtn.frame = CGRectMake(duiImgWidth - 32 - 4, 0, 32, 40);
+                [_jianTouBtn addTarget:self action:@selector(clickJianTou:) forControlEvents:UIControlEventTouchUpInside];
+                
+                [bSecondView addSubview:_jianTouBtn];
+                
+                if(_childMissionList.count)
+                {
+                    DashesLineView * dashLine4 = [[DashesLineView alloc] init];
+                    dashLine4.frame = CGRectMake(0, 40 - 0.5, duiImgWidth, 0.5);
+                    dashLine4.backgroundColor = [UIColor clearColor];
+                    [bSecondView addSubview:dashLine4];
+                    
+                    //                _childTableView.frame = CGRectMake(0, Y(dashLine4), duiImgWidth, _childMissionList.count * 40);
+                    
+                    if(_childMissionList.count && !_isShowAllChildMission)
+                    {
+                        [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
+                        
+                    }
+                    else if(_childMissionList.count && _isShowAllChildMission)
+                    {
+                        //                    bSecondView.height = 40 + H(_childTableView);
+                        //
+                        //                    [bSecondView addSubview:_childTableView];
+                        
+                        bSecondView.height = 40 + _childMissionList.count * 34 + 20;
+                        
+                        [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+                        
+                        for (int i = 0; i < _childMissionList.count; i ++)
+                        {
+                            NSDictionary * dic = _childMissionList[i];
+                            
+                            UIButton * cellBtn = [[UIButton alloc] init];
+                            cellBtn.frame = CGRectMake(0, Y(dashLine4) + 34 * i + 10, duiImgWidth, 34);
+                            cellBtn.backgroundColor = [UIColor clearColor];
+                            [cellBtn addTarget:self action:@selector(jumpToMissionDetail:) forControlEvents:UIControlEventTouchUpInside];
+                            cellBtn.tag = i + 100;
+                            [bSecondView addSubview:cellBtn];
+                            
+                            UILabel * titleLbl = [[UILabel alloc] init];
+                            titleLbl.frame = CGRectMake(13, Y(cellBtn), duiImgWidth -  13 * 2 - 118, 34);
+                            titleLbl.backgroundColor = [UIColor clearColor];
+                            titleLbl.font = Font(14);
+                            titleLbl.textColor = [UIColor whiteColor];
+                            titleLbl.text = [NSString stringWithFormat:@"%d. %@",i + 1, [dic valueForKey:@"title"]];
+                            [bSecondView addSubview:titleLbl];
+                            
+                            titleLbl = [[UILabel alloc] init];
+                            titleLbl.frame = CGRectMake(duiImgWidth - 70, Y(cellBtn), 50, 34);
+                            titleLbl.backgroundColor = [UIColor clearColor];
+                            titleLbl.font = Font(14);
+                            titleLbl.textColor = [UIColor grayTitleColor];
+                            titleLbl.text = [dic valueForKey:@"lableUserName"];
+                            [bSecondView addSubview:titleLbl];
+                            
+                            UIImageView * jiantou = [[UIImageView alloc] init];
+                            jiantou.frame = CGRectMake(duiImgWidth - 13 - 12, Y(cellBtn) + 11, 12, 12);
+                            jiantou.image = [UIImage imageNamed:@"btn_jiantou_1"];
+                            [bSecondView addSubview:jiantou];
+                        }
+                    }
+                    else
+                    {
+                        _jianTouBtn.hidden = YES;
+                    }
+                }
+                else
+                {
+                    bSecondView.height = 40;
+                }
+                
+                newcHeight = YH(bSecondView) + 34;
+                
+                if(!_isMainMission)//子任务
+                {
+                    newcHeight = YH(_duiimageview) + 34;
+                }
+                
+                duiImgHeight = YH(bFirstView) + 14 - 78;
+
             }
-            else
+            else//问题、建议、其它
             {
-                bFirstView.height = 166;
+                bFirstView.height = YH(tagLbl) + 16;
+                
+                duiImgHeight = YH(bFirstView) + 14 - 78;
+
+                newcHeight = YH(_duiimageview) + 34;
             }
-            
-            
+
             /*
              if (_currentMission != nil) {
              
@@ -1612,6 +1737,14 @@
              }
              */
             
+            //对话框
+            _duiimageview = [[UIImageView alloc] init];
+            _duiimageview.image= [[UIImage imageNamed:@"bg_duihuakuang2"] stretchableImageWithLeftCapWidth:40 topCapHeight:30];
+            
+            _duiimageview.frame = CGRectMake(14, YH(photo) + 7, duiImgWidth, duiImgHeight );
+            
+            [cell.contentView addSubview:_duiimageview];
+            [cell.contentView sendSubviewToBack:_duiimageview];
             
             
             //评论
@@ -1632,128 +1765,9 @@
             commLbl.textColor = [UIColor grayTitleColor];
             [bFirstView addSubview:commLbl];
             
-            
             [cell.contentView addSubview:bFirstView];
             
-            CGFloat duiImgHeight = YH(bFirstView) + 14 - 78;
-            
-            _duiimageview = [[UIImageView alloc] init];
-            _duiimageview.image= [[UIImage imageNamed:@"bg_duihuakuang2"] stretchableImageWithLeftCapWidth:40 topCapHeight:30];
-            
-            _duiimageview.frame = CGRectMake(14, YH(photo) + 7, duiImgWidth, duiImgHeight );
-            
-            [cell.contentView addSubview:_duiimageview];
-            [cell.contentView sendSubviewToBack:_duiimageview];
-            
-            UIView * bSecondView = [[UIView alloc] init];
-            bSecondView.frame = CGRectMake(14, YH(_duiimageview) + 14, duiImgWidth, 40);
-            bSecondView.backgroundColor = [UIColor clearColor];
-            [bSecondView setRoundColorCorner:10 withColor:[UIColor grayLineColor]];
-            
-            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
-            
-            if(_isMainMission)//是主任务
-            {
-                [cell.contentView addSubview:bSecondView];
-            }
-            
-            //子任务
-            fzIcon = [[UIImageView alloc] init];
-            fzIcon.frame = CGRectMake(13, 13, 15, 15);
-            fzIcon.image = [UIImage imageNamed:@"icon_zirenwu_1"];
-            [bSecondView addSubview:fzIcon];
-            
-            title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
-            [title setBackgroundColor:[UIColor clearColor]];
-            [title setTextColor:[UIColor grayTitleColor]];
-            [title setFont:Font(14)];
-            
-            _childMissionList =  _currentMission.childTaskList;
-            responText = [NSString stringWithFormat:@"子任务 (%lu)", (unsigned long)_childMissionList.count];
-            title.text = responText;
-            [bSecondView addSubview:title];
-            
-            _jianTouBtn = [[UIButton alloc] init];
-            _jianTouBtn.backgroundColor = [UIColor clearColor];
-            _jianTouBtn.frame = CGRectMake(duiImgWidth - 32 - 4, 0, 32, 40);
-            [_jianTouBtn addTarget:self action:@selector(clickJianTou:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [bSecondView addSubview:_jianTouBtn];
-            
-            if(_childMissionList.count)
-            {
-                DashesLineView * dashLine4 = [[DashesLineView alloc] init];
-                dashLine4.frame = CGRectMake(0, 40 - 0.5, duiImgWidth, 0.5);
-                dashLine4.backgroundColor = [UIColor clearColor];
-                [bSecondView addSubview:dashLine4];
-                
-//                _childTableView.frame = CGRectMake(0, Y(dashLine4), duiImgWidth, _childMissionList.count * 40);
-
-                if(_childMissionList.count && !_isShowAllChildMission)
-                {
-                    [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
-
-                }
-                else if(_childMissionList.count && _isShowAllChildMission)
-                {
-//                    bSecondView.height = 40 + H(_childTableView);
-//
-//                    [bSecondView addSubview:_childTableView];
-                    
-                    bSecondView.height = 40 + _childMissionList.count * 34 + 20;
-
-                    [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
-                    
-                    for (int i = 0; i < _childMissionList.count; i ++)
-                    {
-                        NSDictionary * dic = _childMissionList[i];
-                        
-                        UIButton * cellBtn = [[UIButton alloc] init];
-                        cellBtn.frame = CGRectMake(0, Y(dashLine4) + 34 * i + 10, duiImgWidth, 34);
-                        cellBtn.backgroundColor = [UIColor clearColor];
-                        [cellBtn addTarget:self action:@selector(jumpToMissionDetail:) forControlEvents:UIControlEventTouchUpInside];
-                        cellBtn.tag = i + 100;
-                        [bSecondView addSubview:cellBtn];
-
-                        UILabel * titleLbl = [[UILabel alloc] init];
-                        titleLbl.frame = CGRectMake(13, Y(cellBtn), duiImgWidth -  13 * 2 - 118, 34);
-                        titleLbl.backgroundColor = [UIColor clearColor];
-                        titleLbl.font = Font(14);
-                        titleLbl.textColor = [UIColor whiteColor];
-                        titleLbl.text = [NSString stringWithFormat:@"%d. %@",i + 1, [dic valueForKey:@"title"]];
-                        [bSecondView addSubview:titleLbl];
-                        
-                        titleLbl = [[UILabel alloc] init];
-                        titleLbl.frame = CGRectMake(duiImgWidth - 70, Y(cellBtn), 50, 34);
-                        titleLbl.backgroundColor = [UIColor clearColor];
-                        titleLbl.font = Font(14);
-                        titleLbl.textColor = [UIColor grayTitleColor];
-                        titleLbl.text = [dic valueForKey:@"lableUserName"];
-                        [bSecondView addSubview:titleLbl];
-                        
-                        UIImageView * jiantou = [[UIImageView alloc] init];
-                        jiantou.frame = CGRectMake(duiImgWidth - 13 - 12, Y(cellBtn) + 11, 12, 12);
-                        jiantou.image = [UIImage imageNamed:@"btn_jiantou_1"];
-                        [bSecondView addSubview:jiantou];
-                    }
-                }
-                else
-                {
-                    _jianTouBtn.hidden = YES;
-                }
-            }
-            else
-            {
-                bSecondView.height = 40;
-            }
-            
-            CGFloat newcHeight = YH(bSecondView) + 34;
-
-            if(!_isMainMission)//子任务
-            {
-                newcHeight = YH(_duiimageview) + 34;
-            }
-            
+            //设置cell的高度
             [cell setFrame:CGRectMake(0, 0, cWidth ,newcHeight)];
             
             UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, newcHeight - 1, cWidth, 0.5)];
