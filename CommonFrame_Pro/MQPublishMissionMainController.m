@@ -215,36 +215,73 @@
 {
     if(buttonIndex == 1)
     {
-        NSDictionary * dic;
-        
-        if(alertView.tag == 123)
+        if(alertView.tag == 123 || alertView.tag > 1000)
         {
-            _isMainMission = YES;
+            NSDictionary * dic;
             
-            NSString * str = _mainTextView.text;
-            
-            if(!str.length)
+            if(alertView.tag == 123)
             {
-                str = @"";
+                _isMainMission = YES;
+                
+                NSString * str = _mainTextView.text;
+                
+                if(!str.length)
+                {
+                    str = @"";
+                }
+                [_mainMissionDic setObject:str forKey:@"title"];
+                
+                dic = _mainMissionDic;
             }
-            [_mainMissionDic setObject:str forKey:@"title"];
+            else if(alertView.tag > 1000)
+            {
+                NSInteger index = alertView.tag - 1000;
+                
+                _currentEditChildIndex = index;
+                
+                _isMainMission = NO;
+                
+                dic = _childMissionArr[index];
+                
+            }
             
-            dic = _mainMissionDic;
+            [self jumpToMission:dic];
         }
         else
         {
-            NSInteger index = alertView.tag - 1000;
+            [SVProgressHUD showInfoWithStatus:@"任务删除中..."];
             
-            _currentEditChildIndex = index;
+            NSInteger index = alertView.tag;
             
-            _isMainMission = NO;
+            NSDictionary * missionDic = _childMissionArr[index];
             
-            dic = _childMissionArr[index];
+            NSDictionary * mDic = [missionDic valueForKey:@"missionDic"];
             
-        }
-        
-        [self jumpToMission:dic];
+            NSString * taskId = [mDic valueForKey:@"taskId"];
+            
+            if(taskId)
+            {
+                BOOL isRemoved = [Mission reomveMission:taskId];
+                if (isRemoved) {
+                    
+                    [SVProgressHUD dismiss];
+                    [_childMissionArr removeObjectAtIndex:index];
+                    [_mainTableView reloadData];
+                    
+                }
+                else
+                {
+                    [SVProgressHUD dismiss];
+                    [SVProgressHUD showErrorWithStatus:@"任务删除失败"];
+                }
+            }
+            else
+            {
+                [_childMissionArr removeObjectAtIndex:index];
+                [_mainTableView reloadData];
+            }
 
+        }
     }
 }
 
@@ -598,9 +635,9 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [_childMissionArr removeObjectAtIndex:indexPath.row];
-        [tableView reloadData];
-        
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否删除该任务？"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = indexPath.row;
+        [alert show];
     }
 }
 
@@ -650,12 +687,20 @@
 - (void) addMissionCell:(id)sender
 {
 //    _dataCount ++;
-    NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-    [dic setObject:@"" forKey:@"title"];
-
-    [_childMissionArr addObject:dic];
     
-    [_mainTableView reloadData];
+    if(_mainTextView.text.length > 0)
+    {
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        [dic setObject:@"" forKey:@"title"];
+        
+        [_childMissionArr addObject:dic];
+        
+        [_mainTableView reloadData];
+    }
+    else
+    {
+        [SVProgressHUD showErrorWithStatus:@"请先填写主任务"];
+    }
 }
 
 /*
