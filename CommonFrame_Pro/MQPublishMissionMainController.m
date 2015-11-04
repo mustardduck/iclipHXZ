@@ -184,17 +184,21 @@
     ((MQPublishMissionController*)vc).isMainMission = _isMainMission;
     ((MQPublishMissionController*)vc).savedChildMissionArr = _childMissionArr;
     ((MQPublishMissionController*)vc).currentEditChildIndex = _currentEditChildIndex;
-    NSDictionary * cmdic = _childMissionArr[_currentEditChildIndex];
-    NSDictionary * mDic = [cmdic valueForKey:@"missionDic"];
-    NSString * taskId = [mDic valueForKey:@"taskId"];
-    if(!taskId)
+    if(_childMissionArr.count)
     {
-        _isEdit = NO;
+        NSDictionary * cmdic = _childMissionArr[_currentEditChildIndex];
+        NSDictionary * mDic = [cmdic valueForKey:@"missionDic"];
+        NSString * taskId = [mDic valueForKey:@"taskId"];
+        if(!taskId)
+        {
+            _isEdit = NO;
+        }
+        else
+        {
+            _isEdit = YES;
+        }
     }
-    else
-    {
-        _isEdit = YES;
-    }
+
     ((MQPublishMissionController*)vc).isEditMission = _isEdit;
     ((MQPublishMissionController*)vc).taskId = _currTaskId;
 
@@ -305,7 +309,7 @@
     
     NSString * taskId = [mainDic valueForKey:@"taskId"];
     
-    NSString * parentId = @"";
+    NSString * parentId;
     
     if(!taskId)
     {
@@ -378,6 +382,12 @@
             [self hiddenKeyboard];
 //            _btnDoneCliked = YES;
             [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            [SVProgressHUD dismiss];
+            
+            [SVProgressHUD showErrorWithStatus:@"任务发布失败"];
         }
         
     });

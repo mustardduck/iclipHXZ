@@ -1681,8 +1681,13 @@
         
         if(ms.childTaskList.count > 0)
         {
-
-            for (int i = 0; i < 3; i ++)
+            NSInteger chCount = ms.childTaskList.count;
+            if(chCount > 3)
+            {
+                chCount = 3;
+            }
+            
+            for (int i = 0; i < chCount; i ++)
             {
                 NSDictionary * dic = ms.childTaskList[i];
                 
