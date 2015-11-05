@@ -643,9 +643,7 @@
     for(UIView *view in cell.contentView.subviews) {
         [view removeFromSuperview];
     }
-    
-    
-    
+
     NSInteger index = indexPath.row;
     NSInteger section = indexPath.section;
     CGFloat tableWidth = SCREENWIDTH;
@@ -687,7 +685,7 @@
         }
     }
     else if(section == 1 && index == 0) {
-        UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 1, tableWidth, 0.5)];
+        UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 0.5)];
         [line1 setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:line1];
         
@@ -2133,7 +2131,6 @@
     
     if(_isEditMission)
     {
-        [self hiddenKeyboard];
         
         [SVProgressHUD showWithStatus:@"任务修改中..."];
 
@@ -2144,9 +2141,7 @@
             BOOL isSendOK = [m sendMission:YES taksId:&taskId];
             
             if (isSendOK) {
-                
-                [SVProgressHUD dismiss];
-                
+                                
                 [SVProgressHUD showSuccessWithStatus:@"任务修改成功"];
                 
                 [self hiddenKeyboard];
@@ -2158,8 +2153,6 @@
             }
             else
             {
-                [SVProgressHUD dismiss];
-
                 [SVProgressHUD showSuccessWithStatus:@"任务修改失败"];
             }
             

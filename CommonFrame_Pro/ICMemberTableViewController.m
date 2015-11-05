@@ -41,6 +41,8 @@
     
     UIButton * _selectBtn;
     
+    NSInteger _totalMemberCount;
+    
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -189,6 +191,8 @@
         [selectOkBtn setTitleColor:RGBCOLOR(79, 79, 79) forState:UIControlStateHighlighted];
         [selectOkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [selectOkBtn addTarget:self action:@selector(selectOkBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.view.backgroundColor = [UIColor redColor];
         
         [self.view addSubview:selectOkBtn];
         
@@ -518,7 +522,13 @@
 - (void) fillAllMember
 {    
     NSMutableArray* sectionArray = [NSMutableArray array];
-    NSArray*        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid];
+    NSNumber * totalCount = [NSNumber numberWithInteger:0];
+    NSArray*        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid totalMemeberCount:&totalCount];
+    
+    if([totalCount integerValue] > 0)
+    {
+        self.navigationItem.title = [NSString stringWithFormat:@"成员(%@)", totalCount];
+    }
     
     if (sectionArray.count == 0 || memberArray.count == 0) {
         _sections = @[@"A", @"D", @"F", @"M", @"N", @"O", @"Z"];
@@ -557,18 +567,29 @@
                     }
                     else
                     {
-                        for (NSIndexPath * indP in _partiIndexPathArr)
+                        if(_partiIndexPathArr.count)
                         {
-                            if(indexPath.section == indP.section && indexPath.row == indP.row)
+                            for (NSIndexPath * indP in _partiIndexPathArr)
                             {
-                                [self removeIndexPathFromCopyToArray:indexPath];
-                            }
-                            else
-                            {
-                                [self addIndexPathToCopyToArray:indexPath];
+                                if(indexPath.section == indP.section && indexPath.row == indP.row)
+                                {
+                                    [self removeIndexPathFromCopyToArray:indexPath];
+                                }
+                                else
+                                {
+                                    [self addIndexPathToCopyToArray:indexPath];
+                                }
                             }
                         }
+                        else
+                        {
+                            [self addIndexPathToCopyToArray:indexPath];
+                        }
                     }
+                }
+                else
+                {
+                    [self addIndexPathToCopyToArray:indexPath];
                 }
             }
         }

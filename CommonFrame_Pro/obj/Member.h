@@ -61,7 +61,8 @@
 + (NSArray*)getAllMembers:(NSMutableArray**)sections searchText:(NSString*)searchString;
 + (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId;
 + (NSArray*)getAllMembers:(NSMutableArray**)sections participantsArray:(NSArray*)pArray;
-+ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId;
+//+ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId;
++ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)count;
 + (Member*)getMemberInfoByWorkContractsID:(NSString*)contractID;
 + (NSArray*)getMembersByWorkGroupIDAndLabelID:(NSString*)workGroupId labelId:(NSString*)labelId;
 + (BOOL)memberUpdateWgPeopleStrtus:(NSString*)workContactsId status:(NSString *)status;

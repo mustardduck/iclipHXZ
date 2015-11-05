@@ -292,9 +292,12 @@
     return array;
 }
 
-+ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId
++ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount
 {
     NSMutableArray* array = [NSMutableArray array];
+    
+    NSInteger totalMCount = 0;
+    
     NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
     NSMutableArray* sectionArray = [NSMutableArray array];
     
@@ -353,6 +356,8 @@
                                         mem.status = [[di valueForKey:@"status"] boolValue];
                                         
                                         [sectionMemberArray addObject:mem];
+                                        
+                                        totalMCount ++;
                                     }
                                 }
                                 
@@ -368,6 +373,7 @@
     }
     
     *sections = sectionArray;
+    *totalCount = [NSNumber numberWithInteger:totalMCount];
     
     return array;
 }
