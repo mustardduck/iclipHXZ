@@ -1170,10 +1170,16 @@
             if (indexPath.row == _cAccessoryArray.count) {
                 cell.imageView.hidden = YES;
                 cell.btnAdd.hidden = NO;
+                cell.delBtn.hidden = YES;
+                cell.fileVIew.hidden = YES;
+                
                 [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
             } else {
                 cell.btnAdd.hidden = YES;
                 cell.imageView.hidden = NO;
+                cell.delBtn.hidden = NO;
+                cell.delBtn.tag = 1000 + indexPath.row;
+                [cell.delBtn addTarget:self action:@selector(clickDelImage:) forControlEvents:UIControlEventTouchUpInside];
                 
                 NSInteger index = indexPath.row;
                 
@@ -1195,11 +1201,16 @@
             if (indexPath.row == _cAccessoryArray.count) {
                 cell.imageView.hidden = YES;
                 cell.btnAdd.hidden = NO;
+                cell.delBtn.hidden = YES;
+                cell.fileVIew.hidden = YES;
+                
                 [cell.btnAdd addTarget:self action:@selector(clickImage:) forControlEvents:UIControlEventTouchUpInside];
             } else {
                 cell.btnAdd.hidden = YES;
                 cell.imageView.hidden = NO;
-                
+                cell.delBtn.hidden = NO;
+                cell.delBtn.tag = 1000 + indexPath.row;
+                [cell.delBtn addTarget:self action:@selector(clickDelImage:) forControlEvents:UIControlEventTouchUpInside];
                 NSInteger index = indexPath.row;
                 
                 Accessory * acc = _cAccessoryArray[index];

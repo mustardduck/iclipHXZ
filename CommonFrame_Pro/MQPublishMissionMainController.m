@@ -29,6 +29,7 @@
 //    NSMutableArray * _titleNameList;
     
     NSString * _currTaskId;
+    
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *mainTableView;
@@ -37,7 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIView *rightTxtView;
 @property (weak, nonatomic) IBOutlet UIButton *rightTxtBtn;
 @property (weak, nonatomic) IBOutlet UIView *jiaView;
-
+@property (assign, nonatomic) CGFloat keyboardHeight;
 
 @end
 
@@ -47,9 +48,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -79,6 +83,30 @@
     [self resetData];
 
     
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    /*
+     Reduce the size of the text view so that it's not obscured by the keyboard.
+     Animate the resize so that it's in sync with the appearance of the keyboard.
+     */
+    
+    NSDictionary *userInfo = [notification userInfo];
+    
+    // Get the origin of the keyboard when it's displayed.
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    // Get the top of the keyboard as the y coordinate of its origin in self's view's coordinate system. The bottom of the text view's frame should align with the top of the keyboard's final position.
+    CGRect keyboardRect = [aValue CGRectValue];
+    self.keyboardHeight = keyboardRect.size.height; //后面要用到
+    
+    // Get the duration of the animation.
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    // animationDuration = 0.250000
 }
 
 - (void) keyboardWasShown:(NSNotification *) notif{
@@ -309,7 +337,7 @@
         }
         else
         {
-            [SVProgressHUD showInfoWithStatus:@"任务删除中..."];
+//            [SVProgressHUD showInfoWithStatus:@"任务删除中..."];
             
             NSInteger index = alertView.tag;
             
@@ -324,7 +352,7 @@
                 BOOL isRemoved = [Mission reomveMission:taskId];
                 if (isRemoved) {
                     
-                    [SVProgressHUD dismiss];
+//                    [SVProgressHUD dismiss];
                     [_childMissionArr removeObjectAtIndex:index];
                     [_mainTableView reloadData];
                     
@@ -339,9 +367,29 @@
                 [_childMissionArr removeObjectAtIndex:index];
                 [_mainTableView reloadData];
             }
-
+            
+            [self resetTableViewFrame];
         }
     }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self resetTableViewFrame];
+}
+
+- (void)resetTableViewFrame
+{
+    if (_currentView != nil) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationDuration:0.250000];
+        self.mainTableView.frame = self.view.bounds;
+        [UIView commitAnimations];
+        
+        [_currentView resignFirstResponder];
+//        _currentView = nil;
+    }
+    [self.mainTableView reloadData];
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -634,7 +682,33 @@
 
 //        [_mainTableView scrollToRowAtIndexPath:indexpath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
+    
+    [self performSelector:@selector(scrollTableView:) withObject:textField afterDelay:0.0]; //必须
 }
+
+
+- (void)scrollTableView:(UITextField *)textField{
+    
+    NSInteger index = _currentView.tag - 100;
+    
+    if(index < 0)
+    {
+        return;
+    }
+    
+    CGRect frame = _mainTableView.frame;
+    frame.size.height = self.view.bounds.size.height-self.keyboardHeight;
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:0.250000];
+    self.mainTableView.frame = frame;
+    [UIView commitAnimations];
+    
+    NSIndexPath * localIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+
+    [self.mainTableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+
 
 - (void) textFieldDidEndEditing:(UITextField *)textField
 {
@@ -654,6 +728,7 @@
     
     [_childMissionArr replaceObjectAtIndex:index withObject:mDic];
 
+    [self resetTableViewFrame];
 }
 
 - (void) hiddenKeyboard
@@ -703,6 +778,7 @@
     if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
         [self.icDetailViewController setValue:@"1" forKey:@"content"];
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) viewWillAppear:(BOOL)animated
