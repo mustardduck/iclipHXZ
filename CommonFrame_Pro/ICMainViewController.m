@@ -482,7 +482,6 @@
         
         NSLog(@"Header:%@",_contentArray);
         
-        
         [_tableView reloadData];
         
         [_tableView.header endRefreshing];
@@ -780,6 +779,7 @@
     [self loadTopMarkView:m.labelName markTag:tag];
     
     [_tableView.header beginRefreshing];
+    [_tableView.footer resetNoMoreData];
 
 }
 
@@ -1119,6 +1119,7 @@
     _markHeadView = nil;
     _TermString = @"";
     [_tableView.header beginRefreshing];
+    [_tableView.footer resetNoMoreData];
 }
 
 
