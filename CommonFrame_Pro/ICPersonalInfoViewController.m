@@ -374,7 +374,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^() {
         
-        _currentFileName = @"IMG_test.JPG";
+        NSString * dateTime = [[info[@"UIImagePickerControllerMediaMetadata"] objectForKey:@"{TIFF}"] objectForKey:@"DateTime"];
+        
+        _currentFileName = [NSString stringWithFormat:@"%@.png", dateTime];
         
         UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];

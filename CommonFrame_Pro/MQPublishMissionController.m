@@ -1063,7 +1063,7 @@
 - (void)clickImage:(UIButton *)button{
     [self.view endEditing:YES];
     _currentItem = -1;
-    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取", nil];
+    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
     [as showInView:self.view];
 }
 
@@ -1744,7 +1744,7 @@
     {
         if(_workGroupId)
         {
-            UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"我的文件夹", @"拍照", @"从相册选取", nil];
+            UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
             [as showInView:self.view];
         }
         else
@@ -1829,15 +1829,42 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    
-    
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         // 处理
-        //UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+
+        [SVProgressHUD showWithStatus:@"图片上传中"];
         
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        
-        
+        [picker dismissViewControllerAnimated:YES completion:^() {
+            
+            UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+            
+            NSString * dateTime = [[info[@"UIImagePickerControllerMediaMetadata"] objectForKey:@"{TIFF}"] objectForKey:@"DateTime"];
+            
+            _currentFileName = [NSString stringWithFormat:@"%@.png", dateTime];
+            
+            NSString * userImgPath = @"";
+
+            BOOL isOk = [LoginUser uploadImageWithScale:image fileName:_currentFileName userImgPath:&userImgPath];
+            
+            if(isOk)
+            {
+                [SVProgressHUD dismiss];
+                
+                NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+                [dic setObject:userImgPath forKey:@"url"];
+                
+                if (_currentItem == -1) {
+                    Accessory * acc = [Accessory new];
+                    acc.address = userImgPath;
+                    acc.name = _currentFileName;
+                    
+                    [self.cAccessoryArray addObject:acc];
+                    
+                }
+                
+                [self refreshCollectionView];
+            }
+        }];
         
     }
     else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
