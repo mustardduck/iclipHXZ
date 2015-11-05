@@ -82,6 +82,13 @@
 }
 
 - (void) keyboardWasShown:(NSNotification *) notif{
+    
+    NSInteger index = _currentView.tag - 100;
+    
+    if(index < 0)
+    {
+        return;
+    }
     NSDictionary *info = [notif userInfo];
     NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
     CGSize keyboardSize = [value CGRectValue].size;
@@ -92,19 +99,21 @@
     frame.size.height -= keyboardSize.height;
     self.mainTableView.frame = frame;
     
-    NSInteger index = _currentView.tag - 100;
+    NSIndexPath * localIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
     
-    if(index >= 0)
-    {
-        NSIndexPath * localIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
-        
-        UITableViewCell *cell = [self.mainTableView cellForRowAtIndexPath:localIndexPath];
-        [self.mainTableView scrollRectToVisible:cell.frame animated:YES];
-    }
-
+    UITableViewCell *cell = [self.mainTableView cellForRowAtIndexPath:localIndexPath];
+    [self.mainTableView scrollRectToVisible:cell.frame animated:YES];
 }
 
 - (void) keyboardWasHidden:(NSNotification *) notif{
+    
+    NSInteger index = _currentView.tag - 100;
+    
+    if(index < 0)
+    {
+        return;
+    }
+    
     NSDictionary *info = [notif userInfo];
     
     NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
