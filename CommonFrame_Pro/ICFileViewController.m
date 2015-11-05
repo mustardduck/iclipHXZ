@@ -80,6 +80,7 @@ typedef enum {
     
     [self.view addSubview:_tableView];
     
+    /*
     _tableView.tableHeaderView = ({
         
         UIView* view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cWidth, 45)];
@@ -121,7 +122,7 @@ typedef enum {
         
         view;
     });
-    
+    */
     
     if (_myFilesArray == nil) {
         _myFilesArray = [NSMutableArray array];
