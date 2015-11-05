@@ -1932,46 +1932,56 @@
         [picker dismissViewControllerAnimated:YES completion:^() {
             //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
             
-            ALAsset * ass = assets[0];
-            
-            ALAssetRepresentation* representation = [ass defaultRepresentation];
-            UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-            portraitImg = [UIImage
-                           imageWithCGImage:[representation fullScreenImage]
-                           scale:[representation scale]
-                           orientation:UIImageOrientationUp];
-            
-            _currentFileName = [representation filename];
-            
-//            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
-            
-            NSString * userImgPath = @"";
-            
-            BOOL isOk = [LoginUser uploadImageWithScale:portraitImg fileName:_currentFileName userImgPath:&userImgPath];
-            
-            if(isOk)
+            for(int i = 0; i < assets.count; i ++)
             {
-                [SVProgressHUD dismiss];
+                ALAsset * ass = assets[i];
                 
-                NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-                [dic setObject:userImgPath forKey:@"url"];
+                ALAssetRepresentation* representation = [ass defaultRepresentation];
+                UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+                portraitImg = [UIImage
+                               imageWithCGImage:[representation fullScreenImage]
+                               scale:[representation scale]
+                               orientation:UIImageOrientationUp];
                 
-                if (_currentItem == -1) {
-//                    [_imgUrls addObject:dic];
+                _currentFileName = [representation filename];
+                
+                //            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+                
+                NSString * userImgPath = @"";
+                
+                BOOL isOk = [LoginUser uploadImageWithScale:portraitImg fileName:_currentFileName userImgPath:&userImgPath];
+                
+                if(isOk)
+                {
+                    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+                    [dic setObject:userImgPath forKey:@"url"];
                     
-                    Accessory * acc = [Accessory new];
-                    acc.address = userImgPath;
-                    acc.name = _currentFileName;
-                    
-                    [self.cAccessoryArray addObject:acc];
-                    
-                } else {
-//                    [_imgUrls removeObjectAtIndex:_currentItem];
-//                    [_imgUrls insertObject:dic atIndex:_currentItem];
+                    if (_currentItem == -1) {
+                        //                    [_imgUrls addObject:dic];
+                        
+                        Accessory * acc = [Accessory new];
+                        acc.address = userImgPath;
+                        acc.name = _currentFileName;
+                        
+                        [self.cAccessoryArray addObject:acc];
+                        
+                    } else {
+                        //                    [_imgUrls removeObjectAtIndex:_currentItem];
+                        //                    [_imgUrls insertObject:dic atIndex:_currentItem];
+                    }
                 }
-
-                [self refreshCollectionView];
+                
+                if(i == assets.count - 1)
+                {
+                    if(isOk)
+                    {
+                        [SVProgressHUD dismiss];
+                        
+                        [self refreshCollectionView];
+                    }
+                }
             }
+
         }];
     }
 }
