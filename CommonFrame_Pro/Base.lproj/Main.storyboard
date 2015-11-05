@@ -688,6 +688,7 @@
                     <view key="view" contentMode="scaleToFill" id="OMf-MC-saC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.12156862745098039" green="0.12156862745098039" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="成员" id="UbP-57-rQ0">
                         <barButtonItem key="leftBarButtonItem" title="返回" id="UTh-np-OM3">

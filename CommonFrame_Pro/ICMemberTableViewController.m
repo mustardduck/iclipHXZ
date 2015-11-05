@@ -132,7 +132,14 @@
     
      CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 68 - 66)];
+    CGFloat THeight = [UIScreen mainScreen].bounds.size.height - 68 - 66;
+    
+    if(self.controllerType == MemberViewFromControllerPublishMissionResponsible)
+    {
+        THeight = [UIScreen mainScreen].bounds.size.height - 68;
+    }
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, tableWidth - 30, THeight)];
     [_tableView setBackgroundColor:RGBCOLOR(31, 31, 31)];
      _tableView.showsVerticalScrollIndicator = NO;
     [_tableView setSectionIndexColor:[UIColor blueColor]];
@@ -192,13 +199,13 @@
         [selectOkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [selectOkBtn addTarget:self action:@selector(selectOkBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         
-        self.view.backgroundColor = [UIColor redColor];
+//        self.view.backgroundColor = [UIColor redColor];
         
         [self.view addSubview:selectOkBtn];
         
     }
     
-    _indexBar = [[AIMTableViewIndexBar alloc] initWithFrame:CGRectMake(tableWidth - 30, 0, 30, [UIScreen mainScreen].bounds.size.height - 66 - 68)];
+    _indexBar = [[AIMTableViewIndexBar alloc] initWithFrame:CGRectMake(tableWidth - 30, 0, 30, THeight)];
     [_indexBar setBackgroundColor:[UIColor blackColor]];
     _indexBar.delegate = self;
     
@@ -470,8 +477,6 @@
     }
     else
     {
-        
-        
         _tableView.tableHeaderView = ({
             
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
@@ -513,7 +518,14 @@
             view;
         });
         
-        [_tableView setFrame: CGRectMake(0, 0, tableWidth - 30, [UIScreen mainScreen].bounds.size.height - 68 - 66)];
+        CGFloat THeight = [UIScreen mainScreen].bounds.size.height - 68 - 66;
+        
+        if(self.controllerType == MemberViewFromControllerPublishMissionResponsible)
+        {
+            THeight = [UIScreen mainScreen].bounds.size.height - 68;
+        }
+        
+        [_tableView setFrame: CGRectMake(0, 0, tableWidth - 30, THeight)];
         
        
     }
