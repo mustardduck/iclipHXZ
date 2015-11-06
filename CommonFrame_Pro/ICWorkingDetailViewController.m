@@ -161,7 +161,16 @@
     {
         if (buttonIndex == 0)//编辑
         {
+            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
             
+            if(_isMainMission)
+            {
+                [self jumpToMissionMainEdit];
+            }
+            else
+            {
+                [self jumpToMissionEdit];
+            }
         }
         else if (buttonIndex == 1)//删除
         {
@@ -207,25 +216,35 @@
 
 - (void) btnRightMoreClicked:(id)sender
 {
-    //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
-    NSString *statusStr = @"";
-
-    if(_currentMission.status == 0)
+    if(_currentMission.type == 1)//任务
     {
-        statusStr = @"开始";
-    }
-    else if (_currentMission.status == 1 || _currentMission.status == -3)
-    {
-        statusStr = @"完成";
-    }
-    
-    if(statusStr.length)
-    {
-        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:statusStr, @"编辑",@"删除", nil];
-        as.destructiveButtonIndex= 2;
-        as.tag = 111;
-        [as showInView:self.view];
-
+        //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+        NSString *statusStr = @"";
+        
+        if(_currentMission.status == 0)
+        {
+            statusStr = @"开始";
+        }
+        else if (_currentMission.status == 1 || _currentMission.status == -3)
+        {
+            statusStr = @"完成";
+        }
+        
+        if(statusStr.length)
+        {
+            UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:statusStr, @"编辑",@"删除", nil];
+            as.destructiveButtonIndex= 2;
+            as.tag = 111;
+            [as showInView:self.view];
+            
+        }
+        else
+        {
+            UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"编辑",@"删除", nil];
+            as.destructiveButtonIndex= 1;
+            as.tag = 112;
+            [as showInView:self.view];
+        }
     }
     else
     {
@@ -234,7 +253,6 @@
         as.tag = 112;
         [as showInView:self.view];
     }
-
 }
 
 - (void)viewDidLoad {
@@ -721,6 +739,9 @@
                 [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
                 
                 [self loadData];
+                
+                [_tableView reloadData];
+
             }
         }
     }
@@ -1508,7 +1529,7 @@
                 [title setFont:Font(14)];
                 
                 _partList=  _currentMission.partList;
-                responText = [NSString stringWithFormat:@"参与人 (%lu)", (unsigned long)_partList.count];
+                responText = [NSString stringWithFormat:@"可见范围 (%lu)", (unsigned long)_partList.count];
                 title.text = responText;
                 [bFirstView addSubview:title];
                 
@@ -1524,7 +1545,7 @@
                     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
                     
                     layout.minimumInteritemSpacing = 12.f;
-                    layout.minimumLineSpacing = 14.f;
+                    layout.minimumLineSpacing = 0;
                     UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
                     layout.sectionInset = insets;
                     
@@ -1552,7 +1573,7 @@
                     {
                         [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
                         
-                        _partCollView.height = 95;
+                        _partCollView.height = 14 + 50 + 30;
                         
                         bFirstView.height = 166 + _partCollView.height;
                     }
@@ -1561,9 +1582,23 @@
                         [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
                         
                         NSInteger count = _partList.count;
-                        NSInteger row = (count % 5) ? count / 5 + 1: count / 5;
                         
-                        float height = row * (50 + 18 + 24);
+                        NSInteger row = 1;
+                        
+                        if(SCREENWIDTH == 320)
+                        {
+                            row = (count % 4) ? count / 4 + 1: count / 4;
+                        }
+                        else if(SCREENWIDTH == 414)
+                        {
+                            row = (count % 6) ? count / 6 + 1: count / 6;
+                        }
+                        else
+                        {
+                            row = (count % 5) ? count / 5 + 1: count / 5;
+                        }
+                        
+                        float height = 14 + row * (50 + 30);
                         
                         _partCollView.height = height;
                         
@@ -2316,7 +2351,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(50, 50 + 18);
+    return CGSizeMake(50, 50 + 30);
 }
 
 - (void) clickMorePart:(id)sender

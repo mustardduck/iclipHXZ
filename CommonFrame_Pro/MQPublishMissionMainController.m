@@ -303,7 +303,7 @@
 {
     if(buttonIndex == 1)
     {
-        if(alertView.tag == 123 || alertView.tag > 1000)
+        if(alertView.tag == 123 || alertView.tag >= 1000)
         {
             NSDictionary * dic;
             
@@ -321,7 +321,7 @@
                 
                 dic = _mainMissionDic;
             }
-            else if(alertView.tag > 1000)
+            else if(alertView.tag >= 1000)
             {
                 NSInteger index = alertView.tag - 1000;
                 
@@ -402,6 +402,8 @@
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
     NSLog(@"%@",_childMissionArr);
+    
+    [self hiddenKeyboard];
 
     NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
     

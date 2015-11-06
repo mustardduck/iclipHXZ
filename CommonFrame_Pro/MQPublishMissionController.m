@@ -2214,11 +2214,17 @@
         if(mission.cclist != nil)
             [dic setObject:mission.cclist forKey:@"ccList"];
         
-        
+
         [dic setObject:mission.finishTime forKey:@"finishTime"];
         
         if(mission.remindTime != nil)
+        {
             [dic setObject:mission.remindTime forKey:@"remindTime"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"remindTime"];
+        }
     }
     
     [dic setObject:[NSString stringWithFormat:@"%d",mission.isLabel?1:0] forKey:@"isLabel"];

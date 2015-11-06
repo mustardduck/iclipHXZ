@@ -83,13 +83,8 @@
     [dic setObject:taskId forKey:@"taskId"];
     [dic setObject:[NSNumber numberWithInteger:status] forKey:@"status"];
     [dic setObject:[LoginUser loginUserID] forKey:@"userId"];
-
-    NSString* jsonStr = [CommonFile toJson:dic];
     
-    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
-    [tmpDic setObject:jsonStr forKey:@"json"];
-    
-    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_TASK_STATUS_URL postData:tmpDic];
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_TASK_STATUS_URL postData:dic];
     
     if (responseString == nil) {
         return isOK;
