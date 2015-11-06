@@ -265,11 +265,11 @@
         NSString * taskId = [mDic valueForKey:@"taskId"];
         if(!taskId)
         {
-            _isEdit = NO;
+            _isEdit = NO;//新增主任务
         }
         else
         {
-            _isEdit = YES;
+            _isEdit = YES;//编辑主任务
         }
     }
     if(_childMissionArr.count && !_isMainMission)
@@ -279,11 +279,21 @@
         NSString * taskId = [mDic valueForKey:@"taskId"];
         if(!taskId)
         {
-            _isEdit = NO;
+            _isEdit = NO;//新增子任务
+            
+            NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
+            
+            if([mainDic allKeys].count)
+            {
+                NSString * taskId = [mainDic valueForKey:@"taskId"];
+                
+                ((MQPublishMissionController*)vc).parentId = taskId;
+
+            }
         }
         else
         {
-            _isEdit = YES;
+            _isEdit = YES;//编辑子任务
         }
     }
 

@@ -744,6 +744,17 @@
     
     if(section == 0 && index == 0)
     {
+        NSString * taskId = [_currentMissionDic valueForKey:@"taskId"];
+        
+        if(taskId)
+        {
+            [SVProgressHUD showErrorWithStatus:@"不能修改群组"];
+            
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+            return;
+        }
+        
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
         ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeMission;
@@ -2293,12 +2304,17 @@
 {
     NSMutableDictionary * misDic = [NSMutableDictionary dictionary];
     
-    [misDic setObject:dic forKey:@"missionDic"];
-    
     [misDic setObject:[dic valueForKey:@"title"] forKey:@"title"];
     
     if(!_isMainMission)
     {
+        if(_parentId)
+        {
+            [dic setObject:_parentId forKey:@"parentId"];
+        }
+        
+        [misDic setObject:dic forKey:@"missionDic"];
+        
         [_savedChildMissionArr replaceObjectAtIndex:_currentEditChildIndex withObject:misDic];
         
         if(_savedChildMissionArr.count)
@@ -2308,6 +2324,8 @@
     }
     else
     {
+        [misDic setObject:dic forKey:@"missionDic"];
+
         [self.icMissionMainViewController setValue:misDic forKey:@"mainMissionDic"];
 
     }

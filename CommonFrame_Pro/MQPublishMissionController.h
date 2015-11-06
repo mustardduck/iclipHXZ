@@ -51,6 +51,8 @@
 @property(nonatomic,strong) NSMutableArray* savedChildMissionArr;
 @property(nonatomic,strong) NSDictionary* currentMissionDic;
 @property(nonatomic,strong) NSDictionary* missionDic;
+@property(nonatomic,strong) NSString* parentId;
+
 
 //@property(nonatomic,strong) NSString* parentId;
 
