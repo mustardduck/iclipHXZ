@@ -19,6 +19,7 @@
 #import "PartiCell.h"
 #import "MQPublishMissionController.h"
 #import "MQPublishMissionMainController.h"
+#import "MQPublishSharedAndNotifyController.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
@@ -97,6 +98,24 @@
 
 }
 
+- (void) jumpToShareEdit
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishSharedAndNotifyController"];
+    ((MQPublishSharedAndNotifyController*)vc).isEditMission = YES;
+    ((MQPublishSharedAndNotifyController*)vc).taskId = _currentMission.taskId;
+    ((MQPublishSharedAndNotifyController*)vc).workGroupId = _currentMission.workGroupId;
+    ((MQPublishSharedAndNotifyController*)vc).workGroupName = _currentMission.workGroupName;
+    ((MQPublishSharedAndNotifyController*)vc).userId = [LoginUser loginUserID];
+    ((MQPublishSharedAndNotifyController*)vc).icDetailViewController = self;
+    ((MQPublishSharedAndNotifyController*)vc).isShared = _currentMission.type;
+
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
 - (void) jumpToMissionEdit
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -161,16 +180,26 @@
     {
         if (buttonIndex == 0)//编辑
         {
-            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+            NSInteger type = _currentMission.type;
             
-            if(_isMainMission)
+            if(type == 1)
             {
-                [self jumpToMissionMainEdit];
+                _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+                
+                if(_isMainMission)
+                {
+                    [self jumpToMissionMainEdit];
+                }
+                else
+                {
+                    [self jumpToMissionEdit];
+                }
             }
             else
             {
-                [self jumpToMissionEdit];
+                [self jumpToShareEdit];
             }
+
         }
         else if (buttonIndex == 1)//删除
         {
@@ -1737,7 +1766,110 @@
             }
             else//问题、建议、其它
             {
-                bFirstView.height = YH(tagLbl) + 16;
+                //参与人
+                
+                //虚线
+                DashesLineView * dashLine = [[DashesLineView alloc] init];
+                dashLine.frame = CGRectMake(0, YH(tagLbl) + 14, duiImgWidth, 0.5);
+                dashLine.backgroundColor = [UIColor clearColor];
+                [bFirstView addSubview:dashLine];
+                
+                DashesLineView * dashLine2 = [[DashesLineView alloc] init];
+                dashLine2.frame = CGRectMake(0, Y(dashLine) + 40, duiImgWidth, 0.5);
+                dashLine2.backgroundColor = [UIColor clearColor];
+                [bFirstView addSubview:dashLine2];
+                
+                UIImageView * fzIcon = [[UIImageView alloc] init];
+                fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 16, 16);
+                fzIcon.image = [UIImage imageNamed:@"icon_canyuren"];
+                [bFirstView addSubview:fzIcon];
+                
+                title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
+                [title setBackgroundColor:[UIColor clearColor]];
+                [title setTextColor:[UIColor grayTitleColor]];
+                [title setFont:Font(14)];
+                
+                _partList=  _currentMission.partList;
+                NSString *responText = [NSString stringWithFormat:@"可见范围 (%lu)", (unsigned long)_partList.count];
+                title.text = responText;
+                [bFirstView addSubview:title];
+                
+                if(_partList.count)
+                {
+                    bFirstView.height = 100 + 95;
+                    
+                    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+                    
+                    layout.minimumInteritemSpacing = 12.f;
+                    layout.minimumLineSpacing = 0;
+                    UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
+                    layout.sectionInset = insets;
+                    
+                    _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine2), duiImgWidth, 95) collectionViewLayout:layout];
+                    _partCollView.delegate = self;
+                    _partCollView.dataSource = self;
+                    _partCollView.scrollEnabled = NO;
+                    _partCollView.backgroundColor = [UIColor clearColor];
+                    
+                    [_partCollView registerClass:[PartiCell class] forCellWithReuseIdentifier:@"PartiCell"];
+                    
+                    _partCollView.frame = CGRectMake(0, Y(dashLine2), duiImgWidth, 95);
+                    
+                    [bFirstView addSubview:_partCollView];
+                    
+                    UIButton * moreBtn = [[UIButton alloc] init];
+                    moreBtn.frame = CGRectMake(duiImgWidth - 50, Y(dashLine2), 50, 40);
+                    moreBtn.backgroundColor = [UIColor clearColor];
+                    [moreBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                    [moreBtn addTarget:self action:@selector(clickMorePart:) forControlEvents:UIControlEventTouchUpInside];
+                    moreBtn.titleLabel.font = Font(12);
+                    [bFirstView addSubview:moreBtn];
+                    
+                    if(_partList.count > 5 && !_isShowAllPart)
+                    {
+                        [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
+                        
+                        _partCollView.height = 14 + 50 + 30;
+                        
+                        bFirstView.height = 166 + _partCollView.height;
+                    }
+                    else if(_partList.count > 5 && _isShowAllPart)
+                    {
+                        [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
+                        
+                        NSInteger count = _partList.count;
+                        
+                        NSInteger row = 1;
+                        
+                        if(SCREENWIDTH == 320)
+                        {
+                            row = (count % 4) ? count / 4 + 1: count / 4;
+                        }
+                        else if(SCREENWIDTH == 414)
+                        {
+                            row = (count % 6) ? count / 6 + 1: count / 6;
+                        }
+                        else
+                        {
+                            row = (count % 5) ? count / 5 + 1: count / 5;
+                        }
+                        
+                        float height = 14 + row * (50 + 30);
+                        
+                        _partCollView.height = height;
+                        
+                        bFirstView.height = 100 + height;
+                        
+                    }
+                    else
+                    {
+                        moreBtn.hidden = YES;
+                    }
+                }
+                else
+                {
+                    bFirstView.height = 100;
+                }
                 
                 duiImgHeight = YH(bFirstView) + 14 - 78;
 

@@ -11,6 +11,7 @@
 
 #define CURL                    @"/index/findIndexTrends.hz"
 #define PUBLISH_MISSION_URL     @"/task/createTaskApp.hz"
+#define PUBLISH_SHARE_URL     @"/task/createTask.hz"
 #define PERSION_INFO            @"/workgroup/findWgPeopleTrends.hz"
 #define DETAIL_URL              @"/task/findTaskDetail.hz"
 #define TERM_URL                @"/index/findIndexTrendsByTerm.hz"
@@ -479,9 +480,20 @@
     NSData* responseString;
     
     if (self.taskId != nil)
+    {
         responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:tmpDic];
+    }
     else
-        responseString = [HttpBaseFile requestDataWithSyncByPost:PUBLISH_MISSION_URL postData:tmpDic];
+    {
+        if(self.type == 1)
+        {
+            responseString = [HttpBaseFile requestDataWithSyncByPost:PUBLISH_MISSION_URL postData:tmpDic];
+        }
+        else
+        {
+            responseString = [HttpBaseFile requestDataWithSyncByPost:PUBLISH_SHARE_URL postData:tmpDic];
+        }
+    }
     
     if (responseString == nil) {
         return isOk;

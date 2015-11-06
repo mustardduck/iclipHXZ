@@ -121,9 +121,6 @@
     
     self.isShowAllSection = _workGroupName ? YES : NO;
     
-//    _imgUrls = [NSMutableArray array];
-//    _fileUrls = [NSMutableArray array];
-    
     if(!_cAccessoryArray.count)
     {
         self.cAccessoryArray = [NSMutableArray array];

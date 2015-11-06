@@ -44,17 +44,11 @@
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;
 @property(nonatomic,strong) id       icMissionMainViewController;
-//@property(nonatomic,strong) id       icMainViewController;
-//@property (nonatomic,assign) NSInteger  indexInMainArray;
 
 
 @property(nonatomic,strong) NSMutableArray* savedChildMissionArr;
 @property(nonatomic,strong) NSDictionary* currentMissionDic;
 @property(nonatomic,strong) NSDictionary* missionDic;
 @property(nonatomic,strong) NSString* parentId;
-
-
-//@property(nonatomic,strong) NSString* parentId;
-
 
 @end

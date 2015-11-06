@@ -22,6 +22,7 @@
 #import "MQPublishMissionController.h"
 #import "MegListController.h"
 #import "MQPublishMissionMainController.h"
+#import "MQPublishSharedAndNotifyController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -283,7 +284,7 @@
 //    [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
     
     NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_wenti"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_qita"]];
-    NSArray* topMenuNameList = @[@"任务",@"问题",@"建议", @"其它"];
+    NSArray* topMenuNameList = @[@"任务",@"异常",@"申请", @"议题"];
     
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];
     _topMenuController.delegate = self;
@@ -658,10 +659,13 @@
         _isTopMenuSharedButtonClicked = YES;
         
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
-//        ((ICGroupListViewController*)vc).icMainViewController = self;
-        ((ICGroupListViewController*)vc).isShared = 1;
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishSharedAndNotifyController"];
+        if (_currentGroup) {
+            ((MQPublishSharedAndNotifyController*)vc).workGroupId = _currentGroup.workGroupId;
+            ((MQPublishSharedAndNotifyController*)vc).workGroupName = _currentGroup.workGroupName;
+        }
+        ((MQPublishSharedAndNotifyController*)vc).userId = self.loginUserID;
+        ((MQPublishSharedAndNotifyController*)vc).isShared = 1;
         [self.navigationController pushViewController:vc animated:YES];
         
     }
@@ -1629,13 +1633,13 @@
                 type = @"任务";
                 break;
             case 2:
-                type = @"问题";
+                type = @"异常";
                 break;
             case 3:
-                type = @"其他";
+                type = @"申请";
                 break;
             case 8:
-                type = @"建议";
+                type = @"议题";
                 break;
             default:
                 break;

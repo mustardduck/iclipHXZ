@@ -117,15 +117,15 @@
     [self.view addSubview:_tableView];
     
     if (_isShared == 1) {
-        self.navigationItem.title = @"问题";
+        self.navigationItem.title = @"异常";
     }
     else if (_isShared == 2)
     {
-        self.navigationItem.title = @"建议";
+        self.navigationItem.title = @"申请";
     }
     else if (_isShared == 3)
     {
-        self.navigationItem.title = @"其它";
+        self.navigationItem.title = @"议题";
     }
 
 }
