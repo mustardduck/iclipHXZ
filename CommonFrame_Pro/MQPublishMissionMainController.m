@@ -182,6 +182,14 @@
     _jiaView.hidden = YES;
 }
 
+//- (void) textViewDidEndEditing:(UITextView *)textView
+//{
+//    if([[_mainMissionDic valueForKey:@"title"] isEqualToString:textView.text])
+//    {
+//        
+//    }
+//}
+
 - (void) setHeaderView
 {
     [_topTxtView setRoundColorCorner:5.0 withColor:[UIColor grayLineColor]];
@@ -691,8 +699,6 @@
     if(cell)
     {
         cell.rightView.hidden = NO;
-
-//        [_mainTableView scrollToRowAtIndexPath:indexpath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     
     [self performSelector:@selector(scrollTableView:) withObject:textField afterDelay:0.0]; //必须

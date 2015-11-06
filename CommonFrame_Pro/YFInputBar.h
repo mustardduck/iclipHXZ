@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ICWorkingDetailViewController.h"
+#import "PH_UITextView.h"
 
 @class YFInputBar;
 @protocol YFInputBarDelegate <NSObject>
@@ -20,7 +21,7 @@
 
 @property(assign,nonatomic)id<YFInputBarDelegate> delegate;
 
-@property(strong,nonatomic)UITextView *textField;
+@property(strong,nonatomic)PH_UITextView *textField;
 @property(strong,nonatomic)UIButton *sendBtn;
 @property(strong,nonatomic) UIControl *relativeControl;
 @property(strong,nonatomic) NSArray *typeList;

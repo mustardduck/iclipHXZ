@@ -106,7 +106,7 @@
 }
 
 
--(UITextView *)textField
+-(PH_UITextView *)textField
 {
     if (!_textField) {
         
@@ -122,13 +122,15 @@
         [self addSubview:btnType];
         
         
-        _textField = [[UITextView alloc]initWithFrame:CGRectMake(15, (self.bounds.size.height - 38)/2, [UIScreen mainScreen].bounds.size.width - 75, 38)];
+        _textField = [[PH_UITextView alloc]initWithFrame:CGRectMake(15, (self.bounds.size.height - 38)/2, [UIScreen mainScreen].bounds.size.width - 75, 38)];
         _textField.backgroundColor = [UIColor whiteColor];
         _textField.layer.cornerRadius = 6;
         _textField.font = [UIFont systemFontOfSize:18];
         _textField.delegate = self;
         [_textField setReturnKeyType:UIReturnKeySend];
         [_textField setKeyboardType:UIKeyboardTypeDefault];
+//        _textField.tag = 707;
+//        self.textField.placeholder = @"初始化111";
         
         _minHeight = 38;
         _currentHeight = 38;
@@ -298,7 +300,6 @@
 
 - (void)keyboardWillShow:(NSNotification*)notification{
     
-    
     CGRect _keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     //NSLog(@"%f-%f-%f-%f",_keyboardRect.origin.y, _keyboardRect.size.height, [self getHeighOfWindow]-CGRectGetMaxY(self.frame), CGRectGetMinY(self.frame));
     
@@ -368,7 +369,6 @@
     {
         
     }
-    
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification

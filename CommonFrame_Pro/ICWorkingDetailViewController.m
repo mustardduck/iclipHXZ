@@ -320,6 +320,8 @@
             _inputBar.parentController = self;
             _inputBar.dataCount = _replyList.count - 1;
             
+            [self addDoneToKeyboard:_inputBar.textField];
+            
             [self.view addSubview:_inputBar];
             
             [acInd stopAnimating];
@@ -329,6 +331,11 @@
     //_dataList = [NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10", nil];
     //_replyList = [NSMutableArray arrayWithObjects:@" ",@" ",@"回形针工具上线申请1！",@"回形针工具上线申请2！",@"回形针工具上线申请3！",@"回形针工具上线申请！",@"回形针工具上线申请！",@"回形针工具上线申请8！",@"回形针工具上线申请9！",@"回形针工具上线申请10！", nil];
 
+}
+
+- (void) hiddenKeyboard
+{
+    [_inputBar.textField resignFirstResponder];
 }
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
@@ -2073,6 +2080,11 @@
         BOOL hasLoad = NO;
          NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 1)];
         id obj = [_reReplyDic valueForKey:key];
+        
+//        NSInteger cIndex = _indexRow - 1;
+//        Comment* comm = [_commentArray objectAtIndex:cIndex];
+//        [textf setPlaceholder:[NSString stringWithFormat:@"回复:%@",comm.userName]];
+        
         if ([obj isKindOfClass:[NSArray class]])
         {
             NSArray* reArray = [NSArray arrayWithArray:(NSArray *)obj];
