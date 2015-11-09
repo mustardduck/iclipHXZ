@@ -695,7 +695,7 @@
         [line1 setBackgroundColor:[UIColor grayLineColor]];
         [cell.contentView addSubview:line1];
         
-        [photo setFrame:CGRectMake(14, 14, 13, 17)];
+        [photo setFrame:CGRectMake(14, 14, 13, 15)];
         [photo setImage:[UIImage imageNamed:@"icon_qunzu_white"]];
         
         [lblText setText:@"群组"];
@@ -722,12 +722,12 @@
         [line1 setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:line1];
         
-        [photo setFrame:CGRectMake(14, 14, 13, 17)];
+        [photo setFrame:CGRectMake(14, 14, 13, 15)];
         [photo setImage:[UIImage imageNamed:@"icon_fuzeren_white"]];
         [lblText setText:@"负责人"];
     }
     else if (section == 1 && index == 1) {
-        [photo setFrame:CGRectMake(14, 14, 13, 17)];
+        [photo setFrame:CGRectMake(14, 14, 13, 15)];
         [photo setImage:[UIImage imageNamed:@"icon_canyuren_white"]];
         [lblText setText:@"参与人"];
     }

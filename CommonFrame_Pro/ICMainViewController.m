@@ -1793,7 +1793,7 @@
                 fujianLbl.frame = CGRectMake(X(attachment) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
                 [cell.contentView addSubview:fujianLbl];
                 
-                attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 12, 12)];
+                attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 13, 15)];
                 attachment.image = [UIImage imageNamed:@"icon_zirenwu"];
                 [cell.contentView addSubview:attachment];
             }
