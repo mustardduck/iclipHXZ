@@ -12,19 +12,15 @@
 @implementation DashesLineView
 
 - (id)initWithFrame:(CGRect)frame
-
 {
-    
     self= [super initWithFrame:frame];
     
     if(self) {
         
         // Initialization code
-        
         self.lineColor = [UIColor grayLineColor];
         self.startPoint = CGPointMake(0, 0);
         self.endPoint = CGPointMake(SCREENWIDTH - 14 * 2, 0);
-        
     }
     
     return self;
@@ -38,7 +34,6 @@
 - (void)drawRect:(CGRect)rect
 
 {
-    
     CGContextRef context =UIGraphicsGetCurrentContext();
     
     CGContextBeginPath(context);

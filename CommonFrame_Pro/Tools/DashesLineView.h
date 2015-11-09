@@ -17,4 +17,6 @@
 
 @property(nonatomic,strong)UIColor* lineColor;//虚线颜色
 
+- (id)initWithFrame:(CGRect)frame;
+
 @end

@@ -13,6 +13,7 @@
 #import "PH_UITextView.h"
 #import "MQPublishMissionController.h"
 #import "SVProgressHUD.h"
+#import "DashesLineView.h"
 
 @interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate>
 {
@@ -39,6 +40,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightTxtBtn;
 @property (weak, nonatomic) IBOutlet UIView *jiaView;
 @property (assign, nonatomic) CGFloat keyboardHeight;
+@property (weak, nonatomic) IBOutlet DashesLineView *topRightDashLine;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @end
 
@@ -198,6 +201,18 @@
     [_mainTextView setPlaceholder:@"请编写任务标题!"];
     
     [self addDoneToKeyboard:_mainTextView];
+    
+    _topRightDashLine.lineColor = [UIColor grayLineColor];
+    _topRightDashLine.startPoint = CGPointMake(0, 0);
+    _topRightDashLine.endPoint = CGPointMake(0, 90);
+    _topRightDashLine.backgroundColor = [UIColor clearColor];
+    _topRightDashLine.frame = CGRectMake(34, 0, 0.5, 90);
+    
+    UIView * lineShort = [[UIView alloc] init];
+    lineShort.frame = CGRectMake(26.5, 110, 0.5, 6);
+    lineShort.backgroundColor = [UIColor grayLineColor];
+    [_headerView addSubview:lineShort];
+    
 }
 
 - (void)rightBtnClicked:(id)sender
@@ -645,6 +660,11 @@
                 if(cell.titleLbl.text.length)
                 {
                     cell.rightView.hidden = NO;
+                    cell.lineView.lineColor = [UIColor grayLineColor];
+                    cell.lineView.startPoint = CGPointMake(0, 0);
+                    cell.lineView.endPoint = CGPointMake(0, 44);
+                    cell.lineView.backgroundColor = [UIColor clearColor];
+                    cell.lineView.frame = CGRectMake(68, 0, 0.5, 44);
                 }
                 else
                 {
@@ -699,6 +719,12 @@
     if(cell)
     {
         cell.rightView.hidden = NO;
+        
+        cell.lineView.lineColor = [UIColor grayLineColor];
+        cell.lineView.startPoint = CGPointMake(0, 0);
+        cell.lineView.endPoint = CGPointMake(0, 44);
+        cell.lineView.backgroundColor = [UIColor clearColor];
+        cell.lineView.frame = CGRectMake(68, 0, 0.5, 44);
     }
     
     [self performSelector:@selector(scrollTableView:) withObject:textField afterDelay:0.0]; //必须

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DashesLineView.h"
 
 @interface MQPublishMissionMainCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *titleView;
@@ -16,6 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *rightPhoto;
 @property (weak, nonatomic) IBOutlet UIView *addView;
 @property (weak, nonatomic) IBOutlet UIButton *addBtn;
-@property (weak, nonatomic) IBOutlet UIView *lineView;
+@property (weak, nonatomic) IBOutlet DashesLineView *lineView;
 
 @end

@@ -2045,7 +2045,7 @@
                                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KoA-so-WQZ">
                                                             <rect key="frame" x="0.0" y="0.0" width="66" height="90"/>
                                                         </button>
-                                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aft-gd-ecW">
+                                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aft-gd-ecW" customClass="DashesLineView">
                                                             <rect key="frame" x="34" y="0.0" width="1" height="90"/>
                                                             <color key="backgroundColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         </view>
@@ -2099,7 +2099,7 @@
                                                 <constraint firstItem="lt2-4p-pEQ" firstAttribute="leading" secondItem="pkr-BE-jek" secondAttribute="leading" id="wy7-wS-bti"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VKk-vZ-i1o">
+                                        <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VKk-vZ-i1o">
                                             <rect key="frame" x="27" y="110" width="1" height="6"/>
                                             <color key="backgroundColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
@@ -2159,8 +2159,8 @@
                                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y7p-lD-AKZ">
                                                                     <rect key="frame" x="23" y="7" width="30" height="30"/>
                                                                 </imageView>
-                                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BdU-ZX-56c">
-                                                                    <rect key="frame" x="67" y="0.0" width="1" height="44"/>
+                                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BdU-ZX-56c" customClass="DashesLineView">
+                                                                    <rect key="frame" x="68" y="0.0" width="1" height="44"/>
                                                                     <color key="backgroundColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </view>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="btn_jiantou_1" translatesAutoresizingMaskIntoConstraints="NO" id="AZF-1Y-HEy">
@@ -2224,6 +2224,7 @@
                                         <connections>
                                             <outlet property="addBtn" destination="1jv-gb-NiT" id="a6N-kX-8qp"/>
                                             <outlet property="addView" destination="vyr-hf-oU0" id="YH6-3e-IwF"/>
+                                            <outlet property="lineView" destination="BdU-ZX-56c" id="C5B-gm-gKp"/>
                                             <outlet property="rightBtn" destination="fjU-80-gOA" id="Zfe-rf-G87"/>
                                             <outlet property="rightPhoto" destination="Y7p-lD-AKZ" id="xSK-wz-kiU"/>
                                             <outlet property="rightView" destination="dsT-XR-WZX" id="HYo-mD-Wr9"/>
@@ -2274,11 +2275,13 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="headerView" destination="6Vl-zm-3pu" id="yOg-6d-w3l"/>
                         <outlet property="jiaView" destination="N1i-cb-01Q" id="com-f5-Lp2"/>
                         <outlet property="mainTableView" destination="dNQ-xj-7UZ" id="Cby-Cr-YdW"/>
                         <outlet property="mainTextView" destination="lt2-4p-pEQ" id="Mrg-Rp-yr6"/>
                         <outlet property="rightTxtBtn" destination="KoA-so-WQZ" id="VmO-n6-60T"/>
                         <outlet property="rightTxtView" destination="M1G-eX-MZj" id="iSb-ad-kfu"/>
+                        <outlet property="topRightDashLine" destination="Aft-gd-ecW" id="yTb-DR-Apd"/>
                         <outlet property="topTxtView" destination="pkr-BE-jek" id="UU3-y2-Q9B"/>
                         <outlet property="view" destination="Ur7-VQ-C4m" id="0R4-9g-xNm"/>
                     </connections>
@@ -2458,16 +2461,16 @@
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="aFE-IX-1m9"/>
-                                        <exclude reference="Yp6-0n-zTj"/>
                                         <exclude reference="M2o-FS-gSN"/>
-                                        <exclude reference="bbK-JC-qxV"/>
-                                        <exclude reference="qa7-nO-mxJ"/>
-                                        <exclude reference="bC8-ie-0Zq"/>
-                                        <exclude reference="i8i-6D-ebg"/>
-                                        <exclude reference="Rf0-7j-Kts"/>
-                                        <exclude reference="jW1-ej-9ND"/>
                                         <exclude reference="NaM-MI-Rr5"/>
+                                        <exclude reference="Rf0-7j-Kts"/>
+                                        <exclude reference="Yp6-0n-zTj"/>
+                                        <exclude reference="aFE-IX-1m9"/>
+                                        <exclude reference="bC8-ie-0Zq"/>
+                                        <exclude reference="bbK-JC-qxV"/>
+                                        <exclude reference="i8i-6D-ebg"/>
+                                        <exclude reference="jW1-ej-9ND"/>
+                                        <exclude reference="qa7-nO-mxJ"/>
                                     </mask>
                                 </variation>
                             </scrollView>
@@ -2487,9 +2490,9 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="bNa-04-47n"/>
-                                <exclude reference="qoa-fE-zzM"/>
                                 <exclude reference="iDe-vj-lN8"/>
                                 <exclude reference="kDN-QG-fus"/>
+                                <exclude reference="qoa-fE-zzM"/>
                                 <exclude reference="xdA-wn-b1Y"/>
                             </mask>
                         </variation>
