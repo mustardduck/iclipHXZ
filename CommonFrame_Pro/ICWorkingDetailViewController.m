@@ -109,7 +109,16 @@
     ((MQPublishSharedAndNotifyController*)vc).workGroupName = _currentMission.workGroupName;
     ((MQPublishSharedAndNotifyController*)vc).userId = [LoginUser loginUserID];
     ((MQPublishSharedAndNotifyController*)vc).icDetailViewController = self;
-    ((MQPublishSharedAndNotifyController*)vc).isShared = _currentMission.type;
+    NSInteger isShared = 1;
+    if(_currentMission.type == 3)
+    {
+        isShared = 2;
+    }
+    else if (_currentMission.type == 8)
+    {
+        isShared = 3;
+    }
+    ((MQPublishSharedAndNotifyController*)vc).isShared = isShared;
 
     
     [self.navigationController pushViewController:vc animated:YES];

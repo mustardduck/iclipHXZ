@@ -1494,11 +1494,11 @@
         m.type = TaskTypeShare;
     else if(_isShared == 2)
     {
-        m.type = TaskTypeJianYi;
+        m.type = TaskTypeNoitification;
     }
     else if (_isShared == 3)
     {
-        m.type = TaskTypeNoitification;
+        m.type = TaskTypeJianYi;
     }
     
     if (_taskId != nil) {

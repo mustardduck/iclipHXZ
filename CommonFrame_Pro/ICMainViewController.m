@@ -672,21 +672,35 @@
     else if (index == 2) {//建议
         _isTopMenuSharedButtonClicked = NO;
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
-//        ((ICGroupListViewController*)vc).icMainViewController = self;
-        ((ICGroupListViewController*)vc).isShared = 2;
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishSharedAndNotifyController"];
+        if (_currentGroup) {
+            ((MQPublishSharedAndNotifyController*)vc).workGroupId = _currentGroup.workGroupId;
+            ((MQPublishSharedAndNotifyController*)vc).workGroupName = _currentGroup.workGroupName;
+        }
+        ((MQPublishSharedAndNotifyController*)vc).userId = self.loginUserID;
+        ((MQPublishSharedAndNotifyController*)vc).isShared = 2;
         [self.navigationController pushViewController:vc animated:YES];
         
     }
     else if (index == 3) {//其它
         _isTopMenuSharedButtonClicked = NO;
+        
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
-        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
-//        ((ICGroupListViewController*)vc).icMainViewController = self;
-        ((ICGroupListViewController*)vc).isShared = 3;
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishSharedAndNotifyController"];
+        if (_currentGroup) {
+            ((MQPublishSharedAndNotifyController*)vc).workGroupId = _currentGroup.workGroupId;
+            ((MQPublishSharedAndNotifyController*)vc).workGroupName = _currentGroup.workGroupName;
+        }
+        ((MQPublishSharedAndNotifyController*)vc).userId = self.loginUserID;
+        ((MQPublishSharedAndNotifyController*)vc).isShared = 3;
         [self.navigationController pushViewController:vc animated:YES];
+        
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
+//        ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeSharedAndNotify;
+////        ((ICGroupListViewController*)vc).icMainViewController = self;
+//        ((ICGroupListViewController*)vc).isShared = 3;
+//        [self.navigationController pushViewController:vc animated:YES];
         
     }
 }
