@@ -496,7 +496,7 @@
         [cell.contentView addSubview:line1];
         
         [photo setFrame:CGRectMake(14, 14, 13, 17)];
-        [photo setImage:[UIImage imageNamed:@"icon_qunzu"]];
+        [photo setImage:[UIImage imageNamed:@"icon_qunzu_white"]];
         
         [lblText setText:@"群组"];
     }
@@ -506,7 +506,7 @@
         [cell.contentView addSubview:line1];
         
         [photo setFrame:CGRectMake(14, 14, 13, 17)];
-        [photo setImage:[UIImage imageNamed:@"icon_fanwei"]];
+        [photo setImage:[UIImage imageNamed:@"icon_fanwei_white"]];
         [lblText setText:@"参与人"];
     }
     
@@ -660,7 +660,7 @@
     _TagCollView.delegate = self;
     _TagCollView.dataSource = self;
     _TagCollView.scrollEnabled = NO;
-    _TagCollView.backgroundColor = [UIColor clearColor];
+    _TagCollView.backgroundColor = [UIColor grayMarkColor];
     
     [_TagCollView registerClass:[MarkTagCell class] forCellWithReuseIdentifier:@"MarkTagCell"];
     
@@ -712,7 +712,7 @@
     _collectionview.delegate = self;
     _collectionview.dataSource = self;
     _collectionview.scrollEnabled = NO;
-    _collectionview.backgroundColor = [UIColor clearColor];
+    _collectionview.backgroundColor = [UIColor grayMarkColor];
     NSString * idenStr = @"AddPicCell88";
     if(SCREENWIDTH == 375)
     {
@@ -1170,11 +1170,11 @@
         {
             view.top = view.hidden ? 0 : _txtView.bottom;
             
-            _TagCollView.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
+            _TagCollView.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view) - 1;
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_TagCollView) :H(view) + H(_TagCollView);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_TagCollView) :H(view) + H(_TagCollView) - 1;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView) - 1;
             
         }
     }
@@ -1192,13 +1192,13 @@
         {
             [self countHeight];
             
-            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview);
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview) - 1;
             
             _collectionview.top = view.hidden ? _txtView.bottom : _txtView.bottom;
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) :H(view) + H(_collectionview);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) :H(view) + H(_collectionview) - 1;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview) - 1;
             
         }
     }

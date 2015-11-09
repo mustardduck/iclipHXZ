@@ -696,7 +696,7 @@
         [cell.contentView addSubview:line1];
         
         [photo setFrame:CGRectMake(14, 14, 13, 17)];
-        [photo setImage:[UIImage imageNamed:@"icon_qunzu"]];
+        [photo setImage:[UIImage imageNamed:@"icon_qunzu_white"]];
         
         [lblText setText:@"群组"];
         
@@ -723,17 +723,17 @@
         [cell.contentView addSubview:line1];
         
         [photo setFrame:CGRectMake(14, 14, 13, 17)];
-        [photo setImage:[UIImage imageNamed:@"icon_fuzeren"]];
+        [photo setImage:[UIImage imageNamed:@"icon_fuzeren_white"]];
         [lblText setText:@"负责人"];
     }
     else if (section == 1 && index == 1) {
         [photo setFrame:CGRectMake(14, 14, 13, 17)];
-        [photo setImage:[UIImage imageNamed:@"icon_canyuren"]];
+        [photo setImage:[UIImage imageNamed:@"icon_canyuren_white"]];
         [lblText setText:@"参与人"];
     }
     else if (section == 1 && index == 2) {
         [photo setFrame:CGRectMake(14, 14, 13, 17)];
-        [photo setImage:[UIImage imageNamed:@"icon_chaosong"]];
+        [photo setImage:[UIImage imageNamed:@"icon_chaosong_white"]];
         [lblText setText:@"抄送"];
     }
     else if (section == 2 && index == 0)
@@ -973,7 +973,7 @@
     _TagCollView.delegate = self;
     _TagCollView.dataSource = self;
     _TagCollView.scrollEnabled = NO;
-    _TagCollView.backgroundColor = [UIColor clearColor];
+    _TagCollView.backgroundColor = [UIColor grayMarkColor];
     
     [_TagCollView registerClass:[MarkTagCell class] forCellWithReuseIdentifier:@"MarkTagCell"];
     
@@ -1025,7 +1025,7 @@
     _collectionview.delegate = self;
     _collectionview.dataSource = self;
     _collectionview.scrollEnabled = NO;
-    _collectionview.backgroundColor = [UIColor clearColor];
+    _collectionview.backgroundColor = [UIColor grayMarkColor];
     NSString * idenStr = @"AddPicCell88";
     if(SCREENWIDTH == 375)
     {
@@ -1487,6 +1487,14 @@
         if(!_jiezhiView.hidden)
         {
             [_jiezhiBtn setImage:[UIImage imageNamed:@"btn_jiezhishijian_1"] forState:UIControlStateNormal];
+            
+//            if(_tixingView.hidden)
+//            {
+//                CGRect rect = _jiezhiView.frame;
+//                _jiezhiView.frame = rect;
+//                rect.origin.y += 41;
+//                _jiezhiView.frame = rect;
+//            }
         }
         else
         {
@@ -1534,11 +1542,11 @@
         {
             _collectionview.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
             
-            _TagCollView.top = view.hidden ? _txtView.bottom + H(_collectionview):_txtView.bottom + H(view) + H(_collectionview);
+            _TagCollView.top = view.hidden ? _txtView.bottom + H(_collectionview):_txtView.bottom + H(view) + H(_collectionview)- 0.5;
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) + H(_TagCollView) :H(view) + H(_collectionview) + H(_TagCollView);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) + H(_TagCollView) :H(view) + H(_collectionview) + H(_TagCollView)- 0.5;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView)+ H(_collectionview);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView)+ H(_collectionview)- 0.5;
 
         }
     }
@@ -1573,22 +1581,22 @@
         {
             view.top = view.hidden ? 0 : _txtView.bottom;
 
-            _TagCollView.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view);
+            _TagCollView.top = view.hidden ? _txtView.bottom : _txtView.bottom + H(view) - 0.5;
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_TagCollView) :H(view) + H(_TagCollView);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_TagCollView) :H(view) + H(_TagCollView) - 0.5;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView) - 0.5;
             
         }
         else if (!_jiezhiAndTixingView.hidden && !_TagCollView.hidden)
         {
             view.top = view.hidden ? 0 : _txtView.bottom + H(_jiezhiAndTixingView);
 
-            _TagCollView.top = view.hidden ? _txtView.bottom + H(_jiezhiAndTixingView):_txtView.bottom + H(view) + H(_jiezhiAndTixingView);
+            _TagCollView.top = view.hidden ? _txtView.bottom + H(_jiezhiAndTixingView):_txtView.bottom + H(view) + H(_jiezhiAndTixingView) - 0.5;
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) + H(_TagCollView) :H(view) + H(_jiezhiAndTixingView) + H(_TagCollView);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) + H(_TagCollView) :H(view) + H(_jiezhiAndTixingView) + H(_TagCollView) - 0.5;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView)+ H(_jiezhiAndTixingView);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_TagCollView) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_TagCollView)+ H(_jiezhiAndTixingView) - 0.5;
             
         }
     }
@@ -1615,26 +1623,26 @@
         {
             [self countHeight];
             
-            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview);
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview) - 0.5;
 
             _collectionview.top = view.hidden ? _txtView.bottom : _txtView.bottom;
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) :H(view) + H(_collectionview);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_collectionview) :H(view) + H(_collectionview) - 0.5;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview) - 0.5;
             
         }
         else if (!_jiezhiAndTixingView.hidden && !_collectionview.hidden)
         {
             [self countHeight];
 
-            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview) + H(_jiezhiAndTixingView);
+            view.top = view.hidden ? 0 : _txtView.bottom + H(_collectionview) + H(_jiezhiAndTixingView) - 0.5;
 
             _collectionview.top = view.hidden ? _txtView.bottom + H(_jiezhiAndTixingView):_txtView.bottom + H(_jiezhiAndTixingView);
             
-            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) + H(_collectionview) :H(view) + H(_jiezhiAndTixingView) + H(_collectionview);
+            _timeToTxtViewTopCons.constant = view.hidden ? H(_jiezhiAndTixingView) + H(_collectionview) :H(view) + H(_jiezhiAndTixingView) + H(_collectionview) - 0.5;
             
-            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview)+ H(_jiezhiAndTixingView);
+            _tableView.top = view.hidden ? _txtView.bottom + H(_timeView) + H(_collectionview) + H(_jiezhiAndTixingView): _txtView.bottom + H(view) + H(_timeView) + H(_collectionview)+ H(_jiezhiAndTixingView) - 0.5;
             
         }
     }

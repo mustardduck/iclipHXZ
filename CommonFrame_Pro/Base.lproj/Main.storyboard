@@ -1753,7 +1753,7 @@
                                                                     <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="bHQ-U4-wvz"/>
                                                                 </connections>
                                                             </button>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_jiezhishijian" translatesAutoresizingMaskIntoConstraints="NO" id="AWR-Tn-sds">
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_jiezhishijian_white" translatesAutoresizingMaskIntoConstraints="NO" id="AWR-Tn-sds">
                                                                 <rect key="frame" x="7" y="10" width="8" height="8"/>
                                                             </imageView>
                                                         </subviews>
@@ -1794,7 +1794,7 @@
                                                                     <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="Gb2-iU-47J"/>
                                                                 </connections>
                                                             </button>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_tixingshijian" translatesAutoresizingMaskIntoConstraints="NO" id="rVy-Fu-nCh">
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_tixingshijian_white" translatesAutoresizingMaskIntoConstraints="NO" id="rVy-Fu-nCh">
                                                                 <rect key="frame" x="7" y="10" width="8" height="8"/>
                                                             </imageView>
                                                         </subviews>
@@ -2534,10 +2534,10 @@
         <image name="btn_shanchu_2_hover" width="8" height="8"/>
         <image name="btn_tixingshijian" width="38" height="30"/>
         <image name="btn_tixingshijian_hover" width="38" height="30"/>
-        <image name="icon_jiezhishijian" width="26" height="26"/>
+        <image name="icon_jiezhishijian_white" width="8" height="8"/>
         <image name="icon_tianjia_1" width="15" height="15"/>
         <image name="icon_tianjia_2" width="15" height="15"/>
-        <image name="icon_tixingshijian" width="8" height="8"/>
+        <image name="icon_tixingshijian_white" width="8" height="8"/>
         <image name="icon_xinjianrenwu" width="14" height="14"/>
     </resources>
 </document>
