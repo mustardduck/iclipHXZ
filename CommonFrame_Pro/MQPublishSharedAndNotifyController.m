@@ -1449,6 +1449,15 @@
 {
     [self hiddenKeyboard];
     
+    if(!_titleTxt.text.length)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请填写标题！" delegate:self
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        [_titleTxt becomeFirstResponder];
+        return;
+    }
     if(!_workGroupName.length)
     {
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择发布至的群组！" delegate:self

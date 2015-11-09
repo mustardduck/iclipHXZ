@@ -1610,13 +1610,17 @@
        //momo todo
 //        NSString * nameStr = [NSString stringWithFormat:@"%@   %@   %@",ms.userName, ms.workGroupName, tagStr];
         
-        NSString * nameStr = [NSString stringWithFormat:@"%@          负责人：%@",ms.workGroupName, ms.lableUserName];
-
-        
 //        NSAttributedString *nameAttrStr = [RRAttributedString setText:nameStr font:Font(16) color:RGBCOLOR(53, 159, 219) range:NSMakeRange(0, ms.userName.length)];
 //        
 //        name.attributedText = nameAttrStr;
         
+        NSString * nameStr = [NSString stringWithFormat:@"%@          负责人：%@",ms.workGroupName, ms.lableUserName];
+
+        if(ms.type != 1)
+        {
+            nameStr = ms.workGroupName;
+        }
+
         name.text = nameStr;
         
 
@@ -1772,23 +1776,25 @@
         [cell.contentView addSubview:attachment];
         
         
-        //子任务
-        fujianLbl = [[UILabel alloc] init];
-        fujianLbl.textColor = RGBCOLOR(172, 172, 173);
-        fujianLbl.font = Font(10);
-        [fujianLbl setBackgroundColor:[UIColor clearColor]];
-        fujianLbl.text = [NSString stringWithFormat:@"子任务 (%d)", ms.childNum];
-        
-        fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
+        if(ms.type == 1)
+        {
+            //子任务
+            fujianLbl = [[UILabel alloc] init];
+            fujianLbl.textColor = RGBCOLOR(172, 172, 173);
+            fujianLbl.font = Font(10);
+            [fujianLbl setBackgroundColor:[UIColor clearColor]];
+            fujianLbl.text = [NSString stringWithFormat:@"子任务 (%d)", ms.childNum];
+            
+            fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
+            
+            fujianLbl.frame = CGRectMake(X(attachment) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
+            [cell.contentView addSubview:fujianLbl];
+            
+            attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 12, 12)];
+            attachment.image = [UIImage imageNamed:@"icon_zirenwu_1"];
+            [cell.contentView addSubview:attachment];
 
-        fujianLbl.frame = CGRectMake(X(attachment) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
-        [cell.contentView addSubview:fujianLbl];
-        
-        attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 12, 12)];
-        attachment.image = [UIImage imageNamed:@"icon_zirenwu_1"];
-        [cell.contentView addSubview:attachment];
-        
-        //[cell.contentView addSubview:pView];
+        }
         
         [cell.contentView setBackgroundColor:[UIColor clearColor]];
         
