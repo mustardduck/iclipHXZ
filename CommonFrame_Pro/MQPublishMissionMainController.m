@@ -85,7 +85,6 @@
     
     [self resetData];
 
-    
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -209,7 +208,7 @@
     _topRightDashLine.frame = CGRectMake(34, 0, 0.5, 90);
     
     UIView * lineShort = [[UIView alloc] init];
-    lineShort.frame = CGRectMake(26.5, 110, 0.5, 6);
+    lineShort.frame = CGRectMake(26.5, YH(_topTxtView), 0.5, 6);
     lineShort.backgroundColor = [UIColor grayLineColor];
     [_headerView addSubview:lineShort];
     
@@ -614,7 +613,7 @@
             UIView * line2 = [cell viewWithTag:2];
             if(!line2)
             {
-                line2 = [[UIView alloc] initWithFrame:CGRectMake(27, 35.5, 13, 0.5)];
+                line2 = [[UIView alloc] initWithFrame:CGRectMake(26.5, 35, 13, 0.5)];
                 line2.backgroundColor = [UIColor grayLineColor];
                 line2.tag = 2;
             }
@@ -641,7 +640,7 @@
             UIView * line2 = [cell viewWithTag:2];
             if(!line2)
             {
-                line2 = [[UIView alloc] initWithFrame:CGRectMake(27, 35.5, 13, 0.5)];
+                line2 = [[UIView alloc] initWithFrame:CGRectMake(26.5, 35, 13, 0.5)];
                 line2.backgroundColor = [UIColor grayLineColor];
                 line2.tag = 2;
             }
@@ -689,7 +688,7 @@
         UIView * line2 = [cell viewWithTag:2];
         if(!line2)
         {
-            line2 = [[UIView alloc] initWithFrame:CGRectMake(27, 35.5, 13, 0.5)];
+            line2 = [[UIView alloc] initWithFrame:CGRectMake(26, 35, 13, 0.5)];
             line2.backgroundColor = [UIColor grayLineColor];
             line2.tag = 2;
         }
@@ -805,7 +804,6 @@
 {
     return @"移除";
 }
-
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {

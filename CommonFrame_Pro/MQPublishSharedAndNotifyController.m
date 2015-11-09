@@ -492,7 +492,7 @@
         [line1 setBackgroundColor:[UIColor grayLineColor]];
         [cell.contentView addSubview:line1];
         
-        [photo setFrame:CGRectMake(14, 14, 17, 16)];
+        [photo setFrame:CGRectMake(14, 14, 13, 17)];
         [photo setImage:[UIImage imageNamed:@"icon_qunzu"]];
         
         [lblText setText:@"群组"];
@@ -502,7 +502,7 @@
         [line1 setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:line1];
         
-        [photo setFrame:CGRectMake(14, 14, 13, 13)];
+        [photo setFrame:CGRectMake(14, 14, 13, 17)];
         [photo setImage:[UIImage imageNamed:@"icon_fanwei"]];
         [lblText setText:@"参与人"];
     }
