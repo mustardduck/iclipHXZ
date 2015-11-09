@@ -354,7 +354,6 @@ static UIViewController *imagePicker = nil;
 - (void)setRoundCorner:(float)cornerRadius
 {
     self.layer.masksToBounds = YES;
-    self.layer.borderWidth = 0.5f;
     self.layer.cornerRadius = cornerRadius;
     self.clipsToBounds = YES;
 }

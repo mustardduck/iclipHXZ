@@ -171,7 +171,7 @@
 - (void) initTableView
 {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, 390)];
-    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundColor = [UIColor backgroundColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 101;
@@ -259,7 +259,7 @@
         
         _tableView.height = 390 - 14 - 44  + _chaosongHeight;//todo
         
-        _mainViewHeightCons.constant = YH(_tableView);
+        _mainViewHeightCons.constant = YH(_tableView) - 1;
         
     }
     
@@ -496,6 +496,8 @@
     else if (section == 2 && index == 0)
     {
         [cell.contentView addSubview:_markCollectionView];
+        
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     if (!(section == 2 && index == 0))
@@ -511,8 +513,10 @@
         [cell.contentView addSubview:line4];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        cell.backgroundColor = [UIColor grayMarkColor];
+
     }
-    cell.backgroundColor = [UIColor grayMarkColor];
     
     return cell;
 }
@@ -634,7 +638,7 @@
     _TagCollView.delegate = self;
     _TagCollView.dataSource = self;
     _TagCollView.scrollEnabled = NO;
-    _TagCollView.backgroundColor = [UIColor grayMarkColor];
+    _TagCollView.backgroundColor = [UIColor clearColor];
     
     [_TagCollView registerClass:[MarkTagCell class] forCellWithReuseIdentifier:@"MarkTagCell"];
     
@@ -657,7 +661,7 @@
     _markCollectionView.delegate = self;
     _markCollectionView.dataSource = self;
     _markCollectionView.scrollEnabled = NO;
-    _markCollectionView.backgroundColor = [UIColor backgroundColor];
+    _markCollectionView.backgroundColor = [UIColor clearColor];
     _markCollectionView.tag = 1112;
     
     [_markCollectionView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
@@ -686,7 +690,7 @@
     _collectionview.delegate = self;
     _collectionview.dataSource = self;
     _collectionview.scrollEnabled = NO;
-    _collectionview.backgroundColor = [UIColor grayMarkColor];
+    _collectionview.backgroundColor = [UIColor clearColor];
     NSString * idenStr = @"AddPicCell88";
     if(SCREENWIDTH == 375)
     {
@@ -1170,7 +1174,7 @@
     }
     
     _tableView.height = 390 - 14 - 44 + _chaosongHeight;
-    _mainViewHeightCons.constant = YH(_tableView);
+    _mainViewHeightCons.constant = YH(_tableView) - 1;
     
 }
 

@@ -131,6 +131,9 @@
         self.cMarkAarry = [NSMutableArray array];
     }
     
+    [_jiezhiView setRoundCorner:3.3];
+    [_tixingView setRoundCorner:3.3];
+    
     [self resetData];
     
 }
@@ -206,7 +209,7 @@
 - (void) initTableView
 {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _timeView.bottom, SCREENWIDTH, 390)];
-    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundColor = [UIColor backgroundColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 101;
@@ -296,7 +299,7 @@
         
         _tableView.height = 390 - 44 * 2 + _canyuHeight + _chaosongHeight;
         
-        _mainViewHeightCons.constant = YH(_tableView);
+        _mainViewHeightCons.constant = YH(_tableView) - 1;
 
     }
     
@@ -355,12 +358,18 @@
                     }
                 }
                 if (!isEx) {
-                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(86, 0, SCREENWIDTH - 100, 44)];
-                    [name setBackgroundColor:[UIColor clearColor]];
-                    [name setText:mem.name];
+                    CGFloat lHeight = 26;
+                    UIFont * font = Font(14);
+                    CGSize size = [CommonFile contentSize:mem.name vWidth:0 vHeight:lHeight contentFont:font];
+                    CGFloat lwidth = size.width + 13;
+                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(86, 9, lwidth, lHeight)];
+                    [name setBackgroundColor:[UIColor tagBlueBackColor]];
+                    [name setText: mem.name];
                     [name setTextColor:[UIColor whiteColor]];
-                    [name setFont:Font(15)];
-                    [name setTag:112];
+                    [name setTextAlignment:NSTextAlignmentCenter];
+                    [name setFont:font];
+                    name.tag = 112;
+                    [name setRoundCorner:3.3];
                     
                     [cell.contentView addSubview:name];
                 }
@@ -429,7 +438,7 @@
                 [name setTextAlignment:NSTextAlignmentCenter];
                 [name setFont:font];
                 name.tag = 112;
-                [name setRoundCorner:5];
+                [name setRoundCorner:3.3];
                 
                 [cell.contentView addSubview:name];
                 
@@ -481,7 +490,7 @@
                 [name setTextAlignment:NSTextAlignmentCenter];
                 [name setFont:font];
                 name.tag = 112;
-                [name setRoundCorner:5];
+                [name setRoundCorner:3.3];
 
                 [cell.contentView addSubview:name];
                 
@@ -703,6 +712,8 @@
     else if (section == 2 && index == 0)
     {
         [cell.contentView addSubview:_markCollectionView];
+        
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     if (!(section == 2 && index == 0))
@@ -726,8 +737,10 @@
         [cell.contentView addSubview:line4];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        cell.backgroundColor = [UIColor grayMarkColor];
+
     }
-    cell.backgroundColor = [UIColor grayMarkColor];
     
     return cell;
 }
@@ -928,7 +941,7 @@
     _TagCollView.delegate = self;
     _TagCollView.dataSource = self;
     _TagCollView.scrollEnabled = NO;
-    _TagCollView.backgroundColor = [UIColor grayMarkColor];
+    _TagCollView.backgroundColor = [UIColor clearColor];
     
     [_TagCollView registerClass:[MarkTagCell class] forCellWithReuseIdentifier:@"MarkTagCell"];
     
@@ -951,7 +964,7 @@
     _markCollectionView.delegate = self;
     _markCollectionView.dataSource = self;
     _markCollectionView.scrollEnabled = NO;
-    _markCollectionView.backgroundColor = [UIColor backgroundColor];
+    _markCollectionView.backgroundColor = [UIColor clearColor];
     _markCollectionView.tag = 1112;
     
     [_markCollectionView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
@@ -980,7 +993,7 @@
     _collectionview.delegate = self;
     _collectionview.dataSource = self;
     _collectionview.scrollEnabled = NO;
-    _collectionview.backgroundColor = [UIColor grayMarkColor];
+    _collectionview.backgroundColor = [UIColor clearColor];
     NSString * idenStr = @"AddPicCell88";
     if(SCREENWIDTH == 375)
     {
@@ -1439,6 +1452,23 @@
 {
     if(view == _jiezhiAndTixingView)
     {
+        if(!_jiezhiView.hidden)
+        {
+            [_jiezhiBtn setImage:[UIImage imageNamed:@"btn_jiezhishijian_1"] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [_jiezhiBtn setImage:[UIImage imageNamed:@"btn_jiezhishijian"] forState:UIControlStateNormal];
+        }
+        if(!_tixingView.hidden)
+        {
+            [_tixingBtn setImage:[UIImage imageNamed:@"btn_tixingshijian_1"] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [_tixingBtn setImage:[UIImage imageNamed:@"btn_tixingshijian"] forState:UIControlStateNormal];
+        }
+        
         if(!view.hidden)
         {
             _JTViewToTxtViewTopCons.constant = 0;
@@ -1570,7 +1600,7 @@
     }
     
     _tableView.height = 390 - 44 * 2 + _canyuHeight + _chaosongHeight;
-    _mainViewHeightCons.constant = YH(_tableView);
+    _mainViewHeightCons.constant = YH(_tableView) - 1;
     
 }
 

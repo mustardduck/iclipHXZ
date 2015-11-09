@@ -1616,7 +1616,6 @@
                                                         </variation>
                                                     </textField>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="32K-E2-0W9" firstAttribute="top" secondItem="0s7-ji-BvM" secondAttribute="top" id="NxY-RF-uB1"/>
                                                     <constraint firstAttribute="height" constant="43" id="ORa-u4-Pbt"/>
@@ -1626,14 +1625,13 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Y5-IK-IA4">
                                                 <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                                                <color key="backgroundColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="0.5" id="ba8-oB-a7m"/>
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3s-py-3UD" customClass="PH_UITextView">
                                                 <rect key="frame" x="0.0" y="43" width="320" height="156"/>
-                                                <color key="backgroundColor" red="0.25098039215686274" green="0.25098039215686274" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="156" id="lSI-K3-lBq"/>
                                                 </constraints>
@@ -1667,19 +1665,19 @@
                                                             <constraint firstAttribute="width" constant="60" id="BsX-k6-cUJ"/>
                                                             <constraint firstAttribute="height" constant="44" id="dUd-v5-ma8"/>
                                                         </constraints>
-                                                        <state key="normal" image="btn_jiezhishijian_2"/>
-                                                        <state key="highlighted" image="btn_jiezhishijian_1"/>
+                                                        <state key="normal" image="btn_jiezhishijian"/>
+                                                        <state key="highlighted" image="btn_jiezhishijian_hover"/>
                                                         <connections>
                                                             <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="yHp-Xk-dEw"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NaS-W0-4HD">
-                                                        <rect key="frame" x="142" y="0.0" width="36" height="44"/>
+                                                        <rect key="frame" x="141" y="0.0" width="38" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="O4b-pX-SvG"/>
                                                         </constraints>
-                                                        <state key="normal" image="btn_tixingshijian_2"/>
-                                                        <state key="highlighted" image="btn_tixingshijian_1"/>
+                                                        <state key="normal" image="btn_tixingshijian"/>
+                                                        <state key="highlighted" image="btn_tixingshijian_hover"/>
                                                         <connections>
                                                             <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="DwJ-G7-Xol"/>
                                                         </connections>
@@ -1691,13 +1689,12 @@
                                                             <constraint firstAttribute="height" constant="44" id="g6B-Qx-Zg3"/>
                                                         </constraints>
                                                         <state key="normal" image="btn_fujian_2"/>
-                                                        <state key="highlighted" image="btn_fujian_1"/>
+                                                        <state key="highlighted" image="btn_fujian_hover"/>
                                                         <connections>
                                                             <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="7Bg-qz-2Bt"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="NaS-W0-4HD" firstAttribute="centerY" secondItem="swH-dG-4Ke" secondAttribute="centerY" id="3tw-bk-MFQ"/>
                                                     <constraint firstAttribute="bottom" secondItem="BmI-x1-AQ0" secondAttribute="bottom" id="51z-OU-zNt"/>
@@ -1740,19 +1737,15 @@
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_shanchu_2" translatesAutoresizingMaskIntoConstraints="NO" id="HQS-BM-Ca8">
-                                                                <rect key="frame" x="154" y="10" width="8" height="8"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="8" id="Ro6-9V-LPA"/>
-                                                                    <constraint firstAttribute="height" constant="8" id="wUj-wf-OO7"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mkk-pq-3HU">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mkk-pq-3HU">
                                                                 <rect key="frame" x="90" y="0.0" width="78" height="27"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="27" id="6c3-xy-WfC"/>
                                                                     <constraint firstAttribute="width" constant="78" id="oBR-rg-LY2"/>
                                                                 </constraints>
+                                                                <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="7" maxY="0.0"/>
+                                                                <state key="normal" image="btn_shanchu_2"/>
+                                                                <state key="highlighted" image="btn_shanchu_2_hover"/>
                                                                 <connections>
                                                                     <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="bHQ-U4-wvz"/>
                                                                 </connections>
@@ -1764,22 +1757,14 @@
                                                         <color key="backgroundColor" red="0.3529411764705882" green="0.4392156862745098" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="mkk-pq-3HU" secondAttribute="trailing" id="CEK-p7-J3J"/>
-                                                            <constraint firstItem="HQS-BM-Ca8" firstAttribute="leading" secondItem="YLd-fM-8kc" secondAttribute="leading" constant="154" id="J78-dr-HpK"/>
                                                             <constraint firstItem="mkk-pq-3HU" firstAttribute="top" secondItem="YLd-fM-8kc" secondAttribute="top" id="R3i-fr-RPO"/>
                                                             <constraint firstAttribute="height" constant="27" id="S8B-6N-xOY"/>
                                                             <constraint firstItem="tWK-OA-U3I" firstAttribute="top" secondItem="YLd-fM-8kc" secondAttribute="top" id="T0S-0p-Tq8"/>
                                                             <constraint firstItem="tWK-OA-U3I" firstAttribute="leading" secondItem="YLd-fM-8kc" secondAttribute="leading" constant="22" id="TTn-8e-Dya"/>
                                                             <constraint firstAttribute="trailing" secondItem="tWK-OA-U3I" secondAttribute="trailing" constant="6" id="aUa-Ut-2fs"/>
-                                                            <constraint firstItem="HQS-BM-Ca8" firstAttribute="top" secondItem="YLd-fM-8kc" secondAttribute="top" constant="10" id="cw3-gc-nVo"/>
                                                             <constraint firstItem="mkk-pq-3HU" firstAttribute="leading" secondItem="YLd-fM-8kc" secondAttribute="leading" constant="90" id="g8R-iu-26p"/>
-                                                            <constraint firstAttribute="trailing" secondItem="HQS-BM-Ca8" secondAttribute="trailing" constant="6" id="heP-a5-HG6"/>
                                                             <constraint firstAttribute="width" constant="168" id="oN7-Tj-rSq"/>
                                                         </constraints>
-                                                        <variation key="default">
-                                                            <mask key="constraints">
-                                                                <exclude reference="J78-dr-HpK"/>
-                                                            </mask>
-                                                        </variation>
                                                     </view>
                                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fm8-q4-Gai">
                                                         <rect key="frame" x="14" y="55" width="202" height="27"/>
@@ -1794,19 +1779,14 @@
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_shanchu_2" translatesAutoresizingMaskIntoConstraints="NO" id="eEG-qS-2dN">
-                                                                <rect key="frame" x="187" y="10" width="8" height="8"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="8" id="AT7-ia-86i"/>
-                                                                    <constraint firstAttribute="width" constant="8" id="epj-Md-avy"/>
-                                                                </constraints>
-                                                            </imageView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xcb-Yi-0rj">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xcb-Yi-0rj">
                                                                 <rect key="frame" x="90" y="0.0" width="112" height="27"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="27" id="KMb-i0-A4G"/>
                                                                     <constraint firstAttribute="width" constant="112" id="vmJ-Hp-8Sm"/>
                                                                 </constraints>
+                                                                <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="7" maxY="0.0"/>
+                                                                <state key="normal" image="btn_shanchu_2"/>
                                                                 <connections>
                                                                     <action selector="touchUpInsideOnBtn:" destination="17P-8J-CMd" eventType="touchUpInside" id="Gb2-iU-47J"/>
                                                                 </connections>
@@ -1822,21 +1802,12 @@
                                                             <constraint firstAttribute="trailing" secondItem="Svh-5z-Ab6" secondAttribute="trailing" constant="14" id="FkK-Cz-p36"/>
                                                             <constraint firstItem="Svh-5z-Ab6" firstAttribute="top" secondItem="fm8-q4-Gai" secondAttribute="top" id="KGg-7S-u5n"/>
                                                             <constraint firstItem="Svh-5z-Ab6" firstAttribute="leading" secondItem="fm8-q4-Gai" secondAttribute="leading" constant="22" id="MOM-ve-JEd"/>
-                                                            <constraint firstItem="eEG-qS-2dN" firstAttribute="top" secondItem="fm8-q4-Gai" secondAttribute="top" constant="10" id="OLr-ir-hOx"/>
                                                             <constraint firstAttribute="height" constant="27" id="OuG-13-j63"/>
-                                                            <constraint firstAttribute="trailing" secondItem="eEG-qS-2dN" secondAttribute="trailing" constant="7" id="U6c-oQ-EFS"/>
                                                             <constraint firstItem="Xcb-Yi-0rj" firstAttribute="top" secondItem="fm8-q4-Gai" secondAttribute="top" id="ZOm-sI-xJF"/>
                                                             <constraint firstItem="Xcb-Yi-0rj" firstAttribute="leading" secondItem="fm8-q4-Gai" secondAttribute="leading" constant="90" id="iU7-np-0yK"/>
-                                                            <constraint firstItem="eEG-qS-2dN" firstAttribute="leading" secondItem="fm8-q4-Gai" secondAttribute="leading" constant="187" id="jX1-LZ-pZm"/>
                                                         </constraints>
-                                                        <variation key="default">
-                                                            <mask key="constraints">
-                                                                <exclude reference="jX1-LZ-pZm"/>
-                                                            </mask>
-                                                        </variation>
                                                     </view>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="96" id="3St-2c-F5F"/>
                                                     <constraint firstAttribute="trailing" secondItem="YLd-fM-8kc" secondAttribute="trailing" constant="138" id="6Dg-qp-3SV"/>
@@ -1852,7 +1823,7 @@
                                                 </variation>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.25098039215686274" green="0.25098039215686274" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="568" id="6FI-MX-awv"/>
                                             <constraint firstItem="swH-dG-4Ke" firstAttribute="top" secondItem="U3s-py-3UD" secondAttribute="bottom" id="C9f-pm-Rl3"/>
@@ -2332,7 +2303,6 @@
                                                         </variation>
                                                     </textField>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="FfF-Ef-MVC" firstAttribute="top" secondItem="0oh-h2-ecj" secondAttribute="top" id="B0r-NP-q1q"/>
                                                     <constraint firstAttribute="trailing" secondItem="FfF-Ef-MVC" secondAttribute="trailing" id="I9O-lj-ABZ"/>
@@ -2349,7 +2319,6 @@
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOC-ip-oyc" customClass="PH_UITextView">
                                                 <rect key="frame" x="0.0" y="43" width="320" height="156"/>
-                                                <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="156" id="VN2-fv-IQk"/>
                                                 </constraints>
@@ -2390,7 +2359,6 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="M3E-Ub-Opk" firstAttribute="centerX" secondItem="S0L-6T-uou" secondAttribute="centerX" id="1Id-Mr-tfG"/>
                                                     <constraint firstAttribute="trailing" secondItem="M3E-Ub-Opk" secondAttribute="trailing" constant="26" id="5Te-K6-Gy4"/>
@@ -2414,7 +2382,7 @@
                                                 </variation>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="0oh-h2-ecj" secondAttribute="trailing" id="3zZ-Tv-RJM"/>
                                             <constraint firstItem="0oh-h2-ecj" firstAttribute="top" secondItem="OCO-kV-QtC" secondAttribute="top" id="7fp-MD-RLc"/>
@@ -2530,14 +2498,16 @@
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>
-        <image name="btn_fujian_1" width="18" height="29"/>
-        <image name="btn_fujian_2" width="18" height="30"/>
+        <image name="btn_fujian_1" width="38" height="30"/>
+        <image name="btn_fujian_2" width="38" height="30"/>
+        <image name="btn_fujian_hover" width="38" height="30"/>
         <image name="btn_jiantou_1" width="12" height="12"/>
-        <image name="btn_jiezhishijian_1" width="36" height="30"/>
-        <image name="btn_jiezhishijian_2" width="36" height="30"/>
+        <image name="btn_jiezhishijian" width="38" height="30"/>
+        <image name="btn_jiezhishijian_hover" width="38" height="30"/>
         <image name="btn_shanchu_2" width="8" height="8"/>
-        <image name="btn_tixingshijian_1" width="36" height="30"/>
-        <image name="btn_tixingshijian_2" width="36" height="31"/>
+        <image name="btn_shanchu_2_hover" width="8" height="8"/>
+        <image name="btn_tixingshijian" width="38" height="30"/>
+        <image name="btn_tixingshijian_hover" width="38" height="30"/>
         <image name="icon_jiezhishijian" width="26" height="26"/>
         <image name="icon_tianjia_1" width="15" height="15"/>
         <image name="icon_tianjia_2" width="15" height="15"/>
