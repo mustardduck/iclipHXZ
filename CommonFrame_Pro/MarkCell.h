@@ -11,6 +11,7 @@
 @interface MarkCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIButton * markBtn;
+//@property (nonatomic, strong) UILabel * markTitle;
 
 -(id)initWithFrame:(CGRect)frame;
 

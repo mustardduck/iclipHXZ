@@ -21,7 +21,12 @@
         [_markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [_markBtn setTitleColor:[UIColor grayTitleColor] forState:UIControlStateHighlighted];
         self.markBtn.titleLabel.font = Font(12);
+        self.markBtn.titleLabel.numberOfLines = 0;
         self.markBtn.backgroundColor = [UIColor clearColor];
+        
+//        self.markTitle.textAlignment = NSTextAlignmentCenter;
+//        self.markTitle.backgroundColor = [UIColor clearColor];
+//        self.markTitle.textColor = [UIColor grayTitleColor];
 
         [self addSubview:self.markBtn];
     }

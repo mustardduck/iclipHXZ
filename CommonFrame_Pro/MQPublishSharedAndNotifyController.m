@@ -263,6 +263,37 @@
         
     }
     
+    if(_workGroupName.length)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)0 inSection:(NSInteger)0];
+        UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
+        BOOL isEx = NO;
+        for (UIControl* control in cell.contentView.subviews) {
+            if (control.tag == 112) {
+                ((UILabel*)control).text = _workGroupName;
+                isEx = YES;
+                break;
+            }
+        }
+        if(!isEx)
+        {
+            CGFloat lHeight = 26;
+            UIFont * font = Font(14);
+            CGSize size = [CommonFile contentSize:_workGroupName vWidth:0 vHeight:lHeight contentFont:font];
+            CGFloat lwidth = size.width + 13;
+            UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(86, 9, lwidth, lHeight)];
+            [name setBackgroundColor:[UIColor tagBlueBackColor]];
+            [name setText: _workGroupName];
+            [name setTextColor:[UIColor whiteColor]];
+            [name setTextAlignment:NSTextAlignmentCenter];
+            [name setFont:font];
+            name.tag = 112;
+            [name setRoundCorner:3.3];
+            
+            [cell.contentView addSubview:name];
+        }
+    }
+    
     if (self.ccopyToMembersArray != nil)
     {
         NSLog(@"%@",self.ccopyToMembersArray);
@@ -465,23 +496,6 @@
         [photo setImage:[UIImage imageNamed:@"icon_qunzu"]];
         
         [lblText setText:@"群组"];
-        
-        UILabel* groupText = [[UILabel alloc] initWithFrame:CGRectMake(86, 0, SCREENWIDTH - 100, 44)];
-        [groupText setBackgroundColor:[UIColor clearColor]];
-        [groupText setTextColor:[UIColor whiteColor]];
-        [groupText setFont:Font(15)];
-        [groupText setTextAlignment:NSTextAlignmentLeft];
-        
-        [cell.contentView addSubview:groupText];
-        
-        if(_workGroupName)
-        {
-            [groupText setText:_workGroupName];
-        }
-        else
-        {
-            [groupText setText:@""];
-        }
     }
     else if(section == 1 && index == 0) {
         UILabel* line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 0.5)];
@@ -512,7 +526,12 @@
         [line4 setBackgroundColor:[UIColor grayLineColor]];
         [cell.contentView addSubview:line4];
         
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        photo = [[UIImageView alloc] init];
+        [photo setFrame:CGRectMake(SCREENWIDTH - 12 - 14, (cellHeight - 12) / 2, 12, 12)];
+        [photo setImage:[UIImage imageNamed:@"icon_jiantou"]];
+        [cell.contentView addSubview:photo];
         
         cell.backgroundColor = [UIColor grayMarkColor];
 
@@ -1128,6 +1147,14 @@
 {
     if(view == _collectionview)
     {
+        if(!_collectionview.hidden)
+        {
+            [_fujianBtn setImage:[UIImage imageNamed:@"btn_fujian_1"] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [_fujianBtn setImage:[UIImage imageNamed:@"btn_fujian_2"] forState:UIControlStateNormal];
+        }
         if(_TagCollView.hidden)
         {
             view.top = view.hidden ? 0 : _txtView.bottom;
