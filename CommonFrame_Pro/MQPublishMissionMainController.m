@@ -42,6 +42,7 @@
 @property (assign, nonatomic) CGFloat keyboardHeight;
 @property (weak, nonatomic) IBOutlet DashesLineView *topRightDashLine;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UIButton *jiaBtn;
 
 @end
 
@@ -422,6 +423,11 @@
 //        _currentView = nil;
     }
     [self.mainTableView reloadData];
+}
+
+- (IBAction)btnJiaButtonClicked:(id)sender
+{
+    [_mainTextView becomeFirstResponder];
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender

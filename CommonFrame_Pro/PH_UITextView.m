@@ -105,9 +105,14 @@
         if ( placeHolderLabel == nil )
             
         {
-            
-            placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(6,8,self.bounds.size.width - 16,0)];
-            
+            if(rect.size.height == 40)
+            {
+                placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(6,8,self.bounds.size.width - 16,0)];
+            }
+            else
+            {
+                placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(14,12,self.bounds.size.width - 16,0)];
+            }
             placeHolderLabel.lineBreakMode = NSLineBreakByWordWrapping;
             
             placeHolderLabel.numberOfLines = 0;

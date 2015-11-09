@@ -124,6 +124,9 @@
         self.cMarkAarry = [NSMutableArray array];
     }
     
+    _txtView.placeHolderLabel.left = 14;
+    _txtView.placeHolderLabel.top = 12;
+    
     [self resetData];
 
 }

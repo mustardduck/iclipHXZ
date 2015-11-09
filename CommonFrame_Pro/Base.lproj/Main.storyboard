@@ -2043,8 +2043,14 @@
                                                     </variation>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N1i-cb-01Q">
-                                                    <rect key="frame" x="4" y="7" width="110" height="30"/>
+                                                    <rect key="frame" x="4" y="7" width="114" height="30"/>
                                                     <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Npf-lT-Yi5">
+                                                            <rect key="frame" x="0.0" y="0.0" width="114" height="30"/>
+                                                            <connections>
+                                                                <action selector="btnJiaButtonClicked:" destination="hHb-Vb-T0i" eventType="touchUpInside" id="bHr-z8-jaz"/>
+                                                            </connections>
+                                                        </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_xinjianrenwu" translatesAutoresizingMaskIntoConstraints="NO" id="5Av-SN-8fz">
                                                             <rect key="frame" x="10" y="8" width="14" height="14"/>
                                                         </imageView>
@@ -2057,7 +2063,7 @@
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="110" id="HlW-Xw-fZO"/>
+                                                        <constraint firstAttribute="width" constant="114" id="HlW-Xw-fZO"/>
                                                         <constraint firstAttribute="height" constant="30" id="OlO-XC-PtT"/>
                                                     </constraints>
                                                 </view>
@@ -2082,6 +2088,7 @@
                                                     <exclude reference="ebS-hm-noJ"/>
                                                     <exclude reference="g9P-iy-mC0"/>
                                                     <exclude reference="nhU-C7-hFw"/>
+                                                    <exclude reference="yNW-d2-fuk"/>
                                                 </mask>
                                             </variation>
                                         </view>
@@ -2262,6 +2269,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="headerView" destination="6Vl-zm-3pu" id="yOg-6d-w3l"/>
+                        <outlet property="jiaBtn" destination="Npf-lT-Yi5" id="ovN-Wp-pUb"/>
                         <outlet property="jiaView" destination="N1i-cb-01Q" id="com-f5-Lp2"/>
                         <outlet property="mainTableView" destination="dNQ-xj-7UZ" id="Cby-Cr-YdW"/>
                         <outlet property="mainTextView" destination="lt2-4p-pEQ" id="Mrg-Rp-yr6"/>
