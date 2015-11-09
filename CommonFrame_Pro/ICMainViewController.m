@@ -444,6 +444,7 @@
                 cm.childNum = [[di valueForKey:@"childNum"] intValue];
                 cm.childTaskList = [di objectForKey:@"childTaskList"];
                 cm.lableUserName = [di valueForKey:@"lableUserName"];
+                cm.parentId = [di valueForKey:@"parentId"];
                 if(!cm.lableUserName.length)
                 {
                     cm.lableUserName = @"未填写";
@@ -1779,21 +1780,23 @@
         if(ms.type == 1)
         {
             //子任务
-            fujianLbl = [[UILabel alloc] init];
-            fujianLbl.textColor = RGBCOLOR(172, 172, 173);
-            fujianLbl.font = Font(10);
-            [fujianLbl setBackgroundColor:[UIColor clearColor]];
-            fujianLbl.text = [NSString stringWithFormat:@"子任务 (%d)", ms.childNum];
-            
-            fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
-            
-            fujianLbl.frame = CGRectMake(X(attachment) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
-            [cell.contentView addSubview:fujianLbl];
-            
-            attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 12, 12)];
-            attachment.image = [UIImage imageNamed:@"icon_zirenwu_1"];
-            [cell.contentView addSubview:attachment];
-
+            if([ms.parentId isEqualToString:@"0"])
+            {
+                fujianLbl = [[UILabel alloc] init];
+                fujianLbl.textColor = RGBCOLOR(172, 172, 173);
+                fujianLbl.font = Font(10);
+                [fujianLbl setBackgroundColor:[UIColor clearColor]];
+                fujianLbl.text = [NSString stringWithFormat:@"子任务 (%d)", ms.childNum];
+                
+                fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
+                
+                fujianLbl.frame = CGRectMake(X(attachment) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
+                [cell.contentView addSubview:fujianLbl];
+                
+                attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl), 12, 12)];
+                attachment.image = [UIImage imageNamed:@"icon_zirenwu_1"];
+                [cell.contentView addSubview:attachment];
+            }
         }
         
         [cell.contentView setBackgroundColor:[UIColor clearColor]];
