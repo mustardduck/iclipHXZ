@@ -1417,8 +1417,8 @@
             //
             //        [bView addSubview:bFirstView];
             
-            UIImageView * groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, 14, 12, 12)];
-            groupIcon.image = [UIImage imageNamed:@"icon_qunzu"];
+            UIImageView * groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, 14, 13, 15)];
+            groupIcon.image = [UIImage imageNamed:@"icon_qunzu_1"];
             [bFirstView addSubview:groupIcon];
             
             //        groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, 14, 14, 17)];
@@ -1433,8 +1433,8 @@
             [groupName setFont:Font(12)];
             [bFirstView addSubview:groupName];
             
-            groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, YH(groupName) + 14, 12, 12)];
-            groupIcon.image = [UIImage imageNamed:@"icon_biaoqian"];
+            groupIcon = [[UIImageView alloc] initWithFrame:CGRectMake(13, YH(groupName) + 14, 13, 15)];
+            groupIcon.image = [UIImage imageNamed:@"icon_biaoqian_2"];
             [bFirstView addSubview:groupIcon];
             
             //标签
@@ -1495,8 +1495,8 @@
                 
                 //负责人
                 UIImageView * fzIcon = [[UIImageView alloc] init];
-                fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 16, 16);
-                fzIcon.image = [UIImage imageNamed:@"icon_fuzeren"];
+                fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 13, 15);
+                fzIcon.image = [UIImage imageNamed:@"icon_fuzeren_1"];
                 [bFirstView addSubview:fzIcon];
                 
                 title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(dashLine) + 14, duiImgWidth - X(groupName) * 2, 16)];
@@ -1511,7 +1511,7 @@
                 //截止时间
                 
                 fzIcon = [[UIImageView alloc] init];
-                fzIcon.frame = CGRectMake(13, YH(title) + 8, 16, 16);
+                fzIcon.frame = CGRectMake(11, YH(title) + 8, 16, 16);
                 fzIcon.image = [UIImage imageNamed:@"icon_jiezhishijian"];
                 [bFirstView addSubview:fzIcon];
                 
@@ -1564,8 +1564,8 @@
                 
                 //参与人
                 fzIcon = [[UIImageView alloc] init];
-                fzIcon.frame = CGRectMake(13, Y(dashLine2) + 14, 16, 16);
-                fzIcon.image = [UIImage imageNamed:@"icon_canyuren"];
+                fzIcon.frame = CGRectMake(13, Y(dashLine2) + 14, 13, 15);
+                fzIcon.image = [UIImage imageNamed:@"icon_canyuren_1"];
                 [bFirstView addSubview:fzIcon];
                 
                 title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
@@ -1664,7 +1664,7 @@
                 UIView * bSecondView = [[UIView alloc] init];
                 bSecondView.frame = CGRectMake(14, YH(_duiimageview) + 14, duiImgWidth, 40);
                 bSecondView.backgroundColor = [UIColor clearColor];
-                [bSecondView setRoundColorCorner:10 withColor:[UIColor grayLineColor]];
+                [bSecondView setRoundColorCorner:8 withColor:[UIColor grayLineColor]];
                 
                 _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
                 
@@ -1675,8 +1675,8 @@
                 
                 
                 fzIcon = [[UIImageView alloc] init];
-                fzIcon.frame = CGRectMake(13, 13, 15, 15);
-                fzIcon.image = [UIImage imageNamed:@"icon_zirenwu_1"];
+                fzIcon.frame = CGRectMake(13, 13, 13, 15);
+                fzIcon.image = [UIImage imageNamed:@"icon_zirenwu"];
                 [bSecondView addSubview:fzIcon];
                 
                 title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
@@ -1789,8 +1789,8 @@
                 [bFirstView addSubview:dashLine2];
                 
                 UIImageView * fzIcon = [[UIImageView alloc] init];
-                fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 16, 16);
-                fzIcon.image = [UIImage imageNamed:@"icon_canyuren"];
+                fzIcon.frame = CGRectMake(13, Y(dashLine) + 14, 13, 15);
+                fzIcon.image = [UIImage imageNamed:@"icon_canyuren_1"];
                 [bFirstView addSubview:fzIcon];
                 
                 title = [[UILabel alloc] initWithFrame:CGRectMake(X(groupName), Y(fzIcon) - 2, duiImgWidth - X(groupName) * 2, 16)];
@@ -1936,7 +1936,7 @@
             [btnComment addTarget:self action:@selector(btnCommentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [bFirstView addSubview:btnComment];
             
-            UIImageView * commIcon = [[UIImageView alloc]initWithFrame:CGRectMake(duiImgWidth - 50 - 8, 14, 15, 15)];
+            UIImageView * commIcon = [[UIImageView alloc]initWithFrame:CGRectMake(duiImgWidth - 50 - 8, 14, 13, 15)];
             commIcon.image = [UIImage imageNamed:@"btn_pinglun"];
             [bFirstView addSubview:commIcon];
             
