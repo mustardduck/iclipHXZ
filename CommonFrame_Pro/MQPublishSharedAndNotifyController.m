@@ -1118,17 +1118,6 @@
     _txtView.placeholderColor = RGBCOLOR(172, 172, 172);
     _txtView.backgroundColor = [UIColor grayMarkColor];
     
-    
-    //    textview 改变字体的行间距
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineSpacing = 4;// 字体的行间距
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName:[UIFont systemFontOfSize:15],
-                                 NSParagraphStyleAttributeName:paragraphStyle,
-                                 NSForegroundColorAttributeName:[UIColor whiteColor]
-                                 };
-    _txtView.attributedText = [[NSAttributedString alloc] initWithString:@"" attributes:attributes];
 }
 
 - (void) resetAllViewLayout:(UIView *)view
@@ -1568,24 +1557,6 @@
     [self hiddenKeyboard];
     
     [self.navigationController popViewControllerAnimated:YES];
-}
-
--(void)textViewDidChange:(UITextView *)textView
-{
-    //    textview 改变字体的行间距
-    
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    
-    paragraphStyle.lineSpacing = 4;// 字体的行间距
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName:[UIFont systemFontOfSize:15],
-                                 NSParagraphStyleAttributeName:paragraphStyle,
-                                 NSForegroundColorAttributeName:[UIColor whiteColor]
-                                 };
-    
-    textView.attributedText = [[NSAttributedString alloc] initWithString:textView.text attributes:attributes];
-    
 }
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField
