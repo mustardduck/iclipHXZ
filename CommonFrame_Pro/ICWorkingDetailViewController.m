@@ -2554,5 +2554,10 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self hiddenKeyboard];
+}
+
 
 @end
