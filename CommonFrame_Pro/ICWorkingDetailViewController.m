@@ -1830,7 +1830,7 @@
                     [bFirstView addSubview:_partCollView];
                     
                     UIButton * moreBtn = [[UIButton alloc] init];
-                    moreBtn.frame = CGRectMake(duiImgWidth - 50, Y(dashLine2), 50, 40);
+                    moreBtn.frame = CGRectMake(duiImgWidth - 50, Y(dashLine), 50, 40);
                     moreBtn.backgroundColor = [UIColor clearColor];
                     [moreBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
                     [moreBtn addTarget:self action:@selector(clickMorePart:) forControlEvents:UIControlEventTouchUpInside];
@@ -1843,7 +1843,7 @@
                         
                         _partCollView.height = 14 + 50 + 30;
                         
-                        bFirstView.height = 166 + _partCollView.height;
+                        bFirstView.height = 100 + _partCollView.height;
                     }
                     else if(_partList.count > 5 && _isShowAllPart)
                     {
