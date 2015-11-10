@@ -708,9 +708,7 @@
         
         [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
 
-    
     cell.titleLbl.tag = tag + 100;
 
     [cell.titleView setRoundColorCorner:5 withColor:[UIColor grayLineColor]];
@@ -766,20 +764,23 @@
 - (void) textFieldDidEndEditing:(UITextField *)textField
 {
     NSInteger index = textField.tag - 100;
-    NSDictionary * childDic = _childMissionArr[index];
-
     
-    NSMutableDictionary * mDic = [NSMutableDictionary dictionary];
-    
-    [mDic setObject:textField.text forKey:@"title"];
-    
-    NSDictionary * miDic = [childDic objectForKey:@"missionDic"];
-    if(miDic)
+    if(_childMissionArr.count > 0)
     {
-        [mDic setObject:miDic forKey:@"missionDic"];
+        NSDictionary * childDic = _childMissionArr[index];
+        
+        NSMutableDictionary * mDic = [NSMutableDictionary dictionary];
+        
+        [mDic setObject:textField.text forKey:@"title"];
+        
+        NSDictionary * miDic = [childDic objectForKey:@"missionDic"];
+        if(miDic)
+        {
+            [mDic setObject:miDic forKey:@"missionDic"];
+        }
+        
+        [_childMissionArr replaceObjectAtIndex:index withObject:mDic];
     }
-    
-    [_childMissionArr replaceObjectAtIndex:index withObject:mDic];
 
     [self resetTableViewFrame];
 }
@@ -881,6 +882,19 @@
         [_childMissionArr addObject:dic];
         
         [_mainTableView reloadData];
+        
+        NSIndexPath * indexPath;
+        if(_childMissionArr.count >= 1)
+        {
+            indexPath = [NSIndexPath indexPathForRow:_childMissionArr.count - 1 inSection:0];
+        }
+        
+        MQPublishMissionMainCell *cell = [self.mainTableView cellForRowAtIndexPath:indexPath];
+        
+        if(cell)
+        {
+            [cell.titleLbl becomeFirstResponder];
+        }
     }
     else
     {

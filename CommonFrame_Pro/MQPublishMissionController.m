@@ -1695,9 +1695,9 @@
             }
             NSComparisonResult  dataCompare= [tdate compare:fdate];
             if (dataCompare != NSOrderedDescending) {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [alert show];
-                return;
+//                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//                [alert show];
+//                return;
             }
             else
                 _strFinishTime = strDate;
@@ -1734,9 +1734,9 @@
             }
             NSComparisonResult  dataCompare= [tdate compare:fdate];
             if (dataCompare != NSOrderedDescending) {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-                return;
+//                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                [alert show];
+//                return;
             }
             else
                 _strRemindTime = strDate;

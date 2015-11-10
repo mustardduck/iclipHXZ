@@ -349,7 +349,7 @@
             lpgr.delegate = self;
             [_tableView addGestureRecognizer:lpgr];	//启用长按事件
             
-            NSArray* typeList = @[@"批示",@"评论"];
+            NSArray* typeList = @[@"批示"];
             _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 44 - 66, [UIScreen mainScreen].bounds.size.width, 44)];
             //[inputBar setFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) + 100, 320, 44)];
             _inputBar.delegate = self;
@@ -2226,6 +2226,7 @@
         
         Comment* comm = [_commentArray objectAtIndex:cIndex];
         
+        _inputBar.textField.placeHolderLabel.width = 200;
         _inputBar.textField.placeHolderLabel.text = [NSString stringWithFormat:@"回复 %@", comm.userName];
         
         _indexRow = indexPath.row;
