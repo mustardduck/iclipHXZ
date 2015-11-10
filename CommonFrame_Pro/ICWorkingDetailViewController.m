@@ -359,6 +359,7 @@
             _inputBar.typeList = typeList;
             _inputBar.parentController = self;
             _inputBar.dataCount = _replyList.count - 1;
+            _inputBar.textField.placeholder = @"点击回复";
             
             [self addSendToKeyboard:_inputBar.textField];
             
@@ -1223,17 +1224,22 @@
             CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
             
             UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(title), YH(title) + 16, contentWidth, contentHeight)];
-            
+            [desLbl setBackgroundColor:[UIColor clearColor]];
+            [desLbl setBackgroundColor:[UIColor clearColor]];
+            [desLbl setTextColor:RGBCOLOR(172, 172, 173)];
+            [desLbl setFont:font];
+
             if(content.length)
             {
-                [desLbl setBackgroundColor:[UIColor clearColor]];
                 [desLbl setNumberOfLines:0];
-                [desLbl setText:content];
-                [desLbl setTextColor:RGBCOLOR(172, 172, 173)];
-                [desLbl setFont:font];
-                [cell.contentView addSubview:desLbl];
             }
-            
+            else
+            {
+                content = @"暂无描述";
+            }
+            [desLbl setText:content];
+
+            [cell.contentView addSubview:desLbl];
             
             CGFloat duiImgWidth = SCREENWIDTH - 13 * 2;
             
@@ -2214,6 +2220,14 @@
     }
     else
     {
+        NSInteger index = indexPath.row;
+
+        NSInteger cIndex = index - 1;
+        
+        Comment* comm = [_commentArray objectAtIndex:cIndex];
+        
+        _inputBar.textField.placeHolderLabel.text = [NSString stringWithFormat:@"回复 %@", comm.userName];
+        
         _indexRow = indexPath.row;
         BOOL hasLoad = NO;
          NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 1)];
