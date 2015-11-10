@@ -772,6 +772,10 @@
                 
                 NSLog(@"Dic:%@",dic);
             }
+            else
+            {
+                cm = nil;
+            }
         }
         
     }

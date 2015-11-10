@@ -34,6 +34,8 @@
 
 @property (nonatomic,strong) NSString*              messageId;
 
+@property (nonatomic,strong) NSArray*              commentsArr;
+@property (nonatomic,strong) NSArray*              imageArr;
 
 
 @end

@@ -460,7 +460,6 @@
     [_replyList addObject:@""];
     
     _reReplyDic = [NSMutableDictionary dictionary];
-    _currentMission = [Mission new];
     
     //self.taskId = @"1015072218310001";
     //self.taskId = @"1015072215290001";
@@ -469,8 +468,17 @@
     
     _imageArray = [NSMutableArray array];
     NSArray * imgArr = [NSArray array];
-    
-    _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
+    if(!_currentMission)
+    {
+        _currentMission = [Mission new];
+        
+        _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
+    }
+    else
+    {
+        commentsArray = _commentsArr;
+        imgArr = _imageArr;
+    }
     
     if (_currentMission != nil) {
         
@@ -2554,14 +2562,29 @@
     
     NSString * taskId = [dic valueForKey:@"taskId"];
     
-    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-    ((ICWorkingDetailViewController*)vc).taskId = taskId;
-    ((ICWorkingDetailViewController*)vc).indexInMainArray = _indexInMainArray;
-    ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
-    ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+    NSArray* commentsArray = [NSArray array];
+    NSArray * imgArr = [NSArray array];
+    _currentMission = [Mission detail:taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
     
-    [self.navigationController pushViewController:vc animated:YES];
+    if(!_currentMission)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:@"你不在该任务中" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        
+        [alert show];
+        
+        return;
+    }
+    else
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+        ((ICWorkingDetailViewController*)vc).taskId = taskId;
+        ((ICWorkingDetailViewController*)vc).indexInMainArray = _indexInMainArray;
+        ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
+        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
