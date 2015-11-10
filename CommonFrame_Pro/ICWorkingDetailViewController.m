@@ -360,7 +360,7 @@
             _inputBar.parentController = self;
             _inputBar.dataCount = _replyList.count - 1;
             
-            [self addDoneToKeyboard:_inputBar.textField];
+            [self addSendToKeyboard:_inputBar.textField];
             
             [self.view addSubview:_inputBar];
             
@@ -371,11 +371,6 @@
     //_dataList = [NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10", nil];
     //_replyList = [NSMutableArray arrayWithObjects:@" ",@" ",@"回形针工具上线申请1！",@"回形针工具上线申请2！",@"回形针工具上线申请3！",@"回形针工具上线申请！",@"回形针工具上线申请！",@"回形针工具上线申请8！",@"回形针工具上线申请9！",@"回形针工具上线申请10！", nil];
 
-}
-
-- (void) hiddenKeyboard
-{
-    [_inputBar.textField resignFirstResponder];
 }
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
@@ -2557,6 +2552,17 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self hiddenKeyboard];
+}
+
+- (void)sendComment
+{
+    [self inputBar:_inputBar sendBtnPress:_inputBar.sendBtn withInputString:_inputBar.textField.text];
+    [_inputBar.textField resignFirstResponder];
+}
+
+- (void)hiddenKeyboard
+{
+    [_inputBar.textField resignFirstResponder];
 }
 
 

@@ -127,7 +127,7 @@
         _textField.layer.cornerRadius = 6;
         _textField.font = [UIFont systemFontOfSize:18];
         _textField.delegate = self;
-        [_textField setReturnKeyType:UIReturnKeySend];
+//        [_textField setReturnKeyType:UIReturnKeySend];
         [_textField setKeyboardType:UIKeyboardTypeDefault];
 //        _textField.tag = 707;
 //        self.textField.placeholder = @"初始化111";
@@ -266,11 +266,20 @@
 
 -(void)send
 {
-    _isSendButtonClicked = YES;
-    _isBackClicked = NO;
+//    _isSendButtonClicked = YES;
+//    _isBackClicked = NO;
     if (self.delegate&&[self.delegate respondsToSelector:@selector(inputBar:sendBtnPress:withInputString:)]) {
         [self.delegate inputBar:self sendBtnPress:_sendBtn withInputString:self.textField.text];
     }
+
+    [self resetInputBar];
+}
+
+- (void)resetInputBar
+{
+    _isSendButtonClicked = YES;
+    _isBackClicked = NO;
+    
     if (self.clearInputWhenSend) {
         self.textField.text = @"";
     }
@@ -287,14 +296,14 @@
     [btnType  setTitle:@"＋" forState:UIControlStateNormal];
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-     if ([text isEqualToString:@"\n"]){
-         [self send];
-         return NO;
-     }
-    return YES;
-}
+//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//     if ([text isEqualToString:@"\n"]){
+//         [self send];
+//         return NO;
+//     }
+//    return YES;
+//}
 
 #pragma mark keyboardNotification
 
@@ -374,6 +383,8 @@
 - (void)keyboardWillHide:(NSNotification*)notification
 {
     [self keyHide];
+    
+    [self resetInputBar];
     
 }
 

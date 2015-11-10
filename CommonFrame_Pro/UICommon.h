@@ -88,7 +88,9 @@ typedef void (^keyboardBlock) ();
 @interface UIViewController (expanded)
 //KeyboardUI
 - (void)addDoneToKeyboard:(UIView *)activeView;//对键盘添加“完成”按钮
+- (void) addSendToKeyboard:(UIView *)activeView;//加"发送"
 - (void)hiddenKeyboard;
+- (void)sendComment;
 
 @end
 
