@@ -254,6 +254,8 @@
 
 - (void) btnRightMoreClicked:(id)sender
 {
+    [self hiddenKeyboard];
+    
     if(_currentMission.type == 1)//任务
     {
         //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成

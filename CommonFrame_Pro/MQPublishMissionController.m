@@ -224,7 +224,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     if(!_markList.count)
     {
@@ -1238,6 +1238,8 @@
                 
                 Accessory * acc = _cAccessoryArray[index];
                 
+                cell.imageView.image = nil;
+                
                 [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             }
             
@@ -2089,7 +2091,6 @@
 {
     _collectionview.hidden = _cAccessoryArray.count ? NO : YES;
 
-    
     if(!_collectionview.hidden)
     {
         [_collectionview reloadData];

@@ -52,8 +52,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
 //    
@@ -432,17 +432,11 @@
 
 - (IBAction)btnBackButtonClicked:(id)sender
 {
-//    [self hiddenKeyboard];
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)btnDoneButtonClicked:(id)sender
+- (void) checkData
 {
-    NSLog(@"%@",_childMissionArr);
-    
-    [self hiddenKeyboard];
-
     NSDictionary * mainDic = [_mainMissionDic objectForKey:@"missionDic"];
     
     if(![mainDic allKeys].count)
@@ -546,7 +540,7 @@
         }
     }
     
-    NSLog(@"%@", childArr);    
+    NSLog(@"%@", childArr);
     
     [SVProgressHUD showWithStatus:@"任务发布中..."];
     
@@ -554,7 +548,7 @@
         
         NSString * taskId = @"";
         
-//        BOOL isSendOK = [m sendMission:YES taksId:&taskId];
+        //        BOOL isSendOK = [m sendMission:YES taksId:&taskId];
         BOOL isSendOK = [Mission sendAllMission:YES taksId:&taskId withArr:childArr];
         
         if (isSendOK) {
@@ -562,16 +556,26 @@
             [SVProgressHUD showSuccessWithStatus:@"任务发布成功"];
             
             [self hiddenKeyboard];
-//            _btnDoneCliked = YES;
             [self.navigationController popViewControllerAnimated:YES];
         }
         else
-        {            
+        {
             [SVProgressHUD showErrorWithStatus:@"任务发布失败"];
         }
         
     });
+}
+
+- (IBAction)btnDoneButtonClicked:(id)sender
+{
+    NSLog(@"%@",_childMissionArr);
     
+    [self hiddenKeyboard];
+    
+    dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC);
+    dispatch_after(time, dispatch_get_main_queue(), ^{
+        [self checkData];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
