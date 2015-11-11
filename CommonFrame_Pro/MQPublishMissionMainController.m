@@ -14,6 +14,7 @@
 #import "MQPublishMissionController.h"
 #import "SVProgressHUD.h"
 #import "DashesLineView.h"
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface MQPublishMissionMainController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate>
 {
@@ -43,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet DashesLineView *topRightDashLine;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIButton *jiaBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *topPhotoView;
 
 @end
 
@@ -708,6 +710,16 @@
                     cell.lineView.endPoint = CGPointMake(0, 44);
                     cell.lineView.backgroundColor = [UIColor clearColor];
                     cell.lineView.frame = CGRectMake(68, 0, 0.5, 44);
+                    
+                    cell.rightPhoto.hidden = NO;
+                    cell.rightPhoto.image = nil;
+                    [cell.rightPhoto setRoundCorner:5];
+
+                    NSDictionary * mainDic = [dic objectForKey:@"missionDic"];
+                    NSArray * responArr = [mainDic objectForKey:@"respoDic"];
+                    Member * m = responArr[0];
+                    
+                    [cell.rightPhoto setImageWithURL:[NSURL URLWithString:m.img] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                 }
                 else
                 {
@@ -882,9 +894,25 @@
     {
         _mainTextView.text = [_mainMissionDic valueForKey:@"title"];
         
-        _rightTxtView.hidden = NO;
+        NSArray * responArr = [mainDic objectForKey:@"respoDic"];
         
+        Member * m = responArr[0];
+        
+        _rightTxtView.hidden = NO;
+
         _jiaView.hidden = YES;
+
+        if(m.img)
+        {
+            _topPhotoView.hidden = NO;
+            _topPhotoView.image = nil;
+            [_topPhotoView setRoundCorner:5];
+            [_topPhotoView setImageWithURL:[NSURL URLWithString:m.img] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        }
+        else
+        {
+            _topPhotoView.hidden = YES;
+        }
     }
     else
     {

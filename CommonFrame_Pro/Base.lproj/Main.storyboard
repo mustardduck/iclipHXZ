@@ -2002,7 +2002,7 @@
                                             <rect key="frame" x="14" y="20" width="292" height="44"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lt2-4p-pEQ" customClass="PH_UITextView">
-                                                    <rect key="frame" x="8" y="4" width="218" height="40"/>
+                                                    <rect key="frame" x="8" y="4" width="184" height="40"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="YS5-Wh-IGE"/>
@@ -2015,23 +2015,26 @@
                                                     </connections>
                                                 </textView>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M1G-eX-MZj">
-                                                    <rect key="frame" x="226" y="0.0" width="66" height="44"/>
+                                                    <rect key="frame" x="192" y="0.0" width="100" height="44"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KoA-so-WQZ">
-                                                            <rect key="frame" x="0.0" y="0.0" width="66" height="40"/>
+                                                            <rect key="frame" x="65" y="0.0" width="35" height="44"/>
                                                         </button>
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6VN-cJ-9yP">
+                                                            <rect key="frame" x="23" y="7" width="30" height="30"/>
+                                                        </imageView>
                                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aft-gd-ecW" customClass="DashesLineView">
-                                                            <rect key="frame" x="35" y="0.0" width="1" height="44"/>
+                                                            <rect key="frame" x="68" y="0.0" width="1" height="44"/>
                                                             <color key="backgroundColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         </view>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="btn_jiantou_1" translatesAutoresizingMaskIntoConstraints="NO" id="xAQ-5B-wuV">
-                                                            <rect key="frame" x="44" y="16" width="12" height="12"/>
+                                                            <rect key="frame" x="80" y="16" width="12" height="12"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="ap4-ew-zwu"/>
-                                                        <constraint firstAttribute="width" constant="66" id="dRn-tu-P6a"/>
+                                                        <constraint firstAttribute="width" constant="100" id="dRn-tu-P6a"/>
                                                         <constraint firstAttribute="width" constant="100" id="fuX-1B-g9c"/>
                                                         <constraint firstAttribute="height" constant="44" id="pnR-am-ZRq"/>
                                                     </constraints>
@@ -2043,10 +2046,10 @@
                                                     </variation>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N1i-cb-01Q">
-                                                    <rect key="frame" x="4" y="7" width="114" height="30"/>
+                                                    <rect key="frame" x="4" y="7" width="200" height="30"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Npf-lT-Yi5">
-                                                            <rect key="frame" x="0.0" y="0.0" width="114" height="30"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
                                                             <connections>
                                                                 <action selector="btnJiaButtonClicked:" destination="hHb-Vb-T0i" eventType="touchUpInside" id="bHr-z8-jaz"/>
                                                             </connections>
@@ -2063,7 +2066,7 @@
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="114" id="HlW-Xw-fZO"/>
+                                                        <constraint firstAttribute="width" constant="200" id="HlW-Xw-fZO"/>
                                                         <constraint firstAttribute="height" constant="30" id="OlO-XC-PtT"/>
                                                     </constraints>
                                                 </view>
@@ -2275,6 +2278,7 @@
                         <outlet property="mainTextView" destination="lt2-4p-pEQ" id="Mrg-Rp-yr6"/>
                         <outlet property="rightTxtBtn" destination="KoA-so-WQZ" id="VmO-n6-60T"/>
                         <outlet property="rightTxtView" destination="M1G-eX-MZj" id="iSb-ad-kfu"/>
+                        <outlet property="topPhotoView" destination="6VN-cJ-9yP" id="jr6-ew-fr4"/>
                         <outlet property="topRightDashLine" destination="Aft-gd-ecW" id="yTb-DR-Apd"/>
                         <outlet property="topTxtView" destination="pkr-BE-jek" id="UU3-y2-Q9B"/>
                         <outlet property="view" destination="Ur7-VQ-C4m" id="0R4-9g-xNm"/>
