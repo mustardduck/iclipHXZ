@@ -609,7 +609,7 @@ typedef enum {
         else if ([obj isKindOfClass:[Accessory class]]) {
             
             Accessory * ac = (Accessory *)obj;
-            NSString* imgName = ac.name;
+            
             NSString* imgPath = ac.address;
             
             UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(6, 4, 20, 20)];
@@ -632,12 +632,42 @@ typedef enum {
             [time setTextAlignment:NSTextAlignmentRight];
             [cell.contentView addSubview:time];
             
+
             
             UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(name.frame.origin.x,photo.frame.origin.y + photo.frame.size.height + 5, 44, 44)];
 //            [img setImage:[UIImage imageWithContentsOfFile:imgPath]];
             
-            [img setImageWithURL:[NSURL URLWithString: imgPath] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [img setBackgroundColor:[UIColor clearColor]];
+            NSString* imgName = ac.name;
+            // 1 doc 2 xls 3 ppt 4 pdf 0 png 6 other
+            NSInteger type = [[UICommon findFileType:imgName] integerValue];
+            
+            if(type == 0)
+            {
+                [img setImageWithURL:[NSURL URLWithString: imgPath] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                [img setBackgroundColor:[UIColor clearColor]];
+            }
+            else
+            {
+                switch (type) {
+                    case 1:
+                        img.image = [UIImage imageNamed:@"icon_word_xiao"];
+                        break;
+                    case 2:
+                        img.image = [UIImage imageNamed:@"icon_excel_xiao"];
+                        break;
+                    case 3:
+                        img.image = [UIImage imageNamed:@"icon_ppt_xiao"];
+                        break;
+                    case 4:
+                        img.image = [UIImage imageNamed:@"icon_pdf_xiao"];
+                        break;
+                    case 6:
+                        img.image = [UIImage imageNamed:@"icon_qita_xiao"];
+                        break;
+                    default:
+                        break;
+                }
+            }
             [cell.contentView addSubview:img];
             
             UILabel* imgname = [[UILabel alloc] initWithFrame:CGRectMake(img.frame.origin.x + img.frame.size.width + 10,

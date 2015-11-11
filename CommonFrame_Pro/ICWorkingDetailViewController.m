@@ -75,6 +75,7 @@
     
     _taskId = [dic valueForKey:@"taskId"];
     
+    [self requesetData];
     [self loadData];
     
     [_tableView reloadData];
@@ -448,10 +449,22 @@
             _tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
         }
         if (_content != nil) {
+            [self requesetData];
             [self loadData];
             [_tableView reloadData];
         }
     }
+}
+
+- (void)requesetData
+{
+    NSArray* commentsArray = [NSArray array];
+    NSArray * imgArr = [NSArray array];
+    
+    _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
+    
+    _commentsArr = commentsArray;
+    _imageArr = imgArr;
 }
 
 - (void)loadData
@@ -764,6 +777,7 @@
                 
                 if(isOk)
                 {
+                    [self requesetData];
                     [self loadData];
                     [_tableView reloadData];
                 }
@@ -790,11 +804,7 @@
             {
                 [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
                 
-                NSArray* commentsArray = [NSArray array];
-                NSArray * imgArr = [NSArray array];
-                
-                _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
-
+                [self requesetData];
                 [self loadData];
                 
                 [_tableView reloadData];
@@ -1242,7 +1252,7 @@
             
             //checkbox
             UIImageView * checkView = [[UIImageView alloc] init];
-            checkView.frame = CGRectMake(26, Y(title) + 2, 12, 14);
+            checkView.frame = CGRectMake(26, Y(title) + 2, 16, 14);
             checkView.image = [UIImage imageNamed:@"btn_kuang"];
             if(_currentMission.status == 2)//完成
             {
@@ -2339,6 +2349,7 @@
                 if (isOk) {
                     
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                    [self requesetData];
                     [self loadData];
                     [_tableView reloadData];
                     return;
@@ -2360,6 +2371,7 @@
             if(isOk){
                 
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                [self requesetData];
                 [self loadData];
                 [_tableView reloadData];
                 return;
@@ -2442,6 +2454,7 @@
                     if(isOk)
                     {
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                        [self requesetData];
                         [self loadData];
                         [_tableView reloadData];
                         return;
@@ -2594,6 +2607,7 @@
     
     NSArray* commentsArray = [NSArray array];
     NSArray * imgArr = [NSArray array];
+    
     _currentMission = [Mission detail:taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
     
     if(!_currentMission)
