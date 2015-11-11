@@ -1510,7 +1510,7 @@
                 }
             }
             
-            CGSize maxSize = CGSizeMake(SCREENWIDTH - 28 - 13, 1000);
+            CGSize maxSize = CGSizeMake(duiImgWidth - X(groupName), 1000);
             
             tagLbl = [[UILabel alloc] init];
             tagLbl.frame = CGRectMake(X(groupName), YH(groupName) + 12, maxSize.width, maxSize.height);
@@ -1829,7 +1829,7 @@
                     newcHeight = YH(_duiimageview) + 34;
                 }
                 
-                duiImgHeight = YH(bFirstView) + 14 - 78;
+                duiImgHeight = YH(bFirstView) + 14 - 78 - 14 + H(tagLbl);
 
             }
             else//问题、建议、其它
@@ -1939,7 +1939,7 @@
                     bFirstView.height = 100;
                 }
                 
-                duiImgHeight = YH(bFirstView) + 14 - 78;
+                duiImgHeight = YH(bFirstView) + 14 - 78 - 14 + H(tagLbl);
 
                 newcHeight = YH(_duiimageview) + 34;
             }
