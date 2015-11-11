@@ -495,8 +495,9 @@
     }
     
     if (_currentMission != nil) {
+        NSString * loginStr = [NSString stringWithFormat:@"%@", [LoginUser loginUserID]];
         
-        if(_currentMission.createUserId == [LoginUser loginUserID] || _currentMission.liableUserId == [LoginUser loginUserID])
+        if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
         {
             UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"更多操作" style:UIBarButtonItemStyleDone target:self action:@selector(btnRightMoreClicked:)];
             [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];

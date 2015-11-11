@@ -575,7 +575,7 @@
                         cm.userName = [di valueForKey:@"userName"];
                         cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
                         cm.lableUserName = [di valueForKey:@"lableUserName"];
-                        cm.liableUserId = [di valueForKey:@"liableUserId"];
+                        cm.liableUserId = [di valueForKey:@"lableUserId"];
                         cm.parentId = [di valueForKey:@"parentId"];
                     }
                 }
