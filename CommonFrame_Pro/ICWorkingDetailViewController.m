@@ -2136,9 +2136,11 @@
                 
                 [cell.contentView addSubview:revContent];
                 
-                UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60, 10, 46, 12)];
+                UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60 - 40, 10, 86, 12)];
                 [date setBackgroundColor:[UIColor clearColor]];
-                [date setText:comm.hourStr];
+                
+                NSString * timeStr = [UICommon dayAndHourFromString:comm.createTime formatStyle:@"MM月dd日 HH:mm"];
+                [date setText:timeStr];
                 [date setTextColor:[UIColor colorWithRed:[self colorWithRGB:122] green:[self colorWithRGB:122] blue:[self colorWithRGB:122] alpha:1.0f]];
                 [date setFont:[UIFont systemFontOfSize:10]];
                 [date setTextAlignment:NSTextAlignmentRight];

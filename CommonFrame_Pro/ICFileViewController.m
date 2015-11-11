@@ -623,7 +623,7 @@ typedef enum {
             [name setFont:[UIFont systemFontOfSize:13]];
             [cell.contentView addSubview:name];
             
-            UILabel* time = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 70, photo.frame.origin.y + 4, 60, 12)];
+            UILabel* time = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 100, photo.frame.origin.y + 4, 90, 12)];
             
             NSString * dateStr = [UICommon dayAndHourFromString:ac.addTime formatStyle:@"MM/dd HH:mm"];
             [time setText:dateStr ];

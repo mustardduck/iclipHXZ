@@ -633,20 +633,14 @@
 {
     if(self.controllerType == MemberViewFromControllerCopyTo)
     {
-        if(_selectedIndexList.count)
-        {
-            if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
-                [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
-            }
+        if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
+            [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
         }
     }
     if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
     {
-        if(_selectedIndexList.count)
-        {
-            if ([self.icPublishMisonController respondsToSelector:@selector(setParticipantsIndexPathArray:)]) {
-                [self.icPublishMisonController setValue:_selectedIndexList forKey:@"participantsIndexPathArray"];
-            }
+        if ([self.icPublishMisonController respondsToSelector:@selector(setParticipantsIndexPathArray:)]) {
+            [self.icPublishMisonController setValue:_selectedIndexList forKey:@"participantsIndexPathArray"];
         }
     }
 

@@ -875,6 +875,8 @@
                 }
                 else
                 {
+                    cell.imageView.image = nil;
+                    
                     [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                     
                     cell.fileVIew.hidden = YES;
@@ -913,6 +915,8 @@
                 
                 Accessory * acc = _cAccessoryArray[index];
                 
+                cell.imageView.image = nil;
+                
                 [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             }
             
@@ -942,6 +946,8 @@
                 NSInteger index = indexPath.row;
                 
                 Accessory * acc = _cAccessoryArray[index];
+                
+                cell.imageView.image = nil;
                 
                 [cell.imageView setImageWithURL:[NSURL URLWithString:acc.address] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             }

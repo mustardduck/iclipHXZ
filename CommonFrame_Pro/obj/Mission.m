@@ -717,7 +717,7 @@
                             acc.taskId = [di valueForKey:@"taskId"];
                             acc.parentId = [di valueForKey:@"parentId"];
                             acc.parentName = [di valueForKey:@"parentName"];
-                            acc.createTime = [di valueForKey:@"createTime"];
+                            acc.createTime = [di valueForKey:@"createTimeStr"];
                             acc.level = [[di valueForKey:@"level"] integerValue];
                             acc.praiseNum = [[di valueForKey:@"upNum"] integerValue];
                             acc.isPraised = ([[di valueForKey:@"isup"] integerValue] > 0 ? YES : NO);
