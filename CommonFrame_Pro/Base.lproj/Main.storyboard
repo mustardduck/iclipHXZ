@@ -2008,7 +2008,7 @@
                                                         <constraint firstAttribute="height" constant="40" id="YS5-Wh-IGE"/>
                                                     </constraints>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="hHb-Vb-T0i" id="08U-F7-K0C"/>

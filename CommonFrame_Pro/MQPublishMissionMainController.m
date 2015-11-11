@@ -463,6 +463,7 @@
 
 - (IBAction)btnBackButtonClicked:(id)sender
 {
+    [self hiddenKeyboard];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
