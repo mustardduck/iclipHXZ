@@ -286,6 +286,9 @@
     {
         NSDictionary * mDic = [_mainMissionDic valueForKey:@"missionDic"];
         NSString * taskId = [mDic valueForKey:@"taskId"];
+        NSString * workGroupId = [mDic valueForKey:@"workGroupId"];
+        NSString * workGroupName = [mDic valueForKey:@"workGroupName"];
+
         if(!taskId)
         {
             _isEdit = NO;//新增主任务
@@ -293,6 +296,18 @@
         else
         {
             _isEdit = YES;//编辑主任务
+            
+            NSDictionary * missionDic = [Mission missionInfo:taskId];
+            NSString * mDic = [missionDic objectForKey:@"missionDic"];
+            
+            ((MQPublishMissionController*)vc).workGroupId = [mDic valueForKey:@"workGroupId"];
+            ((MQPublishMissionController*)vc).workGroupName = [mDic valueForKey:@"workGroupName"];
+//            ((MQPublishMissionController*)vc).missionDic = missionDic;
+        }
+        if(workGroupId)
+        {
+            ((MQPublishMissionController*)vc).workGroupId = workGroupId;
+            ((MQPublishMissionController*)vc).workGroupName = workGroupName;
         }
     }
     if(_childMissionArr.count && !_isMainMission)
@@ -300,6 +315,8 @@
         NSDictionary * cmdic = _childMissionArr[_currentEditChildIndex];
         NSDictionary * mDic = [cmdic valueForKey:@"missionDic"];
         NSString * taskId = [mDic valueForKey:@"taskId"];
+        NSString * workGroupId = [mDic valueForKey:@"workGroupId"];
+        NSString * workGroupName = [mDic valueForKey:@"workGroupName"];
         if(!taskId)
         {
             _isEdit = NO;//新增子任务
@@ -317,6 +334,20 @@
         else
         {
             _isEdit = YES;//编辑子任务
+            
+            NSDictionary * missionDic = [Mission missionInfo:taskId];
+            NSString * mDic = [missionDic objectForKey:@"missionDic"];
+
+            ((MQPublishMissionController*)vc).workGroupId = [mDic valueForKey:@"workGroupId"];
+            ((MQPublishMissionController*)vc).workGroupName = [mDic valueForKey:@"workGroupName"];
+
+//            ((MQPublishMissionController*)vc).missionDic = missionDic;
+        }
+        
+        if(workGroupId)
+        {
+            ((MQPublishMissionController*)vc).workGroupId = workGroupId;
+            ((MQPublishMissionController*)vc).workGroupName = workGroupName;
         }
     }
 
@@ -484,7 +515,8 @@
     [mDic removeObjectForKey:@"respoDic"];
     [mDic removeObjectForKey:@"accesList"];
     [mDic removeObjectForKey:@"cMarkList"];
-    
+    [mDic removeObjectForKey:@"workGroupName"];
+
     NSString * taskId = [mainDic valueForKey:@"taskId"];
     
     NSString * parentId;
@@ -527,7 +559,8 @@
             [mmDic removeObjectForKey:@"respoDic"];
             [mmDic removeObjectForKey:@"accesList"];
             [mmDic removeObjectForKey:@"cMarkList"];
-            
+            [mmDic removeObjectForKey:@"workGroupName"];
+
             if(parentId)
             {
                 [mmDic setObject:parentId forKey:@"parentId"];

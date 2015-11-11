@@ -882,7 +882,8 @@
                 [curDic setObject:cm.title forKey:@"title"];
                 [curDic setObject:cm.taskId forKey:@"taskId"];
                 [curDic setObject:cm.parentId forKey:@"parentId"];
-
+                [curDic setObject:cm.workGroupId forKey:@"workGroupId"];
+                [curDic setObject:cm.workGroupName forKey:@"workGroupName"];
 
                 [mDic setObject:curDic forKey:@"missionDic"];
                 

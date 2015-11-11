@@ -2285,6 +2285,11 @@
     }
     
     [dic setObject:mission.workGroupId forKey:@"workGroupId"];
+    if(_workGroupName)
+    {
+        [dic setObject:_workGroupName forKey:@"workGroupName"];
+    }
+
     [dic setObject:mission.main forKey:@"main"];
     [dic setObject:mission.title forKey:@"title"];
     
