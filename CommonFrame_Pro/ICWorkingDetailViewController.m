@@ -1298,27 +1298,28 @@
             
             NSArray* accArr = [NSArray arrayWithArray:_currentMission.accessoryList];
             
-            CGFloat attchHeight = ((accArr.count - 1) / 3 + 1) * (accHeight + intevalHeight);
-            UIView* attchView = [[UIView alloc] init];
-            
-            CGFloat attchViewHeight = 0;
-            if(accArr.count)
-            {
-                attchViewHeight = attchHeight;
-            }
-            
-            CGFloat desY = YH(title) + 16;
-            if(content.length)
-            {
-                desY = YH(desLbl) + 23;
-            }
-            
-            attchView.frame = CGRectMake(14, desY, duiImgWidth, attchHeight);
-            
-            [attchView setBackgroundColor:[UIColor clearColor]];
-            
+            CGFloat accY = 0;
             
             if (hasAccessory) {
+                
+                CGFloat attchHeight = ((accArr.count - 1) / 3 + 1) * (accHeight + intevalHeight);
+                UIView* attchView = [[UIView alloc] init];
+                
+                CGFloat attchViewHeight = 0;
+                if(accArr.count)
+                {
+                    attchViewHeight = attchHeight;
+                }
+                
+                CGFloat desY = YH(title) + 16;
+                if(content.length)
+                {
+                    desY = YH(desLbl) + 23;
+                }
+                
+                attchView.frame = CGRectMake(14, desY, duiImgWidth, attchHeight);
+                
+                [attchView setBackgroundColor:[UIColor clearColor]];
                 
                 for (int i = 0;i < accArr.count; i++)
                 {
@@ -1446,15 +1447,14 @@
                 }
                 
                 [cell.contentView addSubview:attchView];
+                
+                accY = YH(attchView) - intevalHeight;
+
             }
-            
-            CGFloat accY = YH(attchView) - intevalHeight;
-            
-            if(!hasAccessory)
+            else
             {
                 accY = content.length ? YH(desLbl) + 23 : YH(title) + 16;
             }
-            
             //日期
             
             UIView * bFirstView = [[UIView alloc] init];
@@ -1785,7 +1785,7 @@
                             UIButton * cellBtn = [[UIButton alloc] init];
                             cellBtn.frame = CGRectMake(0, Y(dashLine4) + 34 * i + 10, duiImgWidth, 34);
                             cellBtn.backgroundColor = [UIColor clearColor];
-                            [cellBtn addTarget:self action:@selector(jumpToMissionDetail:) forControlEvents:UIControlEventTouchUpInside];
+                            [cellBtn addTarget:self action:@selector(jumpToMissionDetailView:) forControlEvents:UIControlEventTouchUpInside];
                             cellBtn.tag = i + 100;
                             [bSecondView addSubview:cellBtn];
                             
@@ -2537,6 +2537,8 @@
 {
     [super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [_navBarLeftButtonPopTipView dismissAnimated:YES];
     
     if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {
@@ -2606,7 +2608,7 @@
     [_inputBar.textField resignFirstResponder];
 }
 
-- (void)jumpToMissionDetail:(id)sender
+- (void)jumpToMissionDetailView:(id)sender
 {
     UIButton * btn = (UIButton *)sender;
     

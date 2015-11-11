@@ -161,7 +161,7 @@
                 
                 _jiezhiAndTixingView.hidden = NO;
                 _jiezhiView.hidden = NO;
-                _jiezhiLbl.text = finishDateStr;
+                _jiezhiLbl.text = [NSString stringWithFormat:@"截止时间：%@", finishDateStr];
             }
             if(remindTimeStr.length)
             {
@@ -171,7 +171,8 @@
                 
                 _jiezhiAndTixingView.hidden = NO;
                 _tixingView.hidden = NO;
-                _tixingLbl.text = remindDateStr;
+                _tixingLbl.text = [NSString stringWithFormat:@"提醒时间：%@", remindDateStr];
+
             }
             
             self.cAccessoryArray = [_currentMissionDic objectForKey:@"accesList"];

@@ -639,6 +639,8 @@
         cell = [[MQPublishMissionMainCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     NSInteger tag = indexPath.row;
     
     if(_childMissionArr.count)
@@ -719,7 +721,19 @@
                     NSArray * responArr = [mainDic objectForKey:@"respoDic"];
                     Member * m = responArr[0];
                     
-                    [cell.rightPhoto setImageWithURL:[NSURL URLWithString:m.img] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    NSString * lableUserImg = [mainDic valueForKey:@"lableUserImg"];
+                    
+                    if(m.img || lableUserImg)
+                    {
+                        NSString * imgUrl = m.img;
+                        if(!imgUrl)
+                        {
+                            imgUrl = lableUserImg;
+                        }
+                        [cell.rightPhoto setImageWithURL:[NSURL URLWithString:imgUrl] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    }
+
+
                 }
                 else
                 {
@@ -841,11 +855,11 @@
     return 1;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-}
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//
+//}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -901,13 +915,20 @@
         _rightTxtView.hidden = NO;
 
         _jiaView.hidden = YES;
+        
+        NSString * lableUserImg = [mainDic valueForKey:@"lableUserImg"];
 
-        if(m.img)
+        if(m.img || lableUserImg)
         {
             _topPhotoView.hidden = NO;
             _topPhotoView.image = nil;
             [_topPhotoView setRoundCorner:5];
-            [_topPhotoView setImageWithURL:[NSURL URLWithString:m.img] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            NSString * imgUrl = m.img;
+            if(!imgUrl)
+            {
+                imgUrl = lableUserImg;
+            }
+            [_topPhotoView setImageWithURL:[NSURL URLWithString:imgUrl] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         }
         else
         {
