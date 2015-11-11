@@ -292,6 +292,100 @@
     return array;
 }
 
++ (NSArray*)getAllMembersExceptMeByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount
+{
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSInteger totalMCount = 0;
+    
+    NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
+    NSMutableArray* sectionArray = [NSMutableArray array];
+    
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@",WORKGROUP_URL,workGroupId]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSDictionary class]])
+                {
+                    for (int i = 0; i < tmpSection.count; i++)
+                    {
+                        NSString* tmpKey = [tmpSection objectAtIndex:i];
+                        id sArr = [dataDic valueForKey:tmpKey];
+                        if (sArr != nil)
+                        {
+                            [sectionArray addObject:tmpKey];
+                            
+                            if ([sArr isKindOfClass:[NSArray class]])
+                            {
+                                NSArray* dArr = (NSArray*)sArr;
+                                NSMutableArray* sectionMemberArray = [NSMutableArray array];
+                                
+                                for (id data in dArr) {
+                                    if ([data isKindOfClass:[NSDictionary class]]) {
+                                        
+                                        NSDictionary* di = (NSDictionary*)data;
+                                        
+                                        Member* mem = [Member new];
+                                        
+                                        NSLog(@"%@",[di valueForKey:@"workContactsId"]);
+                                        
+                                        mem.workContractsId = [di valueForKey:@"workContactsId"];
+                                        mem.workGroupId = [di valueForKey:@"workGroupId"];
+                                        mem.isAdmin = [[di valueForKey:@"isAdmin"] boolValue];
+                                        mem.userId = [di valueForKey:@"userId"];
+                                        mem.name = [di valueForKey:@"name"];
+                                        mem.officeTel = [di valueForKey:@"officeTel"];
+                                        mem.email = [di valueForKey:@"email"];
+                                        mem.mobile = [di valueForKey:@"mobile"];
+                                        mem.duty = [di valueForKey:@"duty"];
+                                        mem.img = [di valueForKey:@"img"];
+                                        mem.QQ = [di valueForKey:@"QQ"];
+                                        mem.createTime = [di valueForKey:@"createTime"];
+                                        mem.status = [[di valueForKey:@"status"] boolValue];
+                                        
+                                        if(mem.userId == [LoginUser loginUserID])
+                                        {
+                                            NSLog(@"%@", mem.userId);
+                                        }
+                                        else
+                                        {
+                                            [sectionMemberArray addObject:mem];
+                                            
+                                            totalMCount ++;
+                                        }
+
+                                    }
+                                }
+                                
+                                [array addObject:sectionMemberArray];
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    *sections = sectionArray;
+    *totalCount = [NSNumber numberWithInteger:totalMCount];
+    
+    return array;
+}
+
 + (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount
 {
     NSMutableArray* array = [NSMutableArray array];

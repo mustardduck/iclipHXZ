@@ -535,7 +535,15 @@
 {    
     NSMutableArray* sectionArray = [NSMutableArray array];
     NSNumber * totalCount = [NSNumber numberWithInteger:0];
-    NSArray*        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid totalMemeberCount:&totalCount];
+    NSArray * memberArray ;
+    if(self.controllerType == MemberViewFromControllerPublishMissionParticipants || self.controllerType == MemberViewFromControllerCopyTo)//参与人、抄送
+    {
+        memberArray = [Member getAllMembersExceptMeByWorkGroupID:&sectionArray workGroupID:_workgid totalMemeberCount:&totalCount];
+    }
+    else
+    {
+        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid totalMemeberCount:&totalCount];
+    }
     
     if([totalCount integerValue] > 0)
     {
