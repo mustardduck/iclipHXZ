@@ -1666,7 +1666,18 @@
                     moreBtn.titleLabel.font = Font(12);
                     [bFirstView addSubview:moreBtn];
                     
-                    if(_partList.count > 5 && !_isShowAllPart)
+                    int lineCount = 4;
+                    
+                    if(SCREENWIDTH == 375)
+                    {
+                        lineCount = 5;
+                    }
+                    else if(SCREENWIDTH == 414)
+                    {
+                        lineCount = 6;
+                    }
+                    
+                    if(_partList.count > lineCount && !_isShowAllPart)
                     {
                         [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
                         
@@ -1674,7 +1685,7 @@
                         
                         bFirstView.height = 166 + _partCollView.height + 40;
                     }
-                    else if(_partList.count > 5 && _isShowAllPart)
+                    else if(_partList.count > lineCount && _isShowAllPart)
                     {
                         [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
                         
@@ -1682,18 +1693,7 @@
                         
                         NSInteger row = 1;
                         
-                        if(SCREENWIDTH == 320)
-                        {
-                            row = (count % 4) ? count / 4 + 1: count / 4;
-                        }
-                        else if(SCREENWIDTH == 414)
-                        {
-                            row = (count % 6) ? count / 6 + 1: count / 6;
-                        }
-                        else
-                        {
-                            row = (count % 5) ? count / 5 + 1: count / 5;
-                        }
+                        row = (count % lineCount) ? count / lineCount + 1: count / lineCount;
                         
                         float height = 14 + row * (50 + 30);
                         
@@ -1893,7 +1893,18 @@
                     moreBtn.titleLabel.font = Font(12);
                     [bFirstView addSubview:moreBtn];
                     
-                    if(_partList.count > 5 && !_isShowAllPart)
+                    int lineCount = 4;
+                    
+                    if(SCREENWIDTH == 375)
+                    {
+                        lineCount = 5;
+                    }
+                    else if(SCREENWIDTH == 414)
+                    {
+                        lineCount = 6;
+                    }
+                    
+                    if(_partList.count > lineCount && !_isShowAllPart)
                     {
                         [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
                         
@@ -1901,7 +1912,7 @@
                         
                         bFirstView.height = 100 + _partCollView.height;
                     }
-                    else if(_partList.count > 5 && _isShowAllPart)
+                    else if(_partList.count > lineCount && _isShowAllPart)
                     {
                         [moreBtn setTitle:@"收起" forState:UIControlStateNormal];
                         
@@ -1909,19 +1920,8 @@
                         
                         NSInteger row = 1;
                         
-                        if(SCREENWIDTH == 320)
-                        {
-                            row = (count % 4) ? count / 4 + 1: count / 4;
-                        }
-                        else if(SCREENWIDTH == 414)
-                        {
-                            row = (count % 6) ? count / 6 + 1: count / 6;
-                        }
-                        else
-                        {
-                            row = (count % 5) ? count / 5 + 1: count / 5;
-                        }
-                        
+                        row = (count % lineCount) ? count / lineCount + 1: count / lineCount;
+
                         float height = 14 + row * (50 + 30);
                         
                         _partCollView.height = height;
