@@ -189,6 +189,20 @@
             self.cMarkAarry = [_currentMissionDic objectForKey:@"cMarkList"];
             
             self.responsibleDic = [_currentMissionDic objectForKey:@"respoDic"];
+            
+            Member * m = _responsibleDic[0];
+            
+            if(!m.img && _lableUserImg)
+            {
+                m.img = _lableUserImg;
+                
+                NSMutableArray * reArr = [NSMutableArray array];
+                
+                [reArr addObject:m];
+                
+                self.responsibleDic = reArr;
+            }
+
             self.participantsIndexPathArray = [_currentMissionDic objectForKey:@"partiArr"];
             self.ccopyToMembersArray = [_currentMissionDic objectForKey:@"ccopyArr"];
             
@@ -2376,7 +2390,18 @@
     
     if(_responsibleDic)
     {
+        Member * m = _responsibleDic[0];
+        
         [dic setObject:_responsibleDic forKey:@"respoDic"];
+    }
+    else if (_lableUserImg)
+    {
+        NSMutableArray * laArr = [NSMutableArray array];
+        
+        Member * m = [Member new];
+        
+        m.img = _lableUserImg;
+//        m.userId = fd
     }
     if(_participantsIndexPathArray.count)
     {

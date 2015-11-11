@@ -298,12 +298,28 @@
         else
         {
             _isEdit = YES;//编辑主任务
+
+            NSDictionary * missiDic = [Mission missionInfo:taskId];
+            NSDictionary * missionDic = [missiDic objectForKey:@"missionDic"];
             
-            NSDictionary * missionDic = [Mission missionInfo:taskId];
-            NSString * mDic = [missionDic objectForKey:@"missionDic"];
+            NSString * lableUserImg = [mDic valueForKey:@"lableUserImg"];
+            NSArray * resArr = [mDic objectForKey:@"respoDic"];
+            Member * m = resArr[0];
             
-            ((MQPublishMissionController*)vc).workGroupId = [mDic valueForKey:@"workGroupId"];
-            ((MQPublishMissionController*)vc).workGroupName = [mDic valueForKey:@"workGroupName"];
+            if(lableUserImg || m.img)
+            {
+                if(lableUserImg)
+                {
+                    ((MQPublishMissionController*)vc).lableUserImg = lableUserImg;
+                }
+                else
+                {
+                    ((MQPublishMissionController*)vc).lableUserImg = m.img;
+                }
+
+            }
+            ((MQPublishMissionController*)vc).workGroupId = [missionDic valueForKey:@"workGroupId"];
+            ((MQPublishMissionController*)vc).workGroupName = [missionDic valueForKey:@"workGroupName"];
 //            ((MQPublishMissionController*)vc).missionDic = missionDic;
         }
         if(workGroupId)
@@ -337,11 +353,27 @@
         {
             _isEdit = YES;//编辑子任务
             
-            NSDictionary * missionDic = [Mission missionInfo:taskId];
-            NSString * mDic = [missionDic objectForKey:@"missionDic"];
+            NSDictionary * missiDic = [Mission missionInfo:taskId];
+            NSString * missionDic = [missiDic objectForKey:@"missionDic"];
+            
+            NSString * lableUserImg = [mDic valueForKey:@"lableUserImg"];
+            NSArray * resArr = [mDic objectForKey:@"respoDic"];
+            Member * m = resArr[0];
+            
+            if(lableUserImg || m.img)
+            {
+                if(lableUserImg)
+                {
+                    ((MQPublishMissionController*)vc).lableUserImg = lableUserImg;
+                }
+                else
+                {
+                    ((MQPublishMissionController*)vc).lableUserImg = m.img;
+                }
+            }
 
-            ((MQPublishMissionController*)vc).workGroupId = [mDic valueForKey:@"workGroupId"];
-            ((MQPublishMissionController*)vc).workGroupName = [mDic valueForKey:@"workGroupName"];
+            ((MQPublishMissionController*)vc).workGroupId = [missionDic valueForKey:@"workGroupId"];
+            ((MQPublishMissionController*)vc).workGroupName = [missionDic valueForKey:@"workGroupName"];
 
 //            ((MQPublishMissionController*)vc).missionDic = missionDic;
         }
@@ -907,14 +939,14 @@
     if([mainDic allKeys].count)
     {
         _mainTextView.text = [_mainMissionDic valueForKey:@"title"];
+
+        _rightTxtView.hidden = NO;
+
+        _jiaView.hidden = YES;
         
         NSArray * responArr = [mainDic objectForKey:@"respoDic"];
         
         Member * m = responArr[0];
-        
-        _rightTxtView.hidden = NO;
-
-        _jiaView.hidden = YES;
         
         NSString * lableUserImg = [mainDic valueForKey:@"lableUserImg"];
 
