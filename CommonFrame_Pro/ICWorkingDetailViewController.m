@@ -464,10 +464,11 @@
     //self.taskId = @"1015072218310001";
     //self.taskId = @"1015072215290001";
     _commentArray = [NSMutableArray array];
-    NSArray* commentsArray = [NSArray array];
-    
     _imageArray = [NSMutableArray array];
+
+    NSArray* commentsArray = [NSArray array];
     NSArray * imgArr = [NSArray array];
+    
     if(!_currentMission)
     {
         _currentMission = [Mission new];
@@ -789,6 +790,11 @@
             {
                 [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
                 
+                NSArray* commentsArray = [NSArray array];
+                NSArray * imgArr = [NSArray array];
+                
+                _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
+
                 [self loadData];
                 
                 [_tableView reloadData];
@@ -1208,30 +1214,52 @@
             
             [cell.contentView addSubview:tagLbl];
             
-            //标题
-            UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(26, YH(photo) + 18, SCREENWIDTH - 26 * 2, 38)];
-            [title setBackgroundColor:[UIColor clearColor]];
-            if(!_currentMission.title.length)
-            {
-                title.text = @"无标题";
-            }
-            else
-            {
-                [title setText:_currentMission.title];
-            }
-            [title setTextColor:[UIColor whiteColor]];
-            [title setFont:Font(14)];
-            [cell.contentView addSubview:title];
             
-            //描述
-            NSString* content = _currentMission.main;
+            //标题
+            NSString* titleStr = _currentMission.title;
             
             CGFloat contentWidth = cWidth - 26 * 2;
             UIFont* font = Font(14);
             
-            CGFloat contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
+            CGFloat contentHeight = [UICommon getSizeFromString:titleStr withSize:CGSizeMake(contentWidth - 23, 1000) withFont:font].height;
             
-            UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(title), YH(title) + 16, contentWidth, contentHeight)];
+            UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(26 + 23, YH(photo) + 18 + 10, contentWidth - 23, contentHeight)];
+            [title setBackgroundColor:[UIColor clearColor]];
+            [title setBackgroundColor:[UIColor clearColor]];
+            [title setTextColor:[UIColor whiteColor]];
+            [title setFont:font];
+            
+            if(titleStr.length)
+            {
+                [title setNumberOfLines:1000];
+            }
+            else
+            {
+                titleStr = @"无标题";
+            }
+            [title setText:titleStr];
+            [cell.contentView addSubview:title];
+            
+            //checkbox
+            UIImageView * checkView = [[UIImageView alloc] init];
+            checkView.frame = CGRectMake(26, Y(title) + 2, 12, 14);
+            checkView.image = [UIImage imageNamed:@"btn_kuang"];
+            if(_currentMission.status == 2)//完成
+            {
+                checkView.image = [UIImage imageNamed:@"btn_gou"];
+                
+                NSAttributedString *attrStr = [RRAttributedString setStrikeThroughText:titleStr font:font color:[UIColor whiteColor] range:NSMakeRange(0, titleStr.length)];
+                
+                title.attributedText = attrStr;
+            }
+            [cell.contentView addSubview:checkView];
+            
+            //描述
+            NSString* content = _currentMission.main;
+
+            contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
+            
+            UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(26, YH(title) + 16, contentWidth, contentHeight)];
             [desLbl setBackgroundColor:[UIColor clearColor]];
             [desLbl setBackgroundColor:[UIColor clearColor]];
             [desLbl setTextColor:RGBCOLOR(172, 172, 173)];

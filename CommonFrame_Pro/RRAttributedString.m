@@ -60,4 +60,26 @@ static RRAttributedString *attributeString = nil;
     return attributeString;
 }
 
++ (NSAttributedString *)setStrikeThroughText:(NSString *)text
+                                        font:(UIFont *)font
+                                       color:(UIColor *)textColor
+                                       range:(NSRange)range
+{
+    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc]initWithString:text];
+    
+    NSMutableDictionary *attDic = [[NSMutableDictionary alloc] init];
+    
+    if (font) {
+        [attDic setValue:font forKey:NSFontAttributeName];
+    }
+    if (textColor) {
+        [attDic setValue:textColor forKey:NSForegroundColorAttributeName];
+    }
+    [attDic setValue:[NSNumber numberWithInteger:NSUnderlineStyleSingle] forKey:NSStrikethroughStyleAttributeName];
+    
+    [attributeString setAttributes:attDic range:range];
+
+    return attributeString;
+}
+
 @end
