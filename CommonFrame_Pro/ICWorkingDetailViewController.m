@@ -1536,11 +1536,9 @@
                 [bFirstView addSubview:dashLine];
                 
                 DashesLineView * dashLine2 = [[DashesLineView alloc] init];
-                dashLine2.frame = CGRectMake(0, Y(dashLine) + 64, duiImgWidth, 0.5);
+                dashLine2.frame = CGRectMake(0, Y(dashLine) + 64 + 40, duiImgWidth, 0.5);
                 dashLine2.backgroundColor = [UIColor clearColor];
                 [bFirstView addSubview:dashLine2];
-                
-                
                 
                 //负责人
                 UIImageView * fzIcon = [[UIImageView alloc] init];
@@ -1560,7 +1558,7 @@
                 //截止时间
                 
                 fzIcon = [[UIImageView alloc] init];
-                fzIcon.frame = CGRectMake(11, YH(title) + 8, 16, 16);
+                fzIcon.frame = CGRectMake(11, YH(title) + 13, 16, 16);
                 fzIcon.image = [UIImage imageNamed:@"icon_jiezhishijian"];
                 [bFirstView addSubview:fzIcon];
                 
@@ -1601,10 +1599,15 @@
                 
                 [bFirstView addSubview:title];
                 
+                fzIcon = [[UIImageView alloc] init];
+                fzIcon.frame = CGRectMake(13, YH(title) + 13, 13, 15);
+                fzIcon.image = [UIImage imageNamed:@"icon_renwuzhuangtai"];
+                [bFirstView addSubview:fzIcon];
+                
                 responText = [NSString stringWithFormat:@"任务状态：%@", statusStr];
                 
                 UILabel * statusLbl = [[UILabel alloc] init];
-                statusLbl.frame = CGRectMake(duiImgWidth - 126, Y(title), 116, 16);
+                statusLbl.frame = CGRectMake(X(groupName), Y(fzIcon), 200, 16);
                 statusLbl.backgroundColor = [UIColor clearColor];
                 statusLbl.textColor = [UIColor grayTitleColor];
                 statusLbl.text = responText;
@@ -1669,7 +1672,7 @@
                         
                         _partCollView.height = 14 + 50 + 30;
                         
-                        bFirstView.height = 166 + _partCollView.height;
+                        bFirstView.height = 166 + _partCollView.height + 40;
                     }
                     else if(_partList.count > 5 && _isShowAllPart)
                     {
@@ -1696,17 +1699,18 @@
                         
                         _partCollView.height = height;
                         
-                        bFirstView.height = 166 + height;
+                        bFirstView.height = 166 + height + 40;
                         
                     }
                     else
                     {
                         moreBtn.hidden = YES;
+                        bFirstView.height = 166 + _partCollView.height + 40;
                     }
                 }
                 else
                 {
-                    bFirstView.height = 166;
+                    bFirstView.height = 166 + 40;
                 }
                 
                 //子任务
@@ -1756,6 +1760,8 @@
                     
                     if(_childMissionList.count && !_isShowAllChildMission)
                     {
+                        dashLine4.hidden = YES;
+                        
                         [_jianTouBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
                         
                     }
@@ -1764,6 +1770,8 @@
                         //                    bSecondView.height = 40 + H(_childTableView);
                         //
                         //                    [bSecondView addSubview:_childTableView];
+                        
+                        dashLine4.hidden = NO;
                         
                         bSecondView.height = 40 + _childMissionList.count * 34 + 20;
                         
@@ -1804,6 +1812,8 @@
                     }
                     else
                     {
+                        dashLine4.hidden = YES;
+                        
                         _jianTouBtn.hidden = YES;
                     }
                 }
