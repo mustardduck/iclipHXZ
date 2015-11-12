@@ -157,6 +157,23 @@
     self.mainTableView.frame = self.view.bounds;
 }
 
+- (void) changeAddBtnLblColor:(MQPublishMissionMainCell*)cell
+{
+    if(_mainTextView.text.length)
+    {
+        [cell.addBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [cell.addBtn setImage:[UIImage imageNamed:@"icon_tianjia_1"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [cell.addBtn setTitleColor:RGBACOLOR(255, 255, 255, 0.3) forState:UIControlStateNormal];
+        
+        [cell.addBtn setImage:[UIImage imageNamed:@"icon_tianjia_2"] forState:UIControlStateNormal];
+
+    }
+}
+
 - (void) resetData
 {
     if(_isEdit)
@@ -185,15 +202,26 @@
     _currentView = _mainTextView;
     
     _jiaView.hidden = YES;
+    
+    NSIndexPath * indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexpath];
+    
+    [self changeAddBtnLblColor:cell];
 }
 
-//- (void) textViewDidEndEditing:(UITextView *)textView
-//{
-//    if([[_mainMissionDic valueForKey:@"title"] isEqualToString:textView.text])
-//    {
-//        
-//    }
-//}
+- (void) textViewDidEndEditing:(UITextView *)textView
+{
+    NSIndexPath * indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    if(_childMissionArr.count)
+    {
+        indexpath = [NSIndexPath indexPathForRow:_childMissionArr.count inSection:0];
+    }
+    MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexpath];
+    
+    [self changeAddBtnLblColor:cell];
+}
 
 - (void) setHeaderView
 {
@@ -214,6 +242,8 @@
     lineShort.frame = CGRectMake(26.5, YH(_topTxtView), 0.5, 6);
     lineShort.backgroundColor = [UIColor grayLineColor];
     [_headerView addSubview:lineShort];
+    
+    
     
 }
 
@@ -701,6 +731,8 @@
             
             //        cell.addBtn.tag = 2222;
             
+            [self changeAddBtnLblColor:cell];
+            
             [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
         }
         else
@@ -798,6 +830,8 @@
         
         //        cell.addBtn.tag = 2222;
         
+        [self changeAddBtnLblColor:cell];
+        
         [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
     }
 
@@ -824,6 +858,7 @@
         cell.lineView.endPoint = CGPointMake(0, 44);
         cell.lineView.backgroundColor = [UIColor clearColor];
         cell.lineView.frame = CGRectMake(68, 0, 0.5, 44);
+        
     }
     
     [self performSelector:@selector(scrollTableView:) withObject:textField afterDelay:0.0]; //必须
