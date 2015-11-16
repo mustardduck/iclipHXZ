@@ -1341,11 +1341,15 @@
     
     Member * me = [Member new];
     
-    me.workGroupId = @"0";
+    me.userId = mi.createUserId;
     
     NSMutableArray * dataArr = [NSMutableArray array];
     
     BOOL isOk = [Mission findWgPeopleTrends:mi.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+    if(!me.workGroupId)
+    {
+        me.workGroupId = @"0";
+    }
     
     if(isOk)
     {

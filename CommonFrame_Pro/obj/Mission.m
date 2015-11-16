@@ -12,7 +12,7 @@
 #define CURL                    @"/index/findIndexTrends.hz"
 #define PUBLISH_MISSION_URL     @"/task/createTaskApp.hz"
 #define PUBLISH_SHARE_URL     @"/task/createTask.hz"
-#define PERSION_INFO            @"/workgroup/findWgPeopleTrends.hz"
+#define PERSION_INFO            @"/user/findWgPeopleTrends.hz"
 #define DETAIL_URL              @"/task/findTaskDetail.hz"
 #define TERM_URL                @"/index/findIndexTrendsByTerm.hz"
 #define REMOVE_URL              @"/task/deleteTask.hz"
@@ -282,7 +282,7 @@
 
     NSMutableArray* array = [NSMutableArray array];
     
-    NSString* url_s = [NSString stringWithFormat:@"%@?workGroupId=%@&userId=%@&page=%ld&pageSize=%ld",PERSION_INFO,groupId, userId,page,rowCount];
+    NSString* url_s = [NSString stringWithFormat:@"%@?workGroupId=%@&createUserId=%@&userId=%@&page=%ld&pageSize=%ld",PERSION_INFO,groupId, userId,[LoginUser loginUserID],page,rowCount];
     
     NSData* responseString = [HttpBaseFile requestDataWithSync:url_s];
     
