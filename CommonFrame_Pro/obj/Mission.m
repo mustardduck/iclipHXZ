@@ -336,8 +336,13 @@
                                 cm.userName = [di valueForKey:@"userName"];
                                 cm.isAccessory = [[di valueForKey:@"isAccessory"] boolValue];
                                 cm.totalPages = totalPages;
-                                
+                                cm.lableUserName = [di valueForKey:@"lableUserName"];
+                                cm.childTaskList = [di objectForKey:@"childTaskList"];
+                                cm.childNum = [[di valueForKey:@"childNum"] intValue];
                                 [array addObject:cm];
+                                cm.type = [[di valueForKey:@"type"] integerValue];
+                                cm.parentId = [di valueForKey:@"parentId"];
+                                cm.isRead = [[di valueForKey:@"isRead"] boolValue];
                                 
                             }
                         }

@@ -350,7 +350,7 @@
             lpgr.delegate = self;
             [_tableView addGestureRecognizer:lpgr];	//启用长按事件
             
-            NSArray* typeList = @[@"批示"];
+            NSArray* typeList = @[@"批示", @"附件"];
             _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 44 - 66, [UIScreen mainScreen].bounds.size.width, 44)];
             //[inputBar setFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) + 100, 320, 44)];
             _inputBar.delegate = self;

@@ -235,7 +235,7 @@
         
         _pageNo = 1;
         
-        if(!_dataListArr.count)
+//        if(!_dataListArr.count)
         {
             _dataArray =  [Mission getMssionListbyWorkGroupID:_memberObj.workGroupId andUserId:_memberObj.userId currentPageIndex:_pageNo pageSize:_pageRowCount];
         }
