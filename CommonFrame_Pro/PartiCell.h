@@ -11,7 +11,7 @@
 @interface PartiCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView * photoView;
-
+@property (nonatomic, strong) UILabel * isReadLbl;
 @property (nonatomic, strong) UILabel * titleLbl;
 
 -(id)initWithFrame:(CGRect)frame;

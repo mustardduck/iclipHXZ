@@ -2573,6 +2573,10 @@
     [cell.photoView setImageWithURL:[NSURL URLWithString: imageUrl] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [cell.photoView setRoundCorner:3.3];
     
+    BOOL isRead = [[partDic valueForKey:@"isRead"] boolValue];
+    
+    cell.isReadLbl.hidden = !isRead;
+    
     cell.titleLbl.text = [partDic valueForKey:@"name"];
     
     return cell;
