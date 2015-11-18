@@ -22,6 +22,8 @@
 @property(nonatomic,strong) NSMutableArray*    AccessoryArray;
 
 @property(nonatomic,strong) id          icPublishMissionController;
+@property(nonatomic,strong) id          icWorkDetailController;
+
 
 @property(nonatomic,strong) NSString*    workGroupId;
 

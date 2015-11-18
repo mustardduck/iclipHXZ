@@ -10,13 +10,88 @@
 #import "HttpBaseFile.h"
 #import "CommonFile.h"
 #import "LoginUser.h"
+#import "CommonFile.h"
 
-#define CURL                @"/task/createTaskComment.hz"
-#define PRAISE_URL          @"/task/commentThumbsUp.hz"
+#define CURL                    @"/task/createTaskComment.hz"
+#define PRAISE_URL              @"/task/commentThumbsUp.hz"
 #define DELETECOMMENT_URL       @"/task/deleteTaskComment.hz"
+#define CREATECOMMENTACCESSORY  @"/task/createCommentAccessory.hz"
 
 @implementation Comment
 
+- (BOOL)createCommentAccessory:(NSMutableDictionary *)commAccDic
+{
+    BOOL isOk = NO;
+        
+    NSString* jsonStr = [CommonFile toJson:commAccDic];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CREATECOMMENTACCESSORY postData:tmpDic];
+                                                                                                                                                                                                                            
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+            }
+        }
+    }
+    
+    return isOk;
+}
+
+- (BOOL)createCommentAccessoryId:(NSMutableDictionary **)commDic
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    [dic setObject:self.taskId forKey:@"taskId"];
+    [dic setObject:self.userId forKey:@"userId"];
+    [dic setObject:[NSString stringWithFormat:@"%ld",self.level] forKey:@"level"];
+    [dic setObject:self.main forKey:@"main"];
+    [dic setObject:self.parentId forKey:@"parentId"];
+    [dic setObject:@"1" forKey:@"status"];
+    [dic setObject:@"1" forKey:@"isAccessory"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSDictionary class]])
+                {
+                    * commDic = dataDic;
+                }
+            }
+        }
+        
+    }
+    
+    return isOk;
+}
 
 - (BOOL)sendComment
 {
@@ -95,12 +170,12 @@
     
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
     
-    
     [dic setObject:self.taskId forKey:@"taskId"];
     [dic setObject:self.userId forKey:@"userId"];
     [dic setObject:[NSString stringWithFormat:@"%ld",self.level] forKey:@"level"];
     [dic setObject:self.main forKey:@"main"];
     [dic setObject:self.parentId forKey:@"parentId"];
+    [dic setObject:@"1" forKey:@"status"];
     
     NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CURL postData:dic];
     

@@ -37,5 +37,7 @@
 @property (nonatomic,strong) NSArray*              commentsArr;
 @property (nonatomic,strong) NSArray*              imageArr;
 
+@property(nonatomic,strong) NSMutableArray* cAccessoryArray;
+
 
 @end

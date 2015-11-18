@@ -10,6 +10,7 @@
 #import "MJPhotoLoadingView.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SVProgressHUD.h"
 
 @interface MJPhotoView ()
 {
@@ -101,7 +102,12 @@
 //                // 调整frame参数
 //                [photoView adjustFrame];
 //            }];
+            
+
+            [SVProgressHUD showWithStatus:@"图片下载中..."];
+            
             [_imageView sd_setImageWithURL:photoUrl placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
+                [SVProgressHUD dismiss];
                 photo.image = image;
                 
                 // 调整frame参数

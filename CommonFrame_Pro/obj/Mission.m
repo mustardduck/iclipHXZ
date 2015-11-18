@@ -734,6 +734,24 @@
                             acc.main = [di valueForKey:@"main"];
                             acc.hasChild = [[di valueForKey:@"havaChild"] boolValue];
                             
+                            NSArray * accArr = [di objectForKey:@"accessoryList"];
+                            
+                            NSMutableArray * accessoryArr = [NSMutableArray array];
+                            
+                            for(NSDictionary * dic in accArr)
+                            {
+                                Accessory * acce = [Accessory new];
+                               
+                                acce.accessoryId = [dic valueForKey:@"accessoryId"];
+                                acce.address = [dic valueForKey:@"address"];
+                                acce.name = [dic valueForKey:@"name"];
+                                acce.originImageSize = [dic valueForKey:@"allSize"];
+                                acce.allUrl = [dic valueForKey:@"allUrl"];
+                                
+                                [accessoryArr addObject:acce];
+                            }
+                            acc.accessoryList = accessoryArr;
+                            
                             if (acc.hasChild) {
                                 
                                 id childs = [di valueForKey:@"childList"];

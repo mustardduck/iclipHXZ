@@ -192,7 +192,7 @@
 {
     UISwitch *swiBtn = (UISwitch *) sender;
     
-    UIView *v = [sender superview];//获取父类view
+    UIView *v = [sender superview];//获取父类view（鼠标点击）
     UITableViewCell *cell = (UITableViewCell *)[v superview];//获取cell
     NSIndexPath *indexPath = [_tableView indexPathForCell:cell];//获取cell对应的section
     

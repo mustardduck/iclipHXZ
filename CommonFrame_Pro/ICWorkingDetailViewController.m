@@ -21,7 +21,7 @@
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
+@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
     NSMutableDictionary*        _reReplyDic;
     Mission*                    _currentMission;
@@ -218,6 +218,43 @@
             [alert show];
         }
     }
+    else if (actionSheet.tag == 113)
+    {
+        if(buttonIndex == 0)
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
+            ((ICFileViewController *)vc).workGroupId = _currentMission.workGroupId;
+            ((ICFileViewController*)vc).icWorkDetailController = self;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if (buttonIndex == 1)
+        {
+            UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
+            ctrl.delegate = self;
+            ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:ctrl animated:YES completion:nil];
+        }
+        else if (buttonIndex == 2)
+        {
+            ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
+            picker.maximumNumberOfSelection = 9;
+            picker.assetsFilter = [ALAssetsFilter allPhotos];
+            picker.showEmptyGroups=NO;
+            picker.delegate=self;
+            picker.selectionFilter = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                if ([[(ALAsset*)evaluatedObject valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
+                    NSTimeInterval duration = [[(ALAsset*)evaluatedObject valueForProperty:ALAssetPropertyDuration] doubleValue];
+                    return duration >= 5;
+                } else {
+                    return YES;
+                }
+            }];
+            
+            [self presentViewController:picker animated:YES completion:NULL];
+        }
+    }
     else
     {
         NSInteger cIndex = actionSheet.tag;
@@ -375,6 +412,13 @@
 
 }
 
+- (void) inputBarWithFile:(YFInputBar *)inputBar
+{
+    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
+    as.tag = 113;
+    [as showInView:self.view];
+}
+
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
 {
     CGPoint p = [gestureRecognizer locationInView:_tableView ];
@@ -454,6 +498,49 @@
             [_tableView reloadData];
         }
     }
+    if(_cAccessoryArray.count)
+    {
+        Comment* cm = [Comment new];
+        cm.main = @"";
+        cm.parentId = @"0";
+        cm.level = 2;
+        cm.userId = [LoginUser loginUserID];
+        cm.taskId = _taskId;
+        
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        BOOL isOk = [cm createCommentAccessoryId:&dic];
+        
+        if(isOk)
+        {
+            NSMutableDictionary * cdic = [NSMutableDictionary dictionary];
+            
+            NSMutableDictionary * ccdic = [NSMutableDictionary dictionary];
+            [ccdic setObject:dic forKey:@"vo"];
+            [cdic setDictionary:ccdic];
+            
+            NSMutableArray* tA = [NSMutableArray array];
+            for (int i = 0; i < _cAccessoryArray.count; i++) {
+                NSMutableDictionary* di = [NSMutableDictionary dictionary];
+                
+                Accessory* acc = _cAccessoryArray[i];
+                
+                [di setObject:acc.name forKey:@"name"];
+                [di setObject:acc.address forKey:@"address"];
+                [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
+                [tA addObject:di];
+            }
+            
+            [cdic setObject:tA forKey:@"accessoryList"];
+            BOOL isOk = [cm createCommentAccessory:cdic];
+            if(isOk)
+            {
+                //            _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                [self requesetData];
+                [self loadData];
+                [_tableView reloadData];
+            }
+        }
+    }
 }
 
 - (void)requesetData
@@ -481,7 +568,8 @@
 
     NSArray* commentsArray = [NSArray array];
     NSArray * imgArr = [NSArray array];
-    
+    self.cAccessoryArray = [NSMutableArray array];
+
     if(!_currentMission)
     {
         _currentMission = [Mission new];
@@ -1004,6 +1092,95 @@
 
 }
 
+- (void) previewCommentFile:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    NSInteger index = btn.tag;
+    
+    UIView *v = [sender superview];//获取父类view
+    UITableViewCell *cell = (UITableViewCell *)[[[v superview] superview] superview];//获取cell
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];//获取cell对应的section
+    NSInteger cIndex = indexPath.row;
+    if(cIndex >= 1)
+    {
+        cIndex = cIndex - 1;
+        
+        Comment* comm = [_commentArray objectAtIndex:cIndex];
+        
+        NSArray* accArr = [NSArray arrayWithArray:comm.accessoryList];
+
+        Accessory * acc = accArr[index];
+        
+        // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 0: png/jpg 6:其他
+        int fileType = [[UICommon findFileType:acc.name] intValue];
+        
+        if(fileType == 0)
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"PreviewViewController"];
+            
+            NSMutableArray * imageArr = [NSMutableArray array];
+
+            NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+            [dic setObject:acc.address forKey:@"PictureUrl"];
+            if(acc.allUrl)
+            {
+                [dic setObject:acc.allUrl forKey:@"OriginUrl"];
+            }
+            if(acc.originImageSize)
+            {
+                [dic setObject:acc.originImageSize forKey:@"OriginSize"];
+            }
+            
+            [imageArr addObject:dic];
+            
+            if(imageArr.count)
+            {
+                ((PreviewViewController*)vc).dataArray = imageArr;
+            }
+//            ((PreviewViewController*)vc).currentPage = btn.tag;
+            
+            [self.navigationController presentViewController:vc animated:YES completion:nil];
+        }
+        else
+        {
+            NSURL * fileUrl = [NSURL URLWithString:acc.address];
+            
+            XNDownload * d = [[XNDownload alloc] init];
+            
+            [d downloadWithURL:fileUrl progress:^(float progress) {
+                
+                if(progress < 1)
+                {
+                    int prog = progress * 100;
+                    
+                    [SVProgressHUD showProgress:progress status:[NSString stringWithFormat:@"%d%@", prog, @"%"]];
+                }
+                
+                if(progress == 1)
+                {
+                    [SVProgressHUD dismiss];
+                    
+                    NSURL *URL=[NSURL fileURLWithPath:d.cachePath];
+                    
+                    if (URL) {
+                        // Initialize Document Interaction Controller
+                        self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
+                        
+                        // Configure Document Interaction Controller
+                        [self.documentInteractionController setDelegate:self];
+                        
+                        // Preview PDF
+                        [self.documentInteractionController presentPreviewAnimated:YES];
+                    }
+                }
+            }];
+        }
+    }
+}
+
+
 - (void) previewFile:(id)sender
 {
     UIButton * btn = (UIButton *)sender;
@@ -1304,12 +1481,6 @@
                 
                 CGFloat attchHeight = ((accArr.count - 1) / 3 + 1) * (accHeight + intevalHeight);
                 UIView* attchView = [[UIView alloc] init];
-                
-                CGFloat attchViewHeight = 0;
-                if(accArr.count)
-                {
-                    attchViewHeight = attchHeight;
-                }
                 
                 CGFloat desY = YH(title) + 16;
                 if(content.length)
@@ -2182,9 +2353,7 @@
                     
                     [revContent setAttributedText:attrStr];
                 }
-                
-                [cell.contentView addSubview:revContent];
-                
+
                 UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60 - 40, 10, 86, 12)];
                 [date setBackgroundColor:[UIColor clearColor]];
                 
@@ -2196,46 +2365,169 @@
                 
                 [cell.contentView addSubview:date];
                 
-                if(comm.level == 2)
+                if(comm.accessoryList.count)
                 {
-                    UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 39, YH(date) + 20, 25, 20)];
-                    //[par setTitle:@"20" forState:UIControlStateNormal];
-                    [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                    [par setBackgroundColor:[UIColor clearColor]];
-                    if(comm.praiseNum > 0)
+                    UILabel * fileLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 20, YH(name) + 14, 200, 14)];
+                    fileLbl.text = [NSString stringWithFormat:@"附件(%ld)", comm.accessoryList.count];
+                    fileLbl.textColor = [UIColor grayTitleColor];
+                    fileLbl.font = Font(12);
+                    
+                    [cell.contentView addSubview:fileLbl];
+                    
+//                    NSInteger count = comm.accessoryList.count;
+//                    
+//                    NSInteger row = 1;
+//                    
+                    int lineCount = 4;
+//
+//                    row = (count % lineCount) ? count / lineCount + 1: count / lineCount;
+//                    
+//                    height = 60 + row * (50 + 44);
+                    
+                    CGFloat accHeight = 94;
+                    CGFloat imgHeight = 50;
+                    CGFloat accWidth = 68;
+                    CGFloat intevalHeight = (SCREENWIDTH - 57 - accWidth * lineCount - 14) / (lineCount - 1);
+                    if(intevalHeight < 0)
                     {
-                        [par setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
+                        intevalHeight = 0;
                     }
-                    else
+                    
+                    CGFloat attchHeight = ((comm.accessoryList.count - 1) / lineCount + 1) * accHeight;
+
+                    UIView* attchView = [[UIView alloc] init];
+                    attchView.frame = CGRectMake(57, YH(fileLbl) + 10, SCREENWIDTH - 57, attchHeight);
+                    [attchView setBackgroundColor:[UIColor clearColor]];
+
+                    for(int i = 0; i < comm.accessoryList.count; i ++)
                     {
-                        [par setBackgroundImage:[UIImage imageNamed:@"btn_zan"] forState:UIControlStateNormal];
+                        int j = i / lineCount;
+                        
+                        int k = i % lineCount;
+                        
+                        Accessory * acc = comm.accessoryList[i];
+                        
+                        CGRect attaFrame = CGRectMake(9 + (accWidth + intevalHeight) * k, accHeight * j, imgHeight, imgHeight);
+                        
+                        UIImageView* attachment = [[UIImageView alloc] initWithFrame:attaFrame];
+                        UILabel * fileNameLbl = [[UILabel alloc] init];
+                        fileNameLbl.frame = CGRectMake(X(attachment) - 9, YH(attachment), accWidth, 40);
+                        fileNameLbl.backgroundColor = [UIColor clearColor];
+                        fileNameLbl.textColor = [UIColor whiteColor];
+                        fileNameLbl.numberOfLines = 2;
+                        fileNameLbl.text = acc.name;
+                        fileNameLbl.font = Font(10);
+                        [attachment addSubview:fileNameLbl];
+                        // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 0: png/jpg 6:其他
+                        
+                        int fileType = [[UICommon findFileType:acc.name] intValue];
+//                        int fileType = [acc.fileType intValue];
+                        
+                        attachment.userInteractionEnabled = YES;
+                        
+                        if(fileType == 0)//to do
+                        {
+                            [attachment setImageWithURL:[NSURL URLWithString:acc.address]
+                                       placeholderImage:[UIImage imageNamed:@"bimg.jpg"]
+                                                options:SDWebImageDelayPlaceholder
+                            usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            
+//                            UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+//                            imgBtn.backgroundColor = [UIColor clearColor];
+                            
+//                            NSInteger fileCount = comm.accessoryList.count - _imageArray.count;
+//                            imgBtn.tag = fileCount > 0 ? i - fileCount : i;
+//                            
+//                            [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
+//                            [attachment addSubview:imgBtn];
+                        }
+                        else
+                        {
+                            NSString * imgName = @"";
+                            if(fileType == 1)//to do
+                            {
+                                imgName = @"icon_word_xiao";
+                            }
+                            else if (fileType == 2)
+                            {
+                                imgName = @"icon_excel_xiao";
+                            }
+                            else if (fileType == 3)
+                            {
+                                imgName = @"icon_ppt_xiao";
+                            }
+                            else if (fileType == 4)
+                            {
+                                imgName = @"icon_pdf_xiao";
+                            }
+                            else if(fileType == 6)
+                            {
+                                imgName = @"icon_other_xiao";
+                            }
+                            attachment.image = [UIImage imageNamed:imgName];
+                        }
+                        
+                        UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+                        imgBtn.backgroundColor = [UIColor clearColor];
+                        imgBtn.tag = i;
+                        [imgBtn addTarget:self action:@selector(previewCommentFile:) forControlEvents:UIControlEventTouchUpInside];
+                        [attachment addSubview:imgBtn];
+                        
+                        [attchView addSubview:attachment];
+                        [attchView addSubview:fileNameLbl];
                     }
-                    //                [par.layer setBorderWidth:0.5f];
-                    //                [par.layer setCornerRadius:10];
-                    //                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-                    [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
-                    [par setTag:cIndex];
                     
-                    NSMutableAttributedString* parHig = [[NSMutableAttributedString alloc]
-                                                         initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
-                    [par setAttributedTitle:parHig forState:UIControlStateHighlighted];
+                    [cell.contentView addSubview:attchView];
                     
-                    NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
-                                                         initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-                    [par setAttributedTitle:parNor forState:UIControlStateNormal];
+                    height = YH(attchView);
                     
-                    [cell.contentView addSubview:par];
-                    
-                }
-                
-                if(height < 33)
-                {
-                    height = 78;
                 }
                 else
                 {
-                    height = height + 35 + 24;
+                    [cell.contentView addSubview:revContent];
+
+                    if(comm.level == 2)
+                    {
+                        UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 39, YH(date) + 20, 25, 20)];
+                        //[par setTitle:@"20" forState:UIControlStateNormal];
+                        [par setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                        [par setBackgroundColor:[UIColor clearColor]];
+                        if(comm.praiseNum > 0)
+                        {
+                            [par setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
+                        }
+                        else
+                        {
+                            [par setBackgroundImage:[UIImage imageNamed:@"btn_zan"] forState:UIControlStateNormal];
+                        }
+                        //                [par.layer setBorderWidth:0.5f];
+                        //                [par.layer setCornerRadius:10];
+                        //                [par.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+                        [par addTarget:self action:@selector(btnPraiseClicked:) forControlEvents:UIControlEventTouchUpInside];
+                        [par setTag:cIndex];
+                        
+                        NSMutableAttributedString* parHig = [[NSMutableAttributedString alloc]
+                                                             initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor grayColor]}];
+                        [par setAttributedTitle:parHig forState:UIControlStateHighlighted];
+                        
+                        NSMutableAttributedString* parNor = [[NSMutableAttributedString alloc]
+                                                             initWithString:[NSString stringWithFormat:@"%ld",comm.praiseNum] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+                        [par setAttributedTitle:parNor forState:UIControlStateNormal];
+                        
+                        [cell.contentView addSubview:par];
+                        
+                    }
+                    
+                    if(height < 33)
+                    {
+                        height = 78;
+                    }
+                    else
+                    {
+                        height = height + 35 + 24;
+                    }
                 }
+
                 [cell setFrame:CGRectMake(0, 0, cWidth ,height)];
                 
                 UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 1, cWidth, 0.5)];

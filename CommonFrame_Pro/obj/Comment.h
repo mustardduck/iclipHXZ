@@ -31,7 +31,7 @@
 @property(nonatomic,strong) NSString*   createTime;
 @property(nonatomic,assign) NSInteger   praiseNum;
 @property(nonatomic,assign) BOOL        isPraised;
-@property(nonatomic,assign) NSInteger   level;
+@property(nonatomic,assign) NSInteger   level;//1批示 2评论 
 @property(nonatomic,strong) NSString*   hourStr;
 @property(nonatomic,strong) NSString*   userId;
 @property(nonatomic,strong) NSString*   userName;
@@ -40,11 +40,12 @@
 @property(nonatomic,strong) NSString*   main;
 @property(nonatomic,strong) NSArray*    comments;
 @property(nonatomic,assign) BOOL        hasChild;
-
+@property(nonatomic, strong) NSArray * accessoryList;
 
 - (BOOL)sendComment;
 - (BOOL)sendComment:(NSString**)commentId;
 + (BOOL)praise:(NSString*)commentId workGroupId:(NSString*)wgid hasPraised:(BOOL)isPraise;
 - (BOOL)deleteTaskComment:(NSString *) commentsId taskId:(NSString *) taskId;
-
+- (BOOL)createCommentAccessory:(NSMutableDictionary *)commAccDic;
+- (BOOL)createCommentAccessoryId:(NSMutableDictionary **)commDic;
 @end

@@ -378,6 +378,15 @@ typedef enum {
 {
     [super viewWillDisappear:animated];
     
+    if ([self.icWorkDetailController respondsToSelector:@selector(setCAccessoryArray:)]) {
+        
+        if (!_isDone) {
+            _AccessoryArray = [NSMutableArray arrayWithArray:_tmpData];
+        }
+        
+        [self.icWorkDetailController setValue:_AccessoryArray forKey:@"cAccessoryArray"];
+
+    }
     if ([self.icPublishMissionController respondsToSelector:@selector(setCAccessoryArray:)]) {
         
 //        if (_hasUploadedFileArray.count > 0) {

@@ -15,7 +15,7 @@
 
 -(void)inputBar:(YFInputBar*)inputBar sendBtnPress:(UIButton*)sendBtn withInputString:(NSString*)str;
 
--(void)inputBar:(YFInputBar *)inputBar;
+-(void)inputBarWithFile:(YFInputBar *)inputBar;
 
 @end
 @interface YFInputBar : UIView <UITextViewDelegate>

@@ -227,20 +227,28 @@
     
     _sendBtn.tag = tag;
     
-    NSString* textStr = _textField.text;
-    
-    if ([textStr containsString:@"@"] && [textStr containsString:@":"]) {
-        NSString* ty = [textStr substringFromIndex:4];
-        textStr = ty;
+    if(tag == 1)
+    {
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(inputBarWithFile:)]) {
+            [self.delegate inputBarWithFile:self];
+        }
     }
-    
-    //_textField.text = [NSString stringWithFormat:@"@%@:%@",type,textStr];
-    _textField.text = textStr;
-    [_textField becomeFirstResponder];
-    //[btnType setTitle:type forState:UIControlStateNormal];
-    
-    [self removeType];
-
+    else
+    {
+        NSString* textStr = _textField.text;
+        
+        if ([textStr containsString:@"@"] && [textStr containsString:@":"]) {
+            NSString* ty = [textStr substringFromIndex:4];
+            textStr = ty;
+        }
+        
+        //_textField.text = [NSString stringWithFormat:@"@%@:%@",type,textStr];
+        _textField.text = textStr;
+        [_textField becomeFirstResponder];
+        //[btnType setTitle:type forState:UIControlStateNormal];
+        
+        [self removeType];
+    }
 }
 
 - (void)removeType
