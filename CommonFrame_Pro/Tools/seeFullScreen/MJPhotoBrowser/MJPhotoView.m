@@ -86,6 +86,8 @@
         
         if(_photo.showedOriginImage)
         {
+            [SVProgressHUD showWithStatus:@"图片下载中..."];
+
             photoUrl = _photo.originUrl;
 //            NSURL * url = [NSURL URLWithString:@"http://www.iclip365.com:8080/clip_basic/static/file/10151016170500011444986332278.jpg"];
 //            photoUrl = url;
@@ -102,9 +104,6 @@
 //                // 调整frame参数
 //                [photoView adjustFrame];
 //            }];
-            
-
-            [SVProgressHUD showWithStatus:@"图片下载中..."];
             
             [_imageView sd_setImageWithURL:photoUrl placeholderImage:_photo.placeholder options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
                 [SVProgressHUD dismiss];

@@ -56,5 +56,6 @@
 
 + (BOOL) uploadImage:(NSArray *)objs withUserImgPath:(NSString **)userImgPath;
 + (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename userImgPath:(NSString **)userImgPath;
++ (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename imageDic:(NSMutableDictionary **)imageDic;
 
 @end

@@ -267,6 +267,39 @@
     return re;
 }
 
++ (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename imageDic:(NSMutableDictionary **)imageDic
+{
+    BOOL isOk = NO;
+    
+    NSData* data = UIImageJPEGRepresentation(imgH, 1.0f);
+    
+    NSString* filePath = [CommonFile saveImageToDocument:data fileName:filename];
+    
+    NSData* responseString = [HttpBaseFile requestImageWithSyncByPost:UPLOAD_IMAGE_URL withFilePath:filePath];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+                
+                *imageDic = [dic objectForKey:@"data"];
+                
+            }
+        }
+    }
+    
+    return isOk;
+}
+
 + (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename userImgPath:(NSString **)userImgPath
 {
     BOOL isOk = NO;

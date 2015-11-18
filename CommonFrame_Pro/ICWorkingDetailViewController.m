@@ -77,7 +77,6 @@
     
     [self requesetData];
     [self loadData];
-    
     [_tableView reloadData];
 
     
@@ -498,6 +497,13 @@
             [_tableView reloadData];
         }
     }
+    
+    [self showAccessory];
+
+}
+
+- (void) showAccessory
+{
     if(_cAccessoryArray.count)
     {
         Comment* cm = [Comment new];
@@ -534,7 +540,9 @@
             BOOL isOk = [cm createCommentAccessory:cdic];
             if(isOk)
             {
-                //            _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
+                [_inputBar removeType];
+                _inputBar.btnTypeHasClicked = NO;
+                
                 [self requesetData];
                 [self loadData];
                 [_tableView reloadData];
@@ -542,6 +550,7 @@
         }
     }
 }
+
 
 - (void)requesetData
 {
@@ -2367,27 +2376,23 @@
                 
                 if(comm.accessoryList.count)
                 {
-                    UILabel * fileLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 20, YH(name) + 14, 200, 14)];
+                    UILabel * fileLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 22, YH(name) + 14, 200, 14)];
                     fileLbl.text = [NSString stringWithFormat:@"附件(%ld)", comm.accessoryList.count];
                     fileLbl.textColor = [UIColor grayTitleColor];
                     fileLbl.font = Font(12);
                     
-                    [cell.contentView addSubview:fileLbl];
+                    UIImageView* fileIcon = [[UIImageView alloc] initWithFrame:CGRectMake(XW(photo) + 7, Y(fileLbl) + 2, 12, 10)];
+                    fileIcon.image = [UIImage imageNamed:@"btn_fujianIcon"];
+                    [cell.contentView addSubview:fileIcon];
                     
-//                    NSInteger count = comm.accessoryList.count;
-//                    
-//                    NSInteger row = 1;
-//                    
+                    [cell.contentView addSubview:fileLbl];
+
                     int lineCount = 4;
-//
-//                    row = (count % lineCount) ? count / lineCount + 1: count / lineCount;
-//                    
-//                    height = 60 + row * (50 + 44);
                     
                     CGFloat accHeight = 94;
                     CGFloat imgHeight = 50;
                     CGFloat accWidth = 68;
-                    CGFloat intevalHeight = (SCREENWIDTH - 57 - accWidth * lineCount - 14) / (lineCount - 1);
+                    CGFloat intevalHeight = (SCREENWIDTH - (XW(photo) + 6) - accWidth * lineCount - 14) / (lineCount - 1);
                     if(intevalHeight < 0)
                     {
                         intevalHeight = 0;
@@ -2396,7 +2401,7 @@
                     CGFloat attchHeight = ((comm.accessoryList.count - 1) / lineCount + 1) * accHeight;
 
                     UIView* attchView = [[UIView alloc] init];
-                    attchView.frame = CGRectMake(57, YH(fileLbl) + 10, SCREENWIDTH - 57, attchHeight);
+                    attchView.frame = CGRectMake(XW(photo) + 6, YH(fileLbl) + 10, SCREENWIDTH - (XW(photo) + 6), attchHeight);
                     [attchView setBackgroundColor:[UIColor clearColor]];
 
                     for(int i = 0; i < comm.accessoryList.count; i ++)
@@ -2942,6 +2947,12 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    if(_inputBar.btnTypeHasClicked)
+    {
+        [_inputBar removeType];
+        _inputBar.btnTypeHasClicked = NO;
+    }
+    
     [self hiddenKeyboard];
 }
 
@@ -2956,5 +2967,154 @@
     [_inputBar.textField resignFirstResponder];
 }
 
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        // 处理
+        
+        [SVProgressHUD showWithStatus:@"图片上传中"];
+        
+        [picker dismissViewControllerAnimated:YES completion:^() {
+            
+            UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+            
+            UIImageOrientation imageOrientation=image.imageOrientation;
+            if(imageOrientation!=UIImageOrientationUp)
+            {//图片旋转
+                // 原始图片可以根据照相时的角度来显示，但UIImage无法判定，于是出现获取的图片会向左转９０度的现象。
+                // 以下为调整图片角度的部分
+                UIGraphicsBeginImageContext(image.size);
+                [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+                image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                // 调整图片角度完毕
+            }
+            
+            NSString * dateTime = [[info[@"UIImagePickerControllerMediaMetadata"] objectForKey:@"{TIFF}"] objectForKey:@"DateTime"];
+            
+            NSString * currentFileName = [NSString stringWithFormat:@"%@.png", dateTime];
+            
+            NSMutableDictionary * imageDic = [NSMutableDictionary dictionary];
+            
+            BOOL isOk = [LoginUser uploadImageWithScale:image fileName:currentFileName imageDic:&imageDic];
+            
+            if(isOk)
+            {
+                [SVProgressHUD dismiss];
+                
+                Accessory * acc = [Accessory new];
+                acc.address = [imageDic valueForKey:@"path"];
+                acc.name = [imageDic valueForKey:@"oldName"];
+                acc.originImageSize = [imageDic valueForKey:@"size"];
+                
+                [self.cAccessoryArray addObject:acc];
+                
+                [self showAccessory];
+                
+            }
+        }];
+        
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
+        //当选择的类型是图片
+        if ([type isEqualToString:@"public.image"])
+        {
+            //先把图片转成NSData
+            UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            NSData *data;
+            if (UIImagePNGRepresentation(image) == nil)
+            {
+                data = UIImageJPEGRepresentation(image, 1.0);
+            }
+            else
+            {
+                data = UIImagePNGRepresentation(image);
+            }
+            
+            //图片保存的路径
+            //这里将图片放在沙盒的documents文件夹中
+            NSString * DocumentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+            
+            //文件管理器
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            
+            //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
+            [fileManager createDirectoryAtPath:DocumentsPath withIntermediateDirectories:YES attributes:nil error:nil];
+            [fileManager createFileAtPath:[DocumentsPath stringByAppendingString:@"/image.png"] contents:data attributes:nil];
+            
+            //得到选择后沙盒中图片的完整路径
+            //filePath = [[NSString alloc]initWithFormat:@"%@%@",DocumentsPath,  @"/image.png"];
+            
+            //关闭相册界面
+            [picker dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+    else{
+        NSLog(@"请在真机使用!");
+    }
+}
+
+#pragma mark - ZYQAssetPickerController Delegate
+-(void)assetPickerController:(ZYQAssetPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+{
+    NSLog(@"%@",assets);
+    
+    if (assets.count > 0) {
+        
+        [SVProgressHUD showWithStatus:@"图片上传中"];
+        
+        [picker dismissViewControllerAnimated:YES completion:^() {
+            //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            
+            for(int i = 0; i < assets.count; i ++)
+            {
+                ALAsset * ass = assets[i];
+                
+                ALAssetRepresentation* representation = [ass defaultRepresentation];
+                UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+                portraitImg = [UIImage
+                               imageWithCGImage:[representation fullScreenImage]
+                               scale:[representation scale]
+                               orientation:UIImageOrientationUp];
+                
+                NSString * currentFileName = [representation filename];
+                
+                //            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+                
+                NSMutableDictionary * imageDic = [NSMutableDictionary dictionary];
+                
+                BOOL isOk = [LoginUser uploadImageWithScale:portraitImg fileName:currentFileName imageDic:&imageDic];
+                
+                if(isOk)
+                {
+//                    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+//                    [dic setObject:userImgPath forKey:@"url"];
+                    
+                    Accessory * acc = [Accessory new];
+                    acc.address = [imageDic valueForKey:@"path"];
+                    acc.name = [imageDic valueForKey:@"oldName"];
+                    acc.originImageSize = [imageDic valueForKey:@"size"];
+                    
+                    [self.cAccessoryArray addObject:acc];
+                }
+                
+                if(i == assets.count - 1)
+                {
+                    if(isOk)
+                    {
+                        [SVProgressHUD dismiss];
+                        
+                        [self showAccessory];
+                    }
+                }
+            }
+            
+        }];
+    }
+}
 
 @end

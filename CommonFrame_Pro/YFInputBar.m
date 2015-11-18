@@ -23,7 +23,6 @@
     BOOL    _hasReg;
     
     CGRect  _oriFrame;
-    BOOL    _btnTypeHasClicked;
     UIButton* btnType;
     
     CGRect  _relativeControlOriFrame;

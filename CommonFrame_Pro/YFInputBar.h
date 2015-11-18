@@ -27,7 +27,7 @@
 @property(strong,nonatomic)UIButton *sendBtn;
 @property(strong,nonatomic) UIControl *relativeControl;
 @property(strong,nonatomic) NSArray *typeList;
-
+@property(assign,nonatomic) BOOL btnTypeHasClicked;
 
 //点击btn时候 清空textfield  默认NO
 @property(assign,nonatomic)BOOL clearInputWhenSend;
@@ -42,4 +42,5 @@
 
 //隐藏键盘
 -(BOOL)resignFirstResponder;
+- (void)removeType;
 @end
