@@ -637,10 +637,10 @@
             case 2:
                 type = @"异常";
                 break;
-            case 3:
+            case 8:
                 type = @"申请";
                 break;
-            case 8:
+            case 3:
                 type = @"议题";
                 break;
             default:

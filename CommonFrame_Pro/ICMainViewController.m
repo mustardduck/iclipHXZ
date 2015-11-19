@@ -49,12 +49,7 @@
     NSArray*                _bottomArray;
     NSString*               _TermString;
     NSArray*                _icSideRightMarkArray;
-    
-    
-    NSInteger               _minVal;
-    NSInteger               _midVal;
-    NSInteger               _maxVal;
-    
+
     UIView*                 _markHeadView;
     //    UIView*                 groupHeadView;
     
@@ -127,10 +122,7 @@
     _screenWidth = [UIScreen mainScreen].bounds.size.width;
     _screenHeight = [UIScreen mainScreen].bounds.size.height;
     _TermString = @"";
-    
-    _minVal = 0;
-    _midVal = 0;
-    _maxVal = 0;
+
     
     [self addRefrish];
     
@@ -755,44 +747,48 @@
     
     Mark *m = _icSideRightMarkArray[indexPath.section][indexPath.row][indexPath.subRow];
     
+    NSInteger  minVal = 0;
+    NSInteger  midVal = 0;
+    NSInteger  maxVal = 0;
+    
     if(indexPath.row == 0)
     {
         tag = 1;
         
-        _minVal = [m.labelId integerValue];
+        minVal = [m.labelId integerValue];
     }
     else if (indexPath.row == 1)
     {
         tag = 3;
         
-        _midVal = [m.labelId integerValue];
+        midVal = [m.labelId integerValue];
     }
     else if (indexPath.row == 2)
     {
         tag = 2;
-        _maxVal = [m.labelId integerValue];
+        maxVal = [m.labelId integerValue];
     }
     
-    if (_minVal != 0 && _maxVal == 0 && _midVal == 0) {
-        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_minVal];
+    if (minVal != 0 && maxVal == 0 && midVal == 0) {
+        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)minVal];
     }
-    else if (_minVal == 0 && _maxVal != 0 && _midVal == 0) {
-        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_maxVal];
+    else if (minVal == 0 && maxVal != 0 && midVal == 0) {
+        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)maxVal];
     }
-    else if (_minVal == 0 && _maxVal == 0 && _midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)_midVal];
+    else if (minVal == 0 && maxVal == 0 && midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)midVal];
     }
-    else if (_minVal != 0 && _maxVal != 0 && _midVal == 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_maxVal];
+    else if (minVal != 0 && maxVal != 0 && midVal == 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)minVal,(NSInteger)maxVal];
     }
-    else if (_minVal != 0 && _maxVal == 0 && _midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_minVal,(NSInteger)_midVal];
+    else if (minVal != 0 && maxVal == 0 && midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)minVal,(NSInteger)midVal];
     }
-    else if (_minVal == 0 && _maxVal != 0 && _midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)_midVal,(NSInteger)_maxVal];
+    else if (minVal == 0 && maxVal != 0 && midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)midVal,(NSInteger)maxVal];
     }
-    else if (_minVal != 0 && _maxVal != 0 && _midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld,%ld",(NSInteger)_minVal, (NSInteger)_midVal,(NSInteger)_maxVal];
+    else if (minVal != 0 && maxVal != 0 && midVal != 0) {
+        _TermString = [NSString stringWithFormat:@"%ld,%ld,%ld",(NSInteger)minVal, (NSInteger)midVal,(NSInteger)maxVal];
     }
     
     [self loadTopMarkView:m.labelName markTag:tag];
@@ -1658,10 +1654,10 @@
             case 2:
                 type = @"异常";
                 break;
-            case 3:
+            case 8:
                 type = @"申请";
                 break;
-            case 8:
+            case 3:
                 type = @"议题";
                 break;
             default:

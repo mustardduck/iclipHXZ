@@ -19,10 +19,10 @@
 
 typedef enum {
     TaskTypeMission         = 1,//任务
-    TaskTypeShare           = 2,//问题
-    TaskTypeNoitification   = 3,//其他
+    TaskTypeShare           = 2,//异常
+    TaskTypeNoitification   = 8,//申请
     TaskTypeApplication     = 4,//(没有用了）
-    TaskTypeJianYi          = 8//建议
+    TaskTypeJianYi          = 3//议题
 }TaskType;
 
 @interface Mission : NSObject
