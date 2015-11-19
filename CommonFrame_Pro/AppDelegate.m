@@ -123,10 +123,29 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
 
     int type = [[userInfo valueForKey:@"type"] intValue];
     
+    /* todo
+    NSString * workGroupId = [userInfo valueForKey:@"workGroupId"];
+    if(workGroupId.length && (type == 1 || type == 2 || type == 3 || type == 8))
+    {
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        UIViewController* currentViewCon = nav.topViewController;
+        
+        if([currentViewCon isKindOfClass:[ICMainViewController class]])
+        {
+            NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+            
+            [dic setObject:workGroupId forKey:@"workGroupId"];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeMainGroupCount"
+                                                                object:dic];
+        }
+    }*/
+    
     NSString * sourceId = [userInfo objectForKey:@"sourceId"];
     NSString * mainStr = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
 
-    // 1 任务  2：分享  3通知  4申请 5问题  6加入工作组  7：评论 8:建议
+    // 1 任务  2：异常  3议题  6加入工作组  7：评论 8:申请
     switch (type) {
         case 6:
             _workGroupId = sourceId;

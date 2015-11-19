@@ -63,6 +63,8 @@
     
     NSString * _allNum;
     
+    NSString * _badgeWorkGroupId;
+    
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -91,9 +93,20 @@
     }
 }
 
+- (void)changeMainGroupCount:(NSNotification *)note {
+    
+    NSDictionary * dic = note.object;
+    
+    _badgeWorkGroupId = [dic valueForKey:@"workGroupId"];
+    
+    
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
+    
     
     if (![LoginUser isKeepLogined]) {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -101,6 +114,10 @@
         [self presentViewController:controller animated:YES completion:nil];
         return;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeMainGroupCount:) name:@"changeMainGroupCount"
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
