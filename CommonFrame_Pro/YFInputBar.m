@@ -23,7 +23,6 @@
     BOOL    _hasReg;
     
     CGRect  _oriFrame;
-    UIButton* btnType;
     
     CGRect  _relativeControlOriFrame;
     
@@ -85,7 +84,6 @@
 {
     [self removeType];
     
-    
     CGFloat currentHeight = _textField.contentSize.height;
     CGFloat newHeight = currentHeight - _currentHeight;
     
@@ -108,28 +106,32 @@
 -(PH_UITextView *)textField
 {
     if (!_textField) {
-        
-        btnType = [[UIButton alloc] init];
-        btnType.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 50, (self.bounds.size.height - 38)/2, 38, 38);
-        [btnType setBackgroundColor:[UIColor clearColor]];
-        [btnType  setTitle:@"＋" forState:UIControlStateNormal];
-        [btnType addTarget:self action:@selector(btnTypePress:) forControlEvents:UIControlEventTouchUpInside];
-        [btnType.layer setBorderColor:[[UIColor grayColor] CGColor]];
-        [btnType.layer setBorderWidth:1.0f];
-        [btnType.layer setCornerRadius:19.f];
-        [btnType.layer setMasksToBounds:YES];
-        [self addSubview:btnType];
+        //btn_zengjia 26
+        //btn_jianpan
+        self.btnType = [[UIButton alloc] init];
+        _btnType.frame = CGRectMake(14, (self.bounds.size.height - 26)/2, 26, 26);
+        [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
+        [_btnType setBackgroundColor:[UIColor clearColor]];
+//        [b_btnTypetnType  setTitle:@"＋" forState:UIControlStateNormal];
+        [_btnType addTarget:self action:@selector(btnTypePress:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_btnType];
         
         
-        _textField = [[PH_UITextView alloc]initWithFrame:CGRectMake(15, (self.bounds.size.height - 38)/2, [UIScreen mainScreen].bounds.size.width - 75, 38)];
+        _textField = [[PH_UITextView alloc]initWithFrame:CGRectMake(54, (self.bounds.size.height - 38)/2, [UIScreen mainScreen].bounds.size.width - 70 - 54, 38)];
         _textField.backgroundColor = [UIColor whiteColor];
-        _textField.layer.cornerRadius = 6;
+        _textField.layer.cornerRadius = 5;
         _textField.font = [UIFont systemFontOfSize:18];
         _textField.delegate = self;
 //        [_textField setReturnKeyType:UIReturnKeySend];
         [_textField setKeyboardType:UIKeyboardTypeDefault];
-//        _textField.tag = 707;
-//        self.textField.placeholder = @"初始化111";
+
+        self.sendCommentBtn = [[UIButton alloc] init];
+        _sendCommentBtn.frame = CGRectMake(XW(_textField) + 14, Y(_textField), 44, 38);
+        [_sendCommentBtn setRoundCorner:5];
+        [_sendCommentBtn setBackgroundColor:RGBCOLOR(76, 215, 100)];
+        [_sendCommentBtn setTitle:@"发送" forState:UIControlStateNormal];
+        _sendCommentBtn.titleLabel.textColor = [UIColor whiteColor];
+        _sendCommentBtn.titleLabel.font = Font(15);        
         
         _minHeight = 38;
         _currentHeight = 38;
@@ -137,7 +139,8 @@
         _tmp_originalFrame = self.frame;
         
         [self addSubview:_textField];
-        
+        [self addSubview:_sendCommentBtn];
+
         //[_textField becomeFirstResponder];
         _isSendButtonClicked = NO;
         _hasShowed = NO;
@@ -160,61 +163,114 @@
     return _sendBtn;
 }
 #pragma mark selfDelegate method
+-(void)btnSendCommentPress:(id)sender
+{
+    [_textField resignFirstResponder];
+    
+//    if (self.delegate&&[self.delegate respondsToSelector:@selector(inputBarSendComment:)]) {
+//        [self.delegate inputBarSendComment:self];
+//    }
+}
+
 
 -(void)btnTypePress:(id)sender
 {
     [_textField resignFirstResponder];
     if ( _btnTypeHasClicked == YES) {
+        [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
+
         [self removeType];
         [_textField becomeFirstResponder];
         _btnTypeHasClicked = NO;
         return;
     }
+    
+    [_btnType setImage:[UIImage imageNamed:@"btn_jianpan"] forState:UIControlStateNormal];
+
     _btnTypeHasClicked = YES;
      _oriFrame = self.frame;
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  - 252, self.frame.size.width, self.frame.size.height +  252);
+
     
-    UIView* vi = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.frame.size.height + _textField.frame.origin.y + 5, self.frame.size.width - 20, 80)];
-    [vi setBackgroundColor:[UIColor clearColor]];
-    [vi setTag:1011];
+    int lineCount = 4;
     
+    CGFloat accHeight = 80;
+    CGFloat imgHeight = 50;
+    CGFloat accWidth = 68;
+    CGFloat leftX = 24;
     
-    
-    CGFloat btnX = 5;
-    CGFloat btnY = 5;
-    CGFloat btnWidth = 66;
-    CGFloat btnHeight = 32;
-    CGFloat parentViewWidth = vi.frame.size.width;
-    NSInteger row = 0;
-    NSInteger rowCount = 0;
-    
-    for (int i = 0; i < self.typeList.count; i++) {
-        
-        btnX = (i - rowCount + 1) * 5 + (i - rowCount) * btnWidth;
-        
-        if (btnX + btnWidth >= parentViewWidth) {
-            row++;
-            btnY = btnHeight * row + 5 * (row + 1);
-            btnX = 5;
-            rowCount = i;
-        }
-        
-        UIButton* btn = [[UIButton alloc] initWithFrame:CGRectMake(btnX, btnY, btnWidth, btnHeight)];
-        [btn setTitle:[self.typeList objectAtIndex:i] forState:UIControlStateNormal];
-        [btn.layer setBorderColor:[[UIColor grayColor] CGColor]];
-        [btn.layer setBorderWidth:1.0f];
-        [btn.layer setCornerRadius:10.f];
-        [btn.layer setMasksToBounds:YES];
-        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-        [btn addTarget:self action:@selector(btnSubType:) forControlEvents:UIControlEventTouchUpInside];
-        [btn setTag:i];
-        [vi addSubview:btn];
-        
+    CGFloat intevalHeight = (SCREENWIDTH - leftX * 2 - accWidth * lineCount) / (lineCount - 1);
+    if(intevalHeight < 0)
+    {
+        intevalHeight = 0;
     }
     
+    CGFloat attchHeight = ((self.typeList.count - 1) / lineCount + 1) * accHeight;
     
-    [self addSubview:vi];
+    UIView* attchView = [[UIView alloc] initWithFrame:CGRectMake(leftX, YH(_textField) + 27, self.frame.size.width - leftX * 2, attchHeight)];
+    [attchView setBackgroundColor:[UIColor clearColor]];
+    [attchView setTag:1011];
+    
+    for(int i = 0; i < self.typeList.count; i ++)
+    {
+        int j = i / lineCount;
+        
+        int k = i % lineCount;
+        
+        CGRect attaFrame = CGRectMake(9 + (accWidth + intevalHeight) * k, accHeight * j, imgHeight, imgHeight);
+        
+        UIImageView* attachment = [[UIImageView alloc] initWithFrame:attaFrame];
+        attachment.userInteractionEnabled = YES;
+        
+        UILabel * fileNameLbl = [[UILabel alloc] init];
+        fileNameLbl.frame = CGRectMake(X(attachment) - 9, YH(attachment), accWidth, 40);
+        fileNameLbl.backgroundColor = [UIColor clearColor];
+        fileNameLbl.textColor = [UIColor whiteColor];
+        fileNameLbl.numberOfLines = 2;
+        fileNameLbl.textAlignment = NSTextAlignmentCenter;
+        fileNameLbl.text = self.typeList[i];
+        fileNameLbl.font = Font(10);
+        [attachment addSubview:fileNameLbl];
+        
+        UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+        imgBtn.backgroundColor = [UIColor clearColor];
+        imgBtn.tag = i;
+        [imgBtn addTarget:self action:@selector(btnSubType:) forControlEvents:UIControlEventTouchUpInside];
+
+        [attachment addSubview:imgBtn];
+        
+        [attchView addSubview:attachment];
+        [attchView addSubview:fileNameLbl];
+        
+        NSString * imageName = @"btn_pishi";
+        if(i == 0)
+        {
+            UIImageView* gouImgView = [[UIImageView alloc] initWithFrame:CGRectMake(X(attachment) + imgHeight - 11, Y(attachment) - 8, 18, 18)];
+            gouImgView.image = [UIImage imageNamed:@"icon_gouxuan"];
+            gouImgView.tag = 400;
+            gouImgView.hidden = !_pishiClicked;
+            [attchView addSubview:gouImgView];
+
+        }
+        else if(i == 1)
+        {
+            imageName = @"btn_paizhao";
+        }
+        else if (i == 2)
+        {
+            imageName = @"btn_zhaopian";
+        }
+        else if (i == 3)
+        {
+            imageName = @"btn_fujianku";
+        }
+        
+        attachment.image = [UIImage imageNamed:imageName];
+        
+
+    }
+    
+    [self addSubview:attchView];
     
 }
 
@@ -226,13 +282,10 @@
     
     _sendBtn.tag = tag;
     
-    if(tag == 1)
-    {
-        if (self.delegate&&[self.delegate respondsToSelector:@selector(inputBarWithFile:)]) {
-            [self.delegate inputBarWithFile:self];
-        }
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(inputBarWithFile:)]) {
+        [self.delegate inputBarWithFile:self];
     }
-    else
+    if(tag == 0)
     {
         NSString* textStr = _textField.text;
         
@@ -241,13 +294,33 @@
             textStr = ty;
         }
         
-        //_textField.text = [NSString stringWithFormat:@"@%@:%@",type,textStr];
         _textField.text = textStr;
         [_textField becomeFirstResponder];
-        //[btnType setTitle:type forState:UIControlStateNormal];
         
         [self removeType];
+        
+        
+        [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
     }
+    else
+    {
+        self.pishiClicked = NO;
+        
+        UIView * gouxuanIcon = [[self viewWithTag:1011] viewWithTag:400];
+        gouxuanIcon.hidden = YES;
+    }
+}
+
+- (void) textViewDidBeginEditing:(UITextView *)textView
+{
+    [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
+
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView
+{
+    [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
+    
 }
 
 - (void)removeType
@@ -263,7 +336,11 @@
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  + 252, self.frame.size.width, self.frame.size.height - 252);
         _oriFrame  = self.frame;
         _btnTypeHasClicked = NO;
+        
+        [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
+
     }
+    
 }
 
 -(void)sendBtnPress:(UIButton*)sender
@@ -300,7 +377,7 @@
     _currentHeight = 38;
     
     _sendBtn.tag = 10001;
-    [btnType  setTitle:@"＋" forState:UIControlStateNormal];
+    [_btnType  setTitle:@"＋" forState:UIControlStateNormal];
 }
 
 //- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

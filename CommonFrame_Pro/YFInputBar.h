@@ -16,6 +16,7 @@
 -(void)inputBar:(YFInputBar*)inputBar sendBtnPress:(UIButton*)sendBtn withInputString:(NSString*)str;
 
 -(void)inputBarWithFile:(YFInputBar *)inputBar;
+//-(void)inputBarSendComment:(YFInputBar *)inputBar;
 
 @end
 @interface YFInputBar : UIView <UITextViewDelegate>
@@ -28,6 +29,11 @@
 @property(strong,nonatomic) UIControl *relativeControl;
 @property(strong,nonatomic) NSArray *typeList;
 @property(assign,nonatomic) BOOL btnTypeHasClicked;
+@property(assign,nonatomic) BOOL pishiClicked;
+@property(strong,nonatomic) UIButton* btnType;
+
+@property(strong,nonatomic) UIButton* sendCommentBtn;
+
 
 //点击btn时候 清空textfield  默认NO
 @property(assign,nonatomic)BOOL clearInputWhenSend;

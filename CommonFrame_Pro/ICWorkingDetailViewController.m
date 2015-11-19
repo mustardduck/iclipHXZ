@@ -54,6 +54,8 @@
     UITableView * _childTableView;
     
     BOOL _isMainMission;
+    
+    NSInteger _sendButtonTag;
 }
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
@@ -217,43 +219,6 @@
             [alert show];
         }
     }
-    else if (actionSheet.tag == 113)
-    {
-        if(buttonIndex == 0)
-        {
-            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
-            ((ICFileViewController *)vc).workGroupId = _currentMission.workGroupId;
-            ((ICFileViewController*)vc).icWorkDetailController = self;
-            
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else if (buttonIndex == 1)
-        {
-            UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
-            ctrl.delegate = self;
-            ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self presentViewController:ctrl animated:YES completion:nil];
-        }
-        else if (buttonIndex == 2)
-        {
-            ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
-            picker.maximumNumberOfSelection = 9;
-            picker.assetsFilter = [ALAssetsFilter allPhotos];
-            picker.showEmptyGroups=NO;
-            picker.delegate=self;
-            picker.selectionFilter = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                if ([[(ALAsset*)evaluatedObject valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
-                    NSTimeInterval duration = [[(ALAsset*)evaluatedObject valueForProperty:ALAssetPropertyDuration] doubleValue];
-                    return duration >= 5;
-                } else {
-                    return YES;
-                }
-            }];
-            
-            [self presentViewController:picker animated:YES completion:NULL];
-        }
-    }
     else
     {
         NSInteger cIndex = actionSheet.tag;
@@ -386,8 +351,8 @@
             lpgr.delegate = self;
             [_tableView addGestureRecognizer:lpgr];	//启用长按事件
             
-            NSArray* typeList = @[@"批示", @"附件"];
-            _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 44 - 66, [UIScreen mainScreen].bounds.size.width, 44)];
+            NSArray* typeList = @[@"批示", @"拍照", @"照片", @"群组文件夹"];
+            _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 50 - 66, [UIScreen mainScreen].bounds.size.width, 54)];
             //[inputBar setFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) + 100, 320, 44)];
             _inputBar.delegate = self;
             _inputBar.clearInputWhenSend = YES;
@@ -397,8 +362,9 @@
             _inputBar.parentController = self;
             _inputBar.dataCount = _replyList.count - 1;
             _inputBar.textField.placeholder = @"点击回复";
-            
-            [self addSendToKeyboard:_inputBar.textField];
+            [_inputBar.sendCommentBtn addTarget:self action:@selector(btnSendCommentPress:) forControlEvents:UIControlEventTouchUpInside];
+
+//            [self addSendToKeyboard:_inputBar.textField];
             
             [self.view addSubview:_inputBar];
             
@@ -411,11 +377,79 @@
 
 }
 
+-(void)btnSendCommentPress:(id)sender
+{
+    [self sendComment];
+}
+
+- (void) inputBarSendComment:(YFInputBar *)inputBar
+{
+    [self sendComment];
+}
+
+
 - (void) inputBarWithFile:(YFInputBar *)inputBar
 {
-    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
-    as.tag = 113;
-    [as showInView:self.view];
+    NSInteger tag = inputBar.sendBtn.tag;
+    
+    if(tag == 0)//指示
+    {
+        if(_sendButtonTag == 0)
+        {
+            _sendButtonTag = 100;//选中
+            
+            inputBar.pishiClicked = YES;
+            
+            _inputBar.textField.placeHolderLabel.text = @"批示:";
+
+        }
+        else
+        {
+            _sendButtonTag = 0;
+            
+            inputBar.pishiClicked = NO;
+            
+            _inputBar.textField.placeHolderLabel.text = @"点击回复";
+
+        }
+    }
+    else if(tag == 3)
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
+        ((ICFileViewController *)vc).workGroupId = _currentMission.workGroupId;
+        ((ICFileViewController*)vc).icWorkDetailController = self;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if(tag == 1)
+    {
+        UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
+        ctrl.delegate = self;
+        ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:ctrl animated:YES completion:nil];
+    }
+    else if(tag == 2)
+    {
+        ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
+        picker.maximumNumberOfSelection = 9;
+        picker.assetsFilter = [ALAssetsFilter allPhotos];
+        picker.showEmptyGroups=NO;
+        picker.delegate=self;
+        picker.selectionFilter = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            if ([[(ALAsset*)evaluatedObject valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
+                NSTimeInterval duration = [[(ALAsset*)evaluatedObject valueForProperty:ALAssetPropertyDuration] doubleValue];
+                return duration >= 5;
+            } else {
+                return YES;
+            }
+        }];
+        
+        [self presentViewController:picker animated:YES completion:NULL];
+    }
+//        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
+//        as.tag = 113;
+//        [as showInView:self.view];
 }
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
@@ -2624,10 +2658,12 @@
 #pragma mark Input Bar Action
 -(void)inputBar:(YFInputBar *)inputBar sendBtnPress:(UIButton *)sendBtn withInputString:(NSString *)str
 {
+    if(inputBar.tag > 0)
+    {
+        _sendButtonTag = sendBtn.tag;
+    }
     
-    NSInteger sendButtonTag = sendBtn.tag;
-    
-    NSLog(@"Type:%ld",(long)sendButtonTag);
+    NSLog(@"Type:%ld",(long)_sendButtonTag);
     
     if (str == nil || [str isEqualToString:@""]) {
         return;
@@ -2638,7 +2674,7 @@
         Comment* cm = [Comment new];
         cm.main = str;
         cm.parentId = @"0";
-        cm.level = sendButtonTag == 0 ? 1 : 2;
+        cm.level = _sendButtonTag == 100 ? 1 : 2;
         cm.userName = [LoginUser loginUserName];
         cm.userImg = [LoginUser loginUserPhoto];
         cm.userId = [LoginUser loginUserID];
@@ -2739,7 +2775,7 @@
             Comment* cm = [Comment new];
             cm.main = str;
             cm.parentId = pid==nil?@"0":pid;
-            cm.level = sendButtonTag == 0 ? 1 : 2;
+            cm.level = _sendButtonTag == 0 ? 1 : 2;
             cm.userName = [LoginUser loginUserName];
             cm.userImg = [LoginUser loginUserPhoto];
             cm.userId = [LoginUser loginUserID];
@@ -2958,8 +2994,15 @@
 
 - (void)sendComment
 {
-    [self inputBar:_inputBar sendBtnPress:_inputBar.sendBtn withInputString:_inputBar.textField.text];
-    [_inputBar.textField resignFirstResponder];
+    if(_inputBar.textField.text)
+    {
+        [self inputBar:_inputBar sendBtnPress:_inputBar.sendBtn withInputString:_inputBar.textField.text];
+        [_inputBar.textField resignFirstResponder];
+    }
+    else
+    {
+        [SVProgressHUD showErrorWithStatus:@"请输入内容"];
+    }
 }
 
 - (void)hiddenKeyboard
