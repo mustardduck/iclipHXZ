@@ -77,11 +77,7 @@
     
     _taskId = [dic valueForKey:@"taskId"];
     
-    [self requesetData];
-    [self loadData];
-    [_tableView reloadData];
-
-    
+    [self reloadTableView];
 }
 
 - (void) jumpToMissionMainEdit
@@ -382,11 +378,6 @@
     [self sendComment];
 }
 
-- (void) inputBarSendComment:(YFInputBar *)inputBar
-{
-    [self sendComment];
-}
-
 
 - (void) inputBarWithFile:(YFInputBar *)inputBar
 {
@@ -526,9 +517,9 @@
             _tableView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
         }
         if (_content != nil) {
-            [self requesetData];
-            [self loadData];
-            [_tableView reloadData];
+            
+            [self reloadTableView];
+
         }
     }
     
@@ -577,9 +568,8 @@
                 [_inputBar removeType];
                 _inputBar.btnTypeHasClicked = NO;
                 
-                [self requesetData];
-                [self loadData];
-                [_tableView reloadData];
+                [self reloadTableView];
+
             }
         }
     }
@@ -893,6 +883,17 @@
     [alert show];
 }
 
+- (void) reloadTableView
+{
+    [self requesetData];
+    [self loadData];
+    [_tableView reloadData];
+    
+    NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:_commentArray.count inSection:0];
+    [_tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(alertView.tag > 100)
@@ -909,9 +910,7 @@
                 
                 if(isOk)
                 {
-                    [self requesetData];
-                    [self loadData];
-                    [_tableView reloadData];
+                    [self reloadTableView];
                 }
             }
         }
@@ -936,10 +935,7 @@
             {
                 [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
                 
-                [self requesetData];
-                [self loadData];
-                
-                [_tableView reloadData];
+                [self reloadTableView];
 
             }
         }
@@ -2698,9 +2694,8 @@
                 if (isOk) {
                     
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
-                    [self requesetData];
-                    [self loadData];
-                    [_tableView reloadData];
+                    [self reloadTableView];
+
                     return;
                     
                     cm.parentId = newCommentId;
@@ -2720,9 +2715,8 @@
             if(isOk){
                 
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
-                [self requesetData];
-                [self loadData];
-                [_tableView reloadData];
+                [self reloadTableView];
+
                 return;
                 
                 cm.commentsId = newCommentId;
@@ -2803,9 +2797,8 @@
                     if(isOk)
                     {
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
-                        [self requesetData];
-                        [self loadData];
-                        [_tableView reloadData];
+                        [self reloadTableView];
+
                         return;
                         
                         cm.commentsId = newCommentId;
@@ -2999,7 +2992,7 @@
 
 - (void)sendComment
 {
-    if(_inputBar.textField.text)
+    if(_inputBar.textField.text.length)
     {
         [self inputBar:_inputBar sendBtnPress:_inputBar.sendBtn withInputString:_inputBar.textField.text];
         [_inputBar.textField resignFirstResponder];
