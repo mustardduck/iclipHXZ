@@ -226,12 +226,13 @@
     
     NSArray* markArray = [NSArray array];
     NSMutableArray * muArr = [[NSMutableArray alloc] init];
-    Group * gr = [[Group alloc] init];
-    gr.workGroupId = @"0";
-    gr.workGroupName = @"全部";
-    gr.messageCount = @"0";
-    
-    [muArr addObject:gr];
+   
+//    Group * gr = [[Group alloc] init];
+//    gr.workGroupId = @"0";
+//    gr.workGroupName = @"全部";
+//    gr.messageCount = @"0";
+//    
+//    [muArr addObject:gr];
     
     NSString * allnum = @"";
     
@@ -248,6 +249,13 @@
     _bottomArray = [NSArray arrayWithArray:muArr];
     
     if (_bottomArray.count > 0) {
+        
+        Group * firstGP = _bottomArray[0];
+        if(_workGroupId == 0)
+        {
+            _workGroupId = firstGP.workGroupId;
+        }
+        
         NSMutableArray* imgs = [NSMutableArray array];
         NSMutableArray* names = [NSMutableArray array];
         _badges = [NSMutableArray array];
