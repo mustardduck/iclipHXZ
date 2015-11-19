@@ -2423,6 +2423,11 @@
 
                     int lineCount = 4;
                     
+                    if(SCREENWIDTH == 320)
+                    {
+                        lineCount = 3;
+                    }
+                    
                     CGFloat accHeight = 94;
                     CGFloat imgHeight = 50;
                     CGFloat accWidth = 68;
