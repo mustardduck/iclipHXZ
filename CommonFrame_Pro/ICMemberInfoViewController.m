@@ -71,7 +71,7 @@
     _screenHeight = [UIScreen mainScreen].bounds.size.height;
     
      _pageNo = 1;
-    _pageRowCount = 10;
+    _pageRowCount = 30;
 
     
     [_tableView setBackgroundColor:[UIColor colorWithHexString:@"#2f2e33"]];

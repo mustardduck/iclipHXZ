@@ -1303,7 +1303,7 @@
     
     NSMutableArray * dataArr = [NSMutableArray array];
     
-    BOOL isOk = [Mission findWgPeopleTrends:_currentMission.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+    BOOL isOk = [Mission findWgPeopleTrends:_currentMission.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:30 dataListArr:&dataArr member:&me];
 
     if(isOk)
     {
@@ -1334,7 +1334,7 @@
     
     NSString * userId = mi.userId;
     
-    BOOL isOk = [Mission findWgPeopleTrends:userId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+    BOOL isOk = [Mission findWgPeopleTrends:userId workGroupId:@"0" currentPageIndex:1 pageSize:30 dataListArr:&dataArr member:&me];
     
     if(isOk)
     {

@@ -144,7 +144,7 @@
     self.loginUserID = [LoginUser loginUserID];
     
     _pageNo = 1;
-    _pageRowCount = 5;
+    _pageRowCount = 30;
     _contentArray = [NSMutableArray array];
     _workGroupId = @"0";
     
@@ -1380,7 +1380,7 @@
     
     NSMutableArray * dataArr = [NSMutableArray array];
     
-    BOOL isOk = [Mission findWgPeopleTrends:mi.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:5 dataListArr:&dataArr member:&me];
+    BOOL isOk = [Mission findWgPeopleTrends:mi.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:_pageRowCount dataListArr:&dataArr member:&me];
     if(!me.workGroupId)
     {
         me.workGroupId = @"0";

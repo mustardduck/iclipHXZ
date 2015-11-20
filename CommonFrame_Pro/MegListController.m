@@ -48,7 +48,7 @@
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
     _pageNo = 1;
-    _pageRowCount = 10;
+    _pageRowCount = 30;
     
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView setBackgroundColor:[UIColor colorWithHexString:@"#2f2e33"]];
