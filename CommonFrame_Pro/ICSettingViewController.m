@@ -9,6 +9,7 @@
 #import "ICSettingViewController.h"
 #import "UIColor+HexString.h"
 #import "ICGroupMessageSettingController.h"
+#import "APService.h"
 
 @interface ICSettingViewController()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -78,6 +79,13 @@
     //dispatch_async(queue, ^{
         BOOL isQuit = [LoginUser quit];
         if (isQuit) {
+            
+            __autoreleasing NSMutableSet *tags = [NSMutableSet set];
+            [APService setTags:tags
+                         alias:@""
+              callbackSelector:@selector(tagsAliasCallback:tags:alias:)
+                        target:self];
+            
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ViewController"];
             [self presentViewController:controller animated:YES completion:nil];
@@ -85,6 +93,12 @@
 
     //});
     
+}
+
+- (void)tagsAliasCallback:(int)iResCode
+                     tags:(NSSet *)tags
+                    alias:(NSString *)alias
+{
 }
 
 #pragma mark -

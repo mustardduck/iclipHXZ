@@ -1478,7 +1478,15 @@
                 
                 title.attributedText = attrStr;
             }
-            [cell.contentView addSubview:checkView];
+            
+            if(_currentMission.type == 1)
+            {
+                [cell.contentView addSubview:checkView];
+            }
+            else
+            {
+                title.left =  26;
+            }
             
             //描述
             NSString* content = _currentMission.main;
