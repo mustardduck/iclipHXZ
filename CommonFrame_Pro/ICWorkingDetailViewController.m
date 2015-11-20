@@ -2719,6 +2719,7 @@
         cm.userId = [LoginUser loginUserID];
         cm.taskId = _taskId;
         
+        [SVProgressHUD showWithStatus:@"发送评论中..."];
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL isChild = NO;
             if (_oriIndexRow > 0) {
@@ -2731,6 +2732,7 @@
                 
                 if (isOk) {
                     
+                    [SVProgressHUD dismiss];
                     _inputBar.textField.text = @"";
 
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
@@ -2753,7 +2755,7 @@
             BOOL isOk = [cm sendComment:&newCommentId];
             //BOOL isOk = [cm sendComment];
             if(isOk){
-                
+                [SVProgressHUD dismiss];
                 _inputBar.textField.text = @"";
                 
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
@@ -2822,6 +2824,8 @@
             cm.userId = [LoginUser loginUserID];
             cm.taskId = _taskId;
             
+            [SVProgressHUD showWithStatus:@"发送评论中..."];
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 for (Comment* pc in _commentArray) {
                     if (pc.commentsId == pid) {
@@ -2838,6 +2842,8 @@
                     BOOL isChild = NO;
                     if(isOk)
                     {
+                        [SVProgressHUD dismiss];
+
                         _inputBar.textField.text = @"";
                         
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
