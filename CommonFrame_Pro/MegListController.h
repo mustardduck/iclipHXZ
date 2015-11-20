@@ -10,4 +10,5 @@
 
 @interface MegListController : UIViewController
 
+@property (nonatomic, strong) NSString * workGroupId;
 @end

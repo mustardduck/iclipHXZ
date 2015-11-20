@@ -927,7 +927,7 @@
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MegListController"];
-    
+    ((MegListController *)vc).workGroupId = _workGroupId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

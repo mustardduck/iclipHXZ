@@ -68,7 +68,7 @@
         
         _pageNo = 1;
         
-        NSMutableArray * mcArr = [MessageCenter getMessageListByUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount];
+        NSMutableArray * mcArr = [MessageCenter getMessageListByUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId];
         
         _megArr = mcArr;
         
@@ -89,7 +89,7 @@
         
         _pageNo++;
         
-        NSMutableArray * newArr = [MessageCenter getMessageListByUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount];
+        NSMutableArray * newArr = [MessageCenter getMessageListByUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId];
         
         if (newArr.count > 0) {
             [_megArr addObjectsFromArray:newArr];

@@ -43,7 +43,7 @@
                 
                 if ([dataDic isKindOfClass:[NSDictionary class]])
                 {
-                    allNumStr = [dataDic valueForKey:@"allNum"];
+//                    allNumStr = [dataDic valueForKey:@"allNum"];
                     
                     id dataArr = [dataDic valueForKey:@"wglist"];
                     if ([dataArr isKindOfClass:[NSArray class]])
@@ -61,6 +61,12 @@
                                 cm.workGroupImg = [di valueForKey:@"workGroupImg"];
                                 cm.isAdmin = [[di valueForKey:@"isAdmin"] boolValue];
                                 cm.workGroupId = [di valueForKey:@"workGroupId"];
+                                cm.allNum = [di valueForKey:@"allNum"];
+
+                                if(cm.workGroupId == workGroupId)
+                                {
+                                    allNumStr = cm.allNum;
+                                }
                                 cm.workGroupName = [di valueForKey:@"workGroupName"];
                                 cm.workGroupMain = [di valueForKey:@"workGroupMain"];
                                 

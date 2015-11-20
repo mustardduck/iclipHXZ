@@ -15,6 +15,7 @@
 @interface Group : NSObject
 
 @property (nonatomic,strong) NSString*  messageCount;
+@property (nonatomic,strong) NSString*  allNum;
 @property (nonatomic,strong) NSString*  workGroupName;
 @property (nonatomic,strong) NSString*  workGroupImg;
 @property (nonatomic,strong) NSString*  workGroupId;

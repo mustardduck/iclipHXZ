@@ -22,6 +22,5 @@
 
 @property (nonatomic,assign) NSInteger  totalPages;
 
-+ (NSMutableArray*)getMessageListByUserID:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;
-
++ (NSMutableArray*)getMessageListByUserID:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)workGroupId;
 @end

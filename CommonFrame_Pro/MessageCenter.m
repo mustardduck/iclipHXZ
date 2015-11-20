@@ -16,11 +16,11 @@
 
 @implementation MessageCenter
 
-+ (NSMutableArray*)getMessageListByUserID:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount
++ (NSMutableArray*)getMessageListByUserID:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)workGroupId
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld",MESSAGECENTER_LIST_URL,[LoginUser loginUserID], page, rowCount]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@",MESSAGECENTER_LIST_URL,[LoginUser loginUserID], page, rowCount, workGroupId]];
     
     if (responseString == nil) {
         return array;

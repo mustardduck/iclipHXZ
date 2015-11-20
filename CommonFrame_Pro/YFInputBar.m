@@ -189,8 +189,20 @@
 
     _btnTypeHasClicked = YES;
      _oriFrame = self.frame;
+    
+    
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  - 252, self.frame.size.width, self.frame.size.height +  252);
-
+    
+//    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height +  252);
+//
+//    
+//    [UIView animateWithDuration:0.3
+//                          delay:0
+//                        options:UIViewAnimationOptionCurveEaseInOut
+//                     animations:^{
+//                         self.transform = CGAffineTransformMakeTranslation(self.frame.origin.x, self.frame.origin.y  - 252);
+//                     } completion:nil];
+    
     
     int lineCount = 4;
     
@@ -333,7 +345,12 @@
     }
     
     if (_btnTypeHasClicked) {
+        
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  + 252, self.frame.size.width, self.frame.size.height - 252);
+        
+//        self.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, self.frame.origin.x, self.frame.origin.y  + 252);
+
+        
         _oriFrame  = self.frame;
         _btnTypeHasClicked = NO;
         
