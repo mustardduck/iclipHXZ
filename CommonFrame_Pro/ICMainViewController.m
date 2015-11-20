@@ -251,7 +251,7 @@
     if (_bottomArray.count > 0) {
         
         Group * firstGP = _bottomArray[0];
-        if(_workGroupId == 0)
+        if([_workGroupId intValue] == 0)
         {
             _workGroupId = firstGP.workGroupId;
         }
