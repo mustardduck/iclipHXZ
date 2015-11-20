@@ -386,25 +386,19 @@
     {
         if(_sendButtonTag == 0)
         {
-            _sendButtonTag = 100;//选中
-            
-            inputBar.pishiClicked = YES;
-            
-            _inputBar.textField.placeHolderLabel.text = @"批示:";
+            [self setPishi:100 pishiClicked:YES placeHolderText:@"批示:"];//选中
 
         }
         else
         {
-            _sendButtonTag = 0;
-            
-            inputBar.pishiClicked = NO;
-            
-            _inputBar.textField.placeHolderLabel.text = @"点击回复";
+            [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
 
         }
     }
     else if(tag == 3)
     {
+        [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
+
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
         ((ICFileViewController *)vc).workGroupId = _currentMission.workGroupId;
@@ -414,6 +408,8 @@
     }
     else if(tag == 1)
     {
+        [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
+        
         UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
         ctrl.delegate = self;
         ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -421,6 +417,8 @@
     }
     else if(tag == 2)
     {
+        [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
+
         ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
         picker.maximumNumberOfSelection = 9;
         picker.assetsFilter = [ALAssetsFilter allPhotos];
@@ -440,6 +438,13 @@
 //        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
 //        as.tag = 113;
 //        [as showInView:self.view];
+}
+
+- (void) setPishi:(NSInteger)tag pishiClicked:(BOOL)cliked placeHolderText:(NSString *)placeholder
+{
+    _sendButtonTag = tag;
+    _inputBar.pishiClicked = cliked;
+    _inputBar.textField.placeHolderLabel.text = placeholder;
 }
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
