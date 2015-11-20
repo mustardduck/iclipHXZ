@@ -93,6 +93,12 @@
     }
 }
 
+- (void)refreshMainView:(NSNotification *)note
+{
+    [self addRefrish];
+}
+
+
 - (void)changeMainGroupCount:(NSNotification *)note {
     
     NSDictionary * dic = note.object;
@@ -117,6 +123,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(changeMainGroupCount:) name:@"changeMainGroupCount"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshMainView:) name:@"refreshMainView"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

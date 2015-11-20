@@ -407,6 +407,18 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
+    //进入前台
+    
+    UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+    
+    UIViewController* currentViewCon = nav.topViewController;
+    
+    if([currentViewCon isKindOfClass:[ICMainViewController class]])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshMainView"
+                                                            object:nil];
+    }
+    
     /*
     int num=application.applicationIconBadgeNumber;
     if(num!=0){
