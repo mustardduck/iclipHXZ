@@ -1335,7 +1335,10 @@
     NSMutableArray * dataArr = [NSMutableArray array];
     
     BOOL isOk = [Mission findWgPeopleTrends:_currentMission.createUserId workGroupId:@"0" currentPageIndex:1 pageSize:30 dataListArr:&dataArr member:&me];
-
+    if(!me.workGroupId)
+    {
+        me.workGroupId = @"0";
+    }
     if(isOk)
     {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -1429,20 +1432,34 @@
         
         if (index == 0) {
             
-            UIImageView* photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
-            [photo setBackgroundColor:[UIColor clearColor]];
-            //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
+            
+            UIImageView* photo = [cell.contentView viewWithTag:100];
+            if(!photo)
+            {
+                photo = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
+                
+                [photo setBackgroundColor:[UIColor clearColor]];
+                //[photo setImage:[UIImage imageNamed:@"icon_chengyuan"]];
+                photo.layer.cornerRadius = 5.0f;
+                photo.clipsToBounds = YES;
+                photo.tag = 100;
+                [cell.contentView addSubview:photo];
+            }
+            
             [photo setImageWithURL:[NSURL URLWithString:_currentMission.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            photo.layer.cornerRadius = 5.0f;
-            photo.clipsToBounds = YES;
-            [cell.contentView addSubview:photo];
+
             
-            UIButton * photoBtn = [[UIButton alloc]init];
-            photoBtn.backgroundColor = [UIColor clearColor];
-            photoBtn.frame = photo.frame;
-            [photoBtn addTarget:self action:@selector(jumpToCreaterPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [cell.contentView addSubview:photoBtn];
+            UIButton * photoBtn = [cell.contentView viewWithTag:101];
+            if(!photoBtn)
+            {
+                photoBtn = [[UIButton alloc]init];
+                photoBtn.backgroundColor = [UIColor clearColor];
+                photoBtn.frame = photo.frame;
+                [photoBtn addTarget:self action:@selector(jumpToCreaterPersonInfo:) forControlEvents:UIControlEventTouchUpInside];
+                photoBtn.tag = 101;
+                [cell.contentView addSubview:photoBtn];
+            }
+
             
             CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
             

@@ -1083,7 +1083,10 @@
     else
     {
         Member* m = _rows[indexPath.section][indexPath.row];
-        
+        if(!m.workGroupId)
+        {
+            m.workGroupId = @"0";
+        }
         if (m != nil) {
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* vc;
