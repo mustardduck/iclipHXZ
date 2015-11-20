@@ -1293,7 +1293,7 @@
             
             UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
             
-            [UICommon changeImageOrientation:image];
+            image = [UICommon changeImageOrientation:image];
 
             NSString * dateTime = [[info[@"UIImagePickerControllerMediaMetadata"] objectForKey:@"{TIFF}"] objectForKey:@"DateTime"];
             

@@ -49,7 +49,7 @@ static UIViewController *imagePicker = nil;
     return fileNum;
 }
 
-+ (void)changeImageOrientation:(UIImage *)image
++ (UIImage *)changeImageOrientation:(UIImage *)image
 {
     UIImageOrientation imageOrientation=image.imageOrientation;
     if(imageOrientation!=UIImageOrientationUp)
@@ -62,6 +62,7 @@ static UIViewController *imagePicker = nil;
         UIGraphicsEndImageContext();
         // 调整图片角度完毕
     }
+    return image;
 }
 
 + (CGSize)getWidthFromLabel:(UILabel *)label
