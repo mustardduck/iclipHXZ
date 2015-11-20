@@ -351,7 +351,6 @@
             _inputBar = [[YFInputBar alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) - 50 - 66, [UIScreen mainScreen].bounds.size.width, 54)];
             //[inputBar setFrame:CGRectMake(0, CGRectGetMaxY([UIScreen mainScreen].bounds) + 100, 320, 44)];
             _inputBar.delegate = self;
-            _inputBar.clearInputWhenSend = YES;
             _inputBar.resignFirstResponderWhenSend = YES;
             _inputBar.relativeControl = (UIControl*)_tableView;
             _inputBar.typeList = typeList;
@@ -2693,6 +2692,8 @@
                 
                 if (isOk) {
                     
+                    _inputBar.textField.text = @"";
+
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                     [self reloadTableView];
 
@@ -2713,6 +2714,8 @@
             BOOL isOk = [cm sendComment:&newCommentId];
             //BOOL isOk = [cm sendComment];
             if(isOk){
+                
+                _inputBar.textField.text = @"";
                 
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                 [self reloadTableView];
@@ -2796,6 +2799,8 @@
                     BOOL isChild = NO;
                     if(isOk)
                     {
+                        _inputBar.textField.text = @"";
+                        
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                         [self reloadTableView];
 
@@ -2981,6 +2986,8 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    _inputBar.clearInputWhenSend = NO;
+
     if(_inputBar.btnTypeHasClicked)
     {
         [_inputBar removeType];
