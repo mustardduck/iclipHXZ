@@ -27,6 +27,8 @@
     CGRect  _relativeControlOriFrame;
     
     BOOL    _hasShowed;
+    
+    CGRect _keyRect;
 }
 
 @end
@@ -191,18 +193,15 @@
      _oriFrame = self.frame;
     
     
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  - 252, self.frame.size.width, self.frame.size.height +  252);
-    
-//    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height +  252);
-//
-//    
-//    [UIView animateWithDuration:0.3
-//                          delay:0
-//                        options:UIViewAnimationOptionCurveEaseInOut
-//                     animations:^{
-//                         self.transform = CGAffineTransformMakeTranslation(self.frame.origin.x, self.frame.origin.y  - 252);
-//                     } completion:nil];
-    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.transform = CGAffineTransformMakeTranslation(0, 0);
+                         //momo
+                         self.bounds = CGRectMake(0, 0, self.frame.size.width,  self.frame.size.height +  252 + 80);
+//                        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  - 252, self.frame.size.width, self.frame.size.height +  252);
+                     } completion:nil];
     
     int lineCount = 4;
     
@@ -346,16 +345,24 @@
     
     if (_btnTypeHasClicked) {
         
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  + 252, self.frame.size.width, self.frame.size.height - 252);
-        
-//        self.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, self.frame.origin.x, self.frame.origin.y  + 252);
-
-        
         _oriFrame  = self.frame;
         _btnTypeHasClicked = NO;
         
         [_btnType setImage:[UIImage imageNamed:@"btn_zengjia"] forState:UIControlStateNormal];
 
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             self.transform = CGAffineTransformMakeTranslation(0,0);
+                             
+                             //momo
+                             self.bounds = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 252 - 80);
+//                             self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  + 252, self.frame.size.width, self.frame.size.height - 252);
+
+                             //if (_btnTypeHasClicked)
+                             //self.relativeControl.transform = CGAffineTransformMakeTranslation(0,0);
+                         } completion:nil];
     }
     
 }
@@ -411,6 +418,8 @@
 - (void)keyboardWillShow:(NSNotification*)notification{
     
     CGRect _keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    _keyRect = _keyboardRect;
+    
     //NSLog(@"%f-%f-%f-%f",_keyboardRect.origin.y, _keyboardRect.size.height, [self getHeighOfWindow]-CGRectGetMaxY(self.frame), CGRectGetMinY(self.frame));
     
     [self removeType];
