@@ -34,7 +34,7 @@ typedef void (^keyboardBlock) ();
 //取后缀名filetype
 + (NSString *) findFileType:(NSString *) name;
 
-
++ (void)changeImageOrientation:(UIImage *)image;
 
 + (CGSize)getWidthFromLabel:(UILabel *)label;
 + (CGSize)getHeightFromLabel:(UILabel *)label;

@@ -1293,6 +1293,8 @@
             
             UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
             
+            [UICommon changeImageOrientation:image];
+
             NSString * dateTime = [[info[@"UIImagePickerControllerMediaMetadata"] objectForKey:@"{TIFF}"] objectForKey:@"DateTime"];
             
             _currentFileName = [NSString stringWithFormat:@"%@.png", dateTime];

@@ -1942,17 +1942,7 @@
             
             UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
             
-            UIImageOrientation imageOrientation=image.imageOrientation;
-            if(imageOrientation!=UIImageOrientationUp)
-            {//图片旋转
-                // 原始图片可以根据照相时的角度来显示，但UIImage无法判定，于是出现获取的图片会向左转９０度的现象。
-                // 以下为调整图片角度的部分
-                UIGraphicsBeginImageContext(image.size);
-                [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
-                image = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                // 调整图片角度完毕
-            }
+            [UICommon changeImageOrientation:image];
             
             NSString * dateTime = [[info[@"UIImagePickerControllerMediaMetadata"] objectForKey:@"{TIFF}"] objectForKey:@"DateTime"];
             
