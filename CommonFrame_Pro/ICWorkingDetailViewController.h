@@ -39,5 +39,6 @@
 
 @property(nonatomic,strong) NSMutableArray* cAccessoryArray;
 
+@property (nonatomic,assign) BOOL              isChildMission;
 
 @end

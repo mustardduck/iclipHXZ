@@ -620,6 +620,32 @@
     }
     
     if (_currentMission != nil) {
+        
+//        TaskTypeMission         = 1,//任务
+//        TaskTypeShare           = 2,//异常
+//        TaskTypeNoitification   = 8,//申请
+//        TaskTypeJianYi          = 3//议题
+        
+        NSString * title = @"任务详情";
+        if(_currentMission.type == TaskTypeShare)
+        {
+            title = @"异常详情";
+        }
+        else if (_currentMission.type == TaskTypeJianYi)
+        {
+            title = @"议题详情";
+        }
+        else if (_currentMission.type == TaskTypeNoitification)
+        {
+            title = @"申请详情";
+        }
+        else if (_currentMission.type == TaskTypeMission && _isChildMission)
+        {
+            title = @"子任务详情";
+        }
+        
+        self.navigationItem.title = title;
+        
         NSString * loginStr = [NSString stringWithFormat:@"%@", [LoginUser loginUserID]];
         
         if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
@@ -2992,7 +3018,8 @@
         ((ICWorkingDetailViewController*)vc).indexInMainArray = _indexInMainArray;
         ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
         ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
-        
+        ((ICWorkingDetailViewController*)vc).isChildMission = YES;
+
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

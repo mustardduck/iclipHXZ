@@ -572,7 +572,7 @@
     if (_pubGroupId != nil )
     {
         _workGroupId = _pubGroupId;
-        _TermString = @"";
+//        _TermString = @"";
     }
     
     [_tableView.header beginRefreshing];

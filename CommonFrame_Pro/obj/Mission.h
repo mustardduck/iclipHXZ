@@ -40,7 +40,7 @@ typedef enum {
 @property (nonatomic,strong) NSString*  workGroupName;
 @property (nonatomic,strong) NSString*  main;
 @property (nonatomic,strong) NSString*  title;
-@property (nonatomic,assign) NSInteger  type;// 1：任务  2：问题  
+@property (nonatomic,assign) NSInteger  type;// 1：任务  2：异常  3:议题 8:申请
 @property (nonatomic,assign) NSInteger  status;//-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
 @property (nonatomic,strong) NSString*  userImg;
 @property (nonatomic,strong) NSString*  userName;
