@@ -747,7 +747,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     [_indexBar setIndexes:_sections];
-    return [_sections count];;
+    return [_sections count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

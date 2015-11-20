@@ -358,6 +358,11 @@
                                         if(mem.userId == [LoginUser loginUserID])
                                         {
                                             NSLog(@"%@", mem.userId);
+                                            
+                                            if(dArr.count == 1)
+                                            {
+                                                [sectionArray removeLastObject];
+                                            }
                                         }
                                         else
                                         {
@@ -369,7 +374,10 @@
                                     }
                                 }
                                 
-                                [array addObject:sectionMemberArray];
+                                if(sectionMemberArray.count)
+                                {
+                                    [array addObject:sectionMemberArray];
+                                }
                             }
                         }
                         
