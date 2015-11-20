@@ -1723,7 +1723,28 @@
         
         titleLbl.text = [NSString stringWithFormat:@"%@   %@",type, title];
         
+        UIImageView * statusIcon = [[UIImageView alloc] init];
+        statusIcon.frame = CGRectMake(X(titleLbl) + 48, Y(titleLbl) + 2, 14, 14);
+        NSString * imgName = @"";
+        if(ms.status == 2)
+        {
+            imgName = @"icon_wancheng";
+            titleLbl.text = [NSString stringWithFormat:@"%@        %@",type, title];
+        }
+        else if(ms.status == -3)
+        {
+            imgName = @"icon_chaoshi";
+            
+            titleLbl.text = [NSString stringWithFormat:@"%@        %@",type, title];
+        }
+        
         [cell.contentView addSubview:titleLbl];
+
+        if(imgName.length)
+        {
+            statusIcon.image = [UIImage imageNamed:imgName];
+            [cell.contentView addSubview:statusIcon];
+        }
         
         CGSize maxSize = CGSizeMake(contentWidth - (X(photo) + 39),
                                     20 * 4 + 8);
