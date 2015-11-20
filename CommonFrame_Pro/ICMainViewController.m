@@ -1726,12 +1726,12 @@
         UIImageView * statusIcon = [[UIImageView alloc] init];
         statusIcon.frame = CGRectMake(X(titleLbl) + 48, Y(titleLbl) + 2, 14, 14);
         NSString * imgName = @"";
-        if(ms.status == 2)
+        if(ms.status == 2 && ms.type == 1)
         {
             imgName = @"icon_wancheng";
             titleLbl.text = [NSString stringWithFormat:@"%@        %@",type, title];
         }
-        else if(ms.status == -3)
+        else if(ms.status == -3 && ms.type == 1)
         {
             imgName = @"icon_chaoshi";
             
