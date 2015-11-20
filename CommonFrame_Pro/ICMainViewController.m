@@ -96,6 +96,10 @@
 - (void)refreshMainView:(NSNotification *)note
 {
     [self addRefrish];
+    
+//    _badgeWorkGroupId = @"1015082510030001";
+    
+    
 }
 
 
