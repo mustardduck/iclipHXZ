@@ -2751,6 +2751,7 @@
                     
                     [SVProgressHUD dismiss];
                     _inputBar.textField.text = @"";
+                    _inputBar.textField.placeHolderLabel.text = @"点击回复";
 
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                     [self reloadTableView];
@@ -2774,7 +2775,8 @@
             if(isOk){
                 [SVProgressHUD dismiss];
                 _inputBar.textField.text = @"";
-                
+                _inputBar.textField.placeHolderLabel.text = @"点击回复";
+
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                 [self reloadTableView];
 
@@ -2862,7 +2864,8 @@
                         [SVProgressHUD dismiss];
 
                         _inputBar.textField.text = @"";
-                        
+                        _inputBar.textField.placeHolderLabel.text = @"点击回复";
+
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                         [self reloadTableView];
 
