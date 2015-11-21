@@ -65,6 +65,8 @@
     
     NSString * _badgeWorkGroupId;
     
+    NSMutableArray * _filterIdArr;
+    
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -147,6 +149,8 @@
     _pageRowCount = 30;
     _contentArray = [NSMutableArray array];
     _workGroupId = @"0";
+    
+    _filterIdArr = [NSMutableArray array];
     
     _isTopMenuSharedButtonClicked = NO;
     
@@ -785,50 +789,84 @@
     NSInteger tag = 0;
     
     Mark *m = _icSideRightMarkArray[indexPath.section][indexPath.row][indexPath.subRow];
-    
-    NSInteger  minVal = 0;
-    NSInteger  midVal = 0;
-    NSInteger  maxVal = 0;
-    
+ 
     if(indexPath.row == 0)
     {
         tag = 1;
         
-        minVal = [m.labelId integerValue];
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        [dic setObject:m.labelId forKey:@"1"];
+        
+        [_filterIdArr addObject:dic];
     }
     else if (indexPath.row == 1)
     {
         tag = 3;
-        
-        midVal = [m.labelId integerValue];
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        [dic setObject:m.labelId forKey:@"3"];
+        [_filterIdArr addObject:dic];
     }
     else if (indexPath.row == 2)
     {
         tag = 2;
-        maxVal = [m.labelId integerValue];
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        [dic setObject:m.labelId forKey:@"2"];
+        
+        [_filterIdArr addObject:dic];
     }
     
-    if (minVal != 0 && maxVal == 0 && midVal == 0) {
-        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)minVal];
+    _TermString = @"";
+    
+    if(_filterIdArr.count)
+    {
+        int minVal = 0;
+        int midVal = 0;
+        int maxVal = 0;
+        
+        for (NSDictionary * filDic in _filterIdArr)
+        {
+            NSString * minStr = [filDic valueForKey:@"1"];
+            NSString * minStr2 = [filDic valueForKey:@"2"];
+            NSString * minStr3 = [filDic valueForKey:@"3"];
+            
+            if(minStr)
+            {
+                minVal = [minStr intValue];
+            }
+            else if (minStr2)
+            {
+                midVal = [minStr2 intValue];
+            }
+            else if (minStr3)
+            {
+                maxVal = [minStr3 intValue];
+            }
+        }
+        
+        if (minVal != 0 && maxVal == 0 && midVal == 0) {
+            _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)minVal];
+        }
+        else if (minVal == 0 && maxVal != 0 && midVal == 0) {
+            _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)maxVal];
+        }
+        else if (minVal == 0 && maxVal == 0 && midVal != 0) {
+            _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)midVal];
+        }
+        else if (minVal != 0 && maxVal != 0 && midVal == 0) {
+            _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)minVal,(NSInteger)maxVal];
+        }
+        else if (minVal != 0 && maxVal == 0 && midVal != 0) {
+            _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)minVal,(NSInteger)midVal];
+        }
+        else if (minVal == 0 && maxVal != 0 && midVal != 0) {
+            _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)midVal,(NSInteger)maxVal];
+        }
+        else if (minVal != 0 && maxVal != 0 && midVal != 0) {
+            _TermString = [NSString stringWithFormat:@"%ld,%ld,%ld",(NSInteger)minVal, (NSInteger)midVal,(NSInteger)maxVal];
+        }
+        
     }
-    else if (minVal == 0 && maxVal != 0 && midVal == 0) {
-        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)maxVal];
-    }
-    else if (minVal == 0 && maxVal == 0 && midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld",(NSInteger)midVal];
-    }
-    else if (minVal != 0 && maxVal != 0 && midVal == 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)minVal,(NSInteger)maxVal];
-    }
-    else if (minVal != 0 && maxVal == 0 && midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)minVal,(NSInteger)midVal];
-    }
-    else if (minVal == 0 && maxVal != 0 && midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld",(NSInteger)midVal,(NSInteger)maxVal];
-    }
-    else if (minVal != 0 && maxVal != 0 && midVal != 0) {
-        _TermString = [NSString stringWithFormat:@"%ld,%ld,%ld",(NSInteger)minVal, (NSInteger)midVal,(NSInteger)maxVal];
-    }
+    
     
     [self loadTopMarkView:m.labelName markTag:tag];
     
@@ -1172,6 +1210,7 @@
     _isMarkShow = NO;
     _markHeadView = nil;
     _TermString = @"";
+    [_filterIdArr removeAllObjects];
     [_tableView.header beginRefreshing];
     [_tableView.footer resetNoMoreData];
 }

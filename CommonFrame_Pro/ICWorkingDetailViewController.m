@@ -107,12 +107,12 @@
     ((MQPublishSharedAndNotifyController*)vc).workGroupName = _currentMission.workGroupName;
     ((MQPublishSharedAndNotifyController*)vc).userId = [LoginUser loginUserID];
     ((MQPublishSharedAndNotifyController*)vc).icDetailViewController = self;
-    NSInteger isShared = 1;
-    if(_currentMission.type == 3)
+    NSInteger isShared = TaskTypeMission;
+    if(_currentMission.type == TaskTypeNoitification)
     {
         isShared = 2;
     }
-    else if (_currentMission.type == 8)
+    else if (_currentMission.type == TaskTypeJianYi)
     {
         isShared = 3;
     }
