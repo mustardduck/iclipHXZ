@@ -2835,7 +2835,7 @@
             Comment* cm = [Comment new];
             cm.main = str;
             cm.parentId = pid==nil?@"0":pid;
-            cm.level = _sendButtonTag == 0 ? 1 : 2;
+            cm.level = _sendButtonTag == 100 ? 1 : 2;
             cm.userName = [LoginUser loginUserName];
             cm.userImg = [LoginUser loginUserPhoto];
             cm.userId = [LoginUser loginUserID];
