@@ -97,9 +97,20 @@
     }
 }
 
+- (void)refreshMainViewFromCreate:(NSNotification *)note
+{
+    [self addRefrish];
+    
+    //    _badgeWorkGroupId = @"1015082510030001";
+    
+    
+}
+
 - (void)refreshMainView:(NSNotification *)note
 {
 //    [self addRefrish];
+    NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
+
     [self resetRightMarkView];
     
 //    _badgeWorkGroupId = @"1015082510030001";
@@ -136,6 +147,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshMainView:) name:@"refreshMainView"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshMainViewFromCreate:) name:@"refreshMainViewFromCreate"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -588,6 +603,9 @@
     if(_contentArray.count)
     {
         [_tableView reloadData];
+        
+        NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
+
     }
     
 //    [_tableView.header beginRefreshing];
