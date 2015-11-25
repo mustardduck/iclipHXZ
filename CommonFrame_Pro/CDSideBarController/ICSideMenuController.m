@@ -423,7 +423,7 @@
                     }
                     
 //                    badgeValueString = @"100";
-//                    allnumBadgeValueString = @"1";//momo
+                    allnumBadgeValueString = @"1";//momo
 
                     if (![badgeValueString isEqualToString:@"0"]) {
                         [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
@@ -563,7 +563,7 @@
                     allnumBadgeValueString = [NSString stringWithFormat:@"%@", _allNumBadgeList[index]];
                 }
 //                badgeValueString = @"100";
-//                allnumBadgeValueString = @"1";//momo
+                allnumBadgeValueString = @"1";//momo
                 
                 if (![badgeValueString isEqualToString:@"0"]) {
                     [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
@@ -619,7 +619,7 @@
         }
         else
         {
-            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(location.x - 4, location.y - 5 , 9, 9)];
+            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(location.x - 4, location.y - 5 , 10, 10)];
             icon.image = [UIImage imageNamed:@"icon_liuyan_bai"];
             [badgeView addSubview:icon];
         }
