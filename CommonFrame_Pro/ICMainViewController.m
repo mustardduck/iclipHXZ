@@ -213,7 +213,7 @@
     _screenHeight = [UIScreen mainScreen].bounds.size.height;
     _TermString = @"";
 
-    
+    _isLoadData = YES;
     [self addRefrish];
     
     NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
