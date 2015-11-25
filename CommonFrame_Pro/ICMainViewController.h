@@ -19,8 +19,9 @@
 #import "Member.h"
 #import "ICWorkingDetailViewController.h"
 #import "ICCreateNewGroupViewController.h"
+#import "MQSearchMenuController.h"
 
-@interface ICMainViewController : UIViewController<CDSideBarControllerDelegate,ICSideMenuControllerDelegate,UINavigationControllerDelegate,ICSideTopMenuControllerDelegate,UIGestureRecognizerDelegate>
+@interface ICMainViewController : UIViewController<CDSideBarControllerDelegate,ICSideMenuControllerDelegate,UINavigationControllerDelegate,ICSideTopMenuControllerDelegate,UIGestureRecognizerDelegate, MQSearchMenuControllerDelegate>
 
 @property (nonatomic,strong) NSString*  loginUserID;
 

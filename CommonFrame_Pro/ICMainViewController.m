@@ -29,10 +29,13 @@
     CDSideBarController*    _sideBar;
     ICSideMenuController*   _sideMenu;
     ICSideTopMenuController* _topMenuController;
+    MQSearchMenuController * _searchMenuController;
+
     
     __weak IBOutlet UITableView*   _tableView;
     IBOutlet UIView*        _smView;
     IBOutlet UIView*        _topMenuView;
+    
     IBOutlet UIButton*      mbutton;
     IBOutlet UIView*        _tbgView;
     
@@ -329,13 +332,13 @@
     return b2btn;
 }
 
-- (UIBarButtonItem *)loadRightMarkMenusView:(NSArray*)markArray;
+- (UIBarButtonItem *)loadRightMarkMenusView:(NSArray*)markArray
 {
     //Right Menu
     UIButton *button  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];//30
     [button setBackgroundColor:[UIColor clearColor]];
     button.titleLabel.textColor = [UIColor whiteColor];
-    [button setTitle:@"查找" forState:UIControlStateNormal];
+    [button setTitle:@"搜索" forState:UIControlStateNormal];
 
     
     UIBarButtonItem* barButton = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -346,8 +349,12 @@
         _icSideRightMarkArray = [NSArray arrayWithArray:markArray];
     }
     
-    _sideBar = [[CDSideBarController alloc] initWithImages:nil  names:_icSideRightMarkArray  menuButton:button];
-    _sideBar.delegate = self;
+//    _sideBar = [[CDSideBarController alloc] initWithImages:nil  names:_icSideRightMarkArray  menuButton:button];
+//    _sideBar.delegate = self;
+
+    _searchMenuController = [[MQSearchMenuController alloc] initWithImages:nil names:_icSideRightMarkArray menuButton:button];
+    _searchMenuController.delegate = self;
+    
     return barButton;
 }
 
@@ -356,6 +363,7 @@
     NSMutableArray *tright = [NSMutableArray array];
     
     UIBarButtonItem* barButton = [self loadRightMarkMenusView:markArray];
+    
     UIBarButtonItem* b2btn = [self loadTopMenusView];
     
     [tright addObject:barButton];
@@ -632,9 +640,13 @@
 {
     NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
     _icSideRightMarkArray = markArray;
-    _sideBar.nameList = markArray;
     
-    [_sideBar.mainTableView refreshData];
+//    _sideBar.nameList = markArray;
+//    [_sideBar.mainTableView refreshData];
+
+    _searchMenuController.nameList = markArray;
+    
+    [_searchMenuController.mainTableView refreshData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -647,7 +659,10 @@
 {
     [super viewDidAppear:animated];
     
-    [_sideBar insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
+//    [_sideBar insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
+    
+    [_searchMenuController insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
+
 }
 
 
@@ -1233,11 +1248,12 @@
                 _topMenuController.isOpen = NO;
                 [_topMenuController showTopMenu:@"1"];
             }
-            
             if (_sideBar.isOpen) {
                 [_sideBar dismissMenu];
             }
-            
+            if (_searchMenuController.isOpen) {
+                [_searchMenuController dismissMenu];
+            }
             if (!_sideMenu.isOpen) {
                 [_sideMenu showMenu];
             }
@@ -1247,7 +1263,6 @@
             if (_topMenuController.isOpen) {
                 [_topMenuController showTopMenu:@"1"];
             }
-            
             if (!_sideMenu.isOpen) {
                 [_sideMenu showMenu];
             }
@@ -1258,11 +1273,12 @@
             if (_topMenuController.isOpen) {
                 [_topMenuController showTopMenu:@"1"];
             }
-            
             if (_sideBar.isOpen) {
                 [_sideBar dismissMenu];
             }
-            
+            if (_searchMenuController.isOpen) {
+                [_searchMenuController dismissMenu];
+            }
             [_sideMenu showMenu];
             
             break;
