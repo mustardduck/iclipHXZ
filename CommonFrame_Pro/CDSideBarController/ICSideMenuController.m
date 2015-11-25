@@ -423,7 +423,7 @@
                     }
                     
 //                    badgeValueString = @"100";
-                    allnumBadgeValueString = @"1";//momo
+//                    allnumBadgeValueString = @"1";//momo
 
                     if (![badgeValueString isEqualToString:@"0"]) {
                         [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
@@ -563,7 +563,7 @@
                     allnumBadgeValueString = [NSString stringWithFormat:@"%@", _allNumBadgeList[index]];
                 }
 //                badgeValueString = @"100";
-                allnumBadgeValueString = @"1";//momo
+//                allnumBadgeValueString = @"1";//momo
                 
                 if (![badgeValueString isEqualToString:@"0"]) {
                     [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
