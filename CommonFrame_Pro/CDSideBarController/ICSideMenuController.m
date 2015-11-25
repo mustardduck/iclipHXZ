@@ -24,6 +24,7 @@
     NSArray*    _imageList;
     NSArray*    _nameList;
     NSArray*    _badgeList;
+    NSArray *   _allNumBadgeList;
     
     //Search bar
     UILabel*        _lblSearch;
@@ -57,7 +58,7 @@
 
 @implementation ICSideMenuController
 
-- (ICSideMenuController*)initWithImages:(NSArray*)imageList menusName:(NSArray*)nameList badgeValue:(NSArray*)badgeList onView:(UIView*)parentView searchText:(NSString*)searchString isFirstSearchBar:(BOOL)isFirstBar
+- (ICSideMenuController*)initWithImages:(NSArray*)imageList menusName:(NSArray*)nameList badgeValue:(NSArray*)badgeList onView:(UIView*)parentView searchText:(NSString*)searchString isFirstSearchBar:(BOOL)isFirstBar allNumBadge:(NSArray *)allNumBadgeList
 {
     CGFloat vWidth = parentView.frame.size.width;
     
@@ -68,6 +69,8 @@
     _imageList = [[NSArray alloc] initWithArray:imageList];
     _nameList = [[NSArray alloc] initWithArray:nameList];
     _badgeList = [[NSArray alloc] initWithArray:badgeList];
+    _allNumBadgeList = [[NSArray alloc] initWithArray:allNumBadgeList];
+
     
     _mainView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, _pViewWidth, _pViewHeight -64)];
     //[_mainView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
@@ -413,8 +416,21 @@
                 
                 if (self.clickedButtonTag != index) {
                     NSString* badgeValueString = [_badgeList objectAtIndex:index];
+                    NSString * allnumBadgeValueString = @"0";
+                    if(_allNumBadgeList.count)
+                    {
+                        allnumBadgeValueString = [NSString stringWithFormat:@"%@", _allNumBadgeList[index]];
+                    }
+                    
+//                    badgeValueString = @"100";
+//                    allnumBadgeValueString = @"1";//momo
+
                     if (![badgeValueString isEqualToString:@"0"]) {
-                        [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString];
+                        [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
+                    }
+                    else if(![allnumBadgeValueString isEqualToString:@"0"])
+                    {
+                        [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES];
                     }
                     
                     [sv addSubview:menuView];
@@ -422,7 +438,7 @@
                 else
                 {
                     self.clickedButtonTag = -1;
-                    [self addBadgeView:menuView parentView:menuView  showValue:@"0"];
+                    [self addBadgeView:menuView parentView:menuView  showValue:@"0" isAllNum:NO];
                     [sv addSubview:menuView];
                 }
                 
@@ -541,8 +557,20 @@
             
             if (self.clickedButtonTag != index) {
                 NSString* badgeValueString = [_badgeList objectAtIndex:index];
+                NSString * allnumBadgeValueString = @"0";
+                if(_allNumBadgeList.count)
+                {
+                    allnumBadgeValueString = [NSString stringWithFormat:@"%@", _allNumBadgeList[index]];
+                }
+//                badgeValueString = @"100";
+//                allnumBadgeValueString = @"1";//momo
+                
                 if (![badgeValueString isEqualToString:@"0"]) {
-                    [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString];
+                    [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
+                }
+                else if(![allnumBadgeValueString isEqualToString:@"0"])
+                {
+                    [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES];
                 }
                 
                 [sv addSubview:menuView];
@@ -573,9 +601,9 @@
     
 }
 
-- (void)addBadgeView:(UIView*)control parentView:(UIView*)pview showValue:(NSString*)value
+- (void)addBadgeView:(UIView*)control parentView:(UIView*)pview showValue:(NSString*)value isAllNum:(BOOL)isAllNum
 {
-    PPDragDropBadgeView* badgeView = [[PPDragDropBadgeView alloc] initWithSuperView:control parentView:pview location:CGPointMake(0,0) radius:8.f dragdropCompletion:^{
+    PPDragDropBadgeView* badgeView = [[PPDragDropBadgeView alloc] initWithSuperView:control parentView:pview location:CGPointMake(0,0) radius:9.f dragdropCompletion:^{
         NSLog(@"Drag Done");
     }];
     
@@ -585,7 +613,16 @@
         badgeView.tintColor = [UIColor redColor];
         badgeView.borderColor = [UIColor redColor];
         badgeView.borderWidth = 1;
-        badgeView.text = value;
+        if(!isAllNum)
+        {
+            badgeView.text = value;
+        }
+        else
+        {
+            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(location.x - 4, location.y - 5 , 10, 10)];
+            icon.image = [UIImage imageNamed:@"icon_liuyan_bai"];
+            [badgeView addSubview:icon];
+        }
     }
     else
     {

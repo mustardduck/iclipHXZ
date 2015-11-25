@@ -49,6 +49,8 @@
     NSString*               _workGroupId;
     NSMutableArray*         _contentArray;
     NSMutableArray*         _badges;
+    NSMutableArray*         _allNumbadges;
+
     NSArray*                _bottomArray;
     NSString*               _TermString;
     NSArray*                _icSideRightMarkArray;
@@ -69,6 +71,8 @@
     NSString * _badgeWorkGroupId;
     
     NSMutableArray * _filterIdArr;
+    
+    BOOL _isLoadData;
     
 }
 
@@ -98,9 +102,56 @@
     }
 }
 
+- (void)refreshMainViewFromCreate:(NSNotification *)note
+{
+    _isLoadData = YES;
+    [self addRefrish];
+    
+    //    _badgeWorkGroupId = @"1015082510030001";
+    
+    
+}
+
+- (void) refreshBottomView
+{
+    if([_isRefreshBottom isEqualToString:@"1"])
+    {
+        [_tableView reloadData];
+        
+        NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
+        
+        if ([_tableView.header isRefreshing]) {
+            return;
+        }
+        if ([_tableView.footer isRefreshing]) {
+            return;
+        }
+        
+        [self resetHeaderView];
+        
+        _isLoadData = NO;
+        
+        _isRefreshBottom = @"0";
+
+    }
+    else
+    {
+        _isLoadData = YES;
+        
+        [self addRefrish];
+        
+    }
+
+    
+}
+
 - (void)refreshMainView:(NSNotification *)note
 {
-    [self addRefrish];
+//    [self addRefrish];
+
+    [self refreshBottomView];
+    
+    [self resetRightMarkView];
     
 //    _badgeWorkGroupId = @"1015082510030001";
     
@@ -136,6 +187,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshMainView:) name:@"refreshMainView"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshMainViewFromCreate:) name:@"refreshMainViewFromCreate"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -265,6 +320,8 @@
     gc.workGroupId = @"-1";
     gc.workGroupName = @"创建群组";
     gc.messageCount = @"0";
+    gc.allNum = @"0";
+    
     [muArr addObject:gc];
     
     _bottomArray = [NSArray arrayWithArray:muArr];
@@ -280,6 +337,7 @@
         NSMutableArray* imgs = [NSMutableArray array];
         NSMutableArray* names = [NSMutableArray array];
         _badges = [NSMutableArray array];
+        _allNumbadges = [NSMutableArray array];
         
         for (Group* gp in _bottomArray) {
             if (gp.workGroupImg == nil) {
@@ -288,12 +346,13 @@
             [imgs addObject:gp.workGroupImg];
             [names addObject:gp.workGroupName];
             [_badges addObject:gp.messageCount];
+            [_allNumbadges addObject:gp.allNum];
         }
-        _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne];
+        _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne allNumBadge:_allNumbadges];
         
     }
     else
-        _sideMenu = [[ICSideMenuController alloc] initWithImages:imageListBottom menusName:nameList badgeValue:badgeList  onView:_smView searchText:searchString  isFirstSearchBar:isBarOne];
+        _sideMenu = [[ICSideMenuController alloc] initWithImages:imageListBottom menusName:nameList badgeValue:badgeList  onView:_smView searchText:searchString  isFirstSearchBar:isBarOne allNumBadge:nil];
     
     NSMutableArray* sectionArray = [NSMutableArray array];
     NSArray*        memberArray = [Member getAllMembers:&sectionArray searchText:((!isBarOne && searchString != nil) ? searchString : nil)];
@@ -513,20 +572,31 @@
     
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
-        _pageNo = 1;
-        
-        [self resetRightMarkView];
+        if(![_isRefreshBottom isEqualToString:@"1"])
+        {
+            if(_isLoadData)
+            {
+                _pageNo = 1;
+                
+                [self resetRightMarkView];
+                
+                NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+                
+                NSMutableArray * newArr = [self fillContentArr:dic];
+                
+                [self fillCurrentGroup:dic];
+                
+                _contentArray = newArr;
+                
+                NSLog(@"Header:%@",_contentArray);
+                
+            }
+            else
+            {
+                _isLoadData = YES;
+            }
+        }
 
-        NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
-        
-        NSMutableArray * newArr = [self fillContentArr:dic];
-        
-        [self fillCurrentGroup:dic];
-        
-        _contentArray = newArr;
-        
-        NSLog(@"Header:%@",_contentArray);
-        
         [_tableView reloadData];
         
         [_tableView.header endRefreshing];
@@ -586,8 +656,12 @@
         _workGroupId = _pubGroupId;
 //        _TermString = @"";
     }
+    if(_contentArray.count)
+    {
+        [self refreshBottomView];
+    }
     
-    [_tableView.header beginRefreshing];
+//    [_tableView.header beginRefreshing];
     
     /*
     if (_hasCreatedNewGroup != nil) {
@@ -981,6 +1055,7 @@
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MegListController"];
     ((MegListController *)vc).workGroupId = _workGroupId;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1323,6 +1398,8 @@
     [self setNaviLeftBarItem:mi.workGroupName];
     
     _TermString = @"";
+    
+    _isLoadData = YES;
     [self addRefrish];
     
     //_sideMenu.isOpen = FALSE;
@@ -1942,6 +2019,11 @@
     ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
     ((ICWorkingDetailViewController*)vc).icMainViewController = self;
     ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+    
+    ms.isRead = YES;
+    ms.isNewCom = NO;
+    
+    [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
     
     [self.navigationController pushViewController:vc animated:YES];
     

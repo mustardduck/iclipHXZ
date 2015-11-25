@@ -651,6 +651,12 @@
         
         if (isSendOK) {
             
+            if(!_isEdit)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshMainViewFromCreate"
+                                                                    object:nil];
+            }
+            
             [SVProgressHUD showSuccessWithStatus:@"任务发布成功"];
             
             [self hiddenKeyboard];

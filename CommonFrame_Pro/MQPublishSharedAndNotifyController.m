@@ -1588,6 +1588,12 @@
         
         if (isSendOK) {
             
+            if(!_isEditMission)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshMainViewFromCreate"
+                                                                    object:nil];
+            }
+            
             [SVProgressHUD showSuccessWithStatus:@"发布成功"];
             
             _btnDoneClicked = YES;
