@@ -46,6 +46,8 @@
     NSString*               _workGroupId;
     NSMutableArray*         _contentArray;
     NSMutableArray*         _badges;
+    NSMutableArray*         _allNumbadges;
+
     NSArray*                _bottomArray;
     NSString*               _TermString;
     NSArray*                _icSideRightMarkArray;
@@ -262,6 +264,8 @@
     gc.workGroupId = @"-1";
     gc.workGroupName = @"创建群组";
     gc.messageCount = @"0";
+    gc.allNum = @"0";
+    
     [muArr addObject:gc];
     
     _bottomArray = [NSArray arrayWithArray:muArr];
@@ -277,6 +281,7 @@
         NSMutableArray* imgs = [NSMutableArray array];
         NSMutableArray* names = [NSMutableArray array];
         _badges = [NSMutableArray array];
+        _allNumbadges = [NSMutableArray array];
         
         for (Group* gp in _bottomArray) {
             if (gp.workGroupImg == nil) {
@@ -285,12 +290,13 @@
             [imgs addObject:gp.workGroupImg];
             [names addObject:gp.workGroupName];
             [_badges addObject:gp.messageCount];
+            [_allNumbadges addObject:gp.allNum];
         }
-        _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne];
+        _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne allNumBadge:_allNumbadges];
         
     }
     else
-        _sideMenu = [[ICSideMenuController alloc] initWithImages:imageListBottom menusName:nameList badgeValue:badgeList  onView:_smView searchText:searchString  isFirstSearchBar:isBarOne];
+        _sideMenu = [[ICSideMenuController alloc] initWithImages:imageListBottom menusName:nameList badgeValue:badgeList  onView:_smView searchText:searchString  isFirstSearchBar:isBarOne allNumBadge:nil];
     
     NSMutableArray* sectionArray = [NSMutableArray array];
     NSArray*        memberArray = [Member getAllMembers:&sectionArray searchText:((!isBarOne && searchString != nil) ? searchString : nil)];
