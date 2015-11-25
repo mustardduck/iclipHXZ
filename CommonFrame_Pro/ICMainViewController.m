@@ -69,6 +69,8 @@
     
     NSMutableArray * _filterIdArr;
     
+    BOOL _isLoadData;
+    
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -99,6 +101,7 @@
 
 - (void)refreshMainViewFromCreate:(NSNotification *)note
 {
+    _isLoadData = YES;
     [self addRefrish];
     
     //    _badgeWorkGroupId = @"1015082510030001";
@@ -106,11 +109,45 @@
     
 }
 
+- (void) refreshBottomView
+{
+    if([_isRefreshBottom isEqualToString:@"1"])
+    {
+        [_tableView reloadData];
+        
+        NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
+        
+        if ([_tableView.header isRefreshing]) {
+            return;
+        }
+        if ([_tableView.footer isRefreshing]) {
+            return;
+        }
+        
+        [self resetHeaderView];
+        
+        _isLoadData = NO;
+        
+        _isRefreshBottom = @"0";
+
+    }
+    else
+    {
+        _isLoadData = YES;
+        
+        [self addRefrish];
+        
+    }
+
+    
+}
+
 - (void)refreshMainView:(NSNotification *)note
 {
 //    [self addRefrish];
-    NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
 
+    [self refreshBottomView];
+    
     [self resetRightMarkView];
     
 //    _badgeWorkGroupId = @"1015082510030001";
@@ -527,20 +564,31 @@
     
     [_tableView addLegendHeaderWithRefreshingBlock:^{
         
-        _pageNo = 1;
-        
-        [self resetRightMarkView];
+        if(![_isRefreshBottom isEqualToString:@"1"])
+        {
+            if(_isLoadData)
+            {
+                _pageNo = 1;
+                
+                [self resetRightMarkView];
+                
+                NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+                
+                NSMutableArray * newArr = [self fillContentArr:dic];
+                
+                [self fillCurrentGroup:dic];
+                
+                _contentArray = newArr;
+                
+                NSLog(@"Header:%@",_contentArray);
+                
+            }
+            else
+            {
+                _isLoadData = YES;
+            }
+        }
 
-        NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
-        
-        NSMutableArray * newArr = [self fillContentArr:dic];
-        
-        [self fillCurrentGroup:dic];
-        
-        _contentArray = newArr;
-        
-        NSLog(@"Header:%@",_contentArray);
-        
         [_tableView reloadData];
         
         [_tableView.header endRefreshing];
@@ -602,10 +650,7 @@
     }
     if(_contentArray.count)
     {
-        [_tableView reloadData];
-        
-        NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
-
+        [self refreshBottomView];
     }
     
 //    [_tableView.header beginRefreshing];
@@ -995,6 +1040,7 @@
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MegListController"];
     ((MegListController *)vc).workGroupId = _workGroupId;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1336,6 +1382,8 @@
     [self setNaviLeftBarItem:mi.workGroupName];
     
     _TermString = @"";
+    
+    _isLoadData = YES;
     [self addRefrish];
     
     //_sideMenu.isOpen = FALSE;
