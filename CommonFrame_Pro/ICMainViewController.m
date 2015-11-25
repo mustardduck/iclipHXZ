@@ -99,7 +99,8 @@
 
 - (void)refreshMainView:(NSNotification *)note
 {
-    [self addRefrish];
+//    [self addRefrish];
+    [self resetRightMarkView];
     
 //    _badgeWorkGroupId = @"1015082510030001";
     
@@ -584,8 +585,12 @@
         _workGroupId = _pubGroupId;
 //        _TermString = @"";
     }
+    if(_contentArray.count)
+    {
+        [_tableView reloadData];
+    }
     
-    [_tableView.header beginRefreshing];
+//    [_tableView.header beginRefreshing];
     
     /*
     if (_hasCreatedNewGroup != nil) {
@@ -1932,6 +1937,11 @@
     ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
     ((ICWorkingDetailViewController*)vc).icMainViewController = self;
     ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+    
+    ms.isRead = YES;
+    ms.isNewCom = NO;
+    
+    [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
     
     [self.navigationController pushViewController:vc animated:YES];
     
