@@ -1847,6 +1847,9 @@
                     case 2:
                         statusStr = @"已完成";
                         break;
+                    case -3:
+                        statusStr = @"已超时";
+                        break;
                     default:
                         break;
                 }

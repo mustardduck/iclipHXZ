@@ -188,6 +188,16 @@
         
         [self.view addSubview:_selectBtn];
         
+        if(!_sections)
+        {
+            UILabel * titleLbl = [[UILabel alloc] init];
+            titleLbl.frame = CGRectMake(14, 4, SCREENWIDTH, 40);
+            titleLbl.textColor = [UIColor grayTitleColor];
+            titleLbl.font = Font(15);
+            titleLbl.text = @"暂无成员，请到群组管理页邀请成员。";
+            [self.view addSubview:titleLbl];
+        }
+        
         UIButton * selectOkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         selectFrame.origin.x = SCREENWIDTH - 40 - selectFrame.size.width;
         selectOkBtn.frame = selectFrame;
@@ -551,15 +561,16 @@
     }
     
     if (sectionArray.count == 0 || memberArray.count == 0) {
-        _sections = @[@"A", @"D", @"F", @"M", @"N", @"O", @"Z"];
-        
-        _rows = @[@[@"adam", @"alfred", @"ain", @"abdul", @"anastazja", @"angelica"],
-                  @[@"dennis" , @"deamon", @"destiny", @"dragon", @"dry", @"debug", @"drums"],
-                  @[@"Fredric", @"France", @"friends", @"family", @"fatish", @"funeral"],
-                  @[@"Mark", @"Madeline"],
-                  @[@"Nemesis", @"nemo", @"name"],
-                  @[@"Obama", @"Oprah", @"Omen", @"OMG OMG OMG", @"O-Zone", @"Ontario"],
-                  @[@"Zeus", @"Zebra", @"zed"]];
+//        _sections = @[@"A", @"D", @"F", @"M", @"N", @"O", @"Z"];
+//        
+//        _rows = @[@[@"adam", @"alfred", @"ain", @"abdul", @"anastazja", @"angelica"],
+//                  @[@"dennis" , @"deamon", @"destiny", @"dragon", @"dry", @"debug", @"drums"],
+//                  @[@"Fredric", @"France", @"friends", @"family", @"fatish", @"funeral"],
+//                  @[@"Mark", @"Madeline"],
+//                  @[@"Nemesis", @"nemo", @"name"],
+//                  @[@"Obama", @"Oprah", @"Omen", @"OMG OMG OMG", @"O-Zone", @"Ontario"],
+//                  @[@"Zeus", @"Zebra", @"zed"]];
+ 
     }
     else
     {
@@ -883,7 +894,10 @@
     
     UIImageView* photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, 12, 36, 36)];
     //photoImageView.image = [UIImage imageNamed:@"icon_chengyuan"];
-    [photoImageView setImageWithURL:[NSURL URLWithString:mem.img] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    if(mem.img.length)
+    {
+        [photoImageView setImageWithURL:[NSURL URLWithString:mem.img] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
     
     UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x + 36 + 6, 15, 150, 30)];
     name.textColor = [UIColor whiteColor];
