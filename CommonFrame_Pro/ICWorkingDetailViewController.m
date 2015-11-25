@@ -3217,6 +3217,10 @@
                         
                         [self showAccessory];
                     }
+                    else
+                    {
+                        [SVProgressHUD showErrorWithStatus:@"图片上传失败"];
+                    }
                 }
             }
             
