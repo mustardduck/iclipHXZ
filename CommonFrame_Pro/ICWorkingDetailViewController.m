@@ -20,6 +20,7 @@
 #import "MQPublishMissionController.h"
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
+#import "ICMainViewController.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
@@ -1847,6 +1848,9 @@
                     case 2:
                         statusStr = @"已完成";
                         break;
+                    case -3:
+                        statusStr = @"已超时";
+                        break;
                     default:
                         break;
                 }
@@ -2942,17 +2946,20 @@
     
     [_navBarLeftButtonPopTipView dismissAnimated:YES];
     
-    if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {
-        if (_hasDel) {
-            [self.icMainViewController setValue:[NSString stringWithFormat:@"%ld",(NSInteger)_indexInMainArray] forKey:@"strIndexForDetail"];
-        }
-        else
-            [self.icMainViewController setValue:nil forKey:@"strIndexForDetail"];
-    }
-    if (_workGroupId != nil ) {
-        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
-            [self.icMainViewController setValue:_workGroupId forKey:@"pubGroupId"];
-        }
+//    if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {
+//        if (_hasDel) {
+//            [self.icMainViewController setValue:[NSString stringWithFormat:@"%ld",(NSInteger)_indexInMainArray] forKey:@"strIndexForDetail"];
+//        }
+//        else
+//            [self.icMainViewController setValue:nil forKey:@"strIndexForDetail"];
+//    }
+//    if (_workGroupId != nil ) {
+//        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
+//            [self.icMainViewController setValue:_workGroupId forKey:@"pubGroupId"];
+//        }
+//    }
+    if ([self.icMainViewController respondsToSelector:@selector(setIsRefreshBottom:)]) {
+        [self.icMainViewController setValue:@"1" forKey:@"isRefreshBottom"];
     }
 }
 
@@ -3213,6 +3220,10 @@
                         [SVProgressHUD dismiss];
                         
                         [self showAccessory];
+                    }
+                    else
+                    {
+                        [SVProgressHUD showErrorWithStatus:@"图片上传失败"];
                     }
                 }
             }
