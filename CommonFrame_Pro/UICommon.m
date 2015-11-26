@@ -517,6 +517,51 @@ static UIViewController *imagePicker = nil;
 
 @end
 
+@implementation NSObject (expand)
+- (void) hiddenKeyboard{}
+- (void) addDoneToKeyboard:(UIView *)activeView
+{
+    //定义完成按钮
+    UIToolbar * topView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 36)];
+    [topView setBarStyle:UIBarStyleBlack];
+    if ([UICommon getSystemVersion] < 7.0)
+    {
+        [topView setTintColor:RGBCOLOR(174, 178, 185)];
+    }
+    else
+    {
+        [topView setBarTintColor:RGBCOLOR(174, 178, 185)];
+    }
+    
+    UIBarButtonItem * button1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIBarButtonItem * button2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIBarButtonItem * doneButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(hiddenKeyboard)];
+    
+    doneButton.tintColor = RGBCOLOR(85, 85, 85);
+    
+    NSArray * buttonsArray = [NSArray arrayWithObjects:button1,button2,doneButton,nil];
+    
+    [topView setItems:buttonsArray];
+    
+    if([activeView isKindOfClass:[UITextField class]])
+    {
+        UITextField * text = (UITextField *)activeView;
+        
+        [text setInputAccessoryView:topView];
+        
+    }
+    else
+    {
+        UITextView * textView = (UITextView *)activeView;
+        
+        [textView setInputAccessoryView:topView];
+    }
+}
+
+@end
+
 @implementation UIViewController (expanded)
 
 - (void) hiddenKeyboard{}

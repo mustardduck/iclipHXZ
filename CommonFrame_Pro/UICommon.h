@@ -82,7 +82,6 @@ typedef void (^keyboardBlock) ();
 - (void)setRoundColorCorner:(float)cornerRadius;
 - (void)setRoundColorCorner:(float)cornerRadius withColor:(UIColor *)color;
 
-
 @end
 
 @interface UIViewController (expanded)
@@ -93,6 +92,13 @@ typedef void (^keyboardBlock) ();
 - (void)sendComment;
 
 @end
+
+@interface NSObject (expand)
+
+- (void)addDoneToKeyboard:(UIView *)activeView;//对键盘添加“完成”按钮
+
+@end
+
 
 @interface UIColor (Addition)
 

@@ -18,6 +18,9 @@
     
     UIView * _searchTopView;
     UIView * _searchMarkView;
+    
+    UITextField * _txtField;
+    UIButton * _searchBtn;
 }
 
 
@@ -173,10 +176,10 @@
 
 - (void)insertMenuButtonOnView:(UIView*)view atPosition:(CGPoint)position
 {
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissMenu)];
-    [view addGestureRecognizer:singleTap];
-    
-    singleTap.delegate = self;
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissMenu)];
+//    [view addGestureRecognizer:singleTap];
+//    
+//    singleTap.delegate = self;
     
     _viewWidth = view.frame.size.width;
     
@@ -193,7 +196,10 @@
     [closeBtn setRoundCorner:3.3];
     [_backgroundMenuView addSubview:closeBtn];
     
-    CGRect tableFrame = CGRectMake(0, 24 , _viewWidth, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60);
+    [self searchHeaderView];
+    [_backgroundMenuView addSubview:_searchTopView];
+    
+    CGRect tableFrame = CGRectMake(0, YH(_searchTopView) , _viewWidth, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60);
     
     _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
     _mainTableView.showsVerticalScrollIndicator = NO;
@@ -202,11 +208,11 @@
     _mainTableView.shouldExpandOnlyOneCell = YES;
     _mainTableView.SKSTableViewDelegate = self;
     
-    _mainTableView.tableHeaderView = ({
-        
-        [self searchHeaderView];
-    
-    });
+//    _mainTableView.tableHeaderView = ({
+//        
+//        [self searchHeaderView];
+//    
+//    });
     
     [_backgroundMenuView addSubview:_mainTableView];
     
@@ -225,7 +231,7 @@
 {
     if(!_searchTopView)
     {
-        _searchTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 24, SCREENWIDTH, 157)];
+        _searchTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 24, SCREENWIDTH, 62)];
         _searchTopView.backgroundColor = [UIColor backgroundColor];
 
     }
@@ -235,20 +241,41 @@
         _searchMarkView = [[UIView alloc] initWithFrame:CGRectMake(14, 14, SCREENWIDTH - 14 * 2, 34)];
         _searchMarkView.backgroundColor = [UIColor whiteColor];
         [_searchMarkView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
-        
         [_searchTopView addSubview:_searchMarkView];
         
         UIImageView * searchIcon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 14, 14)];
         searchIcon.image = [UIImage imageNamed:@"icon_sousuo_huise"];
-        [_searchTopView addSubview:searchIcon];
+        [_searchMarkView addSubview:searchIcon];
         
-        UITextField * txtField = [[UITextField alloc] initWithFrame:CGRectMake(28, 0, W(_searchMarkView) - 28, 34)];
-        txtField.tag = 1;
-        txtField.placeholder = @"请输入您要查找的关键字";
+        _txtField = [[UITextField alloc] initWithFrame:CGRectMake(28, 0, W(_searchMarkView) - 29, 34)];
+        _txtField.tag = 1;
+        _txtField.font = Font(15);
+        _txtField.placeholder = @"请输入您要查找的关键字";
+        [self addDoneToKeyboard:_txtField];
+        [_searchMarkView addSubview:_txtField];
         
+        
+        _searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(W(_searchMarkView) - 70, 0, 70, H(_searchMarkView))];
+        [_searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_searchBtn setBackgroundImage:[UIImage imageNamed:@"btn_chazhaolan"] forState:UIControlStateNormal];
+
+        [_searchBtn setTitle:@"查找" forState:UIControlStateNormal];
+        [_searchBtn setTitleColor:RGBCOLOR(51, 51, 51) forState:UIControlStateNormal];
+        _searchBtn.titleLabel.font = Font(15);
+        [_searchMarkView addSubview:_searchBtn];
     }
 
     return _searchTopView;
+}
+
+- (void) hiddenKeyboard
+{
+    [_txtField resignFirstResponder];
+}
+
+- (void)searchBtnClicked:(id)sender
+{
+    
 }
 
 - (void)bgTap
