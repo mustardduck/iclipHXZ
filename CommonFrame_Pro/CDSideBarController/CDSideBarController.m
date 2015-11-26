@@ -301,11 +301,11 @@
 
 - (void)performOpenAnimation
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+//    dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.4 animations:^{
             _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -_viewWidth, 0);
         }];
-    });
+//    });
 }
 
 @end

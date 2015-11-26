@@ -183,11 +183,11 @@
     
     _viewWidth = view.frame.size.width;
     
-    UIView * topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24)];
+    UIView * topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
     topButtonView.backgroundColor = [UIColor clearColor];
     [_backgroundMenuView addSubview: topButtonView];
     
-    UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 0, 46, 24)];
+    UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24)];
     closeBtn.titleLabel.font = Font(12);
     closeBtn.titleLabel.textColor = [UIColor whiteColor];
     [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
@@ -199,7 +199,7 @@
     [self searchHeaderView];
     [_backgroundMenuView addSubview:_searchTopView];
     
-    CGRect tableFrame = CGRectMake(0, YH(_searchTopView) , _viewWidth, [UIApplication sharedApplication].delegate.window.bounds.size.height - 60);
+    CGRect tableFrame = CGRectMake(0, YH(_searchTopView) , _viewWidth, [UIApplication sharedApplication].delegate.window.bounds.size.height - YH(_searchTopView));
     
     _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
     _mainTableView.showsVerticalScrollIndicator = NO;
@@ -231,7 +231,7 @@
 {
     if(!_searchTopView)
     {
-        _searchTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 24, SCREENWIDTH, 62)];
+        _searchTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 24 + 53, SCREENWIDTH, 62)];
         _searchTopView.backgroundColor = [UIColor backgroundColor];
 
     }
@@ -382,7 +382,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.4 animations:^{
-            _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -SCREENHEIGHT + 64 + 53);
+            _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -SCREENHEIGHT + 64);
         }];
     });
 }
