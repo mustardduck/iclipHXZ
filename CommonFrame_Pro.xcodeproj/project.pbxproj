@@ -84,6 +84,7 @@
 		4BE1F5851BD6433F007CF6C4 /* AddPicCell66.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE1F5831BD6433F007CF6C4 /* AddPicCell66.xib */; };
 		4BE1F5891BD7A157007CF6C4 /* MarkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F5871BD7A157007CF6C4 /* MarkCell.m */; };
 		4BE1F58D1BD88E91007CF6C4 /* MarkTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F58C1BD88E91007CF6C4 /* MarkTagCell.m */; };
+		4BE5CC641C070BD4008964BA /* MQSearchCollReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE5CC631C070BD4008964BA /* MQSearchCollReusableView.m */; };
 		4BEC06BF1BCCDE3B009AFB5F /* MQPublishMissionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEC06BE1BCCDE3B009AFB5F /* MQPublishMissionController.m */; };
 		781AD2581B465C3A006DF848 /* ICMemberManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781AD2571B465C3A006DF848 /* ICMemberManagementViewController.m */; };
 		781C1B1A1B1ED1CF008ECABF /* CDSideBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781C1B131B1ED1CF008ECABF /* CDSideBarController.m */; };
@@ -298,6 +299,8 @@
 		4BE1F5871BD7A157007CF6C4 /* MarkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkCell.m; sourceTree = "<group>"; };
 		4BE1F58B1BD88E91007CF6C4 /* MarkTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkTagCell.h; sourceTree = "<group>"; };
 		4BE1F58C1BD88E91007CF6C4 /* MarkTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkTagCell.m; sourceTree = "<group>"; };
+		4BE5CC621C070BD4008964BA /* MQSearchCollReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQSearchCollReusableView.h; sourceTree = "<group>"; };
+		4BE5CC631C070BD4008964BA /* MQSearchCollReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSearchCollReusableView.m; sourceTree = "<group>"; };
 		4BEC06BD1BCCDE3B009AFB5F /* MQPublishMissionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPublishMissionController.h; sourceTree = "<group>"; };
 		4BEC06BE1BCCDE3B009AFB5F /* MQPublishMissionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPublishMissionController.m; sourceTree = "<group>"; };
 		781AD2561B465C3A006DF848 /* ICMemberManagementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMemberManagementViewController.h; sourceTree = "<group>"; };
@@ -544,6 +547,8 @@
 			children = (
 				4B23BE0C1C0317AB00FDF082 /* MQSearchMenuController.h */,
 				4B23BE0D1C0317AB00FDF082 /* MQSearchMenuController.m */,
+				4BE5CC621C070BD4008964BA /* MQSearchCollReusableView.h */,
+				4BE5CC631C070BD4008964BA /* MQSearchCollReusableView.m */,
 			);
 			name = searchMenu;
 			sourceTree = "<group>";
@@ -1194,6 +1199,7 @@
 				787EF9CF1B1D7B610030C560 /* ICPersonalInfoViewController.m in Sources */,
 				789182671B0EDBC2004C6AF6 /* main.m in Sources */,
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
+				4BE5CC641C070BD4008964BA /* MQSearchCollReusableView.m in Sources */,
 				78354CD01B40E03000E2F00A /* ICMemberAccessControlViewContoller.m in Sources */,
 				4B9C73991BE84FBF0070135C /* PartiCell.m in Sources */,
 				784B061B1B43BADA0033C0EA /* ICNavigationController.m in Sources */,
