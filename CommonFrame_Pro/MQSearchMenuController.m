@@ -10,6 +10,8 @@
 #import "SKSTableViewCell.h"
 #import "Mark.h"
 #import "UICommon.h"
+#import "MarkCell.h"
+#import "MQSearchCollReusableView.h"
 
 @interface MQSearchMenuController()
 {
@@ -155,6 +157,132 @@
     return [_nameList[indexPath.section][indexPath.row] count] - 1;
 }
 
+#pragma mark - collectionview delegate / datasource
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    NSInteger count = [_nameList[0] count];
+    return count;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    NSInteger count = [_nameList[0][section] count] - 1;
+    
+    return count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"MarkCell";
+    MarkCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+//    NSInteger subRow = indexPath.subRow;
+    
+//    if(subRow < [_nameList[0][section] count])
+    {
+        Mark * mark = _nameList[0][section][row + 1];
+        
+        [cell.markBtn setTitle:mark.labelName forState:UIControlStateNormal];
+        
+        //    [cell.markBtn addTarget:self action:@selector(clickMarkItem:) forControlEvents:UIControlEventTouchUpInside];
+        
+        cell.markBtn.tag = indexPath.row;
+        
+        [cell setRoundColorCorner:3.3];
+        
+        [cell setBorderWithColor:[UIColor grayLineColor]];
+        
+        cell.markBtn.selected = NO;
+        
+        [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
+        
+        [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [cell setBorderWithColor:[UIColor grayLineColor]];
+    }
+    
+    return cell;
+
+}
+
+/*
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *view = nil;
+    
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    
+    if(row == 0 && section == 2)
+    {
+        
+    }
+    else
+    {
+//        view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"ReuseID" forIndexPath:indexPath];
+    }
+
+
+//    view.backgroundColor = [UIColor greenColor];
+ 
+
+    UICollectionReusableView *reusableView = nil;
+    
+    NSString *reuseIdentifier;
+    if ([kind isEqualToString: UICollectionElementKindSectionHeader]){
+        
+//        Mark * mark = _nameList[indexPath.section][indexPath.row][0];
+        
+        reuseIdentifier = @"MQSearchCollReusableView";
+        
+        MQSearchCollReusableView *view =  [collectionView dequeueReusableSupplementaryViewOfKind:kind   withReuseIdentifier:reuseIdentifier   forIndexPath:indexPath];
+        
+        NSString * iconName = @"icon_changyong";
+        
+        if(indexPath.section == 0)
+        {
+            iconName = @"icon_shijian_1";
+        }
+        else if (indexPath.section == 1)
+        {
+            iconName = @"icon_fabu_1";
+        }
+        else if (indexPath.section == 2)
+        {
+            iconName = @"icon_biaoqian_1";
+        }
+        
+        view.iconImgView.image = [UIImage imageNamed:iconName];
+        view.titleLbl.text = @"标题";
+        
+        reusableView = view;
+
+    }
+ 
+    return view;
+}
+*/
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat pstH = (SCREENWIDTH - 14 * 2 - 14 * 3)/4;
+    
+    return CGSizeMake(pstH, 44);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    return CGSizeMake(SCREENWIDTH, 40);
+}
+
 #pragma mark -
 #pragma mark Init
 
@@ -187,7 +315,7 @@
     topButtonView.backgroundColor = [UIColor clearColor];
     [_backgroundMenuView addSubview: topButtonView];
     
-    UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24)];
+    UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24 + 6)];
     closeBtn.titleLabel.font = Font(12);
     closeBtn.titleLabel.textColor = [UIColor whiteColor];
     [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
@@ -199,23 +327,33 @@
     [self searchHeaderView];
     [_backgroundMenuView addSubview:_searchTopView];
     
-    CGRect tableFrame = CGRectMake(0, YH(_searchTopView) , _viewWidth, [UIApplication sharedApplication].delegate.window.bounds.size.height - YH(_searchTopView));
+    CGRect tableFrame = CGRectMake(0, YH(_searchTopView) , _viewWidth, [UIApplication sharedApplication].delegate.window.bounds.size.height - YH(_searchTopView) - 64);
     
-    _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
-    _mainTableView.showsVerticalScrollIndicator = NO;
-    [_mainTableView setBackgroundColor:[UIColor blackColor]];
-    [_mainTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    _mainTableView.shouldExpandOnlyOneCell = YES;
-    _mainTableView.SKSTableViewDelegate = self;
+//    _mainTableView = [[SKSTableView alloc]  initWithFrame:tableFrame];
+//    _mainTableView.showsVerticalScrollIndicator = NO;
+//    [_mainTableView setBackgroundColor:[UIColor blackColor]];
+//    [_mainTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+//    _mainTableView.shouldExpandOnlyOneCell = YES;
+//    _mainTableView.SKSTableViewDelegate = self;
+//    [_backgroundMenuView addSubview:_mainTableView];
     
-//    _mainTableView.tableHeaderView = ({
-//        
-//        [self searchHeaderView];
-//    
-//    });
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     
-    [_backgroundMenuView addSubview:_mainTableView];
+    layout.minimumInteritemSpacing = 14.f;
+    layout.minimumLineSpacing = 14.f;
+    UIEdgeInsets insets = {.top = 0,.left = 14,.bottom = 32,.right = 14};
+    layout.sectionInset = insets;
     
+    _mainCollView = [[UICollectionView alloc] initWithFrame:tableFrame collectionViewLayout:layout];
+    _mainCollView.delegate = self;
+    _mainCollView.dataSource = self;
+    _mainCollView.showsVerticalScrollIndicator = NO;
+    [_mainCollView setBackgroundColor:[UIColor backgroundColor]];
+    [_mainCollView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
+//    [_mainCollView registerNib:[UINib nibWithNibName:@"MQSearchCollReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MQSearchCollReusableView"];
+
+    [_backgroundMenuView addSubview:_mainCollView];
+
     _backgroundMenuView.frame = CGRectMake(0, SCREENHEIGHT, _viewWidth, view.frame.size.height);
     _backgroundMenuView.backgroundColor = [UIColor clearColor];
     [view addSubview:_backgroundMenuView];

@@ -29,8 +29,8 @@
 
 @property (nonatomic, retain) UIColor *menuColor;
 @property (nonatomic, assign)       BOOL    isOpen;
-//@property (nonatomic, strong) UICollectionView *mainCollView;
-@property (nonatomic, strong) SKSTableView *mainTableView;
+@property (nonatomic, strong) UICollectionView *mainCollView;
+//@property (nonatomic, strong) SKSTableView *mainTableView;
 @property (nonatomic, strong) NSMutableArray *nameList;
 @property (nonatomic, strong)       id<MQSearchMenuControllerDelegate> delegate;
 

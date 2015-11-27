@@ -132,9 +132,9 @@
                             i ++;
                         }
                         
-                        [totalArr addObject:tagArr];
                         [totalArr addObject:timeArr];
                         [totalArr addObject:missionArr];
+                        [totalArr addObject:tagArr];
                         
                         [marks addObject:totalArr];
                     }

@@ -720,7 +720,8 @@
 
     _searchMenuController.nameList = markArray;
     
-    [_searchMenuController.mainTableView refreshData];
+//    [_searchMenuController.mainTableView refreshData];
+    [_searchMenuController.mainCollView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
