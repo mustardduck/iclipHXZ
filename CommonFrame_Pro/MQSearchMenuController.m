@@ -208,37 +208,39 @@
 
 }
 
-/*
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionReusableView *view = nil;
+    static NSString *cellIdentifier = @"cell";
+    UICollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+
+    view.backgroundColor = [UIColor backgroundColor];
     
-    if(row == 0 && section == 2)
-    {
-        
-    }
-    else
-    {
-//        view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"ReuseID" forIndexPath:indexPath];
-    }
-
-
-//    view.backgroundColor = [UIColor greenColor];
- 
-
-    UICollectionReusableView *reusableView = nil;
-    
-    NSString *reuseIdentifier;
     if ([kind isEqualToString: UICollectionElementKindSectionHeader]){
         
-//        Mark * mark = _nameList[indexPath.section][indexPath.row][0];
+        Mark * mark = _nameList[0][section][0];
         
-        reuseIdentifier = @"MQSearchCollReusableView";
+        UIImageView * iconImgView = [view viewWithTag:1];
+        if(!iconImgView)
+        {
+            iconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 13, 13)];
+            iconImgView.tag = 1;
+            
+            [view addSubview:iconImgView];
+        }
         
-        MQSearchCollReusableView *view =  [collectionView dequeueReusableSupplementaryViewOfKind:kind   withReuseIdentifier:reuseIdentifier   forIndexPath:indexPath];
+        UILabel * titleLbl = [view viewWithTag:2];
+        if(!titleLbl)
+        {
+            titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(iconImgView)+ 7, Y(iconImgView) - 2, 100, 16)];
+            titleLbl.backgroundColor = [UIColor clearColor];
+            titleLbl.textColor = [UIColor grayTitleColor];
+            titleLbl.font = Font(15);
+            titleLbl.tag = 2;
+            [view addSubview:titleLbl];
+        }
         
         NSString * iconName = @"icon_changyong";
         
@@ -255,19 +257,19 @@
             iconName = @"icon_biaoqian_1";
         }
         
-        view.iconImgView.image = [UIImage imageNamed:iconName];
-        view.titleLbl.text = @"标题";
-        
-        reusableView = view;
-
+        iconImgView.image = [UIImage imageNamed:iconName];
+        titleLbl.text = mark.labelName;
     }
  
     return view;
 }
-*/
+
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    
     
 }
 
@@ -350,6 +352,9 @@
     _mainCollView.showsVerticalScrollIndicator = NO;
     [_mainCollView setBackgroundColor:[UIColor backgroundColor]];
     [_mainCollView registerClass:[MarkCell class] forCellWithReuseIdentifier:@"MarkCell"];
+    
+    [_mainCollView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"cell"];
+
 //    [_mainCollView registerNib:[UINib nibWithNibName:@"MQSearchCollReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MQSearchCollReusableView"];
 
     [_backgroundMenuView addSubview:_mainCollView];
