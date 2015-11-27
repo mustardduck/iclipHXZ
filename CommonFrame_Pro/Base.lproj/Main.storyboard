@@ -582,6 +582,10 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wwp-WB-N05">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -603,6 +607,7 @@
                                 <exclude reference="66A-KI-kkS"/>
                                 <exclude reference="O6V-iQ-eWC"/>
                                 <exclude reference="43e-4B-0FX"/>
+                                <exclude reference="wwp-WB-N05"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="MFO-QO-Tnn"/>
@@ -624,6 +629,7 @@
                                 <include reference="66A-KI-kkS"/>
                                 <include reference="O6V-iQ-eWC"/>
                                 <include reference="43e-4B-0FX"/>
+                                <include reference="wwp-WB-N05"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="MFO-QO-Tnn"/>
@@ -645,6 +651,8 @@
                         <outlet property="_smView" destination="O6V-iQ-eWC" id="IX9-h9-t6A"/>
                         <outlet property="_tableView" destination="66A-KI-kkS" id="KKw-1B-RgS"/>
                         <outlet property="_topMenuView" destination="43e-4B-0FX" id="bmE-O8-cKf"/>
+                        <outlet property="megView" destination="wwp-WB-N05" id="Oct-hN-Nbo"/>
+                        <outlet property="view" destination="qvz-ii-g4T" id="E2x-R5-tdk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="msO-aQ-YBG" userLabel="First Responder" sceneMemberID="firstResponder"/>

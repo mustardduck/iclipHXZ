@@ -2756,7 +2756,9 @@
                     [SVProgressHUD dismiss];
                     _inputBar.textField.text = @"";
                     _inputBar.textField.placeHolderLabel.text = @"点击回复";
-
+                    _sendButtonTag = 0;
+                    _inputBar.pishiClicked = NO;
+                    
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                     [self reloadTableView];
 
@@ -2780,7 +2782,9 @@
                 [SVProgressHUD dismiss];
                 _inputBar.textField.text = @"";
                 _inputBar.textField.placeHolderLabel.text = @"点击回复";
-
+                _sendButtonTag = 0;
+                _inputBar.pishiClicked = NO;
+                
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                 [self reloadTableView];
 
@@ -2869,7 +2873,9 @@
 
                         _inputBar.textField.text = @"";
                         _inputBar.textField.placeHolderLabel.text = @"点击回复";
-
+                        _sendButtonTag = 0;
+                        _inputBar.pishiClicked = NO;
+                        
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                         [self reloadTableView];
 
