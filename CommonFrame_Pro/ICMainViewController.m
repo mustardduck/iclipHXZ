@@ -30,12 +30,13 @@
     ICSideMenuController*   _sideMenu;
     ICSideTopMenuController* _topMenuController;
     
-    __weak IBOutlet UITableView*   _tableView;
+    IBOutlet UITableView*   _tableView;
     IBOutlet UIView*        _smView;
     IBOutlet UIView*        _topMenuView;
     IBOutlet UIButton*      mbutton;
     IBOutlet UIView*        _tbgView;
     
+    IBOutlet UIView *megView;
     BOOL                    _isTopMenuSharedButtonClicked;
     
     CGFloat _screenWidth;
@@ -69,7 +70,7 @@
     
     NSMutableArray * _filterIdArr;
     
-    BOOL _isLoadData;
+    UIView * _megView;
     
 }
 
@@ -101,7 +102,6 @@
 
 - (void)refreshMainViewFromCreate:(NSNotification *)note
 {
-    _isLoadData = YES;
     [self addRefrish];
     
     //    _badgeWorkGroupId = @"1015082510030001";
@@ -111,30 +111,26 @@
 
 - (void) refreshBottomView
 {
+//    if(!_megView.hidden)
+//    {
+//        _tableView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, H(_megView));
+//    }
+//    else
+//    {
+//        _tableView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+//    }
+    
     if([_isRefreshBottom isEqualToString:@"1"])
     {
         [_tableView reloadData];
         
         NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
         
-        if ([_tableView.header isRefreshing]) {
-            return;
-        }
-        if ([_tableView.footer isRefreshing]) {
-            return;
-        }
-        
-        [self resetHeaderView];
-        
-        _isLoadData = NO;
-        
         _isRefreshBottom = @"0";
 
     }
     else
     {
-        _isLoadData = YES;
-        
         [self addRefrish];
         
     }
@@ -213,7 +209,6 @@
     _screenHeight = [UIScreen mainScreen].bounds.size.height;
     _TermString = @"";
 
-    _isLoadData = YES;
     [self addRefrish];
     
     NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
@@ -221,6 +216,7 @@
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+//    _tableView.scrollsToTop = YES;
     
     /*
     //保存登录用户的通讯录ID
@@ -240,6 +236,20 @@
                  alias:aliStr
       callbackSelector:@selector(tagsAliasCallback:tags:alias:)
                 target:self];
+    
+    [_megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
+    _megView.frame = CGRectMake(0, 0, SCREENWIDTH, 30);
+    UIButton * msgBtn = [[UIButton alloc] init];
+    msgBtn.tag = 1;
+    msgBtn.frame = _megView.frame;
+    msgBtn.backgroundColor = [UIColor clearColor];
+    msgBtn.titleLabel.textColor = [UIColor whiteColor];
+    msgBtn.titleLabel.font = Font(15);
+    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+    [msgBtn setTitle:str forState:UIControlStateNormal];
+    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
+    [_megView addSubview:msgBtn];
+    _megView.hidden = YES;
 }
 
 - (void)tagsAliasCallback:(int)iResCode
@@ -312,6 +322,36 @@
     [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray workGroupId:_workGroupId searchString:(isBarOne ? searchString : nil) allNum:&allnum]];
     
     _allNum = allnum;
+    
+    if([_allNum intValue] > 0)
+    {
+        _megView.hidden = NO;
+
+        UIButton * msgBtn = [_megView viewWithTag:1];
+        
+        if(msgBtn)
+        {
+            NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+
+            [msgBtn setTitle:str forState:UIControlStateNormal];
+        }
+    }
+    else
+    {
+        _megView.hidden = YES;
+    }
+    
+    if(!_megView.hidden)
+    {
+        _tableView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, H(_megView));
+    }
+    else
+    {
+        _tableView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+    }
+    
+    [self.view bringSubviewToFront:_topMenuView];
+    [self.view bringSubviewToFront:_smView];
     
     Group * gc = [[Group alloc] init];
     gc.workGroupId = @"-1";
@@ -563,30 +603,22 @@
     }
     
     [_tableView addLegendHeaderWithRefreshingBlock:^{
-        
+
         if(![_isRefreshBottom isEqualToString:@"1"])
         {
-            if(_isLoadData)
-            {
-                _pageNo = 1;
-                
-                [self resetRightMarkView];
-                
-                NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
-                
-                NSMutableArray * newArr = [self fillContentArr:dic];
-                
-                [self fillCurrentGroup:dic];
-                
-                _contentArray = newArr;
-                
-                NSLog(@"Header:%@",_contentArray);
-                
-            }
-            else
-            {
-                _isLoadData = YES;
-            }
+            _pageNo = 1;
+            
+            [self resetRightMarkView];
+            
+            NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+            
+            NSMutableArray * newArr = [self fillContentArr:dic];
+            
+            [self fillCurrentGroup:dic];
+            
+            _contentArray = newArr;
+            
+            NSLog(@"Header:%@",_contentArray);
         }
 
         [_tableView reloadData];
@@ -651,6 +683,15 @@
     if(_contentArray.count)
     {
         [self refreshBottomView];
+    }
+    
+    if(!_megView.hidden)
+    {
+        _tableView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, H(_megView));
+    }
+    else
+    {
+        _tableView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
     }
     
 //    [_tableView.header beginRefreshing];
@@ -843,15 +884,15 @@
             [self markHeaderView];
         });
     }
-    else
-    {
-        if([_allNum integerValue] > 0)
-        {
-            _tableView.tableHeaderView = ({
-                [self messageHeadView];
-            });
-        }
-    }
+//    else
+//    {
+//        if([_allNum integerValue] > 0)
+//        {
+//            _tableView.tableHeaderView = ({
+//                [self messageHeadView];
+//            });
+//        }
+//    }
     [_tableView.header beginRefreshing];
 }
 
@@ -1135,32 +1176,31 @@
     
     [groupAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
     
-    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
-    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
-    UIButton * msgBtn = [[UIButton alloc] init];
-    msgBtn.frame = megView.frame;
-    msgBtn.backgroundColor = [UIColor clearColor];
-    msgBtn.titleLabel.textColor = [UIColor whiteColor];
-    msgBtn.titleLabel.font = Font(15);
-    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
-    [msgBtn setTitle:str forState:UIControlStateNormal];
-    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
-    [megView addSubview:msgBtn];
+//    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
+//    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
+//    UIButton * msgBtn = [[UIButton alloc] init];
+//    msgBtn.frame = megView.frame;
+//    msgBtn.backgroundColor = [UIColor clearColor];
+//    msgBtn.titleLabel.textColor = [UIColor whiteColor];
+//    msgBtn.titleLabel.font = Font(15);
+//    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+//    [msgBtn setTitle:str forState:UIControlStateNormal];
+//    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
+//    [megView addSubview:msgBtn];
+//
+//    if([_allNum integerValue] > 0)
+//    {
+//        groupHeadView.top = 30;
+//        
+//        [groupAndMegView addSubview:groupHeadView];
+//        
+//        [groupAndMegView addSubview:megView];
+//        
+//        return groupAndMegView;
+//    }
     
-    if([_allNum integerValue] > 0)
-    {
-        groupHeadView.top = 30;
-        
-        [groupAndMegView addSubview:groupHeadView];
-        
-        [groupAndMegView addSubview:megView];
-        
-        return groupAndMegView;
-    }
-    else
-    {
-        return groupHeadView;
-    }
+    return groupHeadView;
+
 }
 
 - (UIView *) messageHeadView
@@ -1247,36 +1287,35 @@
         }
     }
     
-    UIView * markAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40 + 30)];
+//    UIView * markAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40 + 30)];
+//    
+//    [markAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
+//    
+//    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
+//    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
+//    UIButton * msgBtn = [[UIButton alloc] init];
+//    msgBtn.frame = megView.frame;
+//    msgBtn.backgroundColor = [UIColor clearColor];
+//    msgBtn.titleLabel.textColor = [UIColor whiteColor];
+//    msgBtn.titleLabel.font = Font(15);
+//    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
+//    [msgBtn setTitle:str forState:UIControlStateNormal];
+//    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
+//    [megView addSubview:msgBtn];
+//    
+//    if([_allNum integerValue] > 0)
+//    {
+//        _markHeadView.top = 30;
+//        
+//        [markAndMegView addSubview:_markHeadView];
+//        
+//        [markAndMegView addSubview:megView];
+//        
+//        return markAndMegView;
+//    }
     
-    [markAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
-    
-    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
-    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
-    UIButton * msgBtn = [[UIButton alloc] init];
-    msgBtn.frame = megView.frame;
-    msgBtn.backgroundColor = [UIColor clearColor];
-    msgBtn.titleLabel.textColor = [UIColor whiteColor];
-    msgBtn.titleLabel.font = Font(15);
-    NSString * str = [NSString stringWithFormat:@"您有 %@ 条新消息", _allNum];
-    [msgBtn setTitle:str forState:UIControlStateNormal];
-    [msgBtn addTarget:self action:@selector(jumpToMesView) forControlEvents:UIControlEventTouchUpInside];
-    [megView addSubview:msgBtn];
-    
-    if([_allNum integerValue] > 0)
-    {
-        _markHeadView.top = 30;
-        
-        [markAndMegView addSubview:_markHeadView];
-        
-        [markAndMegView addSubview:megView];
-        
-        return markAndMegView;
-    }
-    else
-    {
-        return _markHeadView;
-    }
+    return _markHeadView;
+
 }
 
 - (void)btnCloseClicked:(UIButton*)btn
@@ -1383,7 +1422,6 @@
     
     _TermString = @"";
     
-    _isLoadData = YES;
     [self addRefrish];
     
     //_sideMenu.isOpen = FALSE;
