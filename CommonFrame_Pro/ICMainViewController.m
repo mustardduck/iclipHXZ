@@ -441,8 +441,27 @@
     
     _icSideRightMarkArray = [NSArray array];
     
+    NSMutableArray * sideArr = [NSMutableArray array];
+    
     if (markArray.count > 0) {
-        _icSideRightMarkArray = [NSArray arrayWithArray:markArray];
+        
+        if([markArray[0] count] >= 3)
+        {
+            NSArray * cyArr = markArray[0][2];
+            
+            if(cyArr.count > 1)
+            {
+                [sideArr addObject:cyArr];
+            }
+        }
+        
+        [sideArr addObjectsFromArray:markArray[0]];
+        
+        NSMutableArray * arr = [NSMutableArray array];
+        
+        [arr addObject:sideArr];
+        
+        _icSideRightMarkArray = [NSArray arrayWithArray:arr];
     }
 
     _searchMenuController = [[MQSearchMenuController alloc] initWithImages:nil names:_icSideRightMarkArray menuButton:button];
@@ -747,9 +766,32 @@
 - (void)resetRightMarkView
 {
     NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
-    _icSideRightMarkArray = markArray;
+    
+    NSMutableArray * sideArr = [NSMutableArray array];
+    
+    NSMutableArray * arr = [NSMutableArray array];
 
-    _searchMenuController.nameList = markArray;
+    if (markArray.count > 0) {
+        
+        if([markArray[0] count] >= 3)
+        {
+            NSArray * cyArr = markArray[0][2];
+            
+            if(cyArr.count > 1)
+            {
+                [sideArr addObject:cyArr];
+            }
+            
+        }
+        
+        [sideArr addObjectsFromArray:markArray[0]];
+        
+        [arr addObject:sideArr];
+        
+        _icSideRightMarkArray = [NSArray arrayWithArray:arr];
+    }
+    
+    _searchMenuController.nameList = arr;
     [_searchMenuController.mainCollView reloadData];
 
 }

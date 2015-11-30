@@ -19,6 +19,8 @@
 @property (nonatomic,strong) NSString*  labelName;
 @property (nonatomic,strong) NSString*  labelImage;
 @property (nonatomic,assign) BOOL       isSystem;
+@property (nonatomic,assign) NSInteger section;
+@property (nonatomic,assign) NSInteger row;
 
 + (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid andUrl:(NSString *)url;
 + (BOOL)createNewMark:(NSString*)labelName workGroupID:(NSString*)workGroupId;

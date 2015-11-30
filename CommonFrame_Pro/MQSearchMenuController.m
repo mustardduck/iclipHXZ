@@ -12,6 +12,7 @@
 #import "UICommon.h"
 #import "MarkCell.h"
 #import "MQSearchCollReusableView.h"
+#import "MarkTagCell.h"
 
 @interface MQSearchMenuController()
 {
@@ -23,6 +24,11 @@
     
     UITextField * _txtField;
     UIButton * _searchBtn;
+    
+    UICollectionView * _TagCollView;
+    
+    NSMutableArray * _tagList;
+    NSMutableArray * _trendsList;
 }
 
 
@@ -161,35 +167,270 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    NSInteger count = [_nameList[0] count];
-    return count;
+    if(collectionView == _TagCollView)
+    {
+        return 1;
+    }
+    else
+    {
+        NSInteger count = [_nameList[0] count];
+        
+        return count;
+    }
+
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSInteger count = [_nameList[0][section] count] - 1;
+    if(collectionView == _TagCollView)
+    {
+        return _tagList.count;
+    }
+    else
+    {
+        NSInteger count = [_nameList[0][section] count] - 1;
+
+        if([_nameList[0] count] == 4)
+        {
+            if(section == 0 && count > 4)
+            {
+                count = 4;
+            }
+        }
+        
+        return count;
+    }
+}
+
+- (void) delTagItem:(id)button
+{
+    UIButton * btn = (UIButton *)button;
     
-    return count;
+    NSInteger deleteIndex = btn.tag;
+    
+    Mark * mark = _tagList[deleteIndex];
+
+    [_tagList removeObjectAtIndex:deleteIndex];
+    
+    [self resetMarkItem:mark];
+
+    [self refreshTagCollView];
+    
+    [_mainCollView reloadData];
+}
+
+- (void) resetMarkItem:(Mark*)mark
+{
+    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:mark.row inSection:mark.section];
+    
+    MarkCell * cell = (MarkCell *)[_mainCollView cellForItemAtIndexPath:indexPath];
+    
+    if(cell)
+    {
+        cell.markBtn.selected = !cell.markBtn.selected;
+        
+        if(cell.markBtn.selected)
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayMarkLineColor]];
+            
+            [_tagList addObject:mark];
+            
+//            NSNumber * num = [NSNumber numberWithInteger:index];
+//            if(!_selectedIndexTagArr)
+//            {
+//                _selectedIndexTagArr = [NSMutableArray array];
+//            }
+//            
+//            [_selectedIndexTagArr addObject:num];
+        }
+        else
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayLineColor]];
+            
+            [_tagList removeObject:mark];
+            
+//            NSNumber * num = [NSNumber numberWithInteger:index];
+//            if(!_selectedIndexTagArr)
+//            {
+//                _selectedIndexTagArr = [NSMutableArray array];
+//            }
+//            [_selectedIndexTagArr removeObject:num];
+        }
+        
+//        if(!_cMarkAarry)
+//        {
+//            self.cMarkAarry = [NSMutableArray array];
+//        }
+//        
+//        [_cMarkAarry removeAllObjects];
+//        [self.cMarkAarry addObjectsFromArray:_tagList];
+        
+    }
+}
+
+- (void) clickMarkItem:(id)sender
+{
+    
+    MarkCell *cell = (MarkCell *)[sender superview];//获取cell
+    
+    if(cell)
+    {
+        NSIndexPath *indexPath = [_mainCollView indexPathForCell:cell];//获取cell对应的section
+        
+        for(Mark * ma in _tagList)
+        {
+            if(ma.section == indexPath.section && ((indexPath.section == 1) || (indexPath.section == 2)))
+            {
+                if(ma.row != indexPath.row)
+                {
+                    return;
+                }
+            }
+        }
+        
+        Mark * mark = _nameList[0][indexPath.section][indexPath.row + 1];
+        
+        cell.markBtn.selected = !cell.markBtn.selected;
+        
+        if(cell.markBtn.selected)
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayMarkLineColor]];
+
+            mark.section = indexPath.section;
+            mark.row = indexPath.row;
+            
+            [_tagList addObject:mark];
+            
+            if(mark.section == 0)
+            {
+                [_trendsList addObject:mark];
+            }
+            
+//            NSNumber * num = [NSNumber numberWithInteger:index];
+//            if(!_selectedIndexTagArr)
+//            {
+//                _selectedIndexTagArr = [NSMutableArray array];
+//            }
+//            
+//            [_selectedIndexTagArr addObject:num];
+        }
+        else
+        {
+            [cell.markBtn setBackgroundColor:[UIColor grayMarkColor]];
+            
+            [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            [cell setBorderWithColor:[UIColor grayLineColor]];
+            
+            [_tagList removeObject:mark];
+            
+//            NSNumber * num = [NSNumber numberWithInteger:index];
+//            if(!_selectedIndexTagArr)
+//            {
+//                _selectedIndexTagArr = [NSMutableArray array];
+//            }
+//            [_selectedIndexTagArr removeObject:num];
+        }
+    }
+
+    [self refreshTagCollView];
+    
+}
+
+- (void) refreshTagCollView
+{
+    _TagCollView.hidden = _tagList.count ? NO :YES;
+    
+    if(!_TagCollView.hidden)
+    {
+        [self countTagHeight];
+        
+        _searchMarkView.height = YH(_TagCollView);
+
+    }
+    else
+    {
+        _TagCollView.height = 36;
+        
+        _searchMarkView.height = 34;
+
+    }
+    
+    [_TagCollView reloadData];
+    
+    [self resetAllViewLayout];
+}
+
+- (void) resetAllViewLayout
+{
+    _searchBtn.height = _searchMarkView.height;
+    
+    _searchTopView.height = YH(_searchMarkView) + 14;
+    
+    CGRect rect = _mainCollView.frame;
+    
+    rect.origin.y = _searchTopView.bottom;
+    rect.size.height = SCREENHEIGHT  - YH(_searchTopView) - 64;
+    
+    _mainCollView.frame = rect;
+    
+}
+
+- (void) countTagHeight
+{
+    NSInteger count = _tagList.count;
+    NSInteger row = (count % 3) ? count / 3 + 1: count / 3;
+    
+    float height = row * (27 + 10);
+    
+    _TagCollView.height = height;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"MarkCell";
-    MarkCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-//    NSInteger subRow = indexPath.subRow;
-    
-//    if(subRow < [_nameList[0][section] count])
+    if(collectionView == _TagCollView)
     {
+        static NSString *CellIdentifier = @"MarkTagCell";
+        MarkTagCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        Mark * mark = _tagList[indexPath.row];
+        
+        cell.titleLbl.text = mark.labelName;
+        
+        [cell.delBtn addTarget:self action:@selector(delTagItem:) forControlEvents:UIControlEventTouchUpInside];
+        cell.delBtn.tag = indexPath.row;
+        
+        [cell setRoundCorner:3.3];
+        
+        return cell;
+    }
+    else
+    {
+        static NSString *CellIdentifier = @"MarkCell";
+        MarkCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        NSInteger section = indexPath.section;
+        NSInteger row = indexPath.row;
+
         Mark * mark = _nameList[0][section][row + 1];
         
         [cell.markBtn setTitle:mark.labelName forState:UIControlStateNormal];
         
-        //    [cell.markBtn addTarget:self action:@selector(clickMarkItem:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.markBtn addTarget:self action:@selector(clickMarkItem:) forControlEvents:UIControlEventTouchUpInside];
         
-        cell.markBtn.tag = indexPath.row;
+//        cell.markBtn.tag = indexPath.row;
         
         [cell setRoundColorCorner:3.3];
         
@@ -202,66 +443,122 @@
         [cell.markBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         [cell setBorderWithColor:[UIColor grayLineColor]];
+        
+        for (Mark * mark in _tagList)
+        {
+            if((mark.section == indexPath.section && mark.row == indexPath.row )
+               || (mark.row == indexPath.row && mark.section == 0 && indexPath.section == 3)
+               || (mark.row == indexPath.row && mark.section == 3 && indexPath.section == 0))
+            {
+                cell.markBtn.selected = YES;
+                
+                [cell.markBtn setBackgroundColor:[UIColor grayMarkHoverBackgroundColor]];
+                
+                [cell.markBtn setTitleColor:[UIColor grayMarkHoverTitleColor] forState:UIControlStateNormal];
+                
+                [cell setBorderWithColor:[UIColor grayMarkLineColor]];
+            }
+        }
+        
+        return cell;
+
     }
-    
-    return cell;
 
 }
 
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"cell";
-    UICollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    
-    NSInteger section = indexPath.section;
-
-    view.backgroundColor = [UIColor backgroundColor];
-    
-    if ([kind isEqualToString: UICollectionElementKindSectionHeader]){
+    if(collectionView == _mainCollView)
+    {
+        static NSString *cellIdentifier = @"cell";
+        UICollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier forIndexPath:indexPath];
         
-        Mark * mark = _nameList[0][section][0];
+        NSInteger section = indexPath.section;
         
-        UIImageView * iconImgView = [view viewWithTag:1];
-        if(!iconImgView)
-        {
-            iconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 13, 13)];
-            iconImgView.tag = 1;
+        view.backgroundColor = [UIColor backgroundColor];
+        
+        if ([kind isEqualToString: UICollectionElementKindSectionHeader]){
             
-            [view addSubview:iconImgView];
+            Mark * mark = _nameList[0][section][0];
+            
+            UIImageView * iconImgView = [view viewWithTag:1];
+            if(!iconImgView)
+            {
+                iconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 13, 13)];
+                iconImgView.tag = 1;
+                
+                [view addSubview:iconImgView];
+            }
+            
+            UILabel * titleLbl = [view viewWithTag:2];
+            if(!titleLbl)
+            {
+                titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(iconImgView)+ 7, Y(iconImgView) - 2, 100, 16)];
+                titleLbl.backgroundColor = [UIColor clearColor];
+                titleLbl.textColor = [UIColor grayTitleColor];
+                titleLbl.font = Font(15);
+                titleLbl.tag = 2;
+                [view addSubview:titleLbl];
+            }
+            
+            NSString * iconName = @"icon_changyong";
+            
+            if([_nameList[0] count] == 3)
+            {
+                if(indexPath.section == 0)
+                {
+                    iconName = @"icon_shijian_1";
+                }
+                else if (indexPath.section == 1)
+                {
+                    iconName = @"icon_fabu_1";
+                }
+                else if (indexPath.section == 2)
+                {
+                    iconName = @"icon_biaoqian_1";
+                }
+                
+                titleLbl.text = mark.labelName;
+                
+            }
+            else if ([_nameList[0] count] == 4)
+            {
+                if(indexPath.section == 0)
+                {
+                    titleLbl.text = @"常用";
+                }
+                else if(indexPath.section == 1)
+                {
+                    iconName = @"icon_shijian_1";
+                    
+                    titleLbl.text = mark.labelName;
+                    
+                }
+                else if (indexPath.section == 2)
+                {
+                    iconName = @"icon_fabu_1";
+                    titleLbl.text = mark.labelName;
+                    
+                }
+                else if (indexPath.section == 3)
+                {
+                    iconName = @"icon_biaoqian_1";
+                    titleLbl.text = mark.labelName;
+                    
+                }
+                
+            }
+            
+            iconImgView.image = [UIImage imageNamed:iconName];
         }
         
-        UILabel * titleLbl = [view viewWithTag:2];
-        if(!titleLbl)
-        {
-            titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(iconImgView)+ 7, Y(iconImgView) - 2, 100, 16)];
-            titleLbl.backgroundColor = [UIColor clearColor];
-            titleLbl.textColor = [UIColor grayTitleColor];
-            titleLbl.font = Font(15);
-            titleLbl.tag = 2;
-            [view addSubview:titleLbl];
-        }
-        
-        NSString * iconName = @"icon_changyong";
-        
-        if(indexPath.section == 0)
-        {
-            iconName = @"icon_shijian_1";
-        }
-        else if (indexPath.section == 1)
-        {
-            iconName = @"icon_fabu_1";
-        }
-        else if (indexPath.section == 2)
-        {
-            iconName = @"icon_biaoqian_1";
-        }
-        
-        iconImgView.image = [UIImage imageNamed:iconName];
-        titleLbl.text = mark.labelName;
+        return view;
     }
- 
-    return view;
+    else
+    {
+        return nil;
+    }
 }
 
 
@@ -275,14 +572,30 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat pstH = (SCREENWIDTH - 14 * 2 - 14 * 3)/4;
-    
-    return CGSizeMake(pstH, 44);
+    if(collectionView == _mainCollView)
+    {
+        CGFloat pstH = (SCREENWIDTH - 14 * 2 - 14 * 3)/4;
+        
+        return CGSizeMake(pstH, 44);
+    }
+    else
+    {
+        CGFloat pstH = (W(_TagCollView) - 7 - 44 - 14 * 2)/3;
+        
+        return CGSizeMake(pstH, 27);
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    return CGSizeMake(SCREENWIDTH, 40);
+    if(collectionView == _mainCollView)
+    {
+        return CGSizeMake(SCREENWIDTH, 40);
+    }
+    else
+    {
+        return CGSizeZero;
+    }
 }
 
 #pragma mark -
@@ -367,6 +680,13 @@
 
 - (void) closeButtonClick
 {
+    [_tagList removeAllObjects];
+    [_trendsList removeAllObjects];
+    
+    [self refreshTagCollView];
+    
+    [_mainCollView reloadData];
+    
     [self dismissMenu];
 }
 
@@ -406,9 +726,38 @@
         [_searchBtn setTitleColor:RGBCOLOR(51, 51, 51) forState:UIControlStateNormal];
         _searchBtn.titleLabel.font = Font(15);
         [_searchMarkView addSubview:_searchBtn];
+        
+        [self initTagCollectionView];
     }
 
     return _searchTopView;
+}
+
+- (void) initTagCollectionView
+{
+    _tagList = [NSMutableArray array];
+    
+    _trendsList = [NSMutableArray array];
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    
+    layout.minimumInteritemSpacing = 14.f;
+    layout.minimumLineSpacing = 10.f;
+    UIEdgeInsets insets = {.top = 0,.left = 7,.bottom = 10,.right = 44};
+    layout.sectionInset = insets;
+    
+    _TagCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, YH(_txtField), W(_searchMarkView) - 70, 36) collectionViewLayout:layout];
+    _TagCollView.delegate = self;
+    _TagCollView.dataSource = self;
+    _TagCollView.scrollEnabled = NO;
+    _TagCollView.backgroundColor = [UIColor whiteColor];
+    
+    [_TagCollView registerClass:[MarkTagCell class] forCellWithReuseIdentifier:@"MarkTagCell"];
+    
+    [_searchMarkView addSubview:_TagCollView];
+    
+    _TagCollView.hidden = YES;
+    
 }
 
 - (void) hiddenKeyboard
