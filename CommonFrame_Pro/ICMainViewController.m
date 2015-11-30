@@ -26,7 +26,6 @@
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
 {
-    CDSideBarController*    _sideBar;
     ICSideMenuController*   _sideMenu;
     ICSideTopMenuController* _topMenuController;
     MQSearchMenuController * _searchMenuController;
@@ -445,10 +444,7 @@
     if (markArray.count > 0) {
         _icSideRightMarkArray = [NSArray arrayWithArray:markArray];
     }
-    
-//    _sideBar = [[CDSideBarController alloc] initWithImages:nil  names:_icSideRightMarkArray  menuButton:button];
-//    _sideBar.delegate = self;
-    
+
     _searchMenuController = [[MQSearchMenuController alloc] initWithImages:nil names:_icSideRightMarkArray menuButton:button];
     _searchMenuController.delegate = self;
     
@@ -752,10 +748,6 @@
 {
     NSMutableArray * markArray = [NSMutableArray arrayWithArray:[self loadBottomMenuView:nil isSearchBarOne:YES]];
     _icSideRightMarkArray = markArray;
-    _sideBar.nameList = markArray;
-    
-//    _sideBar.nameList = markArray;
-//    [_sideBar.mainTableView refreshData];
 
     _searchMenuController.nameList = markArray;
     [_searchMenuController.mainCollView reloadData];
@@ -771,9 +763,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-//    [_sideBar insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
-    
+
     [_searchMenuController insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
 
 }
@@ -1360,10 +1350,7 @@
                 _topMenuController.isOpen = NO;
                 [_topMenuController showTopMenu:@"1"];
             }
-            
-            if (_sideBar.isOpen) {
-                [_sideBar dismissMenu];
-            }
+
             if (_searchMenuController.isOpen) {
                 [_searchMenuController dismissMenu];
             }
@@ -1386,10 +1373,6 @@
             
             if (_topMenuController.isOpen) {
                 [_topMenuController showTopMenu:@"1"];
-            }
-            
-            if (_sideBar.isOpen) {
-                [_sideBar dismissMenu];
             }
             if (_searchMenuController.isOpen) {
                 [_searchMenuController dismissMenu];
