@@ -13,6 +13,7 @@
 #import "MarkCell.h"
 #import "MQSearchCollReusableView.h"
 #import "MarkTagCell.h"
+#import "SVProgressHUD.h"
 
 @interface MQSearchMenuController()
 {
@@ -29,6 +30,8 @@
     
     NSMutableArray * _tagList;
     NSMutableArray * _trendsList;
+    
+    UIButton * _clearBtn;
 }
 
 
@@ -278,7 +281,10 @@
 
 - (void) clickMarkItem:(id)sender
 {
-    
+    if(_tagList.count >= 9)
+    {
+        return;
+    }
     MarkCell *cell = (MarkCell *)[sender superview];//获取cell
     
     if(cell)
@@ -365,8 +371,12 @@
         _TagCollView.height = 36;
         
         _searchMarkView.height = 34;
-
+        
     }
+    
+    _clearBtn.hidden = _TagCollView.hidden;
+    
+    _clearBtn.height = H(_searchMarkView);
     
     [_TagCollView reloadData];
     
@@ -680,12 +690,7 @@
 
 - (void) closeButtonClick
 {
-    [_tagList removeAllObjects];
-    [_trendsList removeAllObjects];
-    
-    [self refreshTagCollView];
-    
-    [_mainCollView reloadData];
+    [self clearAllData];
     
     [self dismissMenu];
 }
@@ -710,7 +715,7 @@
         searchIcon.image = [UIImage imageNamed:@"icon_sousuo_huise"];
         [_searchMarkView addSubview:searchIcon];
         
-        _txtField = [[UITextField alloc] initWithFrame:CGRectMake(28, 0, W(_searchMarkView) - 29, 34)];
+        _txtField = [[UITextField alloc] initWithFrame:CGRectMake(28, 0, W(_searchMarkView) - 29 - 70 - 40, 34)];
         _txtField.tag = 1;
         _txtField.font = Font(15);
         _txtField.placeholder = @"请输入您要查找的关键字";
@@ -758,6 +763,31 @@
     
     _TagCollView.hidden = YES;
     
+    _clearBtn = [[UIButton alloc]initWithFrame:CGRectMake(W(_searchMarkView) - 70 - 40, 0, 40, H(_searchMarkView))];
+    _clearBtn.backgroundColor = [UIColor clearColor];
+    [_clearBtn setImage:[UIImage imageNamed:@"btn_saiyuanshanchu"] forState:UIControlStateNormal];
+    _clearBtn.hidden = YES;
+    [_clearBtn addTarget:self action:@selector(clearAllClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_searchMarkView addSubview:_clearBtn];
+    
+}
+
+- (void) clearAllData
+{
+    [_tagList removeAllObjects];
+    [_trendsList removeAllObjects];
+    
+    _txtField.text = @"";
+    [_txtField resignFirstResponder];
+    
+    [self refreshTagCollView];
+    [_mainCollView reloadData];
+}
+
+- (void)clearAllClicked:(id)sender
+{
+    [self clearAllData];
 }
 
 - (void) hiddenKeyboard
@@ -767,7 +797,28 @@
 
 - (void)searchBtnClicked:(id)sender
 {
-    
+    if(_txtField.text.length == 0 && _tagList.count == 0)
+    {
+        [SVProgressHUD showErrorWithStatus:@"请输入查找内容"];
+        
+        return;
+
+    }
+    if([self.delegate respondsToSelector:@selector(MQSearchMenuButtonClicked:keyString:)])
+    {
+        NSString * searchStr = @"";
+        
+        for(Mark * mark in _tagList)
+        {
+            searchStr = [searchStr stringByAppendingFormat:@"%@,", mark.labelId];
+        }
+        
+        searchStr = [searchStr substringToIndex:searchStr.length - 1];
+        
+        NSString * keyString = _txtField.text;
+        
+        [self.delegate MQSearchMenuButtonClicked:searchStr keyString:keyString];
+    }
 }
 
 - (void)bgTap

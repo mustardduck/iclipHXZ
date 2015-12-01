@@ -944,6 +944,14 @@
 #pragma make -
 #pragma  Side Bar Controller Action
 
+- (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr
+{
+    _TermString = searchStr;
+    
+//    [_tableView.header beginRefreshing];
+//    [_tableView.footer resetNoMoreData];
+}
+
 - (void)cdSliderCellClicked:(NSIndexPath *)indexPath
 {
     NSInteger tag = 0;

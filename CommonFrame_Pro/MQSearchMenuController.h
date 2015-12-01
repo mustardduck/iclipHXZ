@@ -13,7 +13,7 @@
 
 @protocol MQSearchMenuControllerDelegate <NSObject>
 
-- (void)MQSearchMenuButtonClicked:(NSDictionary *)searchDic;
+- (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr;
 - (void)partfarmButtonClicked:(NSString*)val;
 
 @end
