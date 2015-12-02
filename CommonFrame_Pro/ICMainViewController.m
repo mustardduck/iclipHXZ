@@ -561,13 +561,18 @@
     [left addTarget:self action:@selector(btnIconClicked) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem* bLeft = [[UIBarButtonItem alloc] initWithCustomView:left];
     
-    UIBarButtonItem* barLeftButton = [[UIBarButtonItem alloc] init];
-    [barLeftButton setTitle: titleName];
-    [barLeftButton setTarget:self];
+    UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH - 114, 20)];
+    titleLbl.backgroundColor = [UIColor clearColor];
+    titleLbl.text = titleName;
+    titleLbl.font = Font(18);
+    titleLbl.textColor = [UIColor whiteColor];
+    UIBarButtonItem* barLeftButton = [[UIBarButtonItem alloc] initWithCustomView: titleLbl];
+//    [barLeftButton setTitle: titleName];
+//    [barLeftButton setTarget:self];
     
-    NSMutableDictionary *textAttrs=[NSMutableDictionary dictionary];
-    textAttrs[NSForegroundColorAttributeName]=[UIColor whiteColor];
-    [barLeftButton setTitleTextAttributes:textAttrs forState:UIControlStateNormal];
+//    NSMutableDictionary *textAttrs=[NSMutableDictionary dictionary];
+//    textAttrs[NSForegroundColorAttributeName]=[UIColor whiteColor];
+//    [barLeftButton setTitleTextAttributes:textAttrs forState:UIControlStateNormal];
     
     NSMutableArray *tList = [NSMutableArray array];
     [tList addObject:bLeft];

@@ -156,10 +156,16 @@
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     
-    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(13, 13, 180, 14)];
+    UILabel * name = (UILabel *)[cell viewWithTag:111];
+    if(!name)
+    {
+        name = [[UILabel alloc] initWithFrame:CGRectMake(13, 13, 180, 14)];
+        name.textColor = [UIColor whiteColor];
+        name.font = [UIFont systemFontOfSize:13];
+        name.tag = 111;
+    }
+    
     name.text = m.labelName;
-    name.textColor = [UIColor whiteColor];
-    name.font = [UIFont systemFontOfSize:13];
     
     [cell.contentView addSubview:name];
 
