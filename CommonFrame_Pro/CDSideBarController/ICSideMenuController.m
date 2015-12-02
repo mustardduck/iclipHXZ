@@ -426,19 +426,25 @@
 //                    allnumBadgeValueString = @"1";//momo
 
                     if (![badgeValueString isEqualToString:@"0"]) {
-                        [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
+                        [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO withIndex:index];
                     }
                     else if(![allnumBadgeValueString isEqualToString:@"0"])
                     {
-                        [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES];
+                        [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES withIndex:index];
                     }
+                    
+                    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(menuView), H(menuView))];
+                    [menuButton setBackgroundColor:[UIColor clearColor]];
+                    [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                    [menuButton setTag:index];
+                    [menuView addSubview:menuButton];
                     
                     [sv addSubview:menuView];
                 }
                 else
                 {
                     self.clickedButtonTag = -1;
-                    [self addBadgeView:menuView parentView:menuView  showValue:@"0" isAllNum:NO];
+                    [self addBadgeView:menuView parentView:menuView  showValue:@"0" isAllNum:NO withIndex:index];
                     [sv addSubview:menuView];
                 }
                 
@@ -565,13 +571,20 @@
 //                badgeValueString = @"100";
 //                allnumBadgeValueString = @"1";//momo
                 //todo
-//                if (![badgeValueString isEqualToString:@"0"]) {
-//                    [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
-//                }
-//                else if(![allnumBadgeValueString isEqualToString:@"0"])
-//                {
-//                    [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES];
-//                }
+                if (![badgeValueString isEqualToString:@"0"]) {
+                    [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO withIndex:index];
+                }
+                else if(![allnumBadgeValueString isEqualToString:@"0"])
+                {
+                    [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES withIndex:index];
+                }
+                
+                UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(menuView), H(menuView))];
+                [menuButton setBackgroundColor:[UIColor clearColor]];
+                [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [menuButton setTag:index];
+                
+                [menuView addSubview:menuButton];
                 
                 [sv addSubview:menuView];
             }
@@ -601,14 +614,15 @@
     
 }
 
-- (void)addBadgeView:(UIView*)control parentView:(UIView*)pview showValue:(NSString*)value isAllNum:(BOOL)isAllNum
+- (void)addBadgeView:(UIView*)control parentView:(UIView*)pview showValue:(NSString*)value isAllNum:(BOOL)isAllNum withIndex:(NSInteger)index
 {
+    CGPoint location = CGPointMake(control.bounds.size.width/9 * 7, control.bounds.size.height/7);
+
     PPDragDropBadgeView* badgeView = [[PPDragDropBadgeView alloc] initWithSuperView:control parentView:pview location:CGPointMake(0,0) radius:9.f dragdropCompletion:^{
         NSLog(@"Drag Done");
     }];
     
     if (![value isEqualToString:@"0"]&&![value isEqualToString:@""]&& value != nil) {
-        CGPoint location = CGPointMake(control.bounds.size.width/9 * 7, control.bounds.size.height/7);
         badgeView.location = location;
         badgeView.tintColor = [UIColor redColor];
         badgeView.borderColor = [UIColor redColor];
