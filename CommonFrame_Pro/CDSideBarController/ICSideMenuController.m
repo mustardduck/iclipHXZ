@@ -564,14 +564,14 @@
                 }
 //                badgeValueString = @"100";
 //                allnumBadgeValueString = @"1";//momo
-                
-                if (![badgeValueString isEqualToString:@"0"]) {
-                    [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
-                }
-                else if(![allnumBadgeValueString isEqualToString:@"0"])
-                {
-                    [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES];
-                }
+                //todo
+//                if (![badgeValueString isEqualToString:@"0"]) {
+//                    [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO];
+//                }
+//                else if(![allnumBadgeValueString isEqualToString:@"0"])
+//                {
+//                    [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES];
+//                }
                 
                 [sv addSubview:menuView];
             }
