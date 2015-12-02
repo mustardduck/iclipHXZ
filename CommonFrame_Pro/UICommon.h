@@ -120,5 +120,7 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) excelBackColor;
 + (UIColor *) qitaBackColor;
 + (UIColor *) pptBackColor;
+
++ (UIColor *) yellowTitleColor;
 @end
 

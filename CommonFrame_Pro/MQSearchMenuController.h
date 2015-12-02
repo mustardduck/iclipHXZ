@@ -13,7 +13,7 @@
 
 @protocol MQSearchMenuControllerDelegate <NSObject>
 
-- (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr;
+- (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr selectedArr:(NSArray *)selectedArr;
 - (void)partfarmButtonClicked:(NSString*)val;
 
 @end
@@ -39,6 +39,6 @@
 
 - (void)insertMenuButtonOnView:(UIView*)view atPosition:(CGPoint)position;
 - (void)dismissMenu;
-
+- (void) showMenu;
 
 @end

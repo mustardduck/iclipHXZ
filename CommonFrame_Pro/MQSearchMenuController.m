@@ -285,6 +285,9 @@
     {
         return;
     }
+    
+    [_txtField resignFirstResponder];
+    
     MarkCell *cell = (MarkCell *)[sender superview];//获取cell
     
     if(cell)
@@ -690,6 +693,8 @@
 
 - (void) closeButtonClick
 {
+    [_txtField resignFirstResponder];
+
     [self clearAllData];
     
     [self dismissMenu];
@@ -804,7 +809,8 @@
         return;
 
     }
-    if([self.delegate respondsToSelector:@selector(MQSearchMenuButtonClicked:keyString:)])
+    
+    if([self.delegate respondsToSelector:@selector(MQSearchMenuButtonClicked:keyString:selectedArr:)])
     {
         NSString * searchStr = @"";
         
@@ -817,7 +823,15 @@
         
         NSString * keyString = _txtField.text;
         
-        [self.delegate MQSearchMenuButtonClicked:searchStr keyString:keyString];
+        [_txtField resignFirstResponder];
+        
+        NSArray * tagArr = [NSArray arrayWithArray:_tagList];
+        
+        [self.delegate MQSearchMenuButtonClicked:searchStr keyString:keyString selectedArr:tagArr];
+        
+        [self clearAllData];
+        
+        [self dismissMenu];
     }
 }
 

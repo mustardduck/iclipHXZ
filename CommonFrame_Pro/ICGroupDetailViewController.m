@@ -148,7 +148,7 @@
         
         _pageNo = 1;
         
-        NSDictionary * dic = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@""];
+        NSDictionary * dic = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@"" keyString:@""];
         
         NSMutableArray * newArr = [self fillContentArr:dic];
         _contentArray = newArr;
@@ -172,7 +172,7 @@
         
         _pageNo++;
         
-        NSDictionary * dic = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@""];
+        NSDictionary * dic = [Mission getMssionListbyUserID:userid currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:workGroupId termString:@"" keyString:@""];
         
         NSMutableArray * newArr = [self fillContentArr:dic];
         if (newArr.count > 0) {

@@ -735,4 +735,9 @@ static UIViewController *imagePicker = nil;
     return RGBCOLOR(245, 124, 36);
 }
 
++ (UIColor *) yellowTitleColor
+{
+    return RGBCOLOR(248, 223, 100);
+}
+
 @end

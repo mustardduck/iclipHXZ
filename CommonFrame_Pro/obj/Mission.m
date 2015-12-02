@@ -26,7 +26,7 @@
 
 @implementation Mission
 
-+ (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr
++ (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr keyString:(NSString *)keyStr
 {
     NSDictionary* dict = [NSDictionary dictionary];
 
@@ -35,7 +35,7 @@
     NSString* url_s;
     
     if (![termStr isEqualToString:@""]) {
-        url_s = [NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@&str=%@",TERM_URL,userId,page,rowCount,wgId,termStr];
+        url_s = [NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@&str=%@&keyString=%@",TERM_URL,userId,page,rowCount,wgId,termStr, keyStr];
     }
     else
         url_s = [NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@",CURL,userId,page,rowCount,wgId];

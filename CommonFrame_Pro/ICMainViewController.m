@@ -23,8 +23,9 @@
 #import "MegListController.h"
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
+#import "HTHorizontalSelectionList.h"
 
-@interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
     ICSideMenuController*   _sideMenu;
     ICSideTopMenuController* _topMenuController;
@@ -51,6 +52,8 @@
 
     NSArray*                _bottomArray;
     NSString*               _TermString;
+    NSString *              _keyString;
+    
     NSArray*                _icSideRightMarkArray;
 
     UIView*                 _markHeadView;
@@ -72,14 +75,25 @@
     
     UIView * _megView;
     
+    UIButton * _searchBtn;
+    NSArray * _searchArr;
+    UIButton * _showSearchBtn;
+    UIButton * _clearAllSearchBtn;
+    BOOL _isSelectedType;
+    NSString * _selectedTypeTermString;
 }
 
 - (IBAction)barButtonClicked:(id)sender;
+
+@property (nonatomic, strong) HTHorizontalSelectionList *textSelectionList;
+@property (nonatomic, strong) NSArray *selectionArr;
 
 
 @end
 
 @implementation ICMainViewController
+
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -166,6 +180,10 @@
     [super viewDidLoad];
     // Do view setup here.
     
+    _keyString = @"";
+    _TermString = @"";
+    
+    [self initSelectionList];
     
     if (![LoginUser isKeepLogined]) {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -207,7 +225,6 @@
     
     _screenWidth = [UIScreen mainScreen].bounds.size.width;
     _screenHeight = [UIScreen mainScreen].bounds.size.height;
-    _TermString = @"";
 
     [self addRefrish];
     
@@ -321,6 +338,8 @@
     
     [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray workGroupId:_workGroupId searchString:(isBarOne ? searchString : nil) allNum:&allnum]];
     
+    _selectionArr = markArray[0][1];
+    
     _allNum = allnum;
     
     if([_allNum intValue] > 0)
@@ -409,6 +428,52 @@
     return markArray;
 }
 
+#pragma mark - HTHorizontalSelectionListDataSource Protocol Methods
+
+- (NSInteger)numberOfItemsInSelectionList:(HTHorizontalSelectionList *)selectionList {
+    return _selectionArr.count;
+}
+
+- (NSString *)selectionList:(HTHorizontalSelectionList *)selectionList titleForItemWithIndex:(NSInteger)index {
+    
+    Mark * mark = _selectionArr[index];
+    
+    if([mark.labelName isEqualToString:@"发布"])
+    {
+        return @"全部";
+    }
+    return mark.labelName;
+}
+
+#pragma mark - HTHorizontalSelectionListDelegate Protocol Methods
+
+- (void)selectionList:(HTHorizontalSelectionList *)selectionList didSelectButtonWithIndex:(NSInteger)index {
+    // update the view for the corresponding index
+//    self.selectedCarLabel.text = self.carMakes[index];
+    if(index == 0)
+    {
+        _TermString = @"";
+        _keyString = @"";
+
+        _isSelectedType = NO;
+    }
+    else
+    {
+        Mark * mark = _selectionArr[index];
+        
+        _isSelectedType = YES;
+        
+        _TermString = [NSString stringWithFormat:@"%@", mark.labelId];
+        
+        _selectedTypeTermString = _TermString;
+        
+        _keyString = @"";
+    }
+    
+    [_tableView.header beginRefreshing];
+    [_tableView.footer resetNoMoreData];
+}
+
 - (UIBarButtonItem*)loadTopMenusView
 {
     UIButton* btn2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
@@ -464,7 +529,7 @@
         _icSideRightMarkArray = [NSArray arrayWithArray:arr];
     }
 
-    _searchMenuController = [[MQSearchMenuController alloc] initWithImages:nil names:_icSideRightMarkArray menuButton:button];
+    _searchMenuController = [[MQSearchMenuController alloc] initWithImages:nil names:_icSideRightMarkArray menuButton:_searchBtn];
     _searchMenuController.delegate = self;
     
     return barButton;
@@ -477,7 +542,7 @@
     UIBarButtonItem* barButton = [self loadRightMarkMenusView:markArray];
     UIBarButtonItem* b2btn = [self loadTopMenusView];
     
-    [tright addObject:barButton];
+//    [tright addObject:barButton];
     [tright addObject:b2btn];
     
     self.navigationItem.rightBarButtonItems = tright;
@@ -547,7 +612,7 @@
             gr.workGroupId = [dic valueForKey:@"workGroupId"];
             gr.workGroupImg = [dic valueForKey:@"workGroupImg"];
             gr.workGroupMain = [dic valueForKey:@"workGroupMain"];
-            
+            gr.workGroupPeopleNum = [dic valueForKey:@"peopleNum"];
             _currentGroup = gr;
         }
     }
@@ -630,7 +695,7 @@
             
             [self resetRightMarkView];
             
-            NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+            NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString keyString:_keyString];
             
             NSMutableArray * newArr = [self fillContentArr:dic];
             
@@ -654,7 +719,7 @@
         
         _pageNo++;
         
-        NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString];
+        NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString keyString:_keyString];
         NSMutableArray * newArr = [self fillContentArr:dic];
         
         if (newArr.count > 0) {
@@ -914,7 +979,7 @@
     if(!_currentGroup && _isMarkShow)
     {
         _tableView.tableHeaderView = ({
-            [self markHeaderView];
+            [self groupSearchHeaderView];
         });
     }
     else if (_currentGroup && !_isMarkShow)
@@ -926,7 +991,7 @@
     else if(_currentGroup && _isMarkShow)
     {
         _tableView.tableHeaderView = ({
-            [self markHeaderView];
+            [self groupSearchHeaderView];
         });
     }
 //    else
@@ -944,12 +1009,15 @@
 #pragma make -
 #pragma  Side Bar Controller Action
 
-- (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr
+- (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr selectedArr:(NSArray *)selectedArr
 {
+    _keyString = keyStr;
     _TermString = searchStr;
+    _searchArr = selectedArr;
     
-//    [_tableView.header beginRefreshing];
-//    [_tableView.footer resetNoMoreData];
+    _isMarkShow = YES;
+    [self resetHeaderView];
+    [_tableView.footer resetNoMoreData];
 }
 
 - (void)cdSliderCellClicked:(NSIndexPath *)indexPath
@@ -1071,7 +1139,7 @@
     if(_currentGroup)
     {
         
-        [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
+        [groupHeadView setBackgroundColor:[UIColor backgroundColor]];
         
         UIImageView* bgImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 256 - 171)];
         [bgImage setBackgroundColor:[UIColor clearColor]];
@@ -1138,83 +1206,104 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void) initSelectionList
+{
+    self.textSelectionList = [[HTHorizontalSelectionList alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH - 40, 40)];
+    self.textSelectionList.delegate = self;
+    self.textSelectionList.dataSource = self;
+    
+    self.textSelectionList.selectionIndicatorAnimationMode = HTHorizontalSelectionIndicatorAnimationModeLightBounce;
+    self.textSelectionList.showsEdgeFadeEffect = YES;
+    
+    self.textSelectionList.selectionIndicatorColor = [UIColor yellowTitleColor];
+    [self.textSelectionList setTitleColor:[UIColor grayTitleColor] forState:UIControlStateNormal];
+    [self.textSelectionList setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [self.textSelectionList setTitleFont:[UIFont systemFontOfSize:13] forState:UIControlStateNormal];
+    [self.textSelectionList setTitleFont:[UIFont boldSystemFontOfSize:13] forState:UIControlStateSelected];
+    [self.textSelectionList setTitleFont:[UIFont boldSystemFontOfSize:13] forState:UIControlStateHighlighted];
+    
+    _searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, H(_textSelectionList))];
+    [_searchBtn setImage:[UIImage imageNamed:@"btn_biaoqiantianjia"] forState:UIControlStateNormal];
+//    [_searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+}
+
 - (UIView *)groupHeaderView2
 {
     CGFloat width = SCREENWIDTH;
 
-    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 95)];
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 78)];
     
-    [groupHeadView setBackgroundColor:[UIColor greyStatusBarColor]];
+    [groupHeadView setBackgroundColor:[UIColor backgroundColor]];
     
-    UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 11, 67, 67)];
+    UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
     //[imgView setImage:[UIImage imageNamed:@"icon_touxiang"]];
     [imgView setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [imgView setRoundColorCorner:3.3];
     
     [groupHeadView addSubview:imgView];
     
 
     
     UIImageView * jiantou = [[UIImageView alloc] init];
-    jiantou.frame = CGRectMake(SCREENWIDTH - 12 - 11, 42, 12, 12);
+    jiantou.frame = CGRectMake(SCREENWIDTH - 12 - 11, 32.5, 12, 12);
     jiantou.image = [UIImage imageNamed:@"icon_jiantou"];
     
     [groupHeadView addSubview:jiantou];
     
-    UIFont* font = Font(14);
+    UIFont* font = Font(15);
     
-    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(imgView.frame.size.width + imgView.frame.origin.x + 18, 13, 50 , 13)];
-    lbl.text = @"名称";
-    lbl.textColor = [UIColor grayColor];
+    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(imgView) + 14, Y(imgView) - 2, SCREENWIDTH - (XW(imgView) + 14) - 44 , 16)];
+    lbl.text = _currentGroup.workGroupName;
+    lbl.textColor = [UIColor whiteColor];
     lbl.font = font;
     lbl.backgroundColor = [UIColor clearColor];
     
     [groupHeadView addSubview:lbl];
     
-    UILabel* lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x, lbl.frame.origin.y + lbl.frame.size.height + 12, 50 , 13)];
-    lbl1.text = @"创建人";
-    lbl1.textColor = [UIColor grayColor];
-    lbl1.font = font;
+    UILabel* lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl), YH(lbl) + 5, W(lbl) , 14)];
+    lbl1.text = [NSString stringWithFormat:@"%@名成员", _currentGroup.workGroupPeopleNum];
+    lbl1.textColor = [UIColor grayTitleColor];
+    lbl1.font = Font(12);
     lbl1.backgroundColor = [UIColor clearColor];
-    
     [groupHeadView addSubview:lbl1];
     
-    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x, lbl1.frame.origin.y + lbl1.frame.size.height + 12, 50 , 13)];
-    lbl2.text = @"签名";
-    lbl2.textColor = [UIColor grayColor];
-    lbl2.font = font;
+    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl1), YH(lbl1) + 5, W(lbl1) , 14)];
+    lbl2.text = [NSString stringWithFormat:@"目标及使命：%@", _currentGroup.workGroupMain];
+    lbl2.textColor = [UIColor whiteColor];
+    lbl2.font = Font(12);
     lbl2.backgroundColor = [UIColor clearColor];
     
     [groupHeadView addSubview:lbl2];
     
     
-    UILabel* text = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 13, width/2 - 10 , 13)];
-    text.text = _currentGroup.workGroupName;
-    text.textColor = [UIColor whiteColor];
-    text.font = font;
-    text.backgroundColor = [UIColor clearColor];
+//    UILabel* text = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 13, width/2 - 10 , 13)];
+//    text.text = _currentGroup.workGroupName;
+//    text.textColor = [UIColor whiteColor];
+//    text.font = font;
+//    text.backgroundColor = [UIColor clearColor];
+//    
+//    [groupHeadView addSubview:text];
     
-    [groupHeadView addSubview:text];
+//    UILabel* text1 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 38, width/2 - 10, 13)];
+//    text1.text = _currentGroup.userName;
+//    text1.textColor = [UIColor whiteColor];
+//    text1.font = font;
+//    text1.backgroundColor = [UIColor clearColor];
+//    
+//    [groupHeadView addSubview:text1];
     
-    UILabel* text1 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 38, width/2 - 10, 13)];
-    text1.text = _currentGroup.userName;
-    text1.textColor = [UIColor whiteColor];
-    text1.font = font;
-    text1.backgroundColor = [UIColor clearColor];
-    
-    [groupHeadView addSubview:text1];
-    
-    UILabel* text2 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 63, width/2 - 10, 13)];
-    text2.text = _currentGroup.workGroupMain;
-    text2.textColor = [UIColor whiteColor];
-    text2.font = font;
-    text2.backgroundColor = [UIColor clearColor];
-    
-    [groupHeadView addSubview:text2];
+//    UILabel* text2 = [[UILabel alloc] initWithFrame:CGRectMake(lbl.frame.origin.x + lbl.frame.size.width + 20, 63, width/2 - 10, 13)];
+//    text2.text = _currentGroup.workGroupMain;
+//    text2.textColor = [UIColor whiteColor];
+//    text2.font = font;
+//    text2.backgroundColor = [UIColor clearColor];
+//    
+//    [groupHeadView addSubview:text2];
     
     UILabel* bottomLine = [[UILabel alloc] init];
     
-    [bottomLine setFrame:CGRectMake(0, 94, [UIScreen mainScreen].bounds.size.width, 0.5)];
-    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    [bottomLine setFrame:CGRectMake(0, 77, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:RGBCOLOR(19, 19, 19)];
 
     [groupHeadView addSubview:bottomLine];
     
@@ -1224,10 +1313,27 @@
     
     [groupHeadView addSubview:btnPhoto];
     
+    groupHeadView.height = 78 + H(_textSelectionList);
+    _textSelectionList.top = 78;
+    [groupHeadView addSubview:_textSelectionList];
     
-    UIView * groupAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 95 + 30)];
+    UIView * line2 = [[UIView alloc] init];
+    line2.frame = CGRectMake(0, YH(_textSelectionList) - 0.5, SCREENWIDTH, 0.5);
+    line2.backgroundColor = RGBCOLOR(19, 19, 19);
+    [groupHeadView addSubview:line2];
     
-    [groupAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
+    _searchBtn.left = _textSelectionList.right + 4;
+    _searchBtn.top = _textSelectionList.top;
+    
+    UIView * alphaView = [[UIView alloc] init];
+    alphaView.frame = CGRectMake(_searchBtn.left - 14, _searchBtn.top, 14, H(_searchBtn) - 0.5);
+    alphaView.backgroundColor = RGBACOLOR(47, 47, 47, 0.5);
+    [groupHeadView addSubview:alphaView];
+    
+    [groupHeadView addSubview:_searchBtn];
+    
+//    UIView * groupAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 95 + 30)];
+//    [groupAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
     
 //    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
 //    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
@@ -1271,6 +1377,188 @@
     [megView addSubview:msgBtn];
     
     return megView;
+}
+
+- (UIView *) groupSearchHeaderView
+{
+    CGFloat width = SCREENWIDTH;
+    
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 78)];
+    
+    [groupHeadView setBackgroundColor:[UIColor backgroundColor]];
+    
+    UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
+    //[imgView setImage:[UIImage imageNamed:@"icon_touxiang"]];
+    [imgView setImageWithURL:[NSURL URLWithString:_currentGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [imgView setRoundColorCorner:3.3];
+    
+    [groupHeadView addSubview:imgView];
+    
+    
+    
+    UIImageView * jiantou = [[UIImageView alloc] init];
+    jiantou.frame = CGRectMake(SCREENWIDTH - 12 - 11, 32.5, 12, 12);
+    jiantou.image = [UIImage imageNamed:@"icon_jiantou"];
+    
+    [groupHeadView addSubview:jiantou];
+    
+    UIFont* font = Font(15);
+    
+    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(imgView) + 14, Y(imgView) - 2, SCREENWIDTH - (XW(imgView) + 14) - 44 , 16)];
+    lbl.text = _currentGroup.workGroupName;
+    lbl.textColor = [UIColor whiteColor];
+    lbl.font = font;
+    lbl.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:lbl];
+    
+    UILabel* lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl), YH(lbl) + 5, W(lbl) , 14)];
+    lbl1.text = [NSString stringWithFormat:@"%@名成员", _currentGroup.workGroupPeopleNum];
+    lbl1.textColor = [UIColor grayTitleColor];
+    lbl1.font = Font(12);
+    lbl1.backgroundColor = [UIColor clearColor];
+    [groupHeadView addSubview:lbl1];
+    
+    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl1), YH(lbl1) + 5, W(lbl1) , 14)];
+    lbl2.text = [NSString stringWithFormat:@"目标及使命：%@", _currentGroup.workGroupMain];
+    lbl2.textColor = [UIColor whiteColor];
+    lbl2.font = Font(12);
+    lbl2.backgroundColor = [UIColor clearColor];
+    
+    [groupHeadView addSubview:lbl2];
+    
+    UILabel* bottomLine = [[UILabel alloc] init];
+    
+    [bottomLine setFrame:CGRectMake(0, 77, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setBackgroundColor:RGBCOLOR(19, 19, 19)];
+    
+    [groupHeadView addSubview:bottomLine];
+    
+    UIButton* btnPhoto = [[UIButton alloc] initWithFrame:groupHeadView.frame];
+    [btnPhoto setBackgroundColor:[UIColor clearColor]];
+    [btnPhoto addTarget:self action:@selector(btnPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [groupHeadView addSubview:btnPhoto];
+    
+    UIView * searchHeadView;
+    if(_isMarkShow)
+    {
+        NSInteger count = _searchArr.count;
+        
+        if(_keyString.length > 0)
+        {
+            count += 1;
+        }
+        NSInteger lineCount = 4;
+        NSInteger row = 1;
+        
+        row = (count % lineCount) ? count / lineCount + 1: count / lineCount;
+        
+        searchHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, (27 + 10) * row + 10)];
+        [searchHeadView setBackgroundColor:[UIColor backgroundColor]];
+        
+        CGFloat intevalWidth = 14;
+        CGFloat intevalHeight = 10;
+        CGFloat accHeight = 27;
+        CGFloat accWidth = (_screenWidth - 14 - 40 - intevalWidth * 3) / lineCount;
+        
+        for(int i = 0; i < count; i ++)
+        {
+            int j = i / lineCount;
+            int k = i % lineCount;
+            int m = 0;
+            
+            Mark * mark;
+            if(i >= 1 && _keyString.length)
+            {
+                m = i - 1;
+                
+                mark = _searchArr[m];
+            }
+            else
+            {
+                mark = _searchArr[i];
+            }
+            
+            CGRect attaFrame = CGRectMake(14 + (accWidth + intevalWidth) * k, 10 + (intevalHeight + accHeight) * j, accWidth, accHeight);
+            
+            UILabel* name = [[UILabel alloc] initWithFrame:attaFrame];
+            
+            if(k == 0 && j == 0 && _keyString.length)
+            {
+                [name setText:_keyString];
+                [name setBackgroundColor:[UIColor grayMarkColor]];
+            }
+            else
+            {
+                [name setText:mark.labelName];
+                [name setBackgroundColor:[UIColor tagBlueBackColor]];
+            }
+            [name setTextColor:[UIColor whiteColor]];
+            [name setTextAlignment:NSTextAlignmentCenter];
+            [name setFont:[UIFont systemFontOfSize:10]];
+            [name setRoundColorCorner:3.3];
+            //        name.tag = _tagNum;
+            [searchHeadView addSubview:name];
+        }
+
+    }
+    
+    if(!_showSearchBtn)
+    {
+        _showSearchBtn = [[UIButton alloc] initWithFrame:searchHeadView.frame];
+        _showSearchBtn.top = 0;
+        _showSearchBtn.left = 0;
+        _showSearchBtn.width = SCREENWIDTH - 40;
+        _showSearchBtn.backgroundColor = [UIColor clearColor];
+        [_showSearchBtn addTarget:self action:@selector(showSearchMenu:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    if(!_clearAllSearchBtn)
+    {
+        _clearAllSearchBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, H(_showSearchBtn))];
+        _clearAllSearchBtn.left = SCREENWIDTH - 40;
+        [_clearAllSearchBtn setImage:[UIImage imageNamed:@"btn_biaoqianshanchu"] forState:UIControlStateNormal];
+        [_clearAllSearchBtn addTarget:self action:@selector(closeAllSearch:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    
+    [searchHeadView addSubview:_clearAllSearchBtn];
+    
+    [searchHeadView addSubview:_showSearchBtn];
+    
+    UIView * line2 = [[UIView alloc] init];
+    line2.frame = CGRectMake(0, H(searchHeadView) - 0.5, SCREENWIDTH, 0.5);
+    line2.backgroundColor = RGBCOLOR(19, 19, 19);
+    [searchHeadView addSubview:line2];
+
+    groupHeadView.height = 78 + H(searchHeadView);
+    searchHeadView.top = 78;
+    [groupHeadView addSubview:searchHeadView];
+    
+    return groupHeadView;
+}
+
+- (void)closeAllSearch:(id)sender
+{
+    _isMarkShow = NO;
+    if(_isSelectedType)
+    {
+        _TermString = _selectedTypeTermString;
+    }
+    else
+    {
+        _TermString = @"";
+    }
+    
+    [self resetHeaderView];
+    [_tableView.footer resetNoMoreData];
+
+}
+
+- (void)showSearchMenu:(id)sender
+{
+    [_searchMenuController showMenu];
 }
 
 - (UIView *) markHeaderView
@@ -1342,7 +1630,7 @@
     
 //    UIView * markAndMegView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40 + 30)];
 //    
-//    [markAndMegView setBackgroundColor:[UIColor greyStatusBarColor]];
+//    [markAndMegView setBackgroundColor:[UIColor backgroundColor]];
 //    
 //    UIView * megView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30)];
 //    [megView setBackgroundColor:RGBCOLOR(90, 112, 223)];
@@ -1376,7 +1664,10 @@
     _tableView.tableHeaderView = nil;
     _isMarkShow = NO;
     _markHeadView = nil;
-    _TermString = @"";
+    if(!_isSelectedType)
+    {
+        _TermString = @"";
+    }
     [_filterIdArr removeAllObjects];
     [_tableView.header beginRefreshing];
     [_tableView.footer resetNoMoreData];
@@ -1448,6 +1739,8 @@
         return;
     }
     
+    [_textSelectionList setSelectedButtonIndex:0];
+    
     _pubGroupId = nil;
 
     _tableView.tableHeaderView = nil;
@@ -1470,8 +1763,6 @@
     }
     
     [self setNaviLeftBarItem:mi.workGroupName];
-    
-    _TermString = @"";
     
     [self addRefrish];
     
