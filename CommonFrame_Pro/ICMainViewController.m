@@ -81,6 +81,8 @@
     UIButton * _clearAllSearchBtn;
     BOOL _isSelectedType;
     NSString * _selectedTypeTermString;
+    
+    NSInteger _totalCount;
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -697,6 +699,8 @@
             
             NSDictionary * dic = [Mission getMssionListbyUserID:self.loginUserID currentPageIndex:_pageNo pageSize:_pageRowCount workGroupId:_workGroupId termString:_TermString keyString:_keyString];
             
+            _totalCount = [[dic valueForKey:@"totalCount"]integerValue];
+
             NSMutableArray * newArr = [self fillContentArr:dic];
             
             [self fillCurrentGroup:dic];
@@ -1532,10 +1536,18 @@
     line2.backgroundColor = RGBCOLOR(19, 19, 19);
     [searchHeadView addSubview:line2];
 
-    groupHeadView.height = 78 + H(searchHeadView);
     searchHeadView.top = 78;
     [groupHeadView addSubview:searchHeadView];
     
+    UILabel * totalCountLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, YH(searchHeadView) + 6, SCREENWIDTH - 14 * 2, 14)];
+    totalCountLbl.font = Font(12);
+    totalCountLbl.textColor = [UIColor grayTitleColor];
+    totalCountLbl.backgroundColor = [UIColor clearColor];
+    totalCountLbl.text = [NSString stringWithFormat:@"为您找到相关结果约 %ld 个", _totalCount];
+    [groupHeadView addSubview:totalCountLbl];
+    
+    groupHeadView.height = 78 + H(searchHeadView) + H(totalCountLbl) + 4;
+
     return groupHeadView;
 }
 
