@@ -32,6 +32,8 @@
     NSMutableArray * _trendsList;
     
     UIButton * _clearBtn;
+    
+    UIImageView * _backgroundImg;
 }
 
 
@@ -389,6 +391,7 @@
 - (void) resetAllViewLayout
 {
     _searchBtn.height = _searchMarkView.height;
+    _backgroundImg.height = _searchMarkView.height;
     
     _searchTopView.height = YH(_searchMarkView) + 14;
     
@@ -640,7 +643,7 @@
     _viewWidth = view.frame.size.width;
     
     UIView * topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
-    topButtonView.backgroundColor = [UIColor clearColor];
+    topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
     [_backgroundMenuView addSubview: topButtonView];
     
     UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24 + 6)];
@@ -730,11 +733,21 @@
         
         _searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(W(_searchMarkView) - 70, 0, 70, H(_searchMarkView))];
         [_searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [_searchBtn setBackgroundImage:[UIImage imageNamed:@"btn_chazhaolan"] forState:UIControlStateNormal];
+        _searchBtn.backgroundColor = [UIColor clearColor];
+//        [_searchBtn setBackgroundImage:[UIImage imageNamed:@"btn_chazhaolan"] forState:UIControlStateNormal];
 
         [_searchBtn setTitle:@"查找" forState:UIControlStateNormal];
         [_searchBtn setTitleColor:RGBCOLOR(51, 51, 51) forState:UIControlStateNormal];
         _searchBtn.titleLabel.font = Font(15);
+        
+        _backgroundImg = [[UIImageView alloc] init];
+        _backgroundImg.frame = _searchBtn.frame;
+        _backgroundImg.top = 0;
+        _backgroundImg.left = 0;
+        _backgroundImg.image = [[UIImage imageNamed:@"btn_chazhaolan"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+        [_searchBtn addSubview:_backgroundImg];
+        [_searchBtn sendSubviewToBack:_backgroundImg];
+        
         [_searchMarkView addSubview:_searchBtn];
         
         [self initTagCollectionView];

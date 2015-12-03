@@ -566,6 +566,7 @@
     titleLbl.text = titleName;
     titleLbl.font = Font(18);
     titleLbl.textColor = [UIColor whiteColor];
+    
     UIBarButtonItem* barLeftButton = [[UIBarButtonItem alloc] initWithCustomView: titleLbl];
 //    [barLeftButton setTitle: titleName];
 //    [barLeftButton setTarget:self];
