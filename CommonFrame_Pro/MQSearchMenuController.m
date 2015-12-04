@@ -35,6 +35,8 @@
     
     UIImageView * _backgroundImg;
     UIView * _topButtonView;
+    
+    UIView * _searchTopViewBottomLine;
 }
 
 
@@ -396,6 +398,8 @@
     
     _searchTopView.height = YH(_searchMarkView) + 14;
     
+    _searchTopViewBottomLine.bottom = H(_searchTopView) - 0.5;
+    
     CGRect rect = _mainCollView.frame;
     
     rect.origin.y = _searchTopView.bottom;
@@ -753,7 +757,16 @@
         
         [self initTagCollectionView];
     }
-
+    
+    if(!_searchTopViewBottomLine)
+    {
+        _searchTopViewBottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, H(_searchTopView) - 0.5, SCREENWIDTH, 0.5)];
+        
+        _searchTopViewBottomLine.backgroundColor = RGBCOLOR(19, 19, 19);
+    }
+    
+    [_searchTopView addSubview:_searchTopViewBottomLine];
+    
     return _searchTopView;
 }
 
@@ -949,7 +962,7 @@
 
 - (void)performDismissAnimation
 {
-    [UIView animateWithDuration:0.4 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         _menuButton.alpha = 1.0f;
         _menuButton.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
         _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
@@ -960,9 +973,9 @@
 - (void)performOpenAnimation
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.4 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -SCREENHEIGHT + 64);
-            [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.4f];
+            [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.3f];
 
         }];
     });
