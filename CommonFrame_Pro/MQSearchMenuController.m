@@ -832,6 +832,10 @@
         {
             searchStr = [searchStr stringByAppendingFormat:@"%@,", mark.labelId];
             
+        }
+        
+        if(searchStr.length >= 1)
+        {
             searchStr = [searchStr substringToIndex:searchStr.length - 1];
         }
 
