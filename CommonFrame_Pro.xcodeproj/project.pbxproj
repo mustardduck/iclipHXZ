@@ -50,6 +50,9 @@
 		4B88560E1C0D4A7A00B50998 /* HTHorizontalSelectionListCustomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8856091C0D4A7A00B50998 /* HTHorizontalSelectionListCustomViewCell.m */; };
 		4B88560F1C0D4A7A00B50998 /* HTHorizontalSelectionListLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B88560B1C0D4A7A00B50998 /* HTHorizontalSelectionListLabelCell.m */; };
 		4B8856101C0D4A7A00B50998 /* HTHorizontalSelectionList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B88560D1C0D4A7A00B50998 /* HTHorizontalSelectionList.m */; };
+		4B8856131C10237A00B50998 /* MQCreateGroupFirstController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8856121C10237A00B50998 /* MQCreateGroupFirstController.m */; };
+		4B8856161C103CEA00B50998 /* MQCreateGroupSecondController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8856151C103CEA00B50998 /* MQCreateGroupSecondController.m */; };
+		4B8856191C103D0000B50998 /* MQCreateGroupThirdController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8856181C103D0000B50998 /* MQCreateGroupThirdController.m */; };
 		4B8AE4251BB910C9002B0143 /* ICFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8AE4241BB910C9002B0143 /* ICFileViewController.m */; };
 		4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EA4351B9D305B0055FCF3 /* RRAttributedString.m */; };
 		4B9AE1011B93FE6900E2124D /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE1001B93FE6900E2124D /* libPushSDK-1.8.5.a */; };
@@ -250,6 +253,12 @@
 		4B88560B1C0D4A7A00B50998 /* HTHorizontalSelectionListLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTHorizontalSelectionListLabelCell.m; sourceTree = "<group>"; };
 		4B88560C1C0D4A7A00B50998 /* HTHorizontalSelectionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTHorizontalSelectionList.h; sourceTree = "<group>"; };
 		4B88560D1C0D4A7A00B50998 /* HTHorizontalSelectionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTHorizontalSelectionList.m; sourceTree = "<group>"; };
+		4B8856111C10237A00B50998 /* MQCreateGroupFirstController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateGroupFirstController.h; sourceTree = "<group>"; };
+		4B8856121C10237A00B50998 /* MQCreateGroupFirstController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateGroupFirstController.m; sourceTree = "<group>"; };
+		4B8856141C103CEA00B50998 /* MQCreateGroupSecondController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateGroupSecondController.h; sourceTree = "<group>"; };
+		4B8856151C103CEA00B50998 /* MQCreateGroupSecondController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateGroupSecondController.m; sourceTree = "<group>"; };
+		4B8856171C103D0000B50998 /* MQCreateGroupThirdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateGroupThirdController.h; sourceTree = "<group>"; };
+		4B8856181C103D0000B50998 /* MQCreateGroupThirdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateGroupThirdController.m; sourceTree = "<group>"; };
 		4B8AE4231BB910C9002B0143 /* ICFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICFileViewController.h; sourceTree = "<group>"; };
 		4B8AE4241BB910C9002B0143 /* ICFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICFileViewController.m; sourceTree = "<group>"; };
 		4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRAttributedString.h; sourceTree = "<group>"; };
@@ -840,6 +849,12 @@
 				786381D11B3AAFEA0078F156 /* ICGroupDetailViewController.m */,
 				7830DDFA1B3BDC0E00D956C9 /* ICCreateNewGroupViewController.h */,
 				7830DDFB1B3BDC0E00D956C9 /* ICCreateNewGroupViewController.m */,
+				4B8856111C10237A00B50998 /* MQCreateGroupFirstController.h */,
+				4B8856121C10237A00B50998 /* MQCreateGroupFirstController.m */,
+				4B8856141C103CEA00B50998 /* MQCreateGroupSecondController.h */,
+				4B8856151C103CEA00B50998 /* MQCreateGroupSecondController.m */,
+				4B8856171C103D0000B50998 /* MQCreateGroupThirdController.h */,
+				4B8856181C103D0000B50998 /* MQCreateGroupThirdController.m */,
 				7830DDFD1B3BE99200D956C9 /* ICSettingGroupViewController.h */,
 				7830DDFE1B3BE99200D956C9 /* ICSettingGroupViewController.m */,
 			);
@@ -1224,6 +1239,7 @@
 				4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */,
 				78486E191B61EA7D00D67751 /* ICSearchViewController.m in Sources */,
 				78BE76D61B2043F5008AF8AD /* ICSideMenuController.m in Sources */,
+				4B8856191C103D0000B50998 /* MQCreateGroupThirdController.m in Sources */,
 				4B1F2AA61BB9251F00D55BAE /* RRPageControl.m in Sources */,
 				4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */,
 				4B1F2AA31BB9251F00D55BAE /* MJPhotoToolbar.m in Sources */,
@@ -1275,6 +1291,7 @@
 				7883D6AF1B5783580068CEE5 /* Mark.m in Sources */,
 				7839C2671B4D4291003E3330 /* UIColor+HexString.m in Sources */,
 				783AC2D81B55F35600EE3E37 /* Mission.m in Sources */,
+				4B8856131C10237A00B50998 /* MQCreateGroupFirstController.m in Sources */,
 				7864DD2F1B2E8F4C00547D16 /* ICSideTopMenuController.m in Sources */,
 				78354CD81B410FFE00E2F00A /* InputText.m in Sources */,
 				784770E61B2FC8C5007D7839 /* ICMemberInfoViewController.m in Sources */,
@@ -1284,6 +1301,7 @@
 				786644921B54B07B00DBB189 /* HttpBaseFile.m in Sources */,
 				4B5F59D11BDF54C60017FD9D /* MQPublishMissionMainController.m in Sources */,
 				4B7A89261BD4F05F00E42F7C /* SDWebImageDownloaderOperation.m in Sources */,
+				4B8856161C103CEA00B50998 /* MQCreateGroupSecondController.m in Sources */,
 				783AC2DE1B56543900EE3E37 /* Member.m in Sources */,
 				4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */,
 				78BE76CF1B1FEEA6008AF8AD /* ICAccountViewController.m in Sources */,
