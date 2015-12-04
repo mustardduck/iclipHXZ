@@ -643,7 +643,8 @@
     _viewWidth = view.frame.size.width;
     
     UIView * topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
-    topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
+//    topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
+    topButtonView.backgroundColor = [UIColor clearColor];
     [_backgroundMenuView addSubview: topButtonView];
     
     UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24 + 6)];
@@ -830,10 +831,10 @@
         for(Mark * mark in _tagList)
         {
             searchStr = [searchStr stringByAppendingFormat:@"%@,", mark.labelId];
+            
+            searchStr = [searchStr substringToIndex:searchStr.length - 1];
         }
-        
-        searchStr = [searchStr substringToIndex:searchStr.length - 1];
-        
+
         NSString * keyString = _txtField.text;
         
         [_txtField resignFirstResponder];

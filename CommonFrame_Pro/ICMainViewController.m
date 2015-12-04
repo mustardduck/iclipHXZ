@@ -1479,17 +1479,21 @@
             int m = 0;
             
             Mark * mark;
-            if(i >= 1 && _keyString.length)
-            {
-                m = i - 1;
-                
-                mark = _searchArr[m];
-            }
-            else
-            {
-                mark = _searchArr[i];
-            }
             
+            if(_searchArr.count > 0)
+            {
+                if(i >= 1 && _keyString.length)
+                {
+                    m = i - 1;
+                    
+                    mark = _searchArr[m];
+                }
+                else
+                {
+                    mark = _searchArr[i];
+                }
+            }
+                        
             CGRect attaFrame = CGRectMake(14 + (accWidth + intevalWidth) * k, 10 + (intevalHeight + accHeight) * j, accWidth, accHeight);
             
             UILabel* name = [[UILabel alloc] initWithFrame:attaFrame];
@@ -1501,7 +1505,10 @@
             }
             else
             {
-                [name setText:mark.labelName];
+                if(mark)
+                {
+                    [name setText:mark.labelName];
+                }
                 [name setBackgroundColor:[UIColor tagBlueBackColor]];
             }
             [name setTextColor:[UIColor whiteColor]];
