@@ -84,7 +84,7 @@
     
     NSInteger _totalCount;
     
-    UILabel * _noMoreLbl;
+    UIView * _noMoreView;
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -724,27 +724,40 @@
         
         if(_contentArray.count == 0)
         {
-            if(!_noMoreLbl)
+            if(!_noMoreView)
             {
-                _noMoreLbl = [[UILabel alloc] init];
-                _noMoreLbl.frame = _tableView.frame;
-                _noMoreLbl.backgroundColor = [UIColor backgroundColor];
-                _noMoreLbl.textColor = [UIColor grayTitleColor];
-                _noMoreLbl.text = @"暂无结果！";
-                _noMoreLbl.textAlignment = NSTextAlignmentCenter;
-                _noMoreLbl.font = Font(21);
-                [_tableView addSubview:_noMoreLbl];
+                _noMoreView = [[UIView alloc] init];
+                _noMoreView.frame = _tableView.frame;
+                _noMoreView.backgroundColor = [UIColor backgroundColor];
+                [_tableView addSubview:_noMoreView];
             }
             
-            _noMoreLbl.hidden = NO;
-            _noMoreLbl.left = 0;
-            _noMoreLbl.top = YH(_tableView.tableHeaderView);
-            _noMoreLbl.height = H(_tableView) - H(_tableView.tableHeaderView);
+            _noMoreView.hidden = NO;
+            _noMoreView.left = 0;
+            _noMoreView.top = YH(_tableView.tableHeaderView);
+            _noMoreView.height = H(_tableView) - H(_tableView.tableHeaderView);
             
+            UILabel * noMoreLbl = [_noMoreView viewWithTag:1];
+            if(!noMoreLbl)
+            {
+                noMoreLbl = [[UILabel alloc] init];
+                noMoreLbl.frame = _tableView.frame;
+                noMoreLbl.backgroundColor = [UIColor clearColor];
+                noMoreLbl.textColor = [UIColor grayTitleColor];
+                noMoreLbl.text = @"暂无结果！";
+                noMoreLbl.textAlignment = NSTextAlignmentCenter;
+                noMoreLbl.font = Font(17);
+                noMoreLbl.tag = 1;
+                [_noMoreView addSubview:noMoreLbl];
+            }
+            
+            noMoreLbl.left = 8;
+            noMoreLbl.top = 0;
+            noMoreLbl.height = H(_noMoreView);
         }
         else
         {
-            _noMoreLbl.hidden = YES;
+            _noMoreView.hidden = YES;
         }
         
     }];
@@ -1559,6 +1572,7 @@
     _showSearchBtn.top = 0;
     _showSearchBtn.left = 0;
     _showSearchBtn.width = SCREENWIDTH - 40;
+    _showSearchBtn.height = H(searchHeadView);
     
     if(!_clearAllSearchBtn)
     {
@@ -1597,7 +1611,7 @@
 
 - (void)closeAllSearch:(id)sender
 {
-    _noMoreLbl.hidden = YES;
+    _noMoreView.hidden = YES;
 
     _isMarkShow = NO;
     if(_isSelectedType)
