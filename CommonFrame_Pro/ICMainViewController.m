@@ -1493,7 +1493,7 @@
                     mark = _searchArr[i];
                 }
             }
-                        
+            
             CGRect attaFrame = CGRectMake(14 + (accWidth + intevalWidth) * k, 10 + (intevalHeight + accHeight) * j, accWidth, accHeight);
             
             UILabel* name = [[UILabel alloc] initWithFrame:attaFrame];

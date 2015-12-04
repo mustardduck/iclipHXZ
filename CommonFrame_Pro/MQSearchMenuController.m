@@ -34,6 +34,7 @@
     UIButton * _clearBtn;
     
     UIImageView * _backgroundImg;
+    UIView * _topButtonView;
 }
 
 
@@ -642,10 +643,9 @@
     
     _viewWidth = view.frame.size.width;
     
-    UIView * topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
-//    topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
-    topButtonView.backgroundColor = [UIColor clearColor];
-    [_backgroundMenuView addSubview: topButtonView];
+    _topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
+    _topButtonView.backgroundColor = [UIColor clearColor];
+    [_backgroundMenuView addSubview: _topButtonView];
     
     UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24 + 6)];
     closeBtn.titleLabel.font = Font(12);
@@ -908,6 +908,9 @@
     if (_isOpen)
     {
         _isOpen = !_isOpen;
+        
+        _topButtonView.backgroundColor = [UIColor clearColor];
+
         [self performDismissAnimation];
     }
 }
@@ -946,6 +949,7 @@
         _menuButton.alpha = 1.0f;
         _menuButton.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
         _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+        
     }];
 }
 
@@ -954,8 +958,15 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.4 animations:^{
             _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -SCREENHEIGHT + 64);
+            [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.4f];
+
         }];
     });
+}
+
+- (void)delayMethod
+{
+    _topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
 }
 
 @end
