@@ -1608,7 +1608,7 @@
     {
         _TermString = @"";
     }
-    
+    _keyString = @"";
     [self resetHeaderView];
     [_tableView.footer resetNoMoreData];
 

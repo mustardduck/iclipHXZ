@@ -34,11 +34,11 @@
 
     NSString* url_s;
     
-    if (![termStr isEqualToString:@""]) {
+//    if (![termStr isEqualToString:@""]) {
         url_s = [NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@&str=%@&keyString=%@",TERM_URL,userId,page,rowCount,wgId,termStr, keyStr];
-    }
-    else
-        url_s = [NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@",CURL,userId,page,rowCount,wgId];
+//    }
+//    else
+//        url_s = [NSString stringWithFormat:@"%@?userId=%@&page=%ld&pageSize=%ld&workGroupId=%@",CURL,userId,page,rowCount,wgId];
     
     NSData* responseString = [HttpBaseFile requestDataWithSync:url_s];
     
