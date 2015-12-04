@@ -340,7 +340,10 @@
     
     [muArr addObjectsFromArray:[Group getGroupsByUserID:self.loginUserID marks:&markArray workGroupId:_workGroupId searchString:(isBarOne ? searchString : nil) allNum:&allnum]];
     
-    _selectionArr = markArray[0][1];
+    if(markArray.count)
+    {
+        _selectionArr = markArray[0][1];
+    }
     
     _allNum = allnum;
     
@@ -1836,10 +1839,12 @@
 
 - (void)btnCreateNewGroup:(id)sender
 {
-    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICCreateNewGroupViewController"];
-    ((ICCreateNewGroupViewController*)vc).icMainController = self;
-    [self.navigationController pushViewController:vc animated:YES];
+//    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICCreateNewGroupViewController"];
+//    ((ICCreateNewGroupViewController*)vc).icMainController = self;
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    
 }
 
 - (void)btnGroupMessageClicked:(id)sender
