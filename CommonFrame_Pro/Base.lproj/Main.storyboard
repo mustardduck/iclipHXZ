@@ -2562,6 +2562,9 @@
                                         <rect key="frame" x="127" y="0.0" width="80" height="64"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="14" maxX="14" maxY="0.0"/>
                                         <state key="normal" image="btn_xuanzhezhaopian"/>
+                                        <connections>
+                                            <action selector="photoBtnClicked:" destination="3Mc-sL-gjJ" eventType="touchUpInside" id="3r5-RB-nwM"/>
+                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KlH-Wm-DpA">
                                         <rect key="frame" x="18" y="205" width="171" height="1"/>

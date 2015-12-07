@@ -7,8 +7,12 @@
 //
 
 #import "MQCreateGroupFirstController.h"
+#import "UICommon.h"
 
 @interface MQCreateGroupFirstController ()
+{
+    CGFloat _currentHeight;
+}
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoViewHeight;
 @property (weak, nonatomic) IBOutlet UIImageView *groupImg;
@@ -25,11 +29,59 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChangeed:) name:UITextViewTextDidChangeNotification object:nil];
+    
+    _currentHeight = 32;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)textChangeed:(id)sender
+{
+    CGFloat currentHeight = _sloganTextView.contentSize.height;
+    CGFloat newHeight = currentHeight - _currentHeight;
+
+    if(currentHeight < 120)
+    {
+        _photoViewHeight.constant = _photoViewHeight.constant + newHeight;
+        
+        _sloganTextView.height = _sloganTextView.height + newHeight;
+        
+        _currentHeight = currentHeight;
+    }
+
+//    [self removeType];
+//    
+//    CGFloat currentHeight = _textField.contentSize.height;
+//    CGFloat newHeight = currentHeight - _currentHeight;
+//
+//    if (currentHeight < 120) {
+//        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y  - newHeight, self.frame.size.width, self.frame.size.height +  newHeight);
+//        
+//        _textField.frame = CGRectMake(_textField.frame.origin.x, (self.bounds.size.height - (_textField.frame.size.height +  newHeight))/2 , _textField.frame.size.width, _textField.frame.size.height +  newHeight);
+//        
+//        _currentHeight = currentHeight;
+//        
+//        if (currentHeight != _minHeight) {
+//            _isChangeHeight = YES;
+//        }
+//        
+//    }
+//    NSLog(@"%f",currentHeight);
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
+}
+
+- (IBAction)photoBtnClicked:(id)sender
+{
+    
 }
 
 /*
