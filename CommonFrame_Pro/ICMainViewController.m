@@ -83,6 +83,8 @@
     NSString * _selectedTypeTermString;
     
     NSInteger _totalCount;
+    
+    UIView * _noMoreView;
 }
 
 - (IBAction)barButtonClicked:(id)sender;
@@ -718,10 +720,48 @@
             
             NSLog(@"Header:%@",_contentArray);
         }
-
+        
         [_tableView reloadData];
         
         [_tableView.header endRefreshing];
+        
+        if(_contentArray.count == 0)
+        {
+            if(!_noMoreView)
+            {
+                _noMoreView = [[UIView alloc] init];
+                _noMoreView.frame = _tableView.frame;
+                _noMoreView.backgroundColor = [UIColor backgroundColor];
+                [_tableView addSubview:_noMoreView];
+            }
+            
+            _noMoreView.hidden = NO;
+            _noMoreView.left = 0;
+            _noMoreView.top = YH(_tableView.tableHeaderView);
+            _noMoreView.height = H(_tableView) - H(_tableView.tableHeaderView);
+            
+            UILabel * noMoreLbl = [_noMoreView viewWithTag:1];
+            if(!noMoreLbl)
+            {
+                noMoreLbl = [[UILabel alloc] init];
+                noMoreLbl.frame = _tableView.frame;
+                noMoreLbl.backgroundColor = [UIColor clearColor];
+                noMoreLbl.textColor = [UIColor grayTitleColor];
+                noMoreLbl.text = @"暂无结果！";
+                noMoreLbl.textAlignment = NSTextAlignmentCenter;
+                noMoreLbl.font = Font(17);
+                noMoreLbl.tag = 1;
+                [_noMoreView addSubview:noMoreLbl];
+            }
+            
+            noMoreLbl.left = 8;
+            noMoreLbl.top = 0;
+            noMoreLbl.height = H(_noMoreView);
+        }
+        else
+        {
+            _noMoreView.hidden = YES;
+        }
         
     }];
     
@@ -1482,15 +1522,19 @@
             int m = 0;
             
             Mark * mark;
-            if(i >= 1 && _keyString.length)
+            
+            if(_searchArr.count > 0)
             {
-                m = i - 1;
-                
-                mark = _searchArr[m];
-            }
-            else
-            {
-                mark = _searchArr[i];
+                if(i >= 1 && _keyString.length)
+                {
+                    m = i - 1;
+                    
+                    mark = _searchArr[m];
+                }
+                else
+                {
+                    mark = _searchArr[i];
+                }
             }
             
             CGRect attaFrame = CGRectMake(14 + (accWidth + intevalWidth) * k, 10 + (intevalHeight + accHeight) * j, accWidth, accHeight);
@@ -1504,7 +1548,10 @@
             }
             else
             {
-                [name setText:mark.labelName];
+                if(mark)
+                {
+                    [name setText:mark.labelName];
+                }
                 [name setBackgroundColor:[UIColor tagBlueBackColor]];
             }
             [name setTextColor:[UIColor whiteColor]];
@@ -1520,21 +1567,26 @@
     if(!_showSearchBtn)
     {
         _showSearchBtn = [[UIButton alloc] initWithFrame:searchHeadView.frame];
-        _showSearchBtn.top = 0;
-        _showSearchBtn.left = 0;
-        _showSearchBtn.width = SCREENWIDTH - 40;
         _showSearchBtn.backgroundColor = [UIColor clearColor];
         [_showSearchBtn addTarget:self action:@selector(showSearchMenu:) forControlEvents:UIControlEventTouchUpInside];
         
     }
+    
+    _showSearchBtn.top = 0;
+    _showSearchBtn.left = 0;
+    _showSearchBtn.width = SCREENWIDTH - 40;
+    _showSearchBtn.height = H(searchHeadView);
+    
     if(!_clearAllSearchBtn)
     {
         _clearAllSearchBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, H(_showSearchBtn))];
-        _clearAllSearchBtn.left = SCREENWIDTH - 40;
         [_clearAllSearchBtn setImage:[UIImage imageNamed:@"btn_biaoqianshanchu"] forState:UIControlStateNormal];
         [_clearAllSearchBtn addTarget:self action:@selector(closeAllSearch:) forControlEvents:UIControlEventTouchUpInside];
         
     }
+    
+    _clearAllSearchBtn.left = SCREENWIDTH - 40;
+    _clearAllSearchBtn.height = H(_showSearchBtn);
     
     [searchHeadView addSubview:_clearAllSearchBtn];
     
@@ -1555,13 +1607,15 @@
     totalCountLbl.text = [NSString stringWithFormat:@"为您找到相关结果约 %ld 个", _totalCount];
     [groupHeadView addSubview:totalCountLbl];
     
-    groupHeadView.height = 78 + H(searchHeadView) + H(totalCountLbl) + 4;
+    groupHeadView.height = 78 + H(searchHeadView) + H(totalCountLbl) + 6;
 
     return groupHeadView;
 }
 
 - (void)closeAllSearch:(id)sender
 {
+    _noMoreView.hidden = YES;
+
     _isMarkShow = NO;
     if(_isSelectedType)
     {
@@ -1571,7 +1625,7 @@
     {
         _TermString = @"";
     }
-    
+    _keyString = @"";
     [self resetHeaderView];
     [_tableView.footer resetNoMoreData];
 

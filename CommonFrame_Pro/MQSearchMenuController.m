@@ -34,6 +34,9 @@
     UIButton * _clearBtn;
     
     UIImageView * _backgroundImg;
+    UIView * _topButtonView;
+    
+    UIView * _searchTopViewBottomLine;
 }
 
 
@@ -395,6 +398,8 @@
     
     _searchTopView.height = YH(_searchMarkView) + 14;
     
+    _searchTopViewBottomLine.bottom = H(_searchTopView) - 0.5;
+    
     CGRect rect = _mainCollView.frame;
     
     rect.origin.y = _searchTopView.bottom;
@@ -642,9 +647,9 @@
     
     _viewWidth = view.frame.size.width;
     
-    UIView * topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
-    topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
-    [_backgroundMenuView addSubview: topButtonView];
+    _topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
+    _topButtonView.backgroundColor = [UIColor clearColor];
+    [_backgroundMenuView addSubview: _topButtonView];
     
     UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24 + 6)];
     closeBtn.titleLabel.font = Font(12);
@@ -752,7 +757,16 @@
         
         [self initTagCollectionView];
     }
-
+    
+    if(!_searchTopViewBottomLine)
+    {
+        _searchTopViewBottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, H(_searchTopView) - 0.5, SCREENWIDTH, 0.5)];
+        
+        _searchTopViewBottomLine.backgroundColor = RGBCOLOR(19, 19, 19);
+    }
+    
+    [_searchTopView addSubview:_searchTopViewBottomLine];
+    
     return _searchTopView;
 }
 
@@ -830,10 +844,14 @@
         for(Mark * mark in _tagList)
         {
             searchStr = [searchStr stringByAppendingFormat:@"%@,", mark.labelId];
+            
         }
         
-        searchStr = [searchStr substringToIndex:searchStr.length - 1];
-        
+        if(searchStr.length >= 1)
+        {
+            searchStr = [searchStr substringToIndex:searchStr.length - 1];
+        }
+
         NSString * keyString = _txtField.text;
         
         [_txtField resignFirstResponder];
@@ -907,6 +925,9 @@
     if (_isOpen)
     {
         _isOpen = !_isOpen;
+        
+        _topButtonView.backgroundColor = [UIColor clearColor];
+
         [self performDismissAnimation];
     }
 }
@@ -941,20 +962,28 @@
 
 - (void)performDismissAnimation
 {
-    [UIView animateWithDuration:0.4 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         _menuButton.alpha = 1.0f;
         _menuButton.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
         _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+        
     }];
 }
 
 - (void)performOpenAnimation
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.4 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -SCREENHEIGHT + 64);
+            [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.3f];
+
         }];
     });
+}
+
+- (void)delayMethod
+{
+    _topButtonView.backgroundColor = RGBACOLOR(0, 0, 0, 0.5);
 }
 
 @end
