@@ -613,19 +613,51 @@
                         {
                             for (NSIndexPath * indP in _partiIndexPathArr)
                             {
-                                if(indexPath.section == indP.section && indexPath.row == indP.row)
+                                if(indexPath.section == indP.section)
                                 {
-                                    [self removeIndexPathFromCopyToArray:indexPath];
+                                    if(indexPath.row == indP.row)
+                                    {
+                                        [self removeIndexPathFromCopyToArray:indexPath];
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        [self addIndexPathToCopyToArray:indexPath];
+                                    }
                                 }
                                 else
                                 {
                                     [self addIndexPathToCopyToArray:indexPath];
+                                    break;
                                 }
                             }
                         }
                         else
                         {
                             [self addIndexPathToCopyToArray:indexPath];
+                        }
+                    }
+                }
+                else if (_partiIndexPathArr.count)
+                {
+                    for (NSIndexPath * indP in _partiIndexPathArr)
+                    {
+                        if(indexPath.section == indP.section)
+                        {
+                            if(indexPath.row == indP.row)
+                            {
+                                [self removeIndexPathFromCopyToArray:indexPath];
+                                break;
+                            }
+                            else
+                            {
+                                [self addIndexPathToCopyToArray:indexPath];
+                            }
+                        }
+                        else
+                        {
+                            [self addIndexPathToCopyToArray:indexPath];
+                            break;
                         }
                     }
                 }
@@ -1330,7 +1362,6 @@
         for (Member* ip in _selectedIndexList) {
             if (ip.userId == me.userId) {
                 [_selectedIndexList removeObject:ip];
-                break;
             }
         }
     }
