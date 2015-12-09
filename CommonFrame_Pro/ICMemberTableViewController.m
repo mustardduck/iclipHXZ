@@ -64,6 +64,7 @@
     // Do any additional setup after loading the view.
     
     _partiIndexPathArr = [NSMutableArray array];
+    _inviteIndexPathArr = [NSMutableArray array];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -322,6 +323,26 @@
                             NSIndexPath * indexP = [NSIndexPath indexPathForRow:j inSection:i];
                             
                             [_partiIndexPathArr addObject:indexP];
+                        }
+                    }
+                }
+            }
+        }
+        //标记邀请人indexpath
+        if (self.invitedArray != nil) {
+            
+            NSMutableArray* arr = (NSMutableArray*)self.invitedArray;
+            
+            for(Member * m in arr)
+            {
+                BOOL hasFinded = NO;
+                for (int i=0; i<_sections.count; i++) {
+                    for (int j= 0; j< ((NSArray*)_rows[i]).count;j++) {
+                        if (((Member*)_rows[i][j]).mobile == m.mobile) {
+                            hasFinded = YES;
+                            NSIndexPath * indexP = [NSIndexPath indexPathForRow:j inSection:i];
+                            
+                            [_inviteIndexPathArr addObject:indexP];
                         }
                     }
                 }
@@ -641,6 +662,29 @@
                 else if (_partiIndexPathArr.count)
                 {
                     for (NSIndexPath * indP in _partiIndexPathArr)
+                    {
+                        if(indexPath.section == indP.section)
+                        {
+                            if(indexPath.row == indP.row)
+                            {
+                                [self removeIndexPathFromCopyToArray:indexPath];
+                                break;
+                            }
+                            else
+                            {
+                                [self addIndexPathToCopyToArray:indexPath];
+                            }
+                        }
+                        else
+                        {
+                            [self addIndexPathToCopyToArray:indexPath];
+                            break;
+                        }
+                    }
+                }
+                else if (_inviteIndexPathArr.count)
+                {
+                    for (NSIndexPath * indP in _inviteIndexPathArr)
                     {
                         if(indexPath.section == indP.section)
                         {
@@ -1023,7 +1067,45 @@
             }
         }
         
-
+        BOOL isInvite = NO;
+        
+        if (_inviteIndexPathArr != nil) {
+            
+            for (NSIndexPath * indexP in _inviteIndexPathArr)
+            {
+                if(indexP.section == section && indexP.row == index)
+                {
+                    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(width - 140, 22, 100, 15)];
+                    [name setBackgroundColor:[UIColor clearColor]];
+                    [name setText:@"(已加入)"];
+                    [name setTextColor:[UIColor grayColor]];
+                    [name setFont:[UIFont systemFontOfSize:15]];
+                    [name setTag:346];//112
+                    
+                    [cell.contentView addSubview:name];
+                    
+                    isInvite = YES;
+                    
+                    break;
+                }
+            }
+            
+            if (isResponsible || isParti || isInvite)
+            {
+            }
+            else
+            {
+                [cell.contentView addSubview:choseImg];
+                
+                if ([self hasExitsInPartcipathsArray:indexPath])
+                    choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
+                else
+                    choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
+                
+                
+                cell.contentView.tag = indexPath.section;
+            }
+        }
     }
     
     //[cell.contentView setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];

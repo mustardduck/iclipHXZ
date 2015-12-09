@@ -220,7 +220,8 @@
         ((ICMemberTableViewController*)vc).icCreateGroupSecondController = self;
         ((ICMemberTableViewController*)vc).isFromCreatGroupInvite = YES;
         ((ICMemberTableViewController*)vc).workgid = @"1015082511440001";
-        
+        ((ICMemberTableViewController*)vc).invitedArray = _inviteArr;
+
         [self.navigationController pushViewController:vc animated:YES];
     }
     
