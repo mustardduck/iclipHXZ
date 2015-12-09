@@ -9,6 +9,7 @@
 #import "UICommon.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NSStringEx.h"
+#import <AddressBook/AddressBook.h>
 
 static UIViewController *imagePicker = nil;
 
@@ -338,6 +339,39 @@ static UIViewController *imagePicker = nil;
                                 completion:^(void){
                                     NSLog(@"Picker View Controller is presented");
                                 }];
+    }
+    
+}
+
++(void)CheckAddressBookAuthorization:(void (^)(bool isAuthorized))block
+{
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+    ABAuthorizationStatus authStatus = ABAddressBookGetAuthorizationStatus();
+    
+    if (authStatus != kABAuthorizationStatusAuthorized)
+    {
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error)
+                                                 {
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         if (error)
+                                                         {
+                                                             NSLog(@"Error: %@", (__bridge NSError *)error);
+                                                         }
+                                                         else if (!granted)
+                                                         {
+                                                             
+                                                             block(NO);
+                                                         }
+                                                         else
+                                                         {
+                                                             block(YES);
+                                                         }
+                                                     });  
+                                                 });  
+    }
+    else
+    {
+        block(YES);
     }
     
 }

@@ -50,6 +50,8 @@ typedef void (^keyboardBlock) ();
 + (void) showImagePicker:(id)delegate view:(UIViewController*)controller;
 + (void) showCamera:(id)delegate view:(UIViewController*) controller allowsEditing:(BOOL)allow;
 
++(void)CheckAddressBookAuthorization:(void (^)(bool isAuthorized))block;
+
 #pragma mark image scale utility
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
 

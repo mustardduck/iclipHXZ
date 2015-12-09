@@ -989,6 +989,7 @@
     Member* mem = _rows[indexPath.section][indexPath.row];
     
     UIImageView* photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, 12, 36, 36)];
+    photoImageView.tag = 777;
     //photoImageView.image = [UIImage imageNamed:@"icon_chengyuan"];
     if(mem.img.length)
     {
@@ -1087,7 +1088,7 @@
             {
                 [cell.contentView addSubview:choseImg];
                 
-                if ([self hasExitsInPartcipathsArray:indexPath])
+                if ([self hasExitsInSelectArray:indexPath])
                     choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
                 else
                     choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
@@ -1171,7 +1172,7 @@
                 UIImageView* img = (UIImageView*)control;
                 img.tag = 1011;
                 img.image = [UIImage imageNamed:@"btn_xuanze_2"];
-                [self addIndexPathToParticipantsArray:indexPath];
+                [self addIndexPathToCopyToArray:indexPath];
                 break;
             }
             else if (control.tag == 1011)
@@ -1179,7 +1180,7 @@
                 UIImageView* img = (UIImageView*)control;
                 img.tag = 1010;
                 img.image = [UIImage imageNamed:@"btn_xuanze_1"];
-                [self removeIndexPathFromParticipantsArray:indexPath];
+                [self removeIndexPathFromCopyToArray:indexPath];
                 break;
             }
         }
@@ -1281,10 +1282,10 @@
     NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:section];
     
     if (swi.on == YES){
-        [self addIndexPathToParticipantsArray:indexPath];
+        [self addIndexPathToCopyToArray:indexPath];
     }
     else{
-        [self removeIndexPathFromParticipantsArray:indexPath];
+        [self removeIndexPathFromCopyToArray:indexPath];
     }
 }
 
@@ -1335,7 +1336,7 @@
     return hasExits;
 }
 
-- (BOOL)hasExitsInPartcipathsArray:(NSIndexPath*)indexPath
+- (BOOL)hasExitsInSelectArray:(NSIndexPath*)indexPath
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
@@ -1354,50 +1355,6 @@
     return isEx;
 }
 
-
-- (void)addIndexPathToParticipantsArray:(NSIndexPath*)indexPath
-{
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    
-    BOOL isEx = NO;
-    
-    Member* me = _rows[section][row];
-    
-    if (_selectedIndexList.count > 0) {
-        for (Member* ip in _selectedIndexList) {
-            if (ip.userId == me.userId) {
-                isEx = YES;
-                break;
-            }
-        }
-        if (!isEx) {
-            [_selectedIndexList addObject:me];
-        }
-    }
-    else{
-        [_selectedIndexList addObject:me];
-    }
-}
-
-- (void)removeIndexPathFromParticipantsArray:(NSIndexPath*)indexPath
-{
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-
-    Member* me = _rows[section][row];
-    
-    if (_selectedIndexList.count > 0) {
-        for (Member* ip in _selectedIndexList) {
-            if (ip.userId == me.userId) {
-                [_selectedIndexList removeObject:ip];
-                break;
-            }
-        }
-    }
-}
-
-
 - (void)addIndexPathToCopyToArray:(NSIndexPath*)indexPath
 {
     NSInteger section = indexPath.section;
@@ -1407,11 +1364,28 @@
     
     Member* me = _rows[section][row];
     
+    UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
+    UIImageView * photo = [cell viewWithTag:777];
+    if(photo)
+    {
+        me.image = photo.image;
+    }
+    
     if (_selectedIndexList.count > 0) {
         for (Member* ip in _selectedIndexList) {
-            if (ip.userId == me.userId) {
-                isEx = YES;
-                break;
+            if(_isFromCreatGroupInvite)
+            {
+                if (ip.mobile == me.mobile) {
+                    isEx = YES;
+                    break;
+                }
+            }
+            else
+            {
+                if (ip.userId == me.userId) {
+                    isEx = YES;
+                    break;
+                }
             }
         }
         if (!isEx) {

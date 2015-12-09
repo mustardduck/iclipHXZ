@@ -12,6 +12,8 @@
 #import "ICMemberTableViewController.h"
 #import "PartiCell.h"
 #import "UICommon.h"
+#import "MQInviteAddressBookController.h"
+#import "SVProgressHUD.h"
 
 @interface MQCreateGroupSecondController ()<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -211,6 +213,25 @@
     if(section == 0 && row == 0)
     {//手机通讯录
         
+        [UICommon CheckAddressBookAuthorization:^(bool isAuthorized){
+            if(isAuthorized)
+            {
+                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQInviteAddressBookController"];
+                //        ((MQInviteAddressBookController*)vc).controllerType = MemberViewFromControllerCopyTo;
+                //        ((MQInviteAddressBookController*)vc).icCreateGroupSecondController = self;
+                //        ((MQInviteAddressBookController*)vc).isFromCreatGroupInvite = YES;
+                //        ((MQInviteAddressBookController*)vc).invitedArray = _inviteArr;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            else
+            {
+                [SVProgressHUD showErrorWithStatus:@"请到设置>隐私>通讯录打开本应用的权限设置"];
+            }
+        }];
+        
+
     }
     else if (section == 1 && row == 0)
     {//内部成员
@@ -330,7 +351,15 @@
     
     Member * member = _inviteArr[indexPath.row];
     
-    cell.photoView.image = [UIImage imageNamed:@"icon_morentouxiang"];
+    if(member.image)
+    {
+        cell.photoView.image = member.image;
+    }
+    else
+    {
+        cell.photoView.image = [UIImage imageNamed:@"icon_morentouxiang"];
+    }
+    
     
     [cell.photoView setRoundCorner:3.3];
     

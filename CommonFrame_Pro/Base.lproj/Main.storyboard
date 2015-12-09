@@ -2770,6 +2770,37 @@
             </objects>
             <point key="canvasLocation" x="2085" y="2624"/>
         </scene>
+        <!--手机通讯录-->
+        <scene sceneID="69t-4k-7H5">
+            <objects>
+                <viewController storyboardIdentifier="MQInviteAddressBookController" id="WwL-D9-X0u" customClass="MQInviteAddressBookController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="scE-Af-X4s"/>
+                        <viewControllerLayoutGuide type="bottom" id="ImW-mL-unV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="X3O-83-mel">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.1215686275" green="0.1215686275" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="手机通讯录" id="vrW-7W-PMD">
+                        <barButtonItem key="leftBarButtonItem" title="返回" id="NRE-xf-F8m">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="backButtonClicked:" destination="WwL-D9-X0u" id="BNl-HX-bu1"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="邀请" id="VcJ-ZR-qeQ">
+                            <color key="tintColor" red="0.29803921568627451" green="0.84313725490196079" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DPD-4R-Zi7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2308.5" y="1288"/>
+        </scene>
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>
