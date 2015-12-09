@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Group.h"
 
 @interface MQCreateGroupSecondController : UIViewController
+
+@property (nonatomic, strong) Group * workGroup;
+@property (nonatomic, strong) id icCreateGroupFirstController;
+
+@property (nonatomic, strong) NSMutableArray * inviteArr;
 
 @end

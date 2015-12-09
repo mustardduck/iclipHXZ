@@ -24,6 +24,7 @@
 @property (nonatomic,assign) BOOL  isAdmin;
 @property (nonatomic,strong) NSString*  userName;
 @property (nonatomic,assign) BOOL isReceive;
+@property (nonatomic,strong) UIImage * workGroupImage;
 
 + (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str allNum:(NSString **)allNum;
 

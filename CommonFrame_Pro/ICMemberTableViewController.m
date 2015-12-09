@@ -11,6 +11,7 @@
 #import "InputText.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "UICommon.h"
+#import "MQCreateGroupSecondController.h"
 
 @interface ICMemberTableViewController() <UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate>
 {
@@ -37,8 +38,9 @@
     //Group Members
     UITableViewCellEditingStyle _editingStyle;
     
-    NSMutableArray * _partiIndexPathArr;
-    
+    NSMutableArray * _partiIndexPathArr;//已选参与人
+    NSMutableArray * _inviteIndexPathArr;//已选邀请人
+
     UIButton * _selectBtn;
     
     NSInteger _totalMemberCount;
@@ -115,9 +117,18 @@
                 }
                 else
                 {//邀请时用的
-                    NSMutableArray* sectionArray = [NSMutableArray array];
-                    NSArray*        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil workGroupId:_workgid];
                     
+                    NSMutableArray* sectionArray = [NSMutableArray array];
+                    NSArray*        memberArray;
+                    
+                    if(_isFromCreatGroupInvite)
+                    {
+                        memberArray = [Member getAllMembersExceptMeAndMarkExistMember:&sectionArray searchText:nil workGroupId:_workgid];
+                    }
+                    else
+                    {
+                        memberArray = [Member getAllMembersExceptMe:&sectionArray searchText:nil workGroupId:_workgid];
+                    }
                     _sections = sectionArray;
                     _rows = memberArray;
                 }
@@ -297,7 +308,7 @@
             }
         }
         //标记参与人indexpath
-        if (self.selectedResponsibleDictionary != nil) {
+        if (self.selectedParticipantsDictionary != nil) {
             
             NSMutableArray* arr = (NSMutableArray*)self.selectedParticipantsDictionary;
             
@@ -654,6 +665,9 @@
     {
         if ([self.icPublishMisonController respondsToSelector:@selector(setCcopyToMembersArray:)]) {
             [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
+        }
+        if ([self.icCreateGroupSecondController respondsToSelector:@selector(setInviteArr:)]) {
+            [self.icCreateGroupSecondController setValue:_selectedIndexList forKey:@"inviteArr"];
         }
     }
     if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)

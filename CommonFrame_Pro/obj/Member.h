@@ -67,5 +67,6 @@
 + (Member*)getMemberInfoByWorkContractsID:(NSString*)contractID;
 + (NSArray*)getMembersByWorkGroupIDAndLabelID:(NSString*)workGroupId labelId:(NSString*)labelId;
 + (BOOL)memberUpdateWgPeopleStrtus:(NSString*)workContactsId status:(NSString *)status;
++ (NSArray*)getAllMembersExceptMeAndMarkExistMember:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId;
 
 @end

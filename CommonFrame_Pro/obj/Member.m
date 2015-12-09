@@ -102,7 +102,7 @@
     return array;
 }
 
-+ (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId
++ (NSArray*)getAllMembersExceptMeAndMarkExistMember:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId
 {
     NSMutableArray* array = [NSMutableArray array];
     NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
@@ -170,6 +170,98 @@
                                         cm.status = [[di valueForKey:@"status"] boolValue];
                                         cm.isHave = [[di valueForKey:@"isHave"] boolValue];
                                         
+                                        [sectionMemberArray addObject:cm];
+                                    }
+                                }
+                                if(sectionMemberArray.count)
+                                {
+                                    [array addObject:sectionMemberArray];
+                                    
+                                    [sectionArray addObject:tmpKey];
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    *sections = sectionArray;
+    
+    return array;
+}
+
++ (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId
+{
+    NSMutableArray* array = [NSMutableArray array];
+    NSArray*    tmpSection = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
+    NSMutableArray* sectionArray = [NSMutableArray array];
+    
+    NSString * urlstr = [NSString stringWithFormat:@"%@?orgId=%@", INVITE_URL, [LoginUser loginUserOrgID]];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:(searchString == nil ? [NSString stringWithFormat:@"%@&workGroupId=%@",urlstr, groupId] : [NSString stringWithFormat:@"%@&workGroupId=%@&str=%@",urlstr, groupId,searchString])];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSDictionary class]])
+                {
+                    for (int i = 0; i < tmpSection.count; i++)
+                    {
+                        NSString* tmpKey = [tmpSection objectAtIndex:i];
+                        id sArr = [dataDic valueForKey:tmpKey];
+                        if (sArr != nil)
+                        {
+                            if ([sArr isKindOfClass:[NSArray class]])
+                            {
+                                NSArray* dArr = (NSArray*)sArr;
+                                NSMutableArray* sectionMemberArray = [NSMutableArray array];
+                                
+                                for (id data in dArr) {
+                                    if ([data isKindOfClass:[NSDictionary class]]) {
+                                        
+                                        NSDictionary* di = (NSDictionary*)data;
+                                        
+                                        Member* cm = [Member new];
+                                        
+                                        cm.orgcontactId = [di valueForKey:@"orgcontactId"];
+                                        cm.orggroupId = [di valueForKey:@"orggroupId"];
+                                        cm.orgId = [di valueForKey:@"orgId"];
+                                        cm.userId = [di valueForKey:@"userId"];
+                                        cm.name = [di valueForKey:@"name"];
+                                        if(cm.userId == [LoginUser loginUserID])
+                                        {
+                                            [sectionArray removeObject:tmpKey];
+                                            
+                                            break;
+                                        }
+                                        cm.company = [di valueForKey:@"company"];
+                                        cm.address = [di valueForKey:@"address"];
+                                        cm.officeTel = [di valueForKey:@"officeTel"];
+                                        cm.faxTel = [di valueForKey:@"faxTel"];
+                                        cm.email = [di valueForKey:@"email"];
+                                        cm.duty = [di valueForKey:@"duty"];
+                                        cm.remark = [di valueForKey:@"remark"];
+                                        cm.img = [di valueForKey:@"img"];
+                                        cm.QQ = [di valueForKey:@"QQ"];
+                                        cm.version = [di valueForKey:@"version"];
+                                        cm.createTime = [di valueForKey:@"createTime"];
+                                        cm.status = [[di valueForKey:@"status"] boolValue];
+                                        cm.isHave = [[di valueForKey:@"isHave"] boolValue];
+
                                         if(!cm.isHave)
                                         {
                                             [sectionMemberArray addObject:cm];

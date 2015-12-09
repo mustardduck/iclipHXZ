@@ -35,6 +35,8 @@ typedef enum{
 @property (nonatomic,strong) NSArray* selectedResponsibleDictionary;
 //Publish Mission Participants
 @property (nonatomic,strong) id icPublishMisonController;
+@property (nonatomic,strong) id icCreateGroupSecondController;
+
 @property (nonatomic,strong) NSArray* selectedParticipantsDictionary;
 //Publish Mission CopyTo
 @property (nonatomic,strong) NSArray* selectedCopyToMembersArray;
@@ -43,5 +45,8 @@ typedef enum{
 @property (nonatomic, assign) BOOL justRead;
 @property (nonatomic, assign) BOOL isCC;
 @property (nonatomic, assign) BOOL isKJFW;
+@property (nonatomic, assign) BOOL isFromCreatGroupInvite;
+
+@property (nonatomic,strong) NSArray* invitedArray;
 
 @end

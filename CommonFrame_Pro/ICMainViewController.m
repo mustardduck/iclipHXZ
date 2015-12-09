@@ -24,6 +24,7 @@
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
 #import "HTHorizontalSelectionList.h"
+#import "MQCreateGroupFirstController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -1898,7 +1899,11 @@
 //    ((ICCreateNewGroupViewController*)vc).icMainController = self;
 //    [self.navigationController pushViewController:vc animated:YES];
     
-    
+    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQCreateGroupFirstController"];
+//    ((MQCreateGroupFirstController*)vc).icMainController = self;
+    [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 - (void)btnGroupMessageClicked:(id)sender
