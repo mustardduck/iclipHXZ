@@ -744,7 +744,12 @@
             [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
         }
         if ([self.icCreateGroupSecondController respondsToSelector:@selector(setInviteArr:)]) {
-            [self.icCreateGroupSecondController setValue:_selectedIndexList forKey:@"inviteArr"];
+            
+            NSMutableArray * allInvitedArr = [NSMutableArray array];
+            [allInvitedArr addObjectsFromArray:_invitedArray];
+            [allInvitedArr addObjectsFromArray:_selectedIndexList];
+            
+            [self.icCreateGroupSecondController setValue:allInvitedArr forKey:@"inviteArr"];
         }
     }
     if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
@@ -1064,7 +1069,7 @@
                     [name setBackgroundColor:[UIColor clearColor]];
                     [name setText:@"(已加入)"];
                     [name setTextColor:[UIColor grayColor]];
-                    [name setFont:[UIFont systemFontOfSize:15]];
+                    [name setFont:[UIFont systemFontOfSize:14]];
                     [name setTag:346];//112
                     
                     [cell.contentView addSubview:name];
@@ -1426,7 +1431,10 @@
     Member* me = _rows[section][row];
     
     if (_selectedIndexList.count > 0) {
-        for (Member* ip in _selectedIndexList) {
+        
+        NSMutableArray * selArr = [[NSMutableArray alloc]initWithArray:_selectedIndexList];
+        
+        for (Member* ip in selArr) {
             if (ip.userId == me.userId) {
                 [_selectedIndexList removeObject:ip];
             }
