@@ -181,7 +181,11 @@
     }
     else
     {
-        NSInteger count = [_nameList[0] count];
+        NSInteger count = 0;
+        if(_nameList.count)
+        {
+            count = [_nameList[0] count];
+        }
         
         return count;
     }

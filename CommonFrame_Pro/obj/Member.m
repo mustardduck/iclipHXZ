@@ -164,6 +164,7 @@
                                         cm.duty = [di valueForKey:@"duty"];
                                         cm.remark = [di valueForKey:@"remark"];
                                         cm.img = [di valueForKey:@"img"];
+                                        cm.mobile = [di valueForKey:@"mobile"];
                                         cm.QQ = [di valueForKey:@"QQ"];
                                         cm.version = [di valueForKey:@"version"];
                                         cm.createTime = [di valueForKey:@"createTime"];

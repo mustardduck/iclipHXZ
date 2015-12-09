@@ -338,7 +338,8 @@
                 BOOL hasFinded = NO;
                 for (int i=0; i<_sections.count; i++) {
                     for (int j= 0; j< ((NSArray*)_rows[i]).count;j++) {
-                        if (((Member*)_rows[i][j]).mobile == m.mobile) {
+                        Member * rowMem = (Member*)_rows[i][j];
+                        if ([rowMem.mobile isEqualToString:m.mobile] && m.mobile.length) {
                             hasFinded = YES;
                             NSIndexPath * indexP = [NSIndexPath indexPathForRow:j inSection:i];
                             
@@ -1048,22 +1049,6 @@
                     
                     break;
                 }
-            }
-            
-            if (isResponsible || isParti)
-            {
-            }
-            else
-            {
-                [cell.contentView addSubview:choseImg];
-
-                if ([self hasExitsInPartcipathsArray:indexPath])
-                    choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
-                else
-                    choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
-                
-                
-                cell.contentView.tag = indexPath.section;
             }
         }
         
