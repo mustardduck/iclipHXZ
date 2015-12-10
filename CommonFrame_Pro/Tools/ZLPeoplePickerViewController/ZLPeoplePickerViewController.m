@@ -63,6 +63,17 @@
     
     self.view.backgroundColor = [UIColor redColor];
     
+    if(_invitedArr.count)
+    {
+        for(Member * member in _invitedArr)
+        {
+            if(member.recordId)
+            {
+                [self.selectedPeople addObject:member.recordId];
+            }
+        }
+    }
+    
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
@@ -159,13 +170,33 @@
 
                 me.mobile = phone;
                 
+                me.recordId = recordNumId;
+                
                 [inviteArr addObject:me];
             }
         }
     }
     
     if ([self.icCreateGroupSecondController respondsToSelector:@selector(setInviteArr:)]) {
-        [self.icCreateGroupSecondController setValue:inviteArr forKey:@"inviteArr"];
+        
+        NSMutableArray * allInvitedArr = [NSMutableArray array];
+        
+        NSMutableArray * inviteFromInnerArr = [NSMutableArray array];
+        for (Member * m in _invitedArr)
+        {
+            if(!m.recordId)
+            {
+                [inviteFromInnerArr addObject:m];
+            }
+        }
+
+        [allInvitedArr addObjectsFromArray:inviteArr];
+        if(inviteFromInnerArr.count)
+        {
+            [allInvitedArr addObjectsFromArray:inviteFromInnerArr];
+        }
+        
+        [self.icCreateGroupSecondController setValue:allInvitedArr forKey:@"inviteArr"];
     }
     
     [self.navigationController popViewControllerAnimated:YES];

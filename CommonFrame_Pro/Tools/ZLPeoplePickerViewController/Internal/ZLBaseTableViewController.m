@@ -244,12 +244,14 @@
     {
         titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(50, 18, SCREENWIDTH - 70, 20)];
         titleLbl.backgroundColor = [UIColor clearColor];
-        titleLbl.text = contact.compositeName;
         titleLbl.font = Font(17);
         titleLbl.textColor = [UIColor whiteColor];
         titleLbl.tag = 100;
         [cell addSubview:titleLbl];
     }
+    
+    titleLbl.text = contact.compositeName;
+
     
     UILabel * phoneLbl = [cell viewWithTag:101];
     
@@ -257,11 +259,17 @@
     {
         phoneLbl = [[UILabel alloc] initWithFrame:CGRectMake(50, YH(titleLbl) + 10, SCREENWIDTH - 70, 14)];
         phoneLbl.backgroundColor = [UIColor clearColor];
-        phoneLbl.text = contact.phones[0];
         phoneLbl.font = Font(12);
         phoneLbl.textColor = [UIColor grayTitleColor];
         phoneLbl.tag = 101;
         [cell addSubview:phoneLbl];
+    }
+    
+    if(contact.phones.count)
+    {
+        NSString * str = [contact.phones[0] stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        
+        phoneLbl.text = str;
     }
     cell.backgroundColor = [UIColor backgroundColor];
 }

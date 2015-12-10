@@ -124,31 +124,20 @@ ZLPeoplePickerViewControllerDelegate>
 }
 
 - (void) viewWillAppear:(BOOL)animated
-{
-//    if(_peoplePicker.selectedPeople.count)
-//    {
-//        Member * me = [Member new];
-//        
-//        for (NSString * recordId in _peoplePicker.selectedPeople)
-//        {
-//            NSString * name = [self compositeNameForPerson:recordId];
-//            me.name = name;
-//        }
-//        
-//    }
-    
+{    
     if(_inviteArr.count)
     {
         _inviteCollView.hidden = NO;
         
         [_inviteCollView reloadData];
-        
-        [_tableView reloadData];
     }
     else
     {
         _inviteCollView.hidden = YES;
     }
+    
+    [_tableView reloadData];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -270,6 +259,7 @@ ZLPeoplePickerViewControllerDelegate>
                 self.peoplePicker.delegate = self;
                 self.peoplePicker.numberOfSelectedPeople = ZLNumSelectionMax;
                 self.peoplePicker.icCreateGroupSecondController = self;
+                self.peoplePicker.invitedArr = _inviteArr;
                 [self.navigationController pushViewController:self.peoplePicker
                                                      animated:YES];
                 

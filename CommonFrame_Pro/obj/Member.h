@@ -59,6 +59,7 @@
 @property (nonatomic,assign) BOOL       isHave;
 
 @property (nonatomic, strong) UIImage * image;
+@property (nonatomic, strong) NSNumber * recordId;//手机通讯录ID
 
 + (NSArray*)getAllMembers:(NSMutableArray**)sections searchText:(NSString*)searchString;
 + (NSArray*)getAllMembersExceptMeByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount;
