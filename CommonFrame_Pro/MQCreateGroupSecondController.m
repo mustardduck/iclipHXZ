@@ -14,8 +14,13 @@
 #import "UICommon.h"
 #import "MQInviteAddressBookController.h"
 #import "SVProgressHUD.h"
+#import "ZLPeoplePickerViewController.h"
 
-@interface MQCreateGroupSecondController ()<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
+
+@interface MQCreateGroupSecondController ()<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
+ZLPeoplePickerViewControllerDelegate>
 {
     UITableView*            _tableView;
     
@@ -32,6 +37,9 @@
     
     self.inviteArr = [NSMutableArray array];
     
+    _addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
+    [ZLPeoplePickerViewController initializeAddressBook];
+    
     [self initTableView];
     
     [self initInviteCollView];
@@ -41,6 +49,36 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - ZLPeoplePickerViewControllerDelegate
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker
+                   didSelectPerson:(NSNumber *)recordId {
+    if (peoplePicker.numberOfSelectedPeople == ZLNumSelectionMax) {
+        {
+//            NSArray * arr = [UICommon phonesArrForPerson:recordId withAddressBookRef:self.addressBookRef];
+            
+            
+        }
+    }
+}
+
+- (UIAlertController *)alertControllerWithTitle:(NSString *)title
+                                        Message:(NSString *)message {
+    UIAlertController *alert = [UIAlertController
+                                alertControllerWithTitle:title
+                                message:message
+                                preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction *action) {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                         }];
+    [alert addAction:ok];
+    return alert;
+}
+
+
 
 - (void) initInviteCollView
 {
@@ -87,6 +125,18 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+//    if(_peoplePicker.selectedPeople.count)
+//    {
+//        Member * me = [Member new];
+//        
+//        for (NSString * recordId in _peoplePicker.selectedPeople)
+//        {
+//            NSString * name = [self compositeNameForPerson:recordId];
+//            me.name = name;
+//        }
+//        
+//    }
+    
     if(_inviteArr.count)
     {
         _inviteCollView.hidden = NO;
@@ -216,14 +266,21 @@
         [UICommon CheckAddressBookAuthorization:^(bool isAuthorized){
             if(isAuthorized)
             {
-                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQInviteAddressBookController"];
+                self.peoplePicker = [[ZLPeoplePickerViewController alloc] init];
+                self.peoplePicker.delegate = self;
+                self.peoplePicker.numberOfSelectedPeople = ZLNumSelectionMax;
+                self.peoplePicker.icCreateGroupSecondController = self;
+                [self.navigationController pushViewController:self.peoplePicker
+                                                     animated:YES];
+                
+//                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQInviteAddressBookController"];
                 //        ((MQInviteAddressBookController*)vc).controllerType = MemberViewFromControllerCopyTo;
                 //        ((MQInviteAddressBookController*)vc).icCreateGroupSecondController = self;
                 //        ((MQInviteAddressBookController*)vc).isFromCreatGroupInvite = YES;
                 //        ((MQInviteAddressBookController*)vc).invitedArray = _inviteArr;
                 
-                [self.navigationController pushViewController:vc animated:YES];
+//                [self.navigationController pushViewController:vc animated:YES];
             }
             else
             {

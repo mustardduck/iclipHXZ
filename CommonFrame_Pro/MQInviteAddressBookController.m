@@ -8,7 +8,7 @@
 
 #import "MQInviteAddressBookController.h"
 #import <AddressBookUI/AddressBookUI.h>
-#import "ZCAddressBook.h"
+//#import "ZCAddressBook.h"
 #import "UICommon.h"
 #import "SVProgressHUD.h"
 
@@ -25,9 +25,9 @@
     NSMutableDictionary*dic;
     NSArray*array;
     //获得Vcard
-    dic= [[ZCAddressBook shareControl]getPersonInfo];
-    //获得序列索引
-    array=[[ZCAddressBook shareControl]sortMethod];
+//    dic= [[ZCAddressBook shareControl]getPersonInfo];
+//    //获得序列索引
+//    array=[[ZCAddressBook shareControl]sortMethod];
 
 }
 

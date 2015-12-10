@@ -2773,7 +2773,7 @@
         <!--手机通讯录-->
         <scene sceneID="69t-4k-7H5">
             <objects>
-                <viewController storyboardIdentifier="MQInviteAddressBookController" id="WwL-D9-X0u" customClass="MQInviteAddressBookController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ZLPeoplePickerViewController" id="WwL-D9-X0u" customClass="ZLPeoplePickerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="scE-Af-X4s"/>
                         <viewControllerLayoutGuide type="bottom" id="ImW-mL-unV"/>

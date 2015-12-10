@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
+#import "ZLPeoplePickerViewController.h"
 
 @interface MQCreateGroupSecondController : UIViewController
 
@@ -15,5 +16,8 @@
 @property (nonatomic, strong) id icCreateGroupFirstController;
 
 @property (nonatomic, strong) NSMutableArray * inviteArr;
+@property (nonatomic, strong) ZLPeoplePickerViewController *peoplePicker;
+@property (nonatomic, assign) ABAddressBookRef addressBookRef;
+
 
 @end

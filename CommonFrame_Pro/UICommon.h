@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <AddressBook/AddressBook.h>
 
 #define ORIGINAL_MAX_WIDTH 640.0f
 
@@ -56,6 +57,12 @@ typedef void (^keyboardBlock) ();
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
 
 + (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize;
+
++ (NSString *)compositeNameForPerson:(NSNumber *)recordId  withAddressBookRef:(ABAddressBookRef)addressBookRef;
+
++ (NSArray *)phonesArrForPerson:(NSNumber *)recordId withAddressBookRef:(ABAddressBookRef)addressBookRef;
+
+//+ (NSString *)compositeNameForPerson:(NSNumber *)recordId;
 
 @end
 

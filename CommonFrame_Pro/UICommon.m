@@ -275,6 +275,51 @@ static UIViewController *imagePicker = nil;
     return [self imageByScalingAndCroppingForSourceImage:sourceImage targetSize:targetSize];
 }
 
++ (NSString *)compositeNameForPerson:(NSNumber *)recordId withAddressBookRef:(ABAddressBookRef)addressBookRef
+{
+    ABRecordRef ref = ABAddressBookGetPersonWithRecordID(addressBookRef,
+                                                         [recordId intValue]);
+    
+    CFStringRef compositeNameRef = ABRecordCopyCompositeName(ref);
+    NSString * compositeName = (__bridge_transfer NSString *)compositeNameRef;
+    
+    return compositeName;
+}
+
++ (void)enumerateMultiValueOfProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
+                            withBlock:(void (^)(ABMultiValueRef multiValue, NSUInteger index))block
+{
+    ABMultiValueRef multiValue = ABRecordCopyValue(recordRef, property);
+    NSUInteger count = (NSUInteger)ABMultiValueGetCount(multiValue);
+    for (NSUInteger i = 0; i < count; i++)
+    {
+        block(multiValue, i);
+    }
+    CFRelease(multiValue);
+}
+
++ (NSArray *)phonesArrForPerson:(NSNumber *)recordId withAddressBookRef:(ABAddressBookRef)addressBookRef
+{
+    ABRecordRef ref = ABAddressBookGetPersonWithRecordID(addressBookRef,
+                                                         [recordId intValue]);
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    [self enumerateMultiValueOfProperty:kABPersonPhoneProperty fromRecord:ref
+                              withBlock:^(ABMultiValueRef multiValue, NSUInteger index)
+     {
+         CFTypeRef value = ABMultiValueCopyValueAtIndex(multiValue, index);
+         NSString *string = (__bridge_transfer NSString *)value;
+         if (string)
+         {
+             NSString * str = [string stringByReplacingOccurrencesOfString:@"-" withString:@""];
+             
+             [array addObject:str];
+         }
+     }];
+    
+    return array.copy;
+}
+
 + (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize {
     UIImage *newImage = nil;
     CGSize imageSize = sourceImage.size;

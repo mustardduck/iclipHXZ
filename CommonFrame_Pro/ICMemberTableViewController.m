@@ -1362,10 +1362,21 @@
     BOOL isEx = NO;
     if (_selectedIndexList.count > 0) {
         for (Member* ip in _selectedIndexList) {
-            if (ip.userId == me.userId) {
-                isEx = YES;
-                break;
+            if(_isFromCreatGroupInvite)
+            {
+                if ([ip.mobile isEqualToString: me.mobile]) {
+                    isEx = YES;
+                    break;
+                }
             }
+            else
+            {
+                if (ip.userId == me.userId) {
+                    isEx = YES;
+                    break;
+                }
+            }
+
         }
     }
     
