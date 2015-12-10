@@ -285,6 +285,11 @@
         if (self.selectedCopyToMembersArray != nil) {
             _selectedIndexList = [NSMutableArray arrayWithArray:self.selectedCopyToMembersArray];
         }
+        else if (self.invitedArray != nil)
+        {
+            _selectedIndexList = [NSMutableArray arrayWithArray:self.invitedArray];
+
+        }
         
         if (self.selectedResponsibleDictionary != nil) {
             
@@ -691,8 +696,8 @@
                         {
                             if(indexPath.row == indP.row)
                             {
-                                [self removeIndexPathFromCopyToArray:indexPath];
-                                break;
+//                                [self removeIndexPathFromCopyToArray:indexPath];
+//                                break;
                             }
                             else
                             {
@@ -746,7 +751,7 @@
         if ([self.icCreateGroupSecondController respondsToSelector:@selector(setInviteArr:)]) {
             
             NSMutableArray * allInvitedArr = [NSMutableArray array];
-            [allInvitedArr addObjectsFromArray:_invitedArray];
+//            [allInvitedArr addObjectsFromArray:_invitedArray];
             [allInvitedArr addObjectsFromArray:_selectedIndexList];
             
             [self.icCreateGroupSecondController setValue:allInvitedArr forKey:@"inviteArr"];
@@ -1083,6 +1088,18 @@
             
             if (isResponsible || isParti || isInvite)
             {
+                if(isInvite)
+                {
+                    [cell.contentView addSubview:choseImg];
+                    
+                    if ([self hasExitsInSelectArray:indexPath])
+                        choseImg.image = [UIImage imageNamed:@"btn_xuanze_2"];
+                    else
+                        choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
+                    
+                    
+                    cell.contentView.tag = indexPath.section;
+                }
             }
             else
             {
@@ -1373,19 +1390,9 @@
     
     if (_selectedIndexList.count > 0) {
         for (Member* ip in _selectedIndexList) {
-            if(_isFromCreatGroupInvite)
-            {
-                if (ip.mobile == me.mobile) {
-                    isEx = YES;
-                    break;
-                }
-            }
-            else
-            {
-                if (ip.userId == me.userId) {
-                    isEx = YES;
-                    break;
-                }
+            if (ip.userId == me.userId) {
+                isEx = YES;
+                break;
             }
         }
         if (!isEx) {

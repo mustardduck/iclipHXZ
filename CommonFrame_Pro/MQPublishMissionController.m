@@ -827,6 +827,7 @@
         ((ICMemberTableViewController*)vc).controllerType = MemberViewFromControllerPublishMissionResponsible;
         ((ICMemberTableViewController*)vc).icGroupListController = self;
         ((ICMemberTableViewController*)vc).workgid =  self.workGroupId;
+        ((ICMemberTableViewController*)vc).justRead =  YES;
         if (_responsibleDic != nil) {
             ((ICMemberTableViewController*)vc).selectedResponsibleDictionary = _responsibleDic;
         }
@@ -843,7 +844,8 @@
         
         ((ICMemberTableViewController*)vc).selectedResponsibleDictionary = _responsibleDic;
         ((ICMemberTableViewController*)vc).workgid = self.workGroupId;
-        
+        ((ICMemberTableViewController*)vc).justRead = YES;
+
         if (_participantsIndexPathArray.count > 0) {
             ((ICMemberTableViewController*)vc).selectedParticipantsDictionary = _participantsIndexPathArray;
         }
@@ -861,7 +863,8 @@
         ((ICMemberTableViewController*)vc).selectedResponsibleDictionary = _responsibleDic;
         ((ICMemberTableViewController*)vc).workgid = self.workGroupId;
         ((ICMemberTableViewController*)vc).isCC = YES;
-        
+        ((ICMemberTableViewController*)vc).justRead = YES;
+
         if (_ccopyToMembersArray.count > 0) {
             ((ICMemberTableViewController*)vc).selectedCopyToMembersArray = _ccopyToMembersArray;
         }

@@ -580,7 +580,8 @@
         
         ((ICMemberTableViewController*)vc).workgid = self.workGroupId;
         ((ICMemberTableViewController*)vc).isCC = YES;
-        
+        ((ICMemberTableViewController*)vc).justRead = YES;
+
         if (_ccopyToMembersArray.count > 0) {
             ((ICMemberTableViewController*)vc).selectedCopyToMembersArray = _ccopyToMembersArray;
         }
