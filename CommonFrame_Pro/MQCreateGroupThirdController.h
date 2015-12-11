@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Group.h"
 
 @interface MQCreateGroupThirdController : UIViewController
+
+@property (nonatomic, strong) Group * workGroup;
 
 @end

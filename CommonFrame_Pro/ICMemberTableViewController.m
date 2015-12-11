@@ -749,12 +749,8 @@
             [self.icPublishMisonController setValue:_selectedIndexList forKey:@"ccopyToMembersArray"];
         }
         if ([self.icCreateGroupSecondController respondsToSelector:@selector(setInviteArr:)]) {
-            
-            NSMutableArray * allInvitedArr = [NSMutableArray array];
-//            [allInvitedArr addObjectsFromArray:_invitedArray];
-            [allInvitedArr addObjectsFromArray:_selectedIndexList];
-            
-            [self.icCreateGroupSecondController setValue:allInvitedArr forKey:@"inviteArr"];
+
+            [self.icCreateGroupSecondController setValue:_selectedIndexList forKey:@"inviteArr"];
         }
     }
     if(self.controllerType == MemberViewFromControllerPublishMissionParticipants)
@@ -1130,25 +1126,52 @@
         if (control.tag == 1010) {
             for(Member * me in _selectedIndexList)
             {
-                if(mem.userId == me.userId)
+                if(_isFromCreatGroupInvite)
                 {
-                    UIImageView* img = (UIImageView*)control;
-                    img.tag = 1011;
-                    img.image = [UIImage imageNamed:@"btn_xuanze_2"];
-                    break;
+                    if([mem.mobile isEqualToString: me.mobile])
+                    {
+                        UIImageView* img = (UIImageView*)control;
+                        img.tag = 1011;
+                        img.image = [UIImage imageNamed:@"btn_xuanze_2"];
+                        break;
+                    }
                 }
+                else
+                {
+                    if(mem.userId == me.userId)
+                    {
+                        UIImageView* img = (UIImageView*)control;
+                        img.tag = 1011;
+                        img.image = [UIImage imageNamed:@"btn_xuanze_2"];
+                        break;
+                    }
+                }
+
             }
         }
         else if (control.tag == 1011)
         {
             for(Member * me in _selectedIndexList)
             {
-                if(mem.userId == me.userId)
+                if(_isFromCreatGroupInvite)
                 {
-                    UIImageView* img = (UIImageView*)control;
-                    img.tag = 1010;
-                    img.image = [UIImage imageNamed:@"btn_xuanze_1"];
-                    break;
+                    if([mem.mobile isEqualToString: me.mobile])
+                    {
+                        UIImageView* img = (UIImageView*)control;
+                        img.tag = 1010;
+                        img.image = [UIImage imageNamed:@"btn_xuanze_1"];
+                        break;
+                    }
+                }
+                else
+                {
+                    if(mem.userId == me.userId)
+                    {
+                        UIImageView* img = (UIImageView*)control;
+                        img.tag = 1010;
+                        img.image = [UIImage imageNamed:@"btn_xuanze_1"];
+                        break;
+                    }
                 }
             }
 
@@ -1391,6 +1414,8 @@
     BOOL isEx = NO;
     
     Member* me = _rows[section][row];
+    me.source = @"0";
+    me.sourceId = [NSString stringWithFormat:@"%@", me.orgcontactId];
     
     UITableViewCell* cell = [_tableView cellForRowAtIndexPath:indexPath];
     UIImageView * photo = [cell viewWithTag:777];

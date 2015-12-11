@@ -49,6 +49,21 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChangeed:) name:UITextViewTextDidChangeNotification object:nil];
     
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+    [leftButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
+    [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+    [leftButton addSubview:imgview];
+    UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 50, 20)];
+    [ti setBackgroundColor:[UIColor clearColor]];
+    [ti setTextColor:[UIColor whiteColor]];
+    [ti setText:@"返回"];
+    [ti setFont:[UIFont systemFontOfSize:17]];
+    [leftButton addSubview:ti];
+    
+    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+    self.navigationItem.leftBarButtonItem = rightBarButton;
+    
     _currentHeight = 32;
     
     [self addDoneToKeyboard:_sloganTextView];
@@ -138,19 +153,13 @@
         NSString* img = self.workGroup.workGroupImg;
         NSString* wgid = self.workGroup.workGroupId;
         
-//        if (_cAccessoryArray.count > 0) {
-//            Accessory* acc = [_cAccessoryArray objectAtIndex:0];
-//            img = acc.address;
-//        }
-        
         [SVProgressHUD showInfoWithStatus:@"群组修改中..."];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             
             BOOL isOk = [Group updateGroup:wgid name:name description:desc groupImage:img];
             if (isOk) {
-//                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"群组资料修改成功!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//                [alert show];
+
                 [SVProgressHUD showSuccessWithStatus:@"群组修改成功"];
                 
                 _workGroup.workGroupName = name;
@@ -260,6 +269,7 @@
 
 - (IBAction)photoBtnClicked:(id)sender
 {
+    [self hiddenKeyboard];
     UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选取",nil];
     [as showInView:self.view];
 }

@@ -27,5 +27,6 @@
 + (BOOL)remove:(NSString*)labelID  workGroupId:(NSString*)wgid;
 + (BOOL)update:(NSString*)labelID labelName:(NSString*)name;
 + (BOOL)updateMarkMember:(NSString*)labelID workGroupID:(NSString*)workGroupId memberIdArray:(NSArray*)memberIDArray;
++ (BOOL)addWgLabelList:(NSArray*)labelNameList workGroupID:(NSString*)workGroupId;
 
 @end

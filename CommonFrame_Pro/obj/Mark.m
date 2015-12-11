@@ -10,6 +10,9 @@
 #import "LoginUser.h"
 
 #define NEW_URL             @"/workgroup/addWgLabel.hz"
+#define AddWgLabelList_URL   @"/workgroup/addWgLabelList.hz"
+
+
 #define DELETE_URL          @"/workgroup/deleteWgLabel.hz"
 #define UPDATE_URL          @"/workgroup/updateWgLabel.hz"
 #define UPDATE_MEM_URL      @"/workgroup/updateWgPeopleLabel.hz"
@@ -71,6 +74,47 @@
     }
     
     return array;
+}
+
++ (BOOL)addWgLabelList:(NSArray*)labelNameList workGroupID:(NSString*)workGroupId
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    NSString* userId = [LoginUser loginUserID];
+    
+    [dic setObject:userId forKey:@"userId"];
+    [dic setObject:workGroupId forKey:@"workGroupId"];
+    [dic setObject:labelNameList forKey:@"labelNameList"];
+    
+    NSString* jsonStr = [CommonFile toJson:dic];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:AddWgLabelList_URL postData:tmpDic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+    
+    return isOk;
+    
 }
 
 + (BOOL)createNewMark:(NSString*)labelName workGroupID:(NSString*)workGroupId

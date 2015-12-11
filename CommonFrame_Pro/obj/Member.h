@@ -60,6 +60,8 @@
 
 @property (nonatomic, strong) UIImage * image;
 @property (nonatomic, strong) NSNumber * recordId;//手机通讯录ID
+@property (nonatomic, strong) NSString * source;//来源   0：单位通讯录   1：电话   2：微信
+@property (nonatomic, strong) NSString * sourceId;//来源的唯一Id  0：为用户Id，1为手机号码
 
 + (NSArray*)getAllMembers:(NSMutableArray**)sections searchText:(NSString*)searchString;
 + (NSArray*)getAllMembersExceptMeByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount;

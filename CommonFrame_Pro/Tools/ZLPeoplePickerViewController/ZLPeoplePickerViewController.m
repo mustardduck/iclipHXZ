@@ -215,6 +215,8 @@
         
         me.name = name;
         
+        me.source = @"1";//电话
+        
         me.recordId = recordNumId;
         
         if(phones.count > 1)
@@ -234,6 +236,8 @@
         {
             me.mobile = phones[0];
         }
+        
+        me.sourceId = me.mobile;
         
         [inviteArr addObject:me];
     }

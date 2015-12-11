@@ -18,6 +18,7 @@
 
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import "MQCreateGroupThirdController.h"
 
 @interface MQCreateGroupSecondController ()<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
 ZLPeoplePickerViewControllerDelegate>
@@ -26,6 +27,7 @@ ZLPeoplePickerViewControllerDelegate>
     
     UICollectionView * _inviteCollView;
 }
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBtnItem;
 
 @end
 
@@ -34,6 +36,21 @@ ZLPeoplePickerViewControllerDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+    [leftButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
+    [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+    [leftButton addSubview:imgview];
+    UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 50, 20)];
+    [ti setBackgroundColor:[UIColor clearColor]];
+    [ti setTextColor:[UIColor whiteColor]];
+    [ti setText:@"返回"];
+    [ti setFont:[UIFont systemFontOfSize:17]];
+    [leftButton addSubview:ti];
+    
+    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+    self.navigationItem.leftBarButtonItem = rightBarButton;
     
     self.inviteArr = [NSMutableArray array];
     
@@ -106,7 +123,7 @@ ZLPeoplePickerViewControllerDelegate>
     _tableView.backgroundColor = [UIColor backgroundColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-//    _tableView.tag = 101;
+    //    _tableView.tag = 101;
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
     
@@ -118,9 +135,48 @@ ZLPeoplePickerViewControllerDelegate>
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void) jumpToThirdView
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQCreateGroupThirdController"];
+    ((MQCreateGroupThirdController*)vc).workGroup = _workGroup;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)doneButtonClicked:(id)sender
 {
-    
+    if([_rightBtnItem.title isEqualToString:@"下一步"])
+    {
+//        [self jumpToThirdView];
+//        return;
+//        
+        NSMutableArray * inviteArr = [NSMutableArray array];
+        for(Member * me in _inviteArr)
+        {
+            NSMutableDictionary * dic  = [NSMutableDictionary dictionary];
+            [dic setObject:me.name forKey:@"name"];
+            [dic setObject:me.source forKey:@"source"];
+            [dic setObject:me.sourceId forKey:@"sourceId"];
+            [inviteArr addObject:dic];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString* loginUserId = [LoginUser loginUserID];
+            
+            BOOL isOk = [Group inviteNewUserList:loginUserId workGroupId:_workGroup.workGroupId inviteArr:inviteArr];
+            if (isOk) {
+                
+                [self jumpToThirdView];
+            }
+            
+        });
+
+    }
+    else
+    {
+        [self jumpToThirdView];
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -129,11 +185,16 @@ ZLPeoplePickerViewControllerDelegate>
     {
         _inviteCollView.hidden = NO;
         
+        _rightBtnItem.title = @"下一步";
+        
         [_inviteCollView reloadData];
     }
     else
     {
         _inviteCollView.hidden = YES;
+        
+        _rightBtnItem.title = @"跳过";
+
     }
     
     [_tableView reloadData];

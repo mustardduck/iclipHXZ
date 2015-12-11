@@ -11,6 +11,8 @@
 #define CURL                @"/index/findIndexMessageNum.hz"
 #define WORKLIST_URL        @"/workgroup/findMeWgList.hz"
 #define INVITE_URL          @"/workgroup/inviteUserList.hz"
+#define INVITE_USER_NEW_URL  @"/workgroup/inviteUserListNew.hz"
+
 #define NEW_GROUP           @"/workgroup/addWorkgroup.hz"
 #define DETAIL_URL          @"/workgroup/intoWorkgroupDetail.hz"
 #define UPDATE_URL          @"/workgroup/updateWorkgroup.hz"
@@ -215,6 +217,45 @@
     return array;
 }
 
++ (BOOL)inviteNewUserList:(NSString*)loginUserId workGroupId:(NSString*)workGroupId inviteArr:(NSArray*)inviteArr
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    [dic setObject:loginUserId forKey:@"userId"];
+    [dic setObject:workGroupId forKey:@"workGroupId"];
+    [dic setObject:@"1" forKey:@"platform"];
+    [dic setObject:inviteArr forKey:@"vo"];
+    
+    NSString* jsonStr = [CommonFile toJson:dic];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:INVITE_USER_NEW_URL postData:tmpDic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+    
+    return isOk;
+}
+
 + (BOOL)inviteNewUser:(NSString*)loginUserId workGroupId:(NSString*)workGroupId source:(NSInteger)source sourceValue:(NSString*)sourceStr
 {
     BOOL isOk = NO;
@@ -261,7 +302,10 @@
     [dic setObject:userId forKey:@"userId"];
     [dic setObject:workGroupName forKey:@"workGroupName"];
     [dic setObject:workGroupMain forKey:@"workGroupMain"];
-    [dic setObject:img forKey:@"img"];
+    if(img.length)
+    {
+        [dic setObject:img forKey:@"img"];
+    }
     [dic setObject:[LoginUser loginUserOrgID] forKey:@"orgId"];
     
     NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:NEW_GROUP postData:dic];

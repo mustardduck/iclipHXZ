@@ -706,7 +706,7 @@ static UIViewController *imagePicker = nil;
     
     UIBarButtonItem * button2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
-    UIBarButtonItem * doneButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(hiddenKeyboard)];
+    UIBarButtonItem * doneButton = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStyleDone target:self action:@selector(hiddenKeyboard)];
     
     doneButton.tintColor = RGBCOLOR(85, 85, 85);
     
