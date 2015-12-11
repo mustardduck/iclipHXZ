@@ -309,6 +309,11 @@
     {
         [dic setObject:img forKey:@"img"];
     }
+    else
+    {
+        [dic setObject:@"" forKey:@"img"];
+    }
+    
     [dic setObject:[LoginUser loginUserOrgID] forKey:@"orgId"];
     
     NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:NEW_GROUP postData:dic];
@@ -348,15 +353,18 @@
     
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
     
-    NSString* userId = [LoginUser loginUserID];
-    
-    [dic setObject:userId forKey:@"userId"];
+
     [dic setObject:workGroupName forKey:@"workGroupName"];
     [dic setObject:workGroupMain forKey:@"workGroupMain"];
     if(img)
     {
         [dic setObject:img forKey:@"img"];
     }
+    else
+    {
+        [dic setObject:@"" forKey:@"img"];
+    }
+    
     [dic setObject:wgid forKey:@"workGroupId"];
     
     NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:dic];
