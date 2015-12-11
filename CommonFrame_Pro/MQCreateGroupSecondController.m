@@ -124,7 +124,7 @@ ZLPeoplePickerViewControllerDelegate>
 }
 
 - (void) viewWillAppear:(BOOL)animated
-{    
+{
     if(_inviteArr.count)
     {
         _inviteCollView.hidden = NO;

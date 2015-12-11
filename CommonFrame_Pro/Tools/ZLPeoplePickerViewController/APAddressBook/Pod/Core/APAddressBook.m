@@ -104,15 +104,17 @@ void APAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef, CFDict
                     *contact = [[APContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
                     if (!filterBlock || filterBlock(contact))
                     {
-//                        if(contact.phones.count > 1)
-//                        {
-//                            for (NSString * phoneStr in contact.phones)
-//                            {
-//                                contact.phones = @[phoneStr];
-//                                [contacts addObject:contact];
-//                            }
-//                        }
-//                        else
+                        if(contact.phones.count > 1)
+                        {
+                            for (NSString * phoneStr in contact.phones)
+                            {
+                                APContact
+                                *apContact = [[APContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+                                apContact.phones = @[phoneStr];
+                                [contacts addObject:apContact];
+                            }
+                        }
+                        else
                         {
                             [contacts addObject:contact];
                         }

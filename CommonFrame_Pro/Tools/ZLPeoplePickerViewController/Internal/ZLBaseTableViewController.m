@@ -28,6 +28,14 @@
     }
     return _selectedPeople;
 }
+
+- (NSMutableSet *)selectedPeopleRecordID {
+    if (!_selectedPeopleRecordID) {
+        _selectedPeopleRecordID = [NSMutableSet set];
+    }
+    return _selectedPeopleRecordID;
+}
+
 - (void)setPartitionedContactsWithContacts:(NSArray *)contacts {
     self.partitionedContacts = [[self emptyPartitionedArray] mutableCopy];
 
@@ -200,9 +208,30 @@
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
     [self configureCell:cell forContact:contact];
 
-    if ([self.selectedPeople containsObject:contact.recordID]) {//contact.recordID
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
+    if(contact.phones.count)
+    {
+        NSString * phoneStr = contact.phones[0];
+        phoneStr = [phoneStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        NSNumber * phone = [NSNumber numberWithLongLong:[phoneStr longLongValue]];
+        
+        
+        UIImageView* choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 30, 22, 22)];
+        
+        [cell.contentView addSubview:choseImg];
+        
+        if ([self.selectedPeople containsObject:phone])
+            choseImg.image = [UIImage imageNamed:@"btn_xuanzhe_2"];
+        else
+            choseImg.image = [UIImage imageNamed:@"btn_xuanzhe_1"];
+//
+//        if ([self.selectedPeople containsObject:phone]) {//contact.recordID
+//            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//        } else {
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//        }
+    }
+    else
+    {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 

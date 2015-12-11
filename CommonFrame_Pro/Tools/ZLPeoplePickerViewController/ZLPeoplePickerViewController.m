@@ -22,6 +22,9 @@
     ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
     ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate,
     UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
+{
+    UILabel * _countLbl;
+}
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (strong, nonatomic)
@@ -61,17 +64,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor redColor];
-    
+    self.view.backgroundColor = [UIColor backgroundColor];
+    self.tableView.sectionIndexColor = [UIColor whiteColor];
+    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+
     if(_invitedArr.count)
     {
         for(Member * member in _invitedArr)
         {
+            if(member.mobile)
+            {
+                NSNumber * mobile = [NSNumber numberWithLongLong:[member.mobile longLongValue]];
+                [self.selectedPeople addObject:mobile];
+            }
             if(member.recordId)
             {
-                [self.selectedPeople addObject:member.recordId];
+                [self.selectedPeopleRecordID addObject:member.recordId];
             }
         }
+        
+        [self setCountLbl];
     }
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
@@ -88,9 +100,43 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonClicked:)];
-    [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor greenColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+    UIView * rightView = [[UIView alloc] init];
+    rightView.frame = CGRectMake(0, 0, 100, 64);
+    rightView.backgroundColor = [UIColor clearColor];
     
+    UIButton * doneBtn = [[UIButton alloc] initWithFrame:CGRectMake(28, 0, 100, 64)];
+    doneBtn.backgroundColor = [UIColor clearColor];
+    [doneBtn addTarget:self action:@selector(doneButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [doneBtn setTitle:@"邀请" forState:UIControlStateNormal];
+    doneBtn.titleLabel.font = Font(16);
+    [doneBtn setTitleColor:RGBCOLOR(76, 215, 100) forState:UIControlStateNormal];
+    
+    [rightView addSubview:doneBtn];
+    
+    _countLbl = [[UILabel alloc] initWithFrame:CGRectMake(10 + 52, 16, 14, 14)];
+    _countLbl.backgroundColor = RGBCOLOR(76, 215, 100);
+    [_countLbl setRoundCorner:W(_countLbl)/ 2];
+    _countLbl.textColor = RGBCOLOR(31, 31, 31);
+    _countLbl.font = Font(10);
+    _countLbl.textAlignment = NSTextAlignmentCenter;
+    _countLbl.hidden = YES;
+    
+    [doneBtn addSubview:_countLbl];
+    
+    UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:rightView];
+    
+//    UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonClicked:)];
+//    [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor greenColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+    
+//    UIImageView * iconGreen = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 9, 9)];
+//    iconGreen.image = [UIImage imageNamed:@"icon_yaoqiangshu"];
+//    
+//    UIBarButtonItem* iconViewItem = [[UIBarButtonItem alloc] initWithCustomView:iconGreen];
+//
+//    NSMutableArray *tright = [NSMutableArray array];
+//    [tright addObject:iconViewItem];
+//    [tright addObject:rightBarButton];
+//    self.navigationItem.rightBarButtonItems = tright;
     self.navigationItem.rightBarButtonItem = rightBarButton;
 
     _resultsTableViewController = [[ZLResultsTableViewController alloc] init];
@@ -120,6 +166,7 @@
         YES; // know where you want UISearchController to be displayed
 
     self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor backgroundColor];
     [self.tableView addSubview:self.refreshControl];
     [self.refreshControl addTarget:self
                             action:@selector(refreshControlAction:)
@@ -152,7 +199,7 @@
 
     NSMutableArray * inviteArr = [NSMutableArray array];
     
-    for (NSString * recordId in self.selectedPeople)
+    for (NSString * recordId in self.selectedPeopleRecordID)
     {
         NSNumber * recordNumId = [NSNumber numberWithInteger:[recordId integerValue]];
                                 
@@ -160,21 +207,31 @@
         
         NSArray * phones = [UICommon phonesArrForPerson:recordNumId withAddressBookRef:addressRef];
         
-        if(phones.count >= 1)
+        Member * me = [Member new];
+        
+        me.name = name;
+        
+        me.recordId = recordNumId;
+        
+        if(phones.count > 1)
         {
             for (NSString * phone in phones)
             {
-                Member * me = [Member new];
-
-                me.name = name;
-
-                me.mobile = phone;
-                
-                me.recordId = recordNumId;
-                
-                [inviteArr addObject:me];
+                for (NSNumber * phNum in self.selectedPeople) {
+                    
+                    if([[phNum stringValue] isEqualToString:phone])
+                    {
+                        me.mobile = phone;
+                    }
+                }
             }
         }
+        else if(phones.count == 1)
+        {
+            me.mobile = phones[0];
+        }
+        
+        [inviteArr addObject:me];
     }
     
     if ([self.icCreateGroupSecondController respondsToSelector:@selector(setInviteArr:)]) {
@@ -333,18 +390,60 @@
         [self.delegate peoplePickerViewController:self
                                   didSelectPerson:contact.recordID];
     }
-    if ([self.selectedPeople containsObject:contact.recordID]) {
-        [self.selectedPeople removeObject:contact.recordID];
+    if(contact.phones.count)
+    {
+        NSString * phoneStr = contact.phones[0];
+        phoneStr = [phoneStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        NSNumber * phone = [NSNumber numberWithLongLong:[phoneStr longLongValue]];
+
+        if ([self.selectedPeople containsObject:phone]) {
+            [self.selectedPeople removeObject:phone];
+        } else {
+            if (self.selectedPeople.count < self.numberOfSelectedPeople) {
+                [self.selectedPeople addObject:phone];
+            }
+        }
+    }
+
+    if ([self.selectedPeopleRecordID containsObject:contact.recordID]) {
+        [self.selectedPeopleRecordID removeObject:contact.recordID];
     } else {
-        if (self.selectedPeople.count < self.numberOfSelectedPeople) {
-            [self.selectedPeople addObject:contact.recordID];
+        if (self.selectedPeopleRecordID.count < self.numberOfSelectedPeople) {
+            [self.selectedPeopleRecordID addObject:contact.recordID];
         }
     }
 
     //    NSLog(@"heree");
+    
+    [self setCountLbl];
 
     [tableView reloadData];
     [self.tableView reloadData];
+}
+
+- (void) setCountLbl
+{
+    if(self.selectedPeople.count)
+    {
+        _countLbl.hidden = NO;
+        
+        _countLbl.text = [NSString stringWithFormat:@"%ld", self.selectedPeople.count];
+        
+        CGFloat width = [UICommon getWidthFromLabel:_countLbl].width;
+        
+        if(width > 14)
+        {
+            _countLbl.width = width;
+            _countLbl.height = width;
+        }
+        
+        [_countLbl setRoundCorner:W(_countLbl)/ 2];
+        
+    }
+    else
+    {
+        _countLbl.hidden = YES;
+    }
 }
 
 #pragma mark - UISearchResultsUpdating
@@ -438,7 +537,9 @@
         (ZLResultsTableViewController *)
             self.searchController.searchResultsController;
     tableController.filedMask = self.filedMask;
-    tableController.selectedPeople = self.selectedPeople;
+    tableController.selectedPeople = self.selectedPeople;  //momo
+//    tableController.selectedPeople = self.selectedPeopleRecordID;
+    
     [tableController setPartitionedContactsWithContacts:searchResults];
     [tableController.tableView reloadData];
 }
@@ -474,8 +575,10 @@
         [self.delegate
             respondsToSelector:@selector(peoplePickerViewController:
                                         didReturnWithSelectedPeople:)]) {
-        [self.delegate peoplePickerViewController:self
-                      didReturnWithSelectedPeople:[self.selectedPeople copy]];
+                [self.delegate peoplePickerViewController:self
+                              didReturnWithSelectedPeople:[self.selectedPeopleRecordID copy]];
+//        [self.delegate peoplePickerViewController:self
+//                      didReturnWithSelectedPeople:[self.selectedPeople copy]];
     }
 }
 

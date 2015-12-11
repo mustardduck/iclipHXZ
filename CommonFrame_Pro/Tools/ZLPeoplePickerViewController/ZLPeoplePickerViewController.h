@@ -52,6 +52,7 @@
 @property (nonatomic, strong) id icCreateGroupSecondController;
 @property (nonatomic, strong) NSArray * invitedArr;
 
+
 + (void)initializeAddressBook;
 //- (id)init __attribute__((unavailable("-init is not allowed, use
 //-initWithType: instead")));
