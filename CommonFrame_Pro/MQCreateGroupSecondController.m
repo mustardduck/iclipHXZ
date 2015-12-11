@@ -137,6 +137,8 @@ ZLPeoplePickerViewControllerDelegate>
 
 - (void) jumpToThirdView
 {
+    [_inviteArr removeAllObjects];
+    
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQCreateGroupThirdController"];
     ((MQCreateGroupThirdController*)vc).workGroup = _workGroup;
