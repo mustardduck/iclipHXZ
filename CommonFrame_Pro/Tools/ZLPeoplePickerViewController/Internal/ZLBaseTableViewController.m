@@ -234,6 +234,11 @@
         {
             choseImg.image = [UIImage imageNamed:@"btn_xuanzhe_2"];
             
+            if(![self.selectedPeopleRecordID containsObject:contact.recordID])
+            {
+                [self.selectedPeopleRecordID addObject:contact.recordID];
+            }
+            
             [name setText:@"(已加入)"];
         }
         else

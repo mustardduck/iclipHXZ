@@ -140,9 +140,9 @@
 
 - (IBAction)doneButtonClicked:(id)sender
 {
-    [self jumpToSecondView];
-//    [self jumpToInvite];
-    return;
+//    [self jumpToSecondView];
+////    [self jumpToInvite];
+//    return;
     
     [self hiddenKeyboard];
     NSString* name = _groupTitleTxt.text;

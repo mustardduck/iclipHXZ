@@ -224,7 +224,10 @@
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
     
     [dic setObject:loginUserId forKey:@"userId"];
-    [dic setObject:workGroupId forKey:@"workGroupId"];
+    if(workGroupId)
+    {
+        [dic setObject:workGroupId forKey:@"workGroupId"];
+    }
     [dic setObject:@"1" forKey:@"platform"];
     [dic setObject:inviteArr forKey:@"vo"];
     

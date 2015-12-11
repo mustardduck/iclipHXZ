@@ -78,6 +78,19 @@
 		4BC040331BABBF6E004C6F3B /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BC0402D1BABBF6E004C6F3B /* SVProgressHUD.bundle */; };
 		4BC040341BABBF6E004C6F3B /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC0402F1BABBF6E004C6F3B /* SVProgressHUD.m */; };
 		4BC040351BABBF6E004C6F3B /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC040311BABBF6E004C6F3B /* SVRadialGradientLayer.m */; };
+		4BC52FFF1C196870002C20D8 /* APContact+Sorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC52FF31C196870002C20D8 /* APContact+Sorting.m */; };
+		4BC530001C196870002C20D8 /* LRIndexedCollationWithSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC52FF51C196870002C20D8 /* LRIndexedCollationWithSearch.m */; };
+		4BC530011C196870002C20D8 /* ZLAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC52FF71C196870002C20D8 /* ZLAddressBook.m */; };
+		4BC530021C196870002C20D8 /* ZLBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC52FF91C196870002C20D8 /* ZLBaseTableViewController.m */; };
+		4BC530031C196870002C20D8 /* ZLResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC52FFB1C196870002C20D8 /* ZLResultsTableViewController.m */; };
+		4BC530041C196870002C20D8 /* ZLPeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC52FFE1C196870002C20D8 /* ZLPeoplePickerViewController.m */; };
+		4BC530151C1968B3002C20D8 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BC530061C1968B3002C20D8 /* LICENSE.txt */; };
+		4BC530161C1968B3002C20D8 /* APAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC5300A1C1968B3002C20D8 /* APAddress.m */; };
+		4BC530171C1968B3002C20D8 /* APAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC5300C1C1968B3002C20D8 /* APAddressBook.m */; };
+		4BC530181C1968B3002C20D8 /* APContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC5300E1C1968B3002C20D8 /* APContact.m */; };
+		4BC530191C1968B3002C20D8 /* APPhoneWithLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC530101C1968B3002C20D8 /* APPhoneWithLabel.m */; };
+		4BC5301A1C1968B3002C20D8 /* APSocialProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC530121C1968B3002C20D8 /* APSocialProfile.m */; };
+		4BC5301B1C1968B3002C20D8 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4BC530141C1968B3002C20D8 /* README.md */; };
 		4BC66A071B74556300353789 /* UICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC66A061B74556300353789 /* UICommon.m */; };
 		4BC66A0B1B745BC200353789 /* btn_pinglun@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A091B745BC200353789 /* btn_pinglun@2x.png */; };
 		4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A231B745EFD00353789 /* icon_du@2x.png */; };
@@ -258,7 +271,7 @@
 		4B8856141C103CEA00B50998 /* MQCreateGroupSecondController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateGroupSecondController.h; sourceTree = "<group>"; };
 		4B8856151C103CEA00B50998 /* MQCreateGroupSecondController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateGroupSecondController.m; sourceTree = "<group>"; };
 		4B8856171C103D0000B50998 /* MQCreateGroupThirdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateGroupThirdController.h; sourceTree = "<group>"; };
-		4B8856181C103D0000B50998 /* MQCreateGroupThirdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateGroupThirdController.m; sourceTree = "<group>"; };
+		4B8856181C103D0000B50998 /* MQCreateGroupThirdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateGroupThirdController.m; sourceTree = "<group>"; wrapsLines = 1; };
 		4B8AE4231BB910C9002B0143 /* ICFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICFileViewController.h; sourceTree = "<group>"; };
 		4B8AE4241BB910C9002B0143 /* ICFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICFileViewController.m; sourceTree = "<group>"; };
 		4B8EA4341B9D305B0055FCF3 /* RRAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRAttributedString.h; sourceTree = "<group>"; };
@@ -300,6 +313,32 @@
 		4BC0402F1BABBF6E004C6F3B /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		4BC040301BABBF6E004C6F3B /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRadialGradientLayer.h; sourceTree = "<group>"; };
 		4BC040311BABBF6E004C6F3B /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRadialGradientLayer.m; sourceTree = "<group>"; };
+		4BC52FF21C196870002C20D8 /* APContact+Sorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APContact+Sorting.h"; sourceTree = "<group>"; };
+		4BC52FF31C196870002C20D8 /* APContact+Sorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APContact+Sorting.m"; sourceTree = "<group>"; };
+		4BC52FF41C196870002C20D8 /* LRIndexedCollationWithSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRIndexedCollationWithSearch.h; sourceTree = "<group>"; };
+		4BC52FF51C196870002C20D8 /* LRIndexedCollationWithSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRIndexedCollationWithSearch.m; sourceTree = "<group>"; };
+		4BC52FF61C196870002C20D8 /* ZLAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAddressBook.h; sourceTree = "<group>"; };
+		4BC52FF71C196870002C20D8 /* ZLAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAddressBook.m; sourceTree = "<group>"; };
+		4BC52FF81C196870002C20D8 /* ZLBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLBaseTableViewController.h; sourceTree = "<group>"; };
+		4BC52FF91C196870002C20D8 /* ZLBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLBaseTableViewController.m; sourceTree = "<group>"; };
+		4BC52FFA1C196870002C20D8 /* ZLResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLResultsTableViewController.h; sourceTree = "<group>"; };
+		4BC52FFB1C196870002C20D8 /* ZLResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLResultsTableViewController.m; sourceTree = "<group>"; };
+		4BC52FFC1C196870002C20D8 /* ZLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLTypes.h; sourceTree = "<group>"; };
+		4BC52FFD1C196870002C20D8 /* ZLPeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPeoplePickerViewController.h; sourceTree = "<group>"; };
+		4BC52FFE1C196870002C20D8 /* ZLPeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPeoplePickerViewController.m; sourceTree = "<group>"; };
+		4BC530061C1968B3002C20D8 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		4BC530091C1968B3002C20D8 /* APAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddress.h; sourceTree = "<group>"; };
+		4BC5300A1C1968B3002C20D8 /* APAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddress.m; sourceTree = "<group>"; };
+		4BC5300B1C1968B3002C20D8 /* APAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBook.h; sourceTree = "<group>"; };
+		4BC5300C1C1968B3002C20D8 /* APAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBook.m; sourceTree = "<group>"; };
+		4BC5300D1C1968B3002C20D8 /* APContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APContact.h; sourceTree = "<group>"; };
+		4BC5300E1C1968B3002C20D8 /* APContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APContact.m; sourceTree = "<group>"; };
+		4BC5300F1C1968B3002C20D8 /* APPhoneWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPhoneWithLabel.h; sourceTree = "<group>"; };
+		4BC530101C1968B3002C20D8 /* APPhoneWithLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPhoneWithLabel.m; sourceTree = "<group>"; };
+		4BC530111C1968B3002C20D8 /* APSocialProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSocialProfile.h; sourceTree = "<group>"; };
+		4BC530121C1968B3002C20D8 /* APSocialProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSocialProfile.m; sourceTree = "<group>"; };
+		4BC530131C1968B3002C20D8 /* APTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTypes.h; sourceTree = "<group>"; };
+		4BC530141C1968B3002C20D8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4BC66A051B74556300353789 /* UICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommon.h; sourceTree = "<group>"; };
 		4BC66A061B74556300353789 /* UICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommon.m; sourceTree = "<group>"; };
 		4BC66A091B745BC200353789 /* btn_pinglun@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_pinglun@2x.png"; sourceTree = "<group>"; };
@@ -630,6 +669,7 @@
 		4BC03FD31BABBBC7004C6F3B /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				4BC52FF01C196870002C20D8 /* ZLPeoplePickerViewController */,
 				4B8856051C0D4A7A00B50998 /* HTHorizontalSelectionList */,
 				4B1F2A671BB9251F00D55BAE /* seeFullScreen */,
 				4BC040291BABBF6E004C6F3B /* SVProgressHUD */,
@@ -652,6 +692,71 @@
 				4BC040311BABBF6E004C6F3B /* SVRadialGradientLayer.m */,
 			);
 			path = SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		4BC52FF01C196870002C20D8 /* ZLPeoplePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4BC530051C1968B3002C20D8 /* APAddressBook */,
+				4BC52FF11C196870002C20D8 /* Internal */,
+				4BC52FFD1C196870002C20D8 /* ZLPeoplePickerViewController.h */,
+				4BC52FFE1C196870002C20D8 /* ZLPeoplePickerViewController.m */,
+			);
+			path = ZLPeoplePickerViewController;
+			sourceTree = "<group>";
+		};
+		4BC52FF11C196870002C20D8 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				4BC52FF21C196870002C20D8 /* APContact+Sorting.h */,
+				4BC52FF31C196870002C20D8 /* APContact+Sorting.m */,
+				4BC52FF41C196870002C20D8 /* LRIndexedCollationWithSearch.h */,
+				4BC52FF51C196870002C20D8 /* LRIndexedCollationWithSearch.m */,
+				4BC52FF61C196870002C20D8 /* ZLAddressBook.h */,
+				4BC52FF71C196870002C20D8 /* ZLAddressBook.m */,
+				4BC52FF81C196870002C20D8 /* ZLBaseTableViewController.h */,
+				4BC52FF91C196870002C20D8 /* ZLBaseTableViewController.m */,
+				4BC52FFA1C196870002C20D8 /* ZLResultsTableViewController.h */,
+				4BC52FFB1C196870002C20D8 /* ZLResultsTableViewController.m */,
+				4BC52FFC1C196870002C20D8 /* ZLTypes.h */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		4BC530051C1968B3002C20D8 /* APAddressBook */ = {
+			isa = PBXGroup;
+			children = (
+				4BC530061C1968B3002C20D8 /* LICENSE.txt */,
+				4BC530071C1968B3002C20D8 /* Pod */,
+				4BC530141C1968B3002C20D8 /* README.md */,
+			);
+			path = APAddressBook;
+			sourceTree = "<group>";
+		};
+		4BC530071C1968B3002C20D8 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				4BC530081C1968B3002C20D8 /* Core */,
+			);
+			path = Pod;
+			sourceTree = "<group>";
+		};
+		4BC530081C1968B3002C20D8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				4BC530091C1968B3002C20D8 /* APAddress.h */,
+				4BC5300A1C1968B3002C20D8 /* APAddress.m */,
+				4BC5300B1C1968B3002C20D8 /* APAddressBook.h */,
+				4BC5300C1C1968B3002C20D8 /* APAddressBook.m */,
+				4BC5300D1C1968B3002C20D8 /* APContact.h */,
+				4BC5300E1C1968B3002C20D8 /* APContact.m */,
+				4BC5300F1C1968B3002C20D8 /* APPhoneWithLabel.h */,
+				4BC530101C1968B3002C20D8 /* APPhoneWithLabel.m */,
+				4BC530111C1968B3002C20D8 /* APSocialProfile.h */,
+				4BC530121C1968B3002C20D8 /* APSocialProfile.m */,
+				4BC530131C1968B3002C20D8 /* APTypes.h */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		4BC66A041B74551100353789 /* UICommon */ = {
@@ -1139,6 +1244,7 @@
 				78CB22421B2926F8003B6707 /* PPDragDropBadgeView.bundle in Resources */,
 				4BB33A8E1B9EC5CF009D80E2 /* expandableImage@2x.png in Resources */,
 				781C1B1E1B1ED1CF008ECABF /* menuMap.png in Resources */,
+				4BC530151C1968B3002C20D8 /* LICENSE.txt in Resources */,
 				781C1B211B1EF0E7008ECABF /* avatar@2x.jpg in Resources */,
 				4BC66A0B1B745BC200353789 /* btn_pinglun@2x.png in Resources */,
 				4BB33A8D1B9EC5CF009D80E2 /* expandableImage.png in Resources */,
@@ -1198,6 +1304,7 @@
 				4BE1F57A1BD641D7007CF6C4 /* AddPicCell88.m in Sources */,
 				7891826D1B0EDBC2004C6AF6 /* ViewController.m in Sources */,
 				4B88560E1C0D4A7A00B50998 /* HTHorizontalSelectionListCustomViewCell.m in Sources */,
+				4BC530181C1968B3002C20D8 /* APContact.m in Sources */,
 				4BE1F58D1BD88E91007CF6C4 /* MarkTagCell.m in Sources */,
 				783193151B57475A00C56BC7 /* Accessory.m in Sources */,
 				4B1981A21BD4F86D00174CFD /* SDWebImageManager+MJ.m in Sources */,
@@ -1205,7 +1312,9 @@
 				4B1F2AA41BB9251F00D55BAE /* MJPhotoView.m in Sources */,
 				78CB22451B2926F8003B6707 /* PRTweenTimingFunctions.m in Sources */,
 				4BC040351BABBF6E004C6F3B /* SVRadialGradientLayer.m in Sources */,
+				4BC530171C1968B3002C20D8 /* APAddressBook.m in Sources */,
 				78CB22431B2926F8003B6707 /* PPDragDropBadgeView.m in Sources */,
+				4BC52FFF1C196870002C20D8 /* APContact+Sorting.m in Sources */,
 				4B7A89221BD4F05F00E42F7C /* SDImageCache.m in Sources */,
 				7830DDFC1B3BDC0E00D956C9 /* ICCreateNewGroupViewController.m in Sources */,
 				781AD2581B465C3A006DF848 /* ICMemberManagementViewController.m in Sources */,
@@ -1216,15 +1325,19 @@
 				4B7A892A1BD4F05F00E42F7C /* UIImage+GIF.m in Sources */,
 				4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */,
 				784B061F1B43C5BD0033C0EA /* ICSettingViewController.m in Sources */,
+				4BC5301B1C1968B3002C20D8 /* README.md in Sources */,
+				4BC530031C196870002C20D8 /* ZLResultsTableViewController.m in Sources */,
 				4B7A89291BD4F05F00E42F7C /* UIButton+WebCache.m in Sources */,
 				4B88560F1C0D4A7A00B50998 /* HTHorizontalSelectionListLabelCell.m in Sources */,
 				78CB22441B2926F8003B6707 /* PRTween.m in Sources */,
 				4B23BE0E1C0317AB00FDF082 /* MQSearchMenuController.m in Sources */,
+				4BC530011C196870002C20D8 /* ZLAddressBook.m in Sources */,
 				4BC03FD21BABA59E004C6F3B /* ICGroupMessageSettingController.m in Sources */,
 				78354CD31B40F5A000E2F00A /* ICMemberRegisterViewController.m in Sources */,
 				4B8AE4251BB910C9002B0143 /* ICFileViewController.m in Sources */,
 				4B1F2AA81BB9251F00D55BAE /* NSData+GIF.m in Sources */,
 				4BC040321BABBF6E004C6F3B /* SVIndefiniteAnimatedView.m in Sources */,
+				4BC530001C196870002C20D8 /* LRIndexedCollationWithSearch.m in Sources */,
 				4B1F2AB51BB9251F00D55BAE /* UIImageView+MJWebCache.m in Sources */,
 				4BC040341BABBF6E004C6F3B /* SVProgressHUD.m in Sources */,
 				786381CC1B3AA3F50078F156 /* ICGroupListViewController.m in Sources */,
@@ -1236,6 +1349,7 @@
 				78ABB1E61B538CBD0019534F /* LoginUser.m in Sources */,
 				4B4114D91BD4F5A10003B56C /* UIView+WebCacheOperation.m in Sources */,
 				78613FBD1B3D1ED4007ED169 /* ICMemberInvitationTableViewController.m in Sources */,
+				4BC530191C1968B3002C20D8 /* APPhoneWithLabel.m in Sources */,
 				4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */,
 				78486E191B61EA7D00D67751 /* ICSearchViewController.m in Sources */,
 				78BE76D61B2043F5008AF8AD /* ICSideMenuController.m in Sources */,
@@ -1244,6 +1358,7 @@
 				4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */,
 				4B1F2AA31BB9251F00D55BAE /* MJPhotoToolbar.m in Sources */,
 				786381D21B3AAFEA0078F156 /* ICGroupDetailViewController.m in Sources */,
+				4BC530161C1968B3002C20D8 /* APAddress.m in Sources */,
 				4B1F2AA21BB9251F00D55BAE /* MJPhotoProgressView.m in Sources */,
 				7823E18E1B38FD8800061DAF /* ICPublishMissionViewController.m in Sources */,
 				781C1B1A1B1ED1CF008ECABF /* CDSideBarController.m in Sources */,
@@ -1263,6 +1378,7 @@
 				7830DDFF1B3BE99200D956C9 /* ICSettingGroupViewController.m in Sources */,
 				78613FC41B3D2FF3007ED169 /* ICMarkManagementViewController.m in Sources */,
 				7823E1A91B39447600061DAF /* ICPublishSharedAndNotifyViewController.m in Sources */,
+				4BC530041C196870002C20D8 /* ZLPeoplePickerViewController.m in Sources */,
 				4B4114EA1BD4F6010003B56C /* UIImageView+HighlightedWebCache.m in Sources */,
 				4B1F2AA11BB9251F00D55BAE /* MJPhotoLoadingView.m in Sources */,
 				4B1F2A9E1BB9251F00D55BAE /* MJPhoto.m in Sources */,
@@ -1304,7 +1420,9 @@
 				4B8856161C103CEA00B50998 /* MQCreateGroupSecondController.m in Sources */,
 				783AC2DE1B56543900EE3E37 /* Member.m in Sources */,
 				4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */,
+				4BC5301A1C1968B3002C20D8 /* APSocialProfile.m in Sources */,
 				78BE76CF1B1FEEA6008AF8AD /* ICAccountViewController.m in Sources */,
+				4BC530021C196870002C20D8 /* ZLBaseTableViewController.m in Sources */,
 				4B5F59CB1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m in Sources */,
 				783176041B5DF8FB00446283 /* Authority.m in Sources */,
 				4BB33A911B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m in Sources */,
