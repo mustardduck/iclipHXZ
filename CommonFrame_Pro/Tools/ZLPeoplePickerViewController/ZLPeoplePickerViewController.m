@@ -404,6 +404,17 @@
         phoneStr = [phoneStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
         NSNumber * phone = [NSNumber numberWithLongLong:[phoneStr longLongValue]];
 
+        if ([self.selectedPeopleRecordID containsObject:contact.recordID]) {
+            [self.selectedPeopleRecordID removeObject:contact.recordID];
+        } else {
+            if (self.selectedPeopleRecordID.count < self.numberOfSelectedPeople) {
+                if(![self.selectedPeople containsObject:phone])
+                {
+                    [self.selectedPeopleRecordID addObject:contact.recordID];
+                }
+            }
+        }
+        
         if ([self.selectedPeople containsObject:phone]) {
             [self.selectedPeople removeObject:phone];
         } else {
@@ -411,14 +422,7 @@
                 [self.selectedPeople addObject:phone];
             }
         }
-    }
 
-    if ([self.selectedPeopleRecordID containsObject:contact.recordID]) {
-        [self.selectedPeopleRecordID removeObject:contact.recordID];
-    } else {
-        if (self.selectedPeopleRecordID.count < self.numberOfSelectedPeople) {
-            [self.selectedPeopleRecordID addObject:contact.recordID];
-        }
     }
 
     //    NSLog(@"heree");

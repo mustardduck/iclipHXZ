@@ -353,7 +353,10 @@
     [dic setObject:userId forKey:@"userId"];
     [dic setObject:workGroupName forKey:@"workGroupName"];
     [dic setObject:workGroupMain forKey:@"workGroupMain"];
-    [dic setObject:img forKey:@"img"];
+    if(img)
+    {
+        [dic setObject:img forKey:@"img"];
+    }
     [dic setObject:wgid forKey:@"workGroupId"];
     
     NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_URL postData:dic];

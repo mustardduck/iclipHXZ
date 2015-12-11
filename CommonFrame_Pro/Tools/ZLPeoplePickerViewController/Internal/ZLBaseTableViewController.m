@@ -236,7 +236,13 @@
             
             if(![self.selectedPeopleRecordID containsObject:contact.recordID])
             {
-                [self.selectedPeopleRecordID addObject:contact.recordID];
+                NSString * phoneStr = contact.phones[0];
+                phoneStr = [phoneStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                NSNumber * phone = [NSNumber numberWithLongLong:[phoneStr longLongValue]];
+                if(![self.selectedPeople containsObject:phone])
+                {
+                    [self.selectedPeopleRecordID addObject:contact.recordID];
+                }
             }
             
             [name setText:@"(已加入)"];
