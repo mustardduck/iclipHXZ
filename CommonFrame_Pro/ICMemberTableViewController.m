@@ -1074,7 +1074,7 @@
                     UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(width - 140, 22, 100, 15)];
                     [name setBackgroundColor:[UIColor clearColor]];
                     [name setText:@"(已加入)"];
-                    [name setTextColor:[UIColor grayColor]];
+                    [name setTextColor:[UIColor grayTitleColor]];
                     [name setFont:[UIFont systemFontOfSize:14]];
                     [name setTag:346];//112
                     

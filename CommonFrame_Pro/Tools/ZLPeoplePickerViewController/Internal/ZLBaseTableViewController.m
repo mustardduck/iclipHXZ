@@ -219,10 +219,29 @@
         
         [cell.contentView addSubview:choseImg];
         
+        UILabel* name= [cell viewWithTag:121];
+        if(!name)
+        {
+            name = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 140, 22, 100, 15)];
+            [name setBackgroundColor:[UIColor clearColor]];
+            [name setTextColor:[UIColor grayTitleColor]];
+            [name setFont:[UIFont systemFontOfSize:14]];
+            name.tag = 121;
+            [cell.contentView addSubview:name];
+        }
+        
         if ([self.selectedPeople containsObject:phone])
+        {
             choseImg.image = [UIImage imageNamed:@"btn_xuanzhe_2"];
+            
+            [name setText:@"(已加入)"];
+        }
         else
+        {
             choseImg.image = [UIImage imageNamed:@"btn_xuanzhe_1"];
+            [name setText:@""];
+
+        }
 //
 //        if ([self.selectedPeople containsObject:phone]) {//contact.recordID
 //            cell.accessoryType = UITableViewCellAccessoryCheckmark;
