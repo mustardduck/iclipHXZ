@@ -1452,8 +1452,17 @@
         NSMutableArray * selArr = [[NSMutableArray alloc]initWithArray:_selectedIndexList];
         
         for (Member* ip in selArr) {
-            if (ip.userId == me.userId) {
-                [_selectedIndexList removeObject:ip];
+            if(_isFromCreatGroupInvite)
+            {
+                if ([ip.mobile isEqualToString: me.mobile]) {
+                    [_selectedIndexList removeObject:ip];
+                }
+            }
+            else
+            {
+                if (ip.userId == me.userId) {
+                    [_selectedIndexList removeObject:ip];
+                }
             }
         }
     }
