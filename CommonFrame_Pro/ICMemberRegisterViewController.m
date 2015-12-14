@@ -36,7 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor backgroundColor];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -55,9 +55,12 @@
     [item setLeftBarButtonItem:leftBarButton];    
     [_navBar pushNavigationItem:item animated:YES];
     
+    UIView* tb = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 20)];
+    [tb setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:tb];
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat height = 66;
+    CGFloat height = 264;
     
     InputText *inputText = [[InputText alloc] init];
     inputText.delegate = self;
@@ -70,7 +73,7 @@
     [imgName setImage:[UIImage imageNamed:@"btn_renwu_1"]];
     [self.view addSubview:imgName];
     
-    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(40, height, width - 20, 44)];
+    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, height, width - 20, 50)];
     [_txtUserName setBackgroundColor:[UIColor orangeColor]];
     [_txtUserName setBorderStyle:UITextBorderStyleNone];
     [_txtUserName setFont:[UIFont systemFontOfSize:17]];

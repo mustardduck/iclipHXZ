@@ -36,30 +36,34 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib
     
-    
+    self.view.backgroundColor = [UIColor backgroundColor];
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = 278;//172
     
-    UIView* tb = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 30)];
+    UIView* tb = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 20)];
     [tb setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:tb];
 
     
+    UIView * txtView = [[UIView alloc] init];
+    txtView.backgroundColor = [UIColor grayMarkColor];
+    txtView.frame = CGRectMake(0, height, SCREENWIDTH, 100);
+    
     InputText *inputText = [[InputText alloc] init];
     inputText.delegate = self;
     
-    UILabel* bottomLine1 = [[UILabel alloc] initWithFrame:CGRectMake(0,  height - 1, width, 0.5)];
-    [bottomLine1 setBackgroundColor:[UIColor grayColor]];
-    [self.view addSubview:bottomLine1];
+    UILabel* bottomLine1 = [[UILabel alloc] initWithFrame:CGRectMake(0,  0, width, 0.5)];
+    [bottomLine1 setBackgroundColor:[UIColor grayLineColor]];
+    [txtView addSubview:bottomLine1];
     
     
-    UIImageView* imgName = [[UIImageView alloc] initWithFrame:CGRectMake(14, height + 18, 13, 15)];
+    UIImageView* imgName = [[UIImageView alloc] initWithFrame:CGRectMake(14, 18, 13, 15)];
     [imgName setImage:[UIImage imageNamed:@"icon_shouji"]];
-    [self.view addSubview:imgName];
+    [txtView addSubview:imgName];
     
     
-    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, height, width - 20, 50)];
+    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, 0, width - 20, 50)];
     [_txtUserName setBackgroundColor:[UIColor orangeColor]];
     [_txtUserName setBorderStyle:UITextBorderStyleNone];
     [_txtUserName setFont:Font(16)];
@@ -75,19 +79,23 @@
     _lblUserName.textColor = [UIColor grayTitleColor];
     _lblUserName.frame = _txtUserName.frame;
     
-    [self.view addSubview:_txtUserName];
-    [self.view addSubview:_lblUserName];
+
+    [txtView addSubview:_txtUserName];
+    [txtView addSubview:_lblUserName];
     
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0,  _txtUserName.frame.size.height + height, width, 0.5)];
+//    [self.view addSubview:_txtUserName];
+//    [self.view addSubview:_lblUserName];
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(14,  _txtUserName.frame.size.height, width - 14, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayLineColor]];
-    [self.view addSubview:bottomLine];
+    [txtView addSubview:bottomLine];
     
     
-    UIImageView* imgPwd = [[UIImageView alloc] initWithFrame:CGRectMake(14, _txtUserName.frame.size.height + height + 18, 13, 15)];
+    UIImageView* imgPwd = [[UIImageView alloc] initWithFrame:CGRectMake(14, _txtUserName.frame.size.height + 18, 13, 15)];
     [imgPwd setImage:[UIImage imageNamed:@"icon_mima_1"]];
-    [self.view addSubview:imgPwd];
+    [txtView addSubview:imgPwd];
     
-    _txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(36, _txtUserName.frame.size.height + height + 1, width - 20, 50)];
+    _txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(36, _txtUserName.frame.size.height, width - 20, 50)];
     [_txtPwd setBackgroundColor:[UIColor orangeColor]];
     [_txtPwd setBorderStyle:UITextBorderStyleNone];
     [_txtPwd setFont:Font(15)];
@@ -104,13 +112,14 @@
     _lblPwd.textColor = [UIColor grayTitleColor];
     _lblPwd.frame = _txtPwd.frame;
     
-    [self.view addSubview:_txtPwd];
-    [self.view addSubview:_lblPwd];
-    
+    [txtView addSubview:_txtPwd];
+    [txtView addSubview:_lblPwd];
     
     UILabel* bottomLine2 = [[UILabel alloc] initWithFrame:CGRectMake(0,  _txtPwd.frame.origin.y  + 49, width, 0.5)];
     [bottomLine2 setBackgroundColor:[UIColor grayLineColor]];
-    [self.view addSubview:bottomLine2];
+    [txtView addSubview:bottomLine2];
+    
+    [self.view addSubview:txtView];
     
     [_btnSubmit setBackgroundColor:[UIColor tagBlueBackColor]];
     

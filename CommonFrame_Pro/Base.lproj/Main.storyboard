@@ -10,7 +10,6 @@
         <!--Member Register View Controller-->
         <scene sceneID="Owl-pC-dyk">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sh5-OP-SLa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="ICMemberRegisterViewController" id="WO3-8n-no1" customClass="ICMemberRegisterViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Xro-Bh-KDN"/>
@@ -47,14 +46,32 @@
                                     </mask>
                                 </variation>
                             </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_zhuchetu" translatesAutoresizingMaskIntoConstraints="NO" id="OkU-sS-fLh">
+                                <rect key="frame" x="0.0" y="64" width="320" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="kAF-JS-TDY"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="q9H-y0-gyq"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="q9H-y0-gyq"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="18f-FU-tWl" firstAttribute="top" secondItem="xk9-DF-BGP" secondAttribute="top" constant="20" id="09s-6Y-OXh"/>
+                            <constraint firstItem="OkU-sS-fLh" firstAttribute="top" secondItem="18f-FU-tWl" secondAttribute="bottom" id="7C2-EI-uaS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="18f-FU-tWl" secondAttribute="trailing" constant="-16" id="Lc3-6b-Rdy"/>
+                            <constraint firstItem="OkU-sS-fLh" firstAttribute="top" secondItem="Xro-Bh-KDN" secondAttribute="bottom" constant="44" id="MM2-Aa-GXx"/>
                             <constraint firstItem="18f-FU-tWl" firstAttribute="leading" secondItem="xk9-DF-BGP" secondAttribute="leading" id="Qcm-Z2-Rdc"/>
                             <constraint firstItem="18f-FU-tWl" firstAttribute="top" secondItem="Xro-Bh-KDN" secondAttribute="bottom" id="Y39-K5-x4J"/>
+                            <constraint firstItem="OkU-sS-fLh" firstAttribute="leading" secondItem="xk9-DF-BGP" secondAttribute="leading" id="acS-ht-Rlb"/>
+                            <constraint firstItem="OkU-sS-fLh" firstAttribute="leading" secondItem="xk9-DF-BGP" secondAttribute="leadingMargin" constant="-20" id="arm-N3-bd9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="OkU-sS-fLh" secondAttribute="trailing" constant="-20" id="bIL-Zb-q6o"/>
                             <constraint firstItem="18f-FU-tWl" firstAttribute="leading" secondItem="xk9-DF-BGP" secondAttribute="leadingMargin" constant="-16" id="dos-fd-Zwy"/>
+                            <constraint firstAttribute="trailing" secondItem="OkU-sS-fLh" secondAttribute="trailing" id="j3c-RV-9X0"/>
                             <constraint firstAttribute="trailing" secondItem="18f-FU-tWl" secondAttribute="trailing" id="kTI-ib-ayc"/>
                             <constraint firstItem="18f-FU-tWl" firstAttribute="top" secondItem="Xro-Bh-KDN" secondAttribute="bottom" id="ztP-d9-Mgl"/>
                         </constraints>
@@ -64,6 +81,9 @@
                                 <exclude reference="Y39-K5-x4J"/>
                                 <exclude reference="dos-fd-Zwy"/>
                                 <exclude reference="ztP-d9-Mgl"/>
+                                <exclude reference="MM2-Aa-GXx"/>
+                                <exclude reference="arm-N3-bd9"/>
+                                <exclude reference="bIL-Zb-q6o"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -79,6 +99,7 @@
                         <outlet property="_navBar" destination="18f-FU-tWl" id="Ve8-3Y-tDN"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sh5-OP-SLa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="622" y="-56"/>
         </scene>
@@ -287,7 +308,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="忘记密码？">
-                                    <color key="titleColor" red="0.67450980392156867" green="0.67450980392156867" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.67450980392156867" green="0.67450980392156867" blue="0.67843137254901964" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -2881,6 +2902,7 @@
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>
+        <image name="bg_zhuchetu" width="414" height="200"/>
         <image name="btn_fujian_1" width="38" height="30"/>
         <image name="btn_fujian_2" width="38" height="30"/>
         <image name="btn_fujian_hover" width="38" height="30"/>
