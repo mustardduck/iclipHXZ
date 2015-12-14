@@ -71,6 +71,7 @@
 		4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A881B9EC5CF009D80E2 /* SKSTableView.m */; };
 		4BB33A901B9EC5CF009D80E2 /* SKSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A8A1B9EC5CF009D80E2 /* SKSTableViewCell.m */; };
 		4BB33A911B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */; };
+		4BB560DD1C1E6DEC00A070C0 /* Organization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB560DC1C1E6DEC00A070C0 /* Organization.m */; };
 		4BBB612A1BDA28F100C7E79E /* MegListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB61291BDA28F100C7E79E /* MegListController.m */; };
 		4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB612C1BDA2EA400C7E79E /* MessageCenter.m */; };
 		4BC03FD21BABA59E004C6F3B /* ICGroupMessageSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC03FD11BABA59E004C6F3B /* ICGroupMessageSettingController.m */; };
@@ -298,6 +299,8 @@
 		4BB33A8A1B9EC5CF009D80E2 /* SKSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCell.m; sourceTree = "<group>"; };
 		4BB33A8B1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCellIndicator.h; sourceTree = "<group>"; };
 		4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
+		4BB560DB1C1E6DEC00A070C0 /* Organization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Organization.h; sourceTree = "<group>"; };
+		4BB560DC1C1E6DEC00A070C0 /* Organization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Organization.m; sourceTree = "<group>"; };
 		4BBB61281BDA28F100C7E79E /* MegListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MegListController.h; sourceTree = "<group>"; };
 		4BBB61291BDA28F100C7E79E /* MegListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MegListController.m; sourceTree = "<group>"; };
 		4BBB612B1BDA2EA400C7E79E /* MessageCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCenter.h; sourceTree = "<group>"; };
@@ -1091,6 +1094,8 @@
 				783176031B5DF8FB00446283 /* Authority.m */,
 				7851D6611B5F903C00C3D860 /* Comment.h */,
 				7851D6621B5F903C00C3D860 /* Comment.m */,
+				4BB560DB1C1E6DEC00A070C0 /* Organization.h */,
+				4BB560DC1C1E6DEC00A070C0 /* Organization.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -1313,6 +1318,7 @@
 				78CB22451B2926F8003B6707 /* PRTweenTimingFunctions.m in Sources */,
 				4BC040351BABBF6E004C6F3B /* SVRadialGradientLayer.m in Sources */,
 				4BC530171C1968B3002C20D8 /* APAddressBook.m in Sources */,
+				4BB560DD1C1E6DEC00A070C0 /* Organization.m in Sources */,
 				78CB22431B2926F8003B6707 /* PPDragDropBadgeView.m in Sources */,
 				4BC52FFF1C196870002C20D8 /* APContact+Sorting.m in Sources */,
 				4B7A89221BD4F05F00E42F7C /* SDImageCache.m in Sources */,
@@ -1553,8 +1559,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1573,7 +1579,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
+				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
@@ -1586,8 +1592,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1606,7 +1612,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
+				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";

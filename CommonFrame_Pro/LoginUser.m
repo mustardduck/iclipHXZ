@@ -15,8 +15,10 @@
 #define CURL                @"/user/loginUser.hz"
 #define QUIT_URL            @"/user/outLogin.hz"
 #define REG_URL             @"/user/receiveCode.hz"
+#define REGISTER_USER_URL   @"/user/registerUser.hz"
 #define PWD_URL             @"/user/updateUserPwd.hz"
 #define FIND_PWD_URL        @"/user/sendSmsByPwd.hz"
+#define SEND_SMS_URL        @"/user/sendSms.hz"
 #define UPDATE_URL          @"/user/updateUserDetail.hz"
 #define UPLOAD_IMAGE_URL    @"/file/upload.hz"
 
@@ -157,6 +159,45 @@
     return re;
 }
 
++ (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd
+{
+    BOOL re = NO;
+    
+    if (name && mobile && code && pwd)
+    {
+        NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+        
+        [dic setObject:[CommonFile md5:pwd]forKey:@"pwd"];
+        [dic setObject:name forKey:@"name"];
+        [dic setObject:mobile forKey:@"mobile"];
+        [dic setObject:code forKey:@"code"];
+        
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:REGISTER_USER_URL postData:dic];
+        
+        if (responseString == nil) {
+            return re;
+        }
+        
+        id val = [CommonFile jsonNSDATA:responseString];
+        
+        if ([val isKindOfClass:[NSDictionary class]]) {
+            NSDictionary* dic = (NSDictionary*)val;
+            
+            if (dic != nil) {
+                if ([[dic valueForKey:@"state"] intValue] == 1) {
+                    re = YES;
+                    [CommonFile saveInfoWithKey:[dic valueForKey:@"data"] withKey:@"loginInfo"];
+                    NSLog(@"Dic:%@",dic);
+                }
+            }
+            
+        }
+    }
+    
+    return  re;
+    
+}
+
 + (BOOL)registeNewUser:(NSInteger)source sourceVale:(NSString*)sourceStr inviteCode:(NSString*)code password:(NSString*)pwd
 {
     BOOL re = NO;
@@ -210,6 +251,40 @@
        
         
         NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:PWD_URL postData:dic];
+        
+        if (responseString == nil) {
+            return re;
+        }
+        
+        id val = [CommonFile jsonNSDATA:responseString];
+        
+        if ([val isKindOfClass:[NSDictionary class]]) {
+            NSDictionary* dic = (NSDictionary*)val;
+            
+            if (dic != nil) {
+                if ([[dic valueForKey:@"state"] intValue] == 1) {
+                    re = YES;
+                    NSLog(@"Dic:%@",dic);
+                }
+            }
+            
+        }
+    }
+    
+    return re;
+}
+
++ (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile
+{
+    BOOL re = NO;
+    
+    if (mobile != nil ) {
+        NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+        
+        [dic setObject:mobile forKey:@"mobile"];
+        [dic setObject:[NSString stringWithFormat:@"%ld",source] forKey:@"source"];
+        
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:SEND_SMS_URL postData:dic];
         
         if (responseString == nil) {
             return re;
