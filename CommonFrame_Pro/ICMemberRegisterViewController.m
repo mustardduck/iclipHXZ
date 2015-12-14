@@ -8,6 +8,7 @@
 
 #import "ICMemberRegisterViewController.h"
 #import "InputText.h"
+#import "UICommon.h"
 
 @interface ICMemberRegisterViewController() <InputTextDelegate,UITextFieldDelegate>
 {
@@ -35,28 +36,28 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor blackColor];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
-    [leftButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
     [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
     [leftButton addSubview:imgview];
     UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 80, 20)];
     [ti setBackgroundColor:[UIColor clearColor]];
     [ti setTextColor:[UIColor whiteColor]];
-    [ti setText:@"返回登录"];
+    [ti setText:@"返回"];
     [ti setFont:[UIFont systemFontOfSize:17]];
     [leftButton addSubview:ti];
     
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"注册"];
-    [item setLeftBarButtonItem:leftBarButton];
+    [item setLeftBarButtonItem:leftBarButton];    
     [_navBar pushNavigationItem:item animated:YES];
+    
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = 66;
-    
-    
     
     InputText *inputText = [[InputText alloc] init];
     inputText.delegate = self;
@@ -163,6 +164,11 @@
     [self.view addSubview:btnReg];
     
 
+}
+
+- (IBAction)btnBackButtonClicked:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)btnRegClicked:(id)sender
@@ -282,11 +288,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-- (IBAction)backButtonClicked:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 
 @end

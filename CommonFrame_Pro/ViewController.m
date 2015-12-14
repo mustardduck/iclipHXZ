@@ -10,6 +10,7 @@
 #import "InputText.h"
 //#import <AVOSCloud/AVOSCloud.h>
 #import "APService.h"
+#import "UICommon.h"
 
 @interface ViewController ()<InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
 {
@@ -38,7 +39,7 @@
     
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat height = 172;
+    CGFloat height = 278;//172
     
     UIView* tb = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 30)];
     [tb setBackgroundColor:[UIColor blackColor]];
@@ -53,15 +54,15 @@
     [self.view addSubview:bottomLine1];
     
     
-    UIImageView* imgName = [[UIImageView alloc] initWithFrame:CGRectMake(10, height + 12, 17, 20)];
-    [imgName setImage:[UIImage imageNamed:@"btn_renwu_1"]];
+    UIImageView* imgName = [[UIImageView alloc] initWithFrame:CGRectMake(14, height + 18, 13, 15)];
+    [imgName setImage:[UIImage imageNamed:@"icon_shouji"]];
     [self.view addSubview:imgName];
     
     
-    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(40, height, width - 20, 44)];
+    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, height, width - 20, 50)];
     [_txtUserName setBackgroundColor:[UIColor orangeColor]];
     [_txtUserName setBorderStyle:UITextBorderStyleNone];
-    [_txtUserName setFont:[UIFont systemFontOfSize:17]];
+    [_txtUserName setFont:Font(16)];
     [_txtUserName setTextColor:[UIColor whiteColor]];
     [_txtUserName addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
     _txtUserName.delegate = self;
@@ -69,27 +70,27 @@
     _txtUserName = [inputText setupWithIcon:nil  point:nil  textFieldControl:_txtUserName showBottomLine:NO];
     
     _lblUserName = [[UILabel alloc] init];
-    _lblUserName.text = @"输入邮箱/用户名/手机号";
-    _lblUserName.font = [UIFont systemFontOfSize:16];
-    _lblUserName.textColor = [UIColor grayColor];
+    _lblUserName.text = @"请输入您的手机号";
+    _lblUserName.font = Font(15);
+    _lblUserName.textColor = [UIColor grayTitleColor];
     _lblUserName.frame = _txtUserName.frame;
     
     [self.view addSubview:_txtUserName];
     [self.view addSubview:_lblUserName];
     
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0,  _txtUserName.frame.size.height + height, width, 0.5)];
-    [bottomLine setBackgroundColor:[UIColor grayColor]];
+    [bottomLine setBackgroundColor:[UIColor grayLineColor]];
     [self.view addSubview:bottomLine];
     
     
-    UIImageView* imgPwd = [[UIImageView alloc] initWithFrame:CGRectMake(10, _txtUserName.frame.size.height + height + 12, 17, 20)];
-    [imgPwd setImage:[UIImage imageNamed:@"icon_mima"]];
+    UIImageView* imgPwd = [[UIImageView alloc] initWithFrame:CGRectMake(14, _txtUserName.frame.size.height + height + 18, 13, 15)];
+    [imgPwd setImage:[UIImage imageNamed:@"icon_mima_1"]];
     [self.view addSubview:imgPwd];
     
-    _txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(40, _txtUserName.frame.size.height + height + 1, width - 20, 44)];
+    _txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(36, _txtUserName.frame.size.height + height + 1, width - 20, 50)];
     [_txtPwd setBackgroundColor:[UIColor orangeColor]];
     [_txtPwd setBorderStyle:UITextBorderStyleNone];
-    [_txtPwd setFont:[UIFont systemFontOfSize:17]];
+    [_txtPwd setFont:Font(15)];
     [_txtPwd setTextColor:[UIColor whiteColor]];
     [_txtPwd setSecureTextEntry:YES];
     [_txtPwd addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
@@ -98,20 +99,20 @@
     _txtPwd = [inputText setupWithIcon:nil  point:nil  textFieldControl:_txtPwd showBottomLine:NO];
     
     _lblPwd = [[UILabel alloc] init];
-    _lblPwd.text = @"密码";
-    _lblPwd.font = [UIFont systemFontOfSize:16];
-    _lblPwd.textColor = [UIColor grayColor];
+    _lblPwd.text = @"请输入密码";
+    _lblPwd.font = Font(15);
+    _lblPwd.textColor = [UIColor grayTitleColor];
     _lblPwd.frame = _txtPwd.frame;
     
     [self.view addSubview:_txtPwd];
     [self.view addSubview:_lblPwd];
     
     
-    UILabel* bottomLine2 = [[UILabel alloc] initWithFrame:CGRectMake(0,  _txtPwd.frame.origin.y  + 43, width, 0.5)];
-    [bottomLine2 setBackgroundColor:[UIColor grayColor]];
+    UILabel* bottomLine2 = [[UILabel alloc] initWithFrame:CGRectMake(0,  _txtPwd.frame.origin.y  + 49, width, 0.5)];
+    [bottomLine2 setBackgroundColor:[UIColor grayLineColor]];
     [self.view addSubview:bottomLine2];
     
-    [_btnSubmit setBackgroundColor:[UIColor colorWithHexString:@"#2d4778"]];
+    [_btnSubmit setBackgroundColor:[UIColor tagBlueBackColor]];
     
     
     
@@ -317,6 +318,7 @@
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberRegisterViewController"];
+//    controller.view.backgroundColor = [UIColor blackColor];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
