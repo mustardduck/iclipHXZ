@@ -11,6 +11,7 @@
 #import "CommonFile.h"
 //#import <SBJson4Parser.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "SVProgressHUD.h"
 
 #define CURL                @"/user/loginUser.hz"
 #define QUIT_URL            @"/user/outLogin.hz"
@@ -274,7 +275,7 @@
     return re;
 }
 
-+ (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile
++ (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile status:(NSString **)status
 {
     BOOL re = NO;
     
@@ -299,6 +300,10 @@
                 if ([[dic valueForKey:@"state"] intValue] == 1) {
                     re = YES;
                     NSLog(@"Dic:%@",dic);
+                }
+                else if ([[dic valueForKey:@"state"] intValue] == -2)
+                {
+                    *status = @"-2";
                 }
             }
             

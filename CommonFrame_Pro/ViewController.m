@@ -66,7 +66,7 @@
     _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, 0, width - 20, 50)];
     [_txtUserName setBackgroundColor:[UIColor orangeColor]];
     [_txtUserName setBorderStyle:UITextBorderStyleNone];
-    [_txtUserName setFont:Font(16)];
+    [_txtUserName setFont:Font(15)];
     [_txtUserName setTextColor:[UIColor whiteColor]];
     [_txtUserName addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
     _txtUserName.delegate = self;
@@ -82,9 +82,6 @@
 
     [txtView addSubview:_txtUserName];
     [txtView addSubview:_lblUserName];
-    
-//    [self.view addSubview:_txtUserName];
-//    [self.view addSubview:_lblUserName];
     
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(14,  _txtUserName.frame.size.height, width - 14, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayLineColor]];
@@ -201,7 +198,7 @@
     if (self.chang) {
         [UIView animateWithDuration:0.5 animations:^{
             label.transform = CGAffineTransformIdentity;
-            label.font = [UIFont systemFontOfSize:16];
+            label.font = [UIFont systemFontOfSize:15];
         }];
     }
 }
@@ -327,7 +324,6 @@
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberRegisterViewController"];
-//    controller.view.backgroundColor = [UIColor blackColor];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
