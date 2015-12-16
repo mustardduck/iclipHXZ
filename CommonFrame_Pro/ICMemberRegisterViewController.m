@@ -201,6 +201,7 @@
     [bottomLine setBackgroundColor:[UIColor grayLineColor]];
     [txtView addSubview:bottomLine];
     
+    
     UIImageView* imgName = [[UIImageView alloc] initWithFrame:CGRectMake(14, 18, 13, 15)];
     [imgName setImage:[UIImage imageNamed:@"icon_shouji"]];
     [txtView addSubview:imgName];
@@ -269,6 +270,7 @@
     {
         [imgName setImage:[UIImage imageNamed:@"icon_mima_1"]];
         _accountName.placeholder = @"请输入密码";
+        [_accountName setSecureTextEntry:YES];
     }
     else
     {
@@ -297,10 +299,14 @@
     _txtPwd.delegate = self;
     if(_isForgetPWD)
     {
+        _topbgImgView.image = [UIImage imageNamed:@"bg_wanjimima"];
+
         _txtPwd.placeholder = @"请再次输入密码";
     }
     else
     {
+        _topbgImgView.image = [UIImage imageNamed:@"bg_zhuchetu"];
+
         _txtPwd.placeholder = @"密码";
     }
     [_txtPwd setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
@@ -340,27 +346,28 @@
         [_smsCode becomeFirstResponder];
         
         NSString * status = @"";
+        NSString * msg = @"";
         
-        BOOL isOK = [LoginUser sendSMS:1 mobile:_txtUserName.text status:&status];
+        NSInteger source = 1;
+        
+        if(_isForgetPWD)
+        {
+            source = 2;
+        }
+        
+        BOOL isOK = [LoginUser sendSMS:source mobile:_txtUserName.text status:&status msg:&msg];
         
         if(isOK)
         {
-            [SVProgressHUD showSuccessWithStatus:@"短信验证码已发送，请注意查看"];
+            [SVProgressHUD showSuccessWithStatus:msg];
         }
         else
         {
-            if([status intValue] == -2)
-            {
-                [SVProgressHUD showSuccessWithStatus:@"对不起，该号码已经是用户，请直接登录"];
-                
-                return;
-            }
-            else
-            {
-                [SVProgressHUD showSuccessWithStatus:@"短信验证码发送失败，请重试"];
-                
-                return;
-            }
+            [SVProgressHUD showErrorWithStatus:msg];
+            
+            [_smsCode resignFirstResponder];
+            
+            return;
         }
     }
     else if(!_txtUserName.text.length)
@@ -586,12 +593,6 @@
 
 -(void)btnRegClicked:(id)sender
 {
-    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    return;//todo
-    
     UIButton * btn = (UIButton *)sender;
     
     if(![self varifyTxtField])
@@ -611,7 +612,12 @@
 //                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 //                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
 //                [self presentViewController:controller animated:YES completion:nil];
+                [self dismissViewControllerAnimated:YES completion:nil];
                 
+            }
+            else
+            {
+                [SVProgressHUD showErrorWithStatus:@"修改密码失败"];
             }
         });
         
@@ -621,6 +627,12 @@
     }
     else
     {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+        [self presentViewController:controller animated:YES completion:nil];
+        
+        return;//todo
+        
         __block BOOL reg = NO;
         dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
         dispatch_async(queue, ^{

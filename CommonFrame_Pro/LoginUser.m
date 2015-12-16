@@ -316,7 +316,7 @@
     return re;
 }
 
-+ (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile status:(NSString **)status
++ (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile status:(NSString **)status msg:(NSString **)msg
 {
     BOOL re = NO;
     
@@ -342,10 +342,9 @@
                     re = YES;
                     NSLog(@"Dic:%@",dic);
                 }
-                else if ([[dic valueForKey:@"state"] intValue] == -2)
-                {
-                    *status = @"-2";
-                }
+                
+                *status = [dic valueForKey:@"state"];
+                *msg = [dic valueForKey:@"msg"];
             }
             
         }

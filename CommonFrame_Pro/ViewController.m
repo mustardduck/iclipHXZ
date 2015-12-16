@@ -11,6 +11,7 @@
 //#import <AVOSCloud/AVOSCloud.h>
 #import "APService.h"
 #import "UICommon.h"
+#import "ICMemberRegisterViewController.h"
 
 @interface ViewController ()<InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
 {
@@ -329,6 +330,13 @@
 
 - (IBAction)btnForgotPasswordClicked:(id)sender
 {
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberRegisterViewController"];
+    
+    ((ICMemberRegisterViewController *)controller).isForgetPWD = YES;
+    
+    [self presentViewController:controller animated:YES completion:nil];
+    /*
     NSString* source = _txtUserName.text;
     if (source == nil || [source isEqualToString:@""]) {
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"账号输入错误" message:@"找回密码前，请在账号处输入需要找回密码的账号!" delegate:self
@@ -350,7 +358,7 @@
 
         
     });
-    
+    */
 }
 
 #pragma mark - Navigation
