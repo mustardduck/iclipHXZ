@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
+@property (weak, nonatomic) IBOutlet UIImageView *topbgImgView;
 
 @end
 
@@ -255,7 +256,8 @@
     //姓名
     
     imgName = [[UIImageView alloc] initWithFrame:CGRectMake(14, 50 * 2 + 18, 13, 15)];
-    [imgName setImage:[UIImage imageNamed:@"icon_xingming"]];
+    
+
     [txtView addSubview:imgName];
     
     _accountName = [[UITextField alloc] initWithFrame:CGRectMake(36, _smsCode.bottom,width - 36 * 2, 50)];
@@ -263,7 +265,16 @@
     [_accountName setFont:Font(16)];
     [_accountName setTextColor:[UIColor whiteColor]];
     _accountName.delegate = self;
-    _accountName.placeholder = @"您的姓名";
+    if(_isForgetPWD)
+    {
+        [imgName setImage:[UIImage imageNamed:@"icon_mima_1"]];
+        _accountName.placeholder = @"请输入密码";
+    }
+    else
+    {
+        [imgName setImage:[UIImage imageNamed:@"icon_xingming"]];
+        _accountName.placeholder = @"您的姓名";
+    }
     [_accountName setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
     [self addDoneToKeyboard:_accountName];
     
@@ -284,7 +295,14 @@
     [_txtPwd setTextColor:[UIColor whiteColor]];
     [_txtPwd setSecureTextEntry:YES];
     _txtPwd.delegate = self;
-    _txtPwd.placeholder = @"密码";
+    if(_isForgetPWD)
+    {
+        _txtPwd.placeholder = @"请再次输入密码";
+    }
+    else
+    {
+        _txtPwd.placeholder = @"密码";
+    }
     [_txtPwd setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
     [self addDoneToKeyboard:_txtPwd];
     
@@ -299,7 +317,14 @@
     UIButton* btnReg = [[UIButton alloc] initWithFrame:CGRectMake(0, txtView.bottom + 83, SCREENWIDTH, 50)];
     btnReg.titleLabel.font = Font(18);
     [btnReg setBackgroundColor:[UIColor tagBlueBackColor]];
-    [btnReg setTitle:@"注册" forState:UIControlStateNormal];
+    if(_isForgetPWD)
+    {
+        [btnReg setTitle:@"确认" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [btnReg setTitle:@"注册" forState:UIControlStateNormal];
+    }
     [btnReg setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnReg addTarget:self action:@selector(btnRegClicked:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -509,22 +534,53 @@
         
         return NO;
     }
-    if(!_accountName.text.length)
+    if(_isForgetPWD)
     {
-        [SVProgressHUD showErrorWithStatus:@"请输入姓名"];
-        
-        [_accountName becomeFirstResponder];
-        
-        return NO;
+        if(!_accountName.text.length)
+        {
+            [SVProgressHUD showErrorWithStatus:@"请输入密码"];
+            
+            [_accountName becomeFirstResponder];
+            
+            return NO;
+        }
+        if(!_txtPwd.text.length)
+        {
+            [SVProgressHUD showErrorWithStatus:@"请再次输入密码"];
+            
+            [_txtPwd becomeFirstResponder];
+            
+            return NO;
+        }
+        if(![_txtPwd.text isEqualToString:_accountName.text])
+        {
+            [SVProgressHUD showErrorWithStatus:@"两次输入的密码不一致"];
+            
+            [_accountName becomeFirstResponder];
+            
+            return NO;
+        }
     }
-    if(!_txtPwd.text.length)
+    else
     {
-        [SVProgressHUD showErrorWithStatus:@"请输入密码"];
-        
-        [_txtPwd becomeFirstResponder];
-        
-        return NO;
+        if(!_accountName.text.length)
+        {
+            [SVProgressHUD showErrorWithStatus:@"请输入姓名"];
+            
+            [_accountName becomeFirstResponder];
+            
+            return NO;
+        }
+        if(!_txtPwd.text.length)
+        {
+            [SVProgressHUD showErrorWithStatus:@"请输入密码"];
+            
+            [_txtPwd becomeFirstResponder];
+            
+            return NO;
+        }
     }
+
     return YES;
 }
 
@@ -536,30 +592,54 @@
     
     return;//todo
     
+    UIButton * btn = (UIButton *)sender;
+    
     if(![self varifyTxtField])
     {
         return;
     }
     
-    __block BOOL reg = NO;
-    dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
-    dispatch_async(queue, ^{
-//        reg = [LoginUser registeNewUser:2 sourceVale:_txtUserName.text inviteCode:_txtInvitation.text password:_txtPwd.text];
-        reg = [LoginUser registeUser:_accountName.text mobile:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
+    if([btn.titleLabel.text isEqualToString:@"确认"])
+    {
+        __block BOOL reg = NO;
+        dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
+        dispatch_async(queue, ^{
+
+            reg = [LoginUser updatePwd:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
+            if (reg) {
+                
+//                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+//                [self presentViewController:controller animated:YES completion:nil];
+                
+            }
+        });
+        
         if (reg) {
-            
-            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
-            [self presentViewController:controller animated:YES completion:nil];
-            
-//            [self dismissViewControllerAnimated:YES completion:nil];
+            NSLog(@"SUCC");
         }
-    });
-    
-    if (reg) {
-        NSLog(@"SUCC");
     }
-    
+    else
+    {
+        __block BOOL reg = NO;
+        dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
+        dispatch_async(queue, ^{
+            reg = [LoginUser registeUser:_accountName.text mobile:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
+            if (reg) {
+                
+                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+                [self presentViewController:controller animated:YES completion:nil];
+                
+            }
+        });
+        
+        if (reg) {
+            NSLog(@"SUCC");
+        }
+
+    }
+
 }
 
 - (void)setupTextName:(NSString *)textName frame:(CGRect)frame lblControl:(UILabel*)textNameLabel

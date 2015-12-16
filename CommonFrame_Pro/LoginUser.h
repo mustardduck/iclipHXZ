@@ -60,4 +60,6 @@
 
 + (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd;//注册用户
 + (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile status:(NSString **)status;//获取验证码
+
++ (BOOL)updatePwd:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd;//找回密码
 @end

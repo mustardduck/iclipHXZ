@@ -126,6 +126,7 @@
                         <outlet property="mainScrollView" destination="Uxh-M2-3Xc" id="FUH-6S-xUf"/>
                         <outlet property="mainView" destination="Ezg-zF-G4C" id="Bhw-Ub-vl9"/>
                         <outlet property="mainViewHeight" destination="Icq-8Q-OZi" id="HL9-s8-wJH"/>
+                        <outlet property="topbgImgView" destination="OkU-sS-fLh" id="O9s-cM-s6y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sh5-OP-SLa" userLabel="First Responder" sceneMemberID="firstResponder"/>

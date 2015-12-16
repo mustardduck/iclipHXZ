@@ -12,4 +12,5 @@
 
 @interface ICMemberRegisterViewController : UIViewController
 
+@property (nonatomic, assign) BOOL isForgetPWD;
 @end

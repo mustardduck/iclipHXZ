@@ -165,7 +165,79 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
+    for(UIView *view in cell.contentView.subviews) {
+        [view removeFromSuperview];
+    }
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    Organization * org = _orgArr[indexPath.row];
+    
+    UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 14, 50, 50)];
+    imgView.image = [UIImage imageNamed:@"icon_qiyetu"];
+    [imgView setRoundCorner:3.3];
+    //    [imgView setImageWithURL:[NSURL URLWithString:org.logo] placeholderImage:nil options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [cell.contentView addSubview:imgView];
+    
+    
+    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(imgView) + 14, 18, SCREENWIDTH - XW(imgView) - 14 - 94, 16)];
+    lbl.text = org.name;
+    lbl.textColor = [UIColor whiteColor];
+    lbl.font = Font(15);
+    lbl.backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:lbl];
+    
+    UILabel* createlbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(imgView) + 14, YH(lbl) + 11, W(lbl), 14)];
+    createlbl.text = [NSString stringWithFormat:@"创建人: %@", org.createName];
+    createlbl.textColor = [UIColor grayTitleColor];
+    createlbl.font = Font(12);
+    createlbl.backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:createlbl];
+    
+    
+    UILabel* statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 80 - 14, 30, 80, 16)];
+    statusLbl.textAlignment = NSTextAlignmentRight;
+    
+    NSString * str = @"申请加入";
+    UIColor * txtColor = [UIColor blueTextColor];
+    
+    if([org.status intValue] == 0)// 状态  -2：审核不过  -1：已忽略(暂无）  0:待审核  1:审核通过
+    {
+        str = @"等待审核";
+        txtColor = [UIColor grayTitleColor];
+        
+    }
+    else if ([org.status intValue] == -2)
+    {
+            str = @"审核不通过";
+            txtColor = [UIColor redTextColor];
+    }
+//    else if ([org.status intValue] == -2 ||
+//             [org.status intValue] == -1)
+//    {
+//        UIButton * addOrgBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 94, 0, 94, 78)];
+//        addOrgBtn.backgroundColor = [UIColor clearColor];
+//        [addOrgBtn addTarget:self action:@selector(addOrgClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        addOrgBtn.tag = indexPath.row;
+//        [cell.contentView addSubview:addOrgBtn];
+//    }
+    
+    statusLbl.text = str;
+    statusLbl.textColor = txtColor;
+    statusLbl.font = Font(14);
+    statusLbl.backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:statusLbl];
+    
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(14, 77.5, SCREENWIDTH, 0.5)];
+    [bottomLine setBackgroundColor:[UIColor grayLineColor]];
+    [cell.contentView addSubview:bottomLine];
+    
+    if(indexPath.row == _orgArr.count - 1)
+    {
+        bottomLine.left = 0;
+    }
+    
+    cell.contentView.backgroundColor = [UIColor grayMarkColor];
     
     return cell;
 }

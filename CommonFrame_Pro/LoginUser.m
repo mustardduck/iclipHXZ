@@ -22,6 +22,8 @@
 #define SEND_SMS_URL        @"/user/sendSms.hz"
 #define UPDATE_URL          @"/user/updateUserDetail.hz"
 #define UPLOAD_IMAGE_URL    @"/file/upload.hz"
+#define UPDATE_PWD_URL    @"/user/updatePwdBySms.hz"
+
 
 @implementation LoginUser
 
@@ -158,6 +160,45 @@
     }
     
     return re;
+}
+
+
++ (BOOL)updatePwd:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd
+{
+    BOOL re = NO;
+    
+    if (mobile && code && pwd)
+    {
+        NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+        
+        [dic setObject:[CommonFile md5:pwd]forKey:@"newPwd"];
+        [dic setObject:mobile forKey:@"mobile"];
+        [dic setObject:code forKey:@"code"];
+        
+        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_PWD_URL postData:dic];
+        
+        if (responseString == nil) {
+            return re;
+        }
+        
+        id val = [CommonFile jsonNSDATA:responseString];
+        
+        if ([val isKindOfClass:[NSDictionary class]]) {
+            NSDictionary* dic = (NSDictionary*)val;
+            
+            if (dic != nil) {
+                if ([[dic valueForKey:@"state"] intValue] == 1) {
+                    re = YES;
+                    [CommonFile saveInfoWithKey:[dic valueForKey:@"data"] withKey:@"loginInfo"];
+                    NSLog(@"Dic:%@",dic);
+                }
+            }
+            
+        }
+    }
+    
+    return  re;
+    
 }
 
 + (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd
