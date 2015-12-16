@@ -85,9 +85,7 @@
     {
         [searchBar resignFirstResponder];
         
-        //    NSString * userId = [LoginUser loginUserID];
-        
-        NSString * userId = @"1015042910350001";
+        NSString * userId = [LoginUser loginUserID];
         
         _orgArr = [Organization findOrgbyStr:userId str:searchBar.text];
         
@@ -196,9 +194,7 @@
 
 - (void)addOrgClicked:(id)sender
 {
-    //    NSString * userId = [LoginUser loginUserID];
-
-    NSString * userId = @"1015042910350001";
+    NSString * userId = [LoginUser loginUserID];
     
     UIButton * btn = (UIButton *) sender;
     
@@ -210,7 +206,6 @@
     
     if(isOk)
     {
-//        _isJoinOrg = YES;
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:@"申请已提交，等待管理员审批。"

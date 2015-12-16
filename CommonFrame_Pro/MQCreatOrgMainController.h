@@ -10,6 +10,6 @@
 
 @interface MQCreatOrgMainController : UIViewController
 
-//@property (nonatomic, strong) NSString * userId;
+@property (nonatomic, assign) BOOL isNewRegister;
 
 @end

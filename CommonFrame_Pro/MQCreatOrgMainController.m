@@ -53,16 +53,23 @@
 
 - (void) layoutHeaderView
 {
-//    NSString * userId = [LoginUser loginUserID];
+    NSString * userId = [LoginUser loginUserID];
     
-    NSString * userId = @"1015042910350001";
-    
-    _orgArr = [Organization fineExamOrg: userId];
-    
-    if(_orgArr.count)
+    if(!_isNewRegister)
     {
-        _mainTableView.tableHeaderView = nil;
+        _orgArr = [Organization fineExamOrg: userId];
         
+        if(_orgArr.count)
+        {
+            _mainTableView.tableHeaderView = nil;
+            
+        }
+        else
+        {
+            _mainTableView.tableHeaderView = ({
+                [self setHeaderView];
+            });
+        }
     }
     else
     {

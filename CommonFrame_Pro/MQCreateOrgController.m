@@ -11,6 +11,7 @@
 #import "LoginUser.h"
 #import "SVProgressHUD.h"
 #import "Organization.h"
+#import "ViewController.h"
 
 @interface MQCreateOrgController ()
 {
@@ -72,7 +73,12 @@
         
         if(isOk)
         {//跳到登录页面
+            ViewController *loginVc = (ViewController*)self.presentingViewController.presentingViewController.presentingViewController;
             
+            if(loginVc)
+            {
+                [loginVc dismissViewControllerAnimated:YES completion:nil];
+            }
         }
         else
         {

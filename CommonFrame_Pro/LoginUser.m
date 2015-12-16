@@ -94,7 +94,8 @@
         
         NSString * orgID = [dic valueForKey:@"orgId"];
         
-        user.orgId = orgID ? orgID : @"1015050511520001";
+//        user.orgId = orgID ? orgID : @"1015050511520001";
+        user.orgId = orgID ? orgID : @"";
 
     }
     

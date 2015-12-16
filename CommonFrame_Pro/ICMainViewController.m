@@ -196,6 +196,14 @@
         [self presentViewController:controller animated:YES completion:nil];
         return;
     }
+    else if ([LoginUser isKeepLogined] && ![LoginUser loginUserOrgID])//todo
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+        [self presentViewController:controller animated:YES completion:nil];
+        
+        return;
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(changeMainGroupCount:) name:@"changeMainGroupCount"

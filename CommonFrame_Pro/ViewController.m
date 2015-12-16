@@ -25,6 +25,7 @@
     
     BOOL            _isConformed;
     BOOL            _isKeepLogin;
+    BOOL            _isHaveOrg;
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -280,32 +281,33 @@
     lg.systemVersion = @"1.0.0";
     _isConformed = [lg hasLogin];
     
-    if (_isConformed) {
-        UIView* v  = [[UIView alloc] init];
-        v.frame = self.view.frame;
-        v.tag = 201;
-        [v setBackgroundColor:[UIColor blackColor]];
-        [self.view addSubview:v];
-        
-        _txtUserName.text = @"";
-        _txtPwd.text = @"";
-        [self restoreTextName:_lblUserName textField:_txtUserName];
-        [self restoreTextName:_lblPwd textField:_txtPwd];
-        
-        /*
-        //保存登录用户的通讯录ID
-        AVInstallation *currentInstallation = [AVInstallation currentInstallation];
-        [currentInstallation addUniqueObject:@"HXZ_loginUsers" forKey:@"channels"];
-        [currentInstallation setObject:[LoginUser loginUserID] forKey:@"HXZ_userId"];
-        [currentInstallation setObject:[LoginUser loginUserName] forKey:@"HXZ_userName"];
-        [currentInstallation saveInBackground];
-         */
-        
-        __autoreleasing NSMutableSet *tags = [NSMutableSet set];
-        [APService setTags:tags
-                     alias:[LoginUser loginUserID]
-          callbackSelector:@selector(tagsAliasCallback:tags:alias:)
-                    target:self];
+    if (_isConformed)
+    {
+        if([LoginUser loginUserOrgID])//todo
+        {
+            UIView* v  = [[UIView alloc] init];
+            v.frame = self.view.frame;
+            v.tag = 201;
+            [v setBackgroundColor:[UIColor blackColor]];
+            [self.view addSubview:v];
+            
+            _txtUserName.text = @"";
+            _txtPwd.text = @"";
+            [self restoreTextName:_lblUserName textField:_txtUserName];
+            [self restoreTextName:_lblPwd textField:_txtPwd];
+            
+            __autoreleasing NSMutableSet *tags = [NSMutableSet set];
+            [APService setTags:tags
+                         alias:[LoginUser loginUserID]
+              callbackSelector:@selector(tagsAliasCallback:tags:alias:)
+                        target:self];
+        }
+        else
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+            [self presentViewController:controller animated:YES completion:nil];
+        }
     }
     else
     {
@@ -365,7 +367,11 @@
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    return _isConformed;
+    BOOL isShow = [LoginUser loginUserOrgID] ? YES : NO;//todo
+    
+    BOOL isS = isShow && _isConformed;
+    
+    return isS;
 }
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation

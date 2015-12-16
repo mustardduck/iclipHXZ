@@ -593,6 +593,12 @@
 
 -(void)btnRegClicked:(id)sender
 {
+//    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+//    [self presentViewController:controller animated:YES completion:nil];
+//    
+//    return;//todo
+    
     UIButton * btn = (UIButton *)sender;
     
     if(![self varifyTxtField])
@@ -609,9 +615,6 @@
             reg = [LoginUser updatePwd:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
             if (reg) {
                 
-//                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
-//                [self presentViewController:controller animated:YES completion:nil];
                 [self dismissViewControllerAnimated:YES completion:nil];
                 
             }
@@ -627,12 +630,6 @@
     }
     else
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
-        [self presentViewController:controller animated:YES completion:nil];
-        
-        return;//todo
-        
         __block BOOL reg = NO;
         dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
         dispatch_async(queue, ^{
@@ -641,6 +638,7 @@
                 
                 UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                 UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+                ((MQCreatOrgMainController *)controller).isNewRegister = YES;
                 [self presentViewController:controller animated:YES completion:nil];
                 
             }
