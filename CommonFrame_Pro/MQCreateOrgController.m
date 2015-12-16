@@ -7,8 +7,21 @@
 //
 
 #import "MQCreateOrgController.h"
+#import "UICommon.h"
+#import "LoginUser.h"
+#import "SVProgressHUD.h"
+#import "Organization.h"
 
 @interface MQCreateOrgController ()
+{
+    
+    __weak IBOutlet UINavigationBar *_navBar;
+    
+}
+
+@property (weak, nonatomic) IBOutlet UILabel *orgCreateNameLbl;
+@property (weak, nonatomic) IBOutlet UITextField *orgNameTxtField;
+@property (weak, nonatomic) IBOutlet UIButton *okBtn;
 
 @end
 
@@ -17,11 +30,60 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+    [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
+    [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+    [leftButton addSubview:imgview];
+    UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 80, 20)];
+    [ti setBackgroundColor:[UIColor clearColor]];
+    [ti setTextColor:[UIColor whiteColor]];
+    [ti setText:@"返回"];
+    [ti setFont:[UIFont systemFontOfSize:17]];
+    [leftButton addSubview:ti];
+    
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"新建企业"];
+    [item setLeftBarButtonItem:leftBarButton];
+    [_navBar pushNavigationItem:item animated:YES];
+    
+    UIView* tb = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 20)];
+    [tb setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:tb];
+    
+    _orgCreateNameLbl.text = [NSString stringWithFormat:@"企业创建人：%@", [LoginUser loginUserName]];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)okBtnClicked:(id)sender
+{
+    if(!_orgNameTxtField.text.length)
+    {
+        [SVProgressHUD showErrorWithStatus:@"企业名称不能为空"];
+    }
+    else
+    {
+        BOOL isOk = [Organization addOrg:[LoginUser loginUserID] orgName:_orgNameTxtField.text];
+        
+        if(isOk)
+        {//跳到登录页面
+            
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:@"创建企业失败"];
+        }
+    }
+}
+
+- (IBAction) btnBackButtonClicked:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

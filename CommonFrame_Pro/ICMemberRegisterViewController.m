@@ -11,6 +11,7 @@
 #import "UICommon.h"
 #import "SVProgressHUD.h"
 #import "LoginUser.h"
+#import "MQCreatOrgMainController.h"
 
 @interface ICMemberRegisterViewController() <InputTextDelegate,UITextFieldDelegate>
 {
@@ -529,6 +530,12 @@
 
 -(void)btnRegClicked:(id)sender
 {
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    return;//todo
+    
     if(![self varifyTxtField])
     {
         return;
@@ -542,7 +549,7 @@
         if (reg) {
             
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberRegisterViewController"];
+            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
             [self presentViewController:controller animated:YES completion:nil];
             
 //            [self dismissViewControllerAnimated:YES completion:nil];

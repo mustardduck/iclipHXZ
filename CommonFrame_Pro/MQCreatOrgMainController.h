@@ -10,4 +10,6 @@
 
 @interface MQCreatOrgMainController : UIViewController
 
+//@property (nonatomic, strong) NSString * userId;
+
 @end

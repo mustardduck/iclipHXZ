@@ -123,6 +123,7 @@ typedef void (^keyboardBlock) ();
 + (UIColor *) grayMarkHoverBackgroundColor;
 + (UIColor *) tagBlueBackColor;
 + (UIColor *) blueTextColor;
++ (UIColor *) redTextColor;
 
 + (UIColor *) pdfBackColor;
 + (UIColor *) wordBackColor;

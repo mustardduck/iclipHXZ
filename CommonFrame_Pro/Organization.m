@@ -11,14 +11,65 @@
 #define FIND_ORG_URL        @"/org/findOrgbyStr.hz"
 #define ADD_ORG_USER_URL        @"/org/addOrgUser.hz"
 #define ADD_ORG_URL        @"/org/addOrg.hz"
+#define FIND_EXAM_ORG_URL        @"/org/findExamineUser.hz"
 
 @implementation Organization
+
+
++ (NSArray*)fineExamOrg:(NSString*)userID
+{
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",FIND_EXAM_ORG_URL,userID]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataArr = [dic valueForKey:@"data"];
+                
+                if ([dataArr isKindOfClass:[NSArray class]])
+                {
+                    NSArray* dArr = (NSArray*)dataArr;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]])
+                        {
+                            NSDictionary* di = (NSDictionary*)data;
+                            
+                            Organization* org = [Organization new];
+                            
+                            org.logo = [di valueForKey:@"logo"];
+                            org.name = [di valueForKey:@"name"];
+                            org.orgId = [di valueForKey:@"organizationId"];
+                            org.createName = [di valueForKey:@"createName"];
+                            org.createUserId = [di valueForKey:@"createUserId"];
+                            org.status = [di valueForKey:@"status"];
+                            
+                            [array addObject:org];
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    return array;
+}
 
 + (NSArray*)findOrgbyStr:(NSString*)userID str:(NSString *)str
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&str=%@",FIND_ORG_URL,userID,(str == nil ? @"" : [NSString stringWithFormat:@"&str=%@",str])]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&str=%@",FIND_ORG_URL,userID, str]];
     
     if (responseString == nil) {
         return array;
