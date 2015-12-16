@@ -72,6 +72,9 @@
 		4BB33A901B9EC5CF009D80E2 /* SKSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A8A1B9EC5CF009D80E2 /* SKSTableViewCell.m */; };
 		4BB33A911B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */; };
 		4BB560DD1C1E6DEC00A070C0 /* Organization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB560DC1C1E6DEC00A070C0 /* Organization.m */; };
+		4BB560E01C1FE5F000A070C0 /* MQCreatOrgMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB560DF1C1FE5F000A070C0 /* MQCreatOrgMainController.m */; };
+		4BB560E31C1FE60B00A070C0 /* MQCreateOrgController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB560E21C1FE60B00A070C0 /* MQCreateOrgController.m */; };
+		4BB560E61C1FE62000A070C0 /* MQOrgSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB560E51C1FE62000A070C0 /* MQOrgSearchController.m */; };
 		4BBB612A1BDA28F100C7E79E /* MegListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB61291BDA28F100C7E79E /* MegListController.m */; };
 		4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB612C1BDA2EA400C7E79E /* MessageCenter.m */; };
 		4BC03FD21BABA59E004C6F3B /* ICGroupMessageSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC03FD11BABA59E004C6F3B /* ICGroupMessageSettingController.m */; };
@@ -301,6 +304,12 @@
 		4BB33A8C1B9EC5CF009D80E2 /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
 		4BB560DB1C1E6DEC00A070C0 /* Organization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Organization.h; sourceTree = "<group>"; };
 		4BB560DC1C1E6DEC00A070C0 /* Organization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Organization.m; sourceTree = "<group>"; };
+		4BB560DE1C1FE5F000A070C0 /* MQCreatOrgMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreatOrgMainController.h; sourceTree = "<group>"; };
+		4BB560DF1C1FE5F000A070C0 /* MQCreatOrgMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreatOrgMainController.m; sourceTree = "<group>"; };
+		4BB560E11C1FE60B00A070C0 /* MQCreateOrgController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateOrgController.h; sourceTree = "<group>"; };
+		4BB560E21C1FE60B00A070C0 /* MQCreateOrgController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateOrgController.m; sourceTree = "<group>"; };
+		4BB560E41C1FE62000A070C0 /* MQOrgSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQOrgSearchController.h; sourceTree = "<group>"; };
+		4BB560E51C1FE62000A070C0 /* MQOrgSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQOrgSearchController.m; sourceTree = "<group>"; };
 		4BBB61281BDA28F100C7E79E /* MegListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MegListController.h; sourceTree = "<group>"; };
 		4BBB61291BDA28F100C7E79E /* MegListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MegListController.m; sourceTree = "<group>"; };
 		4BBB612B1BDA2EA400C7E79E /* MessageCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCenter.h; sourceTree = "<group>"; };
@@ -881,6 +890,12 @@
 				78BE76CE1B1FEEA6008AF8AD /* ICAccountViewController.m */,
 				78354CD11B40F5A000E2F00A /* ICMemberRegisterViewController.h */,
 				78354CD21B40F5A000E2F00A /* ICMemberRegisterViewController.m */,
+				4BB560DE1C1FE5F000A070C0 /* MQCreatOrgMainController.h */,
+				4BB560DF1C1FE5F000A070C0 /* MQCreatOrgMainController.m */,
+				4BB560E41C1FE62000A070C0 /* MQOrgSearchController.h */,
+				4BB560E51C1FE62000A070C0 /* MQOrgSearchController.m */,
+				4BB560E11C1FE60B00A070C0 /* MQCreateOrgController.h */,
+				4BB560E21C1FE60B00A070C0 /* MQCreateOrgController.m */,
 			);
 			name = Account;
 			sourceTree = "<group>";
@@ -1308,6 +1323,7 @@
 			files = (
 				4BE1F57A1BD641D7007CF6C4 /* AddPicCell88.m in Sources */,
 				7891826D1B0EDBC2004C6AF6 /* ViewController.m in Sources */,
+				4BB560E01C1FE5F000A070C0 /* MQCreatOrgMainController.m in Sources */,
 				4B88560E1C0D4A7A00B50998 /* HTHorizontalSelectionListCustomViewCell.m in Sources */,
 				4BC530181C1968B3002C20D8 /* APContact.m in Sources */,
 				4BE1F58D1BD88E91007CF6C4 /* MarkTagCell.m in Sources */,
@@ -1373,6 +1389,7 @@
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
 				4BE5CC641C070BD4008964BA /* MQSearchCollReusableView.m in Sources */,
 				78354CD01B40E03000E2F00A /* ICMemberAccessControlViewContoller.m in Sources */,
+				4BB560E61C1FE62000A070C0 /* MQOrgSearchController.m in Sources */,
 				4B9C73991BE84FBF0070135C /* PartiCell.m in Sources */,
 				784B061B1B43BADA0033C0EA /* ICNavigationController.m in Sources */,
 				4B1981B01BD4FBBB00174CFD /* UIView+UIActivityIndicatorForSDWebImage.m in Sources */,
@@ -1417,6 +1434,7 @@
 				7864DD2F1B2E8F4C00547D16 /* ICSideTopMenuController.m in Sources */,
 				78354CD81B410FFE00E2F00A /* InputText.m in Sources */,
 				784770E61B2FC8C5007D7839 /* ICMemberInfoViewController.m in Sources */,
+				4BB560E31C1FE60B00A070C0 /* MQCreateOrgController.m in Sources */,
 				4BBB612A1BDA28F100C7E79E /* MegListController.m in Sources */,
 				4B7A89251BD4F05F00E42F7C /* SDWebImageDownloader.m in Sources */,
 				78613FC11B3D2805007ED169 /* ICCreateMarkViewController.m in Sources */,
