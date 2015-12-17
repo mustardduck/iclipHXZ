@@ -32,6 +32,8 @@
 @property(nonatomic,strong) NSString*   hasCreatedNewGroup; //yes:1 NO:0
 
 @property(nonatomic,strong) NSString * isRefreshBottom;
+@property(nonatomic,strong) NSString * isSetting;
+
 
 
 @end

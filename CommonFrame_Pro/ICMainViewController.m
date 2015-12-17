@@ -27,6 +27,7 @@
 #import "MQCreateGroupFirstController.h"
 #import "Organization.h"
 #import "LoginUser.h"
+#import "ICSettingViewController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -191,6 +192,7 @@
     
     _keyString = @"";
     _TermString = @"";
+    _isSetting = @"1";
     
     [self initSelectionList];
     
@@ -619,6 +621,8 @@
     left.titleLabel.textColor = [UIColor whiteColor];
     [left setBackgroundColor:[UIColor clearColor]];
     [left setImage:[UIImage imageNamed:@"icon_logo"] forState:UIControlStateNormal];
+    left.tag = 765;
+    
     [left addTarget:self action:@selector(btnIconClicked) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem* bLeft = [[UIBarButtonItem alloc] initWithCustomView:left];
     
@@ -993,9 +997,16 @@
 
 - (void)btnIconClicked
 {
-    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICSettingViewController"];
-    [self.navigationController pushViewController:vc animated:YES];
+    if(_tableView.header.state == MJRefreshHeaderStateIdle && [_isSetting intValue] == 1)
+    {
+        UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICSettingViewController"];
+        ((ICSettingViewController *) vc).icMainVC = self;
+        
+        _isSetting = @"0";
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma make -

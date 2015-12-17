@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginUser.h"
+#import "ICMainViewController.h"
 
 @interface ICSettingViewController : UITableViewController
+
+@property(nonatomic,strong) id icMainVC;
 
 @end

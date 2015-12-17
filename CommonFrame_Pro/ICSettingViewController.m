@@ -95,6 +95,13 @@
     
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.icMainVC respondsToSelector:@selector(setIsSetting:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isSetting"];
+    }
+}
+
 - (void)tagsAliasCallback:(int)iResCode
                      tags:(NSSet *)tags
                     alias:(NSString *)alias
