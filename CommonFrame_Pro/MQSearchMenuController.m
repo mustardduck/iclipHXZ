@@ -638,6 +638,7 @@
     _buttonList = [[NSMutableArray alloc] initWithArray:images];
     _nameList = [[NSMutableArray alloc] initWithArray:nameList];
     
+    [self insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(SCREENWIDTH - 70, 50)];
     
     return self;
 }
@@ -980,7 +981,7 @@
         [UIView animateWithDuration:0.3 animations:^{
             _backgroundMenuView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -SCREENHEIGHT + 64);
             [self performSelector:@selector(delayMethod) withObject:nil afterDelay:0.3f];
-
+            
         }];
     });
 }

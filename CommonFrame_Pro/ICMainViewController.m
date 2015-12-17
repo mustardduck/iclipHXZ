@@ -191,7 +191,9 @@
     _TermString = @"";
     
     [self initSelectionList];
-        
+    
+//    [_searchMenuController insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
+    
     if (![LoginUser isKeepLogined]) {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ViewController"];
@@ -976,7 +978,7 @@
 {
     [super viewDidAppear:animated];
 
-    [_searchMenuController insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
+//    [_searchMenuController insertMenuButtonOnView:[UIApplication sharedApplication].delegate.window atPosition:CGPointMake(self.view.frame.size.width - 70, 50)];
 
 }
 
