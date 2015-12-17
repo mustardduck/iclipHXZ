@@ -1331,6 +1331,8 @@
     
     _searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, H(_textSelectionList))];
     [_searchBtn setImage:[UIImage imageNamed:@"btn_biaoqiantianjia"] forState:UIControlStateNormal];
+//    [_searchBtn setContentMode:UIViewContentModeCenter];
+    
 //    [_searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 

@@ -654,6 +654,7 @@
     
     _topButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 24 + 53)];
     _topButtonView.backgroundColor = [UIColor clearColor];
+
     [_backgroundMenuView addSubview: _topButtonView];
     
     UIButton * closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 46, 53, 46, 24 + 6)];
@@ -661,9 +662,14 @@
     closeBtn.titleLabel.textColor = [UIColor whiteColor];
     [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
     closeBtn.backgroundColor = [UIColor backgroundColor];
-    [closeBtn addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
+//    [closeBtn addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [closeBtn setRoundCorner:3.3];
     [_backgroundMenuView addSubview:closeBtn];
+    
+    UIButton * topBtn = [[UIButton alloc] initWithFrame:_topButtonView.frame];
+    topBtn.backgroundColor = [UIColor clearColor];
+    [topBtn addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [_backgroundMenuView addSubview:topBtn];
     
     [self searchHeaderView];
     [_backgroundMenuView addSubview:_searchTopView];
