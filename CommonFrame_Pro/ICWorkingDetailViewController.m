@@ -2950,7 +2950,7 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_navBarLeftButtonPopTipView dismissAnimated:YES];
+//    [_navBarLeftButtonPopTipView dismissAnimated:YES];
     
 //    if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {
 //        if (_hasDel) {

@@ -143,9 +143,11 @@
     
     if([_isRefreshBottom isEqualToString:@"1"])
     {
-        [_tableView reloadData];
-        
-        NSArray* markArray = [self loadBottomMenuView:nil isSearchBarOne:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self loadBottomMenuView:nil isSearchBarOne:YES];
+
+        });
         
         _isRefreshBottom = @"0";
 
@@ -858,6 +860,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     
     if (_strIndexForDetail != nil) {
         NSInteger index = [self.strIndexForDetail  integerValue];
