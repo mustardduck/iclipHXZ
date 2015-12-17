@@ -65,7 +65,14 @@
     [leftButton addSubview:ti];
     
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
-    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"注册"];
+    
+    NSString * titleStr = @"注册";
+    
+    if(_isForgetPWD)
+    {
+        titleStr = @"忘记密码";
+    }
+    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:titleStr];
     [item setLeftBarButtonItem:leftBarButton];    
     [_navBar pushNavigationItem:item animated:YES];
     
@@ -344,6 +351,7 @@
     if(_txtUserName.text.length && _txtUserName.text.length == 11)
     {
         [_smsCode becomeFirstResponder];
+        _smsCode.text = @"";
         
         NSString * status = @"";
         NSString * msg = @"";
@@ -608,46 +616,39 @@
     
     if([btn.titleLabel.text isEqualToString:@"确认"])
     {
-        __block BOOL reg = NO;
-        dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
-        dispatch_async(queue, ^{
-
-            reg = [LoginUser updatePwd:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
-            if (reg) {
-                
-                [self dismissViewControllerAnimated:YES completion:nil];
-                
-            }
-            else
-            {
-                [SVProgressHUD showErrorWithStatus:@"修改密码失败"];
-            }
-        });
+        [SVProgressHUD showWithStatus:@"密码修改中..."];
         
-        if (reg) {
-            NSLog(@"SUCC");
+        BOOL isOk = [LoginUser updatePwd:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
+        if (isOk) {
+            
+            [SVProgressHUD showSuccessWithStatus:@"修改密码成功"];
+
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:@"修改密码失败"];
         }
     }
     else
     {
-        __block BOOL reg = NO;
-        dispatch_queue_t queue = dispatch_queue_create("lqueue", NULL);
-        dispatch_async(queue, ^{
-            reg = [LoginUser registeUser:_accountName.text mobile:_txtUserName.text code:_smsCode.text password:_txtPwd.text];
-            if (reg) {
-                
-                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
-                ((MQCreatOrgMainController *)controller).isNewRegister = YES;
-                [self presentViewController:controller animated:YES completion:nil];
-                
-            }
-        });
-        
-        if (reg) {
-            NSLog(@"SUCC");
-        }
+        [SVProgressHUD showWithStatus:@"账号注册中..."];
 
+        NSString * msg = @"";
+        
+        BOOL isOk = [LoginUser registeUser:_accountName.text mobile:_txtUserName.text code:_smsCode.text password:_txtPwd.text msg:&msg];
+        if (isOk) {
+            
+            [SVProgressHUD dismiss];
+            
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+            [self presentViewController:controller animated:YES completion:nil];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:msg];
+        }
     }
 
 }

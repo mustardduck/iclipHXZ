@@ -70,6 +70,8 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    [_searchBar resignFirstResponder];
+    
     [self dismissView];
 }
 
@@ -83,8 +85,6 @@
     }
     else
     {
-        [searchBar resignFirstResponder];
-        
         NSString * userId = [LoginUser loginUserID];
         
         _orgArr = [Organization findOrgbyStr:userId str:searchBar.text];

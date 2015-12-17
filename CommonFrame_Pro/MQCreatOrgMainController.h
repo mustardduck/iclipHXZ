@@ -10,6 +10,4 @@
 
 @interface MQCreatOrgMainController : UIViewController
 
-@property (nonatomic, assign) BOOL isNewRegister;
-
 @end

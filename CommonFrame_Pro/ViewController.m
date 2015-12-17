@@ -137,8 +137,8 @@
     
     if ([LoginUser isKeepLogined]) {
         _isKeepLogin = YES;
-        _txtUserName.text = [LoginUser loginUserName];
-        _txtPwd.text = @"111111";
+        _txtUserName.text = [LoginUser loginUserMobile];
+        _txtPwd.text = @"";
         
         if (_txtUserName.text != nil) {
             [self diminishTextName:_lblUserName];
@@ -279,11 +279,13 @@
     lg.productId = 1;
     lg.version = @"1.0.0";
     lg.systemVersion = @"1.0.0";
-    _isConformed = [lg hasLogin];
+    
+    NSString * msg = @"";
+    _isConformed = [lg hasLogin:&msg];
     
     if (_isConformed)
     {
-        if([LoginUser loginUserOrgID])//todo
+        if([LoginUser loginUserOrgID].length)//todo
         {
             UIView* v  = [[UIView alloc] init];
             v.frame = self.view.frame;
@@ -311,8 +313,8 @@
     }
     else
     {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"登录失败" message:@"用户名或密码输入有误!" delegate:self
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"登录失败" message:msg delegate:self
+                                              cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     }
 }
@@ -367,7 +369,7 @@
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    BOOL isShow = [LoginUser loginUserOrgID] ? YES : NO;//todo
+    BOOL isShow = [LoginUser loginUserOrgID].length ? YES : NO;//todo
     
     BOOL isS = isShow && _isConformed;
     

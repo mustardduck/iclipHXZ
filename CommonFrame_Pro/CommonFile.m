@@ -82,7 +82,7 @@
     
     if ([value isKindOfClass:[NSData class]] || [value isKindOfClass:[NSString class]]
         || [value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSDate class]]
-        || [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]])
+        || [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSMutableDictionary class]])
     {
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         

@@ -27,7 +27,7 @@
 
 @implementation LoginUser
 
-- (BOOL)hasLogin
+- (BOOL)hasLogin:(NSString **)msg
 {
     BOOL hasLogined = NO;
     
@@ -35,7 +35,14 @@
         NSMutableDictionary* dic = [NSMutableDictionary dictionary];
         
         [dic setObject:self.loginName forKey:@"loginName"];
-        [dic setObject:[CommonFile md5:self.password]forKey:@"passWord"];
+        if(self.isPwdMD5)
+        {
+            [dic setObject:self.password forKey:@"passWord"];
+        }
+        else
+        {
+            [dic setObject:[CommonFile md5:self.password]forKey:@"passWord"];
+        }
         [dic setObject:[NSString stringWithFormat:@"%ld",self.type] forKey:@"loginType"];
         [dic setObject:[NSString stringWithFormat:@"%ld",self.source] forKey:@"loginSource"];
         [dic setObject:[NSString stringWithFormat:@"%ld",self.productId] forKey:@"productId"];
@@ -56,9 +63,25 @@
             if (dic1 != nil) {
                 if ([[dic1 valueForKey:@"state"] intValue] == 1) {
                     hasLogined = YES;
-                    [CommonFile saveInfoWithKey:[dic1 valueForKey:@"data"] withKey:@"loginInfo"];
+                    
+                    NSDictionary * dataDic = [dic1 valueForKey:@"data"];
+
+                    NSMutableDictionary * dicc = [[NSMutableDictionary alloc] initWithDictionary:dataDic];
+
+                    if(self.isPwdMD5)
+                    {
+                        [dicc setObject:self.password forKey:@"password"];
+                    }
+                    else
+                    {
+                        [dicc setObject:[CommonFile md5:self.password]forKey:@"password"];
+                    }
+                    
+                    [CommonFile saveInfoWithKey:dicc withKey:@"loginInfo"];
                     NSLog(@"Dic:%@",dic1);
                 }
+                
+                *msg = [dic1 valueForKey:@"msg"];
             }
             
         }
@@ -92,10 +115,15 @@
          user.type = [[dic valueForKey:@"type"] integerValue];
          user.userId = [dic valueForKey:@"userId"];
         
-        NSString * orgID = [dic valueForKey:@"orgId"];
+        NSString * orgStr = [dic valueForKey:@"orgId"];
+        NSString * orgID = @"";
+        if(orgStr)
+        {
+           orgID = [NSString stringWithFormat:@"%@", orgStr];
+        }
         
 //        user.orgId = orgID ? orgID : @"1015050511520001";
-        user.orgId = orgID ? orgID : @"";
+        user.orgId = (orgID.length && orgID.length != 1) ? orgID : @"";
 
     }
     
@@ -123,6 +151,11 @@
 + (NSString*)loginUserName
 {
     return [self getLoginInfo].name;
+}
+
++ (NSString*)loginUserMobile
+{
+    return [self getLoginInfo].mobile;
 }
 
 + (NSString*)loginUserPwd
@@ -190,7 +223,15 @@
             if (dic != nil) {
                 if ([[dic valueForKey:@"state"] intValue] == 1) {
                     re = YES;
-                    [CommonFile saveInfoWithKey:[dic valueForKey:@"data"] withKey:@"loginInfo"];
+                    
+                    NSDictionary * dataDic = [dic valueForKey:@"data"];
+                    
+                    NSMutableDictionary * dicc = [[NSMutableDictionary alloc] initWithDictionary:dataDic];
+                    
+                    [dicc setObject:[CommonFile md5:pwd] forKey:@"password"];
+
+                    [CommonFile saveInfoWithKey:dicc withKey:@"loginInfo"];
+                    
                     NSLog(@"Dic:%@",dic);
                 }
             }
@@ -202,7 +243,7 @@
     
 }
 
-+ (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd
++ (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd msg:(NSString **)msg
 {
     BOOL re = NO;
     
@@ -210,7 +251,7 @@
     {
         NSMutableDictionary* dic = [NSMutableDictionary dictionary];
         
-        [dic setObject:[CommonFile md5:pwd]forKey:@"pwd"];
+        [dic setObject:pwd forKey:@"pwd"];
         [dic setObject:name forKey:@"name"];
         [dic setObject:mobile forKey:@"mobile"];
         [dic setObject:code forKey:@"code"];
@@ -229,9 +270,21 @@
             if (dic != nil) {
                 if ([[dic valueForKey:@"state"] intValue] == 1) {
                     re = YES;
-                    [CommonFile saveInfoWithKey:[dic valueForKey:@"data"] withKey:@"loginInfo"];
+                    
+                    NSDictionary * dataDic = [dic valueForKey:@"data"];
+                    
+                    NSMutableDictionary * dicc = [[NSMutableDictionary alloc] initWithDictionary:dataDic];
+                    
+                    [dicc setObject:[CommonFile md5:pwd] forKey:@"password"];
+                    
+                    [CommonFile saveInfoWithKey:dicc withKey:@"loginInfo"];
+                    
                     NSLog(@"Dic:%@",dic);
+                    
                 }
+                
+                *msg = [dic valueForKey:@"msg"];
+
             }
             
         }
@@ -267,7 +320,15 @@
             if (dic != nil) {
                 if ([[dic valueForKey:@"state"] intValue] == 1) {
                     re = YES;
-                    [CommonFile saveInfoWithKey:[dic valueForKey:@"data"] withKey:@"loginInfo"];
+                    
+                    NSDictionary * dataDic = [dic valueForKey:@"data"];
+                    
+                    NSMutableDictionary * dicc = [[NSMutableDictionary alloc] initWithDictionary:dataDic];
+                    
+                    [dicc setObject:[CommonFile md5:pwd] forKey:@"password"];
+                    
+                    [CommonFile saveInfoWithKey:dicc withKey:@"loginInfo"];
+                    
                     NSLog(@"Dic:%@",dic);
                 }
             }
@@ -563,7 +624,21 @@
 {
     id val = [CommonFile getInfoWithKey:@"loginInfo"];
     if (val != nil) {
-        return YES;
+        
+        if ([val isKindOfClass:[NSDictionary class]]) {
+            NSDictionary* dic = (NSDictionary*)val;
+            {
+                NSString * userId = [dic valueForKey:@"userId"];
+                if(userId)
+                {
+                    return YES;
+                }
+                else
+                {
+                    return NO;
+                }
+            }
+        }
     }
     return NO;
 }

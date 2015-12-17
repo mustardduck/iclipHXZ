@@ -36,9 +36,9 @@
 @property (nonatomic,strong) NSString*       img;
 
 @property (nonatomic,strong) NSString*       orgId;//群组id
+@property (nonatomic,assign) BOOL isPwdMD5;
 
-
-- (BOOL)hasLogin;
+- (BOOL)hasLogin:(NSString **)msg;
 + (BOOL)quit;
 + (BOOL)registeNewUser:(NSInteger)source sourceVale:(NSString*)sourceStr inviteCode:(NSString*)code password:(NSString*)pwd;
 + (LoginUser*)getLoginInfo;
@@ -48,6 +48,7 @@
 + (NSString*)loginUserName;
 + (NSString*)loginUserPwd;
 + (NSString*)loginUserPhoto;
++ (NSString*)loginUserMobile;
 + (BOOL)changePwd:(NSString*)oldPwd newPassword:(NSString*)newPwd;
 + (BOOL)findPassword:(NSInteger)source sourceValue:(NSString*)sourceStr;
 
@@ -58,7 +59,7 @@
 + (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename userImgPath:(NSString **)userImgPath;
 + (BOOL) uploadImageWithScale:(UIImage *)imgH fileName:(NSString *)filename imageDic:(NSMutableDictionary **)imageDic;
 
-+ (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd;//注册用户
++ (BOOL)registeUser:(NSString *)name mobile:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd msg:(NSString **)msg;//注册用户
 + (BOOL)sendSMS:(NSInteger)source mobile:(NSString*)mobile status:(NSString **)status msg:(NSString **)msg;//获取验证码
 
 + (BOOL)updatePwd:(NSString*)mobile code:(NSString*)code password:(NSString*)pwd;//找回密码

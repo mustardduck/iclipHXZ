@@ -25,6 +25,8 @@
 #import "MQPublishSharedAndNotifyController.h"
 #import "HTHorizontalSelectionList.h"
 #import "MQCreateGroupFirstController.h"
+#import "Organization.h"
+#import "LoginUser.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -189,20 +191,61 @@
     _TermString = @"";
     
     [self initSelectionList];
-    
+        
     if (![LoginUser isKeepLogined]) {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ViewController"];
         [self presentViewController:controller animated:YES completion:nil];
         return;
     }
-    else if ([LoginUser isKeepLogined] && ![LoginUser loginUserOrgID])//todo
+    else if ([LoginUser isKeepLogined] && ![LoginUser loginUserOrgID].length)//todo
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
-        [self presentViewController:controller animated:YES completion:nil];
+        NSArray * orgArr = [Organization fineExamOrg: [LoginUser loginUserID]];
         
-        return;
+        if(orgArr.count)
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+            [self presentViewController:controller animated:YES completion:nil];
+            
+            return;
+        }
+        else
+        {
+            LoginUser* lg = [LoginUser new];
+            
+            lg.loginName = [LoginUser loginUserMobile];
+            lg.password = [LoginUser loginUserPwd];
+            lg.isPwdMD5 = YES;
+            
+            lg.type = 2;
+            lg.source = 2;
+            lg.productId = 1;
+            lg.version = @"1.0.0";
+            lg.systemVersion = @"1.0.0";
+            
+            NSString * msg = @"";
+            BOOL isOk = [lg hasLogin:&msg];
+            
+            if(isOk)
+            {
+                if(![LoginUser loginUserOrgID].length)
+                {
+                    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+                    [self presentViewController:controller animated:YES completion:nil];
+                    
+                    return;
+                }
+            }
+            else
+            {
+                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ViewController"];
+                [self presentViewController:controller animated:YES completion:nil];
+                return;
+            }
+        }
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self

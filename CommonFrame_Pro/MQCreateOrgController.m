@@ -12,8 +12,9 @@
 #import "SVProgressHUD.h"
 #import "Organization.h"
 #import "ViewController.h"
+#import "ICMainViewController.h"
 
-@interface MQCreateOrgController ()
+@interface MQCreateOrgController ()<UITextFieldDelegate>
 {
     
     __weak IBOutlet UINavigationBar *_navBar;
@@ -23,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *orgCreateNameLbl;
 @property (weak, nonatomic) IBOutlet UITextField *orgNameTxtField;
 @property (weak, nonatomic) IBOutlet UIButton *okBtn;
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 
 @end
 
@@ -54,6 +56,27 @@
     [self.view addSubview:tb];
     
     _orgCreateNameLbl.text = [NSString stringWithFormat:@"企业创建人：%@", [LoginUser loginUserName]];
+    
+    [self addDoneToKeyboard:_orgNameTxtField];
+
+}
+
+- (void) hiddenKeyboard
+{
+    [_orgNameTxtField resignFirstResponder];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField
+{
+    [_mainScrollView setContentOffset:CGPointMake(0, 100) animated:YES];
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField
+{
+    [_mainScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,9 +98,17 @@
         {//跳到登录页面
             ViewController *loginVc = (ViewController*)self.presentingViewController.presentingViewController.presentingViewController;
             
+            [_orgNameTxtField resignFirstResponder];
+
             if(loginVc)
             {
                 [loginVc dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ViewController"];
+                [self presentViewController:controller animated:YES completion:nil];
             }
         }
         else
@@ -89,6 +120,8 @@
 
 - (IBAction) btnBackButtonClicked:(id)sender
 {
+    [_orgNameTxtField resignFirstResponder];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

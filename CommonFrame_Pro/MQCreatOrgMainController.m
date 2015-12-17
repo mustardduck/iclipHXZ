@@ -55,21 +55,12 @@
 {
     NSString * userId = [LoginUser loginUserID];
     
-    if(!_isNewRegister)
+    _orgArr = [Organization fineExamOrg: userId];
+    
+    if(_orgArr.count)
     {
-        _orgArr = [Organization fineExamOrg: userId];
+        _mainTableView.tableHeaderView = nil;
         
-        if(_orgArr.count)
-        {
-            _mainTableView.tableHeaderView = nil;
-            
-        }
-        else
-        {
-            _mainTableView.tableHeaderView = ({
-                [self setHeaderView];
-            });
-        }
     }
     else
     {

@@ -203,7 +203,7 @@
             [view addSubview:imageView];
         
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(130, 60, 80, 24)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(130, 60, SCREENWIDTH - 130 - 14, 24)];
         label.text = _user.name;
         label.font = [UIFont fontWithName:@"HelveticaNeue" size:21];
         label.backgroundColor = [UIColor clearColor];
