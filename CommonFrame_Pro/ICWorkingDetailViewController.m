@@ -21,7 +21,6 @@
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
 #import "ICMainViewController.h"
-#import "MQDetailViewController.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
@@ -3053,12 +3052,12 @@
     else
     {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQDetailViewController"];
-        ((MQDetailViewController*)vc).taskId = taskId;
-        ((MQDetailViewController*)vc).indexInMainArray = _indexInMainArray;
-        ((MQDetailViewController*)vc).icMainViewController = _icMainViewController;
-        ((MQDetailViewController*)vc).workGroupId = _workGroupId;
-        ((MQDetailViewController*)vc).isChildMission = YES;
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+        ((ICWorkingDetailViewController*)vc).taskId = taskId;
+        ((ICWorkingDetailViewController*)vc).indexInMainArray = _indexInMainArray;
+        ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
+        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+        ((ICWorkingDetailViewController*)vc).isChildMission = YES;
         
         [self.navigationController pushViewController:vc animated:YES];
     }
