@@ -2482,14 +2482,6 @@
             [self.icGroupViewController setValue:_workGroupId forKey:@"groupId"];
         }
     }
-    if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupId:)]) {
-        [self.icMissionMainViewController setValue:_workGroupId forKey:@"workGroupId"];
-        
-    }
-    if ([self.icMissionMainViewController respondsToSelector:@selector(setWorkGroupName:)]) {
-        [self.icMissionMainViewController setValue:_workGroupName forKey:@"workGroupName"];
-        
-    }
     
     if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
         [self.icDetailViewController setValue:@"1" forKey:@"content"];
