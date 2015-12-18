@@ -1869,6 +1869,17 @@
             [_sideMenu showMenu];
             
             break;
+        case 4:
+            
+            
+            if (_topMenuController.isOpen) {
+                [_topMenuController showTopMenu:@"1"];
+            }
+            if (_searchMenuController.isOpen) {
+                [_searchMenuController dismissMenu];
+            }
+            
+            break;
         default:
             break;
     }

@@ -108,7 +108,7 @@
     self.clickedButtonTag  = -1;
 
     
-    [self showMenu];
+    [self sideMenuShow];
 
     parentView = _mainView;
 
@@ -118,6 +118,10 @@
 }
 
 - (void)objectDidDragged:(UIPanGestureRecognizer *)sender {
+    
+    if ([self.delegate respondsToSelector:@selector(partfarmButtonClicked:)]) {
+        [self.delegate partfarmButtonClicked:@"4"];
+    }
     
     CGFloat vHeight = 120;
     
@@ -155,6 +159,12 @@
     }
     if (sender.state == UIGestureRecognizerStateEnded)
     {
+        CGFloat vHeight = 120;
+        
+        CGFloat dH = _pViewHeight - 64 - vHeight;
+        
+        UIView *draggableObj = [_mainView viewWithTag:100];
+        
         [UIView beginAnimations:@"move" context:nil];
         [UIView setAnimationDuration:0.4];
         [UIView setAnimationDelegate:self];//改变它的frame的x,y的值
@@ -164,15 +174,15 @@
         
         draggableObj.frame = frame;
         [UIView commitAnimations];
-        
-        [self showMenu];
+
+        [self sideMenuShow];
     }
 }
 
 - (void)addGestureRecognizer:(UIControl*)targetView
 {
-    UISwipeGestureRecognizer* upGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMenu)];
-    UISwipeGestureRecognizer* downGesture = [[UISwipeGestureRecognizer alloc ] initWithTarget:self action:@selector(showMenu)];
+    UISwipeGestureRecognizer* upGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideMenuShow)];
+    UISwipeGestureRecognizer* downGesture = [[UISwipeGestureRecognizer alloc ] initWithTarget:self action:@selector(sideMenuShow)];
     
     upGesture.direction = UISwipeGestureRecognizerDirectionUp;
     downGesture.direction = UISwipeGestureRecognizerDirectionDown;
@@ -189,12 +199,12 @@
 {
     if(recognizer.direction==UISwipeGestureRecognizerDirectionDown) {
         NSLog(@"swipe down");
-        [self showMenu];
+        [self sideMenuShow];
     }
     else if(recognizer.direction==UISwipeGestureRecognizerDirectionUp) {
         NSLog(@"swipe up");
         //执行程序
-        [self showMenu];
+        [self sideMenuShow];
     }
     else
     {
@@ -203,9 +213,32 @@
     }
 }
 
-
 - (void)showMenu
 {
+    CGFloat vHeight = 120;
+    
+    CGFloat dH = _pViewHeight - 64 - vHeight;
+    
+    UIView *draggableObj = [_mainView viewWithTag:100];
+    
+    [UIView beginAnimations:@"move" context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelegate:self];//改变它的frame的x,y的值
+    CGRect frame = draggableObj.frame;
+    
+    _isUp = _isOpen;
+    
+    frame.origin.y = _isUp ? 0 : dH;
+    
+    draggableObj.frame = frame;
+    [UIView commitAnimations];
+    
+    [self sideMenuShow];
+}
+
+- (void)sideMenuShow
+{
+    //show
     int index = 0;
     int columeCount = 5;
     
@@ -214,14 +247,14 @@
     CGFloat menuHeight = 70;
     CGFloat vHeight = 120;
     NSInteger rowCount = _dataCount / columeCount;
-
+    
     for (UIControl *control in _mainView.subviews) {
         [control removeFromSuperview];
     }
-
+    
     UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 1, _pViewWidth, 28)];
     mbutton.backgroundColor = [UIColor clearColor];
-
+    
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
     [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
@@ -229,15 +262,15 @@
     
     [_mainView addSubview:mbutton];
     
-//    [self addGestureRecognizer:mbutton];
+    //    [self addGestureRecognizer:mbutton];
     
     if (_isOpen) {
         
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [UIView animateWithDuration:0.4 animations:^{
-                _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
-//            }];
-//        });
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        //            [UIView animateWithDuration:0.4 animations:^{
+        _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+        //            }];
+        //        });
         
         topBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 28, [UIScreen mainScreen].bounds.size.width, 40)];
         topBar.barStyle = UIStatusBarStyleDefault;
@@ -248,23 +281,23 @@
         [topBar setBarTintColor:[UIColor colorWithRed:0.10f green:0.10f blue:0.10f alpha:1.0f]];
         
         UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
-
-//        UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
-//        [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
-//        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 2, 10, 18)];
-//        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
-//        [leftButton addSubview:imgview];
-//        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 2, 80, 20)];
-//        [ti setBackgroundColor:[UIColor clearColor]];
-//        [ti setTextColor:[UIColor whiteColor]];
-//        [ti setText:@"所有群组"];
-//        [ti setFont:[UIFont systemFontOfSize:13]];
-//        [leftButton addSubview:ti];
-//        
-//        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
-//        [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
-//
-//        [item setLeftBarButtonItem:leftBarButton];
+        
+        //        UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+        //        [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
+        //        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 2, 10, 18)];
+        //        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+        //        [leftButton addSubview:imgview];
+        //        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 2, 80, 20)];
+        //        [ti setBackgroundColor:[UIColor clearColor]];
+        //        [ti setTextColor:[UIColor whiteColor]];
+        //        [ti setText:@"所有群组"];
+        //        [ti setFont:[UIFont systemFontOfSize:13]];
+        //        [leftButton addSubview:ti];
+        //
+        //        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+        //        [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
+        //
+        //        [item setLeftBarButtonItem:leftBarButton];
         
         UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
         [rightBtn addTarget:self action:@selector(btnCreateNewGroup:) forControlEvents:UIControlEventTouchUpInside];
@@ -288,15 +321,15 @@
         
         
         _messageView = [[UIView alloc] initWithFrame:
-                         CGRectMake(0,
-                                    topBar.frame.size.height + topBar.frame.origin.y,
-                                    _mainView.frame.size.width,
-                                    _mainView.frame.size.height - topBar.frame.size.height - topBar.frame.origin.y)];
+                        CGRectMake(0,
+                                   topBar.frame.size.height + topBar.frame.origin.y,
+                                   _mainView.frame.size.width,
+                                   _mainView.frame.size.height - topBar.frame.size.height - topBar.frame.origin.y)];
         [_messageView setBackgroundColor:[UIColor blackColor]];
-    
+        
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _pViewWidth, 40)];
         [view setBackgroundColor:[UIColor colorWithRed:0.15f green:0.15f blue:0.15f alpha:1.0f]];
-
+        
         
         UIView* searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _pViewWidth, 40)];
         [searchView setBackgroundColor: [UIColor blackColor]];
@@ -313,11 +346,11 @@
         [_txtSearch1 setBackgroundColor:[UIColor clearColor]];
         [_txtSearch1 setBorderStyle:UITextBorderStyleNone];
         [_txtSearch1 setFont:[UIFont systemFontOfSize:17]];
-         [_txtSearch1 setTextColor:[UIColor whiteColor]];
+        [_txtSearch1 setTextColor:[UIColor whiteColor]];
         [_txtSearch1 setReturnKeyType:UIReturnKeySearch];
         [_txtSearch1 addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
         _txtSearch1.delegate = self;
-
+        
         
         _txtSearch1 = [inputText setupWithIcon:nil  point:nil  textFieldControl:_txtSearch1 showBottomLine:NO];
         
@@ -344,7 +377,7 @@
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [view addSubview:bottomLine];
         
-//        [_messageView addSubview:view];
+        //        [_messageView addSubview:view];
         
         
         if (_dataCount / columeCount > 0) {
@@ -390,18 +423,18 @@
                 {
                     [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_1"] forState:UIControlStateNormal];
                     [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
-
+                    
                 }
                 else
                 {
                     [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                 }
-
+                
                 [menuButton setBackgroundColor:[UIColor clearColor]];
                 [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [menuButton setTag:index];
                 
-               
+                
                 
                 UILabel* menuName = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, menuWidth, 15)];
                 
@@ -422,9 +455,9 @@
                         allnumBadgeValueString = [NSString stringWithFormat:@"%@", _allNumBadgeList[index]];
                     }
                     
-//                    badgeValueString = @"100";
-//                    allnumBadgeValueString = @"1";//momo
-
+                    //                    badgeValueString = @"100";
+                    //                    allnumBadgeValueString = @"1";//momo
+                    
                     if (![badgeValueString isEqualToString:@"0"]) {
                         [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO withIndex:index];
                     }
@@ -492,11 +525,11 @@
     }
     else
     {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [UIView animateWithDuration:0.4 animations:^{
-                _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, _pViewHeight - 64 - vHeight);
-//            }];
-//        });
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        //            [UIView animateWithDuration:0.4 animations:^{
+        _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, _pViewHeight - 64 - vHeight);
+        //            }];
+        //        });
         
         top = 20;
         
@@ -549,7 +582,7 @@
             [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [menuButton setTag:index];
             
-
+            
             UILabel* menuName = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, menuWidth, 15)];
             
             [menuName setText:[_nameList objectAtIndex:index]];
@@ -568,8 +601,8 @@
                 {
                     allnumBadgeValueString = [NSString stringWithFormat:@"%@", _allNumBadgeList[index]];
                 }
-//                badgeValueString = @"100";
-//                allnumBadgeValueString = @"1";//momo
+                //                badgeValueString = @"100";
+                //                allnumBadgeValueString = @"1";//momo
                 //todo
                 if (![badgeValueString isEqualToString:@"0"]) {
                     [self addBadgeView:menuView parentView:menuView  showValue:badgeValueString isAllNum:NO withIndex:index];
@@ -592,7 +625,7 @@
             {
                 self.clickedButtonTag = -1;
             }
-
+            
             [sv addSubview:menuView];
             
             
