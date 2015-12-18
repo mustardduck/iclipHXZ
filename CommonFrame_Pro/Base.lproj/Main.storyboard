@@ -3319,6 +3319,32 @@
             </objects>
             <point key="canvasLocation" x="681" y="-56"/>
         </scene>
+        <!--详情-->
+        <scene sceneID="drx-er-qPq">
+            <objects>
+                <viewController storyboardIdentifier="MQDetailViewController" id="d5D-To-NTU" customClass="MQDetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VD4-yA-7Ge"/>
+                        <viewControllerLayoutGuide type="bottom" id="40D-gM-LNC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oiv-XR-6sx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="详情" id="4yG-IM-tYh">
+                        <barButtonItem key="leftBarButtonItem" title="返回" id="0n9-e6-UD3">
+                            <connections>
+                                <action selector="btnBackButtonClicked:" destination="d5D-To-NTU" id="hxn-ed-UPZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FlI-rs-C5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2153" y="629"/>
+        </scene>
     </scenes>
     <resources>
         <image name="avatar.jpg" width="210" height="210"/>

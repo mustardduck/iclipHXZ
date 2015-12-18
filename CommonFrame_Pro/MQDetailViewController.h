@@ -16,7 +16,7 @@
 #import "ICPublishSharedAndNotifyViewController.h"
 #import "ICPublishMissionViewController.h"
 
-@interface ICWorkingDetailViewController : UIViewController
+@interface MQDetailViewController : UIViewController
 
 @property (nonatomic,strong) NSString* taskId;
 @property (nonatomic,strong) NSString* commentsId;
@@ -40,6 +40,8 @@
 @property(nonatomic,strong) NSMutableArray* cAccessoryArray;
 
 @property (nonatomic,assign) BOOL              isChildMission;
-//@property(nonatomic,strong) Mission* currentMission;
+
+@property(nonatomic,strong) Mission* currentMission;
+@property (nonatomic,strong) id     icWorkingDetailVC;
 
 @end

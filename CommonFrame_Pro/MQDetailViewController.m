@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 ionitech. All rights reserved.
 //
 
-#import "ICWorkingDetailViewController.h"
+#import "MQDetailViewController.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <MJRefresh.h>
 #import <CMPopTipView.h>
@@ -21,9 +21,8 @@
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
 #import "ICMainViewController.h"
-#import "MQDetailViewController.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
+@interface MQDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
     NSMutableDictionary*        _reReplyDic;
     Mission*                    _currentMission;
@@ -42,7 +41,7 @@
     
     UIActivityIndicatorView* acInd ;
     
-    UICollectionView * _partCollView;
+    //    UICollectionView * _partCollView;
     
     UIImageView * _duiimageview;
     
@@ -69,10 +68,10 @@
 
 @end
 
-@implementation ICWorkingDetailViewController
+@implementation MQDetailViewController
 
 - (void)notiForJumpToMissionDetail:(NSNotification *)note {
-        
+    
     NSDictionary * dic = note.object;
     
     _commentsId = [dic valueForKey:@"commentId"];
@@ -92,10 +91,10 @@
     ((MQPublishMissionMainController*)vc).workGroupId = _currentMission.workGroupId;
     ((MQPublishMissionMainController*)vc).workGroupName = _currentMission.workGroupName;
     ((MQPublishMissionMainController*)vc).icDetailViewController = self;
-
-
+    
+    
     [self.navigationController pushViewController:vc animated:YES];
-
+    
 }
 
 - (void) jumpToShareEdit
@@ -119,7 +118,7 @@
         isShared = 3;
     }
     ((MQPublishSharedAndNotifyController*)vc).isShared = isShared;
-
+    
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -136,9 +135,9 @@
     ((MQPublishMissionController*)vc).workGroupName = _currentMission.workGroupName;
     ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
     ((MQPublishMissionController*)vc).icDetailViewController = self;
-//    ((MQPublishMissionController*)vc).icMainViewController = _icMainViewController;
-//    ((MQPublishMissionController*)vc).indexInMainArray = _indexInMainArray;
-
+    //    ((MQPublishMissionController*)vc).icMainViewController = _icMainViewController;
+    //    ((MQPublishMissionController*)vc).indexInMainArray = _indexInMainArray;
+    
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -163,12 +162,12 @@
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否%@该任务？", Dstr] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
             alert.tag = 10;
             [alert show];
-    
+            
         }
         else if (buttonIndex == 1)//编辑
         {
             _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
-
+            
             if(_isMainMission)
             {
                 [self jumpToMissionMainEdit];
@@ -208,7 +207,7 @@
             {
                 [self jumpToShareEdit];
             }
-
+            
         }
         else if (buttonIndex == 1)//删除
         {
@@ -316,7 +315,7 @@
     [leftButton addSubview:ti];
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
-
+    
     acInd = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - 40) / 2, [UIScreen mainScreen].bounds.size.height/ 2 - 80 , 40, 40)];
     [acInd setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [acInd setHidesWhenStopped:YES];
@@ -337,12 +336,12 @@
             _oriIndexRow = 0;
             [self.view addSubview:_tableView];
             
-//            _childTableView = [[UITableView alloc] init];
-//            _childTableView.scrollEnabled = NO;
-//            _childTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//            _childTableView.backgroundColor = [UIColor clearColor];
-//            _childTableView.dataSource = self;
-//            _childTableView.delegate = self;
+            //            _childTableView = [[UITableView alloc] init];
+            //            _childTableView.scrollEnabled = NO;
+            //            _childTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            //            _childTableView.backgroundColor = [UIColor clearColor];
+            //            _childTableView.dataSource = self;
+            //            _childTableView.delegate = self;
             
             UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
             lpgr.minimumPressDuration = 1.0; //seconds	设置响应时间
@@ -360,18 +359,18 @@
             _inputBar.dataCount = _replyList.count - 1;
             _inputBar.textField.placeholder = @"点击回复";
             [_inputBar.sendCommentBtn addTarget:self action:@selector(btnSendCommentPress:) forControlEvents:UIControlEventTouchUpInside];
-
-//            [self addSendToKeyboard:_inputBar.textField];
+            
+            //            [self addSendToKeyboard:_inputBar.textField];
             
             [self.view addSubview:_inputBar];
             
             [acInd stopAnimating];
         });
     });
-
+    
     //_dataList = [NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10", nil];
     //_replyList = [NSMutableArray arrayWithObjects:@" ",@" ",@"回形针工具上线申请1！",@"回形针工具上线申请2！",@"回形针工具上线申请3！",@"回形针工具上线申请！",@"回形针工具上线申请！",@"回形针工具上线申请8！",@"回形针工具上线申请9！",@"回形针工具上线申请10！", nil];
-
+    
 }
 
 -(void)btnSendCommentPress:(id)sender
@@ -389,18 +388,18 @@
         if(_sendButtonTag == 0)
         {
             [self setPishi:100 pishiClicked:YES placeHolderText:@"批示:"];//选中
-
+            
         }
         else
         {
             [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
-
+            
         }
     }
     else if(tag == 3)
     {
         [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
-
+        
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
         ((ICFileViewController *)vc).workGroupId = _currentMission.workGroupId;
@@ -420,7 +419,7 @@
     else if(tag == 2)
     {
         [self setPishi:0 pishiClicked:NO placeHolderText:@"点击回复"];
-
+        
         ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
         picker.maximumNumberOfSelection = 9;
         picker.assetsFilter = [ALAssetsFilter allPhotos];
@@ -437,9 +436,9 @@
         
         [self presentViewController:picker animated:YES completion:NULL];
     }
-//        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
-//        as.tag = 113;
-//        [as showInView:self.view];
+    //        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:@"选取附件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"群组文件夹", @"拍照", @"从相册选取", nil];
+    //        as.tag = 113;
+    //        [as showInView:self.view];
 }
 
 - (void) setPishi:(NSInteger)tag pishiClicked:(BOOL)cliked placeHolderText:(NSString *)placeholder
@@ -452,7 +451,7 @@
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer  //长按响应函数
 {
     CGPoint p = [gestureRecognizer locationInView:_tableView ];
-
+    
     NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:p];//获取响应的长按的indexpath
     if (indexPath == nil)
         NSLog(@"long press on table view but not on a row");
@@ -492,7 +491,7 @@
                 [as showInView:self.view];
             }
             
-
+            
         }
     }
     //else if(gestureRecognizer.state == UIGestureRecognizerStateEnded)
@@ -525,12 +524,12 @@
         if (_content != nil) {
             
             [self reloadTableView];
-
+            
         }
     }
     
     [self showAccessory];
-
+    
 }
 
 - (void) showAccessory
@@ -575,7 +574,7 @@
                 _inputBar.btnTypeHasClicked = NO;
                 
                 [self reloadTableView];
-
+                
             }
         }
     }
@@ -604,11 +603,11 @@
     //self.taskId = @"1015072215290001";
     _commentArray = [NSMutableArray array];
     _imageArray = [NSMutableArray array];
-
+    
     NSArray* commentsArray = [NSArray array];
     NSArray * imgArr = [NSArray array];
     self.cAccessoryArray = [NSMutableArray array];
-
+    
     if(!_currentMission)
     {
         _currentMission = [Mission new];
@@ -623,10 +622,10 @@
     
     if (_currentMission != nil) {
         
-//        TaskTypeMission         = 1,//任务
-//        TaskTypeShare           = 2,//异常
-//        TaskTypeNoitification   = 8,//申请
-//        TaskTypeJianYi          = 3//议题
+        //        TaskTypeMission         = 1,//任务
+        //        TaskTypeShare           = 2,//异常
+        //        TaskTypeNoitification   = 8,//申请
+        //        TaskTypeJianYi          = 3//议题
         
         NSString * title = @"任务详情";
         if(_currentMission.type == TaskTypeShare)
@@ -663,12 +662,12 @@
         
         if(_currentMission.createUserId == [LoginUser loginUserID])
         {
-//            UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
-//            [rightButton setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
-//            [rightButton addTarget:self action:@selector(btnMenu) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
-//            self.navigationItem.rightBarButtonItem = rightBarButton;
+            //            UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 20)];
+            //            [rightButton setImage:[UIImage imageNamed:@"btn_gengduo"] forState:UIControlStateNormal];
+            //            [rightButton addTarget:self action:@selector(btnMenu) forControlEvents:UIControlEventTouchUpInside];
+            //
+            //            UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+            //            self.navigationItem.rightBarButtonItem = rightBarButton;
         }
         if(imgArr.count)
         {
@@ -693,7 +692,7 @@
         {
             _commentArray = [NSMutableArray arrayWithArray:commentsArray];
             
-//            _imageArray = [NSMutableArray arrayWithArray:imgArr];
+            //            _imageArray = [NSMutableArray arrayWithArray:imgArr];
             
             int i = 0;
             
@@ -710,13 +709,13 @@
                         [_replyList addObject:cComment];
                     }
                     
-//                    NSString* key = [NSString stringWithFormat:@"ReIndex%d",i];
-//                    NSMutableArray* childCommentsArray = [NSMutableArray array];
-//                    for (Comment* cComment in pComment.comments) {
-//                        [childCommentsArray addObject:cComment.main];
-//                    }
-//                    
-//                    [_reReplyDic setObject:childCommentsArray forKey:key];
+                    //                    NSString* key = [NSString stringWithFormat:@"ReIndex%d",i];
+                    //                    NSMutableArray* childCommentsArray = [NSMutableArray array];
+                    //                    for (Comment* cComment in pComment.comments) {
+                    //                        [childCommentsArray addObject:cComment.main];
+                    //                    }
+                    //
+                    //                    [_reReplyDic setObject:childCommentsArray forKey:key];
                     
                 }
                 i++;
@@ -754,9 +753,9 @@
         UIButton* delete = [[UIButton alloc] initWithFrame:CGRectMake(0, edit.frame.origin.y + edit.frame.size.height + 1, view.frame.size.width, 44)];
         [delete setBackgroundColor:[UIColor clearColor]];
         NSMutableAttributedString* dattriNormal = [[NSMutableAttributedString alloc]
-                                                  initWithString:@"删除"
-                                                  attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],
-                                                               NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#3c9ed7"]}];
+                                                   initWithString:@"删除"
+                                                   attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],
+                                                                NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#3c9ed7"]}];
         [delete setAttributedTitle:dattriNormal forState:UIControlStateNormal];
         [delete addTarget:self action:@selector(btnRemoveClicked:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:delete];
@@ -800,7 +799,7 @@
     //NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     //NSMutableArray* indexPaths = [NSMutableArray arrayWithObject:indexPath];
     
-     //[_dataList addObject:@"11"];
+    //[_dataList addObject:@"11"];
     
     //[_tableView beginUpdates];
     //[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
@@ -808,7 +807,7 @@
     
     NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
     [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-   
+    
     [_inputBar.textField becomeFirstResponder];
     
     _indexRow = 1099;
@@ -968,7 +967,7 @@
                 [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
                 
                 [self reloadTableView];
-
+                
             }
         }
     }
@@ -987,7 +986,7 @@
 - (void)btnPraiseClicked:(UIButton*)btn
 {
     NSInteger cIndex = btn.tag;
-
+    
     Comment* comm = [_commentArray objectAtIndex:cIndex];
     
     dispatch_sync(dispatch_queue_create("praise", nil), ^{
@@ -1015,7 +1014,7 @@
             {
                 [btn setBackgroundImage:[UIImage imageNamed:@"btn_zan2"] forState:UIControlStateNormal];
             }
-
+            
             comm.praiseNum = iVal;
             comm.isPraised = !comm.isPraised;
             
@@ -1034,7 +1033,7 @@
 }
 
 
-#pragma -  
+#pragma -
 #pragma TableView Action
 
 -(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1046,23 +1045,23 @@
             
             NSLog(@"uitableview 加载完了");
             
-//            if(_commentsId.length > 0)
-//            {
-//                for(NSInteger i = 0; i < _commentArray.count; i ++)
-//                {
-//                    Comment * cm = _commentArray[i];
-//                    
-//                    NSString * cmId = [NSString stringWithFormat:@"%@", cm.commentsId];
-//                    
-//                    if([_commentsId isEqualToString:cmId])
-//                    {
-//                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i + 3 inSection:0];
-//                        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//                        
-//                        _commentsId = @"";
-//                    }
-//                }
-//            }
+            //            if(_commentsId.length > 0)
+            //            {
+            //                for(NSInteger i = 0; i < _commentArray.count; i ++)
+            //                {
+            //                    Comment * cm = _commentArray[i];
+            //
+            //                    NSString * cmId = [NSString stringWithFormat:@"%@", cm.commentsId];
+            //
+            //                    if([_commentsId isEqualToString:cmId])
+            //                    {
+            //                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:i + 3 inSection:0];
+            //                        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            //
+            //                        _commentsId = @"";
+            //                    }
+            //                }
+            //            }
             
         });
     }
@@ -1160,7 +1159,7 @@
         }
         return YES;
     }
-
+    
 }
 
 - (void) previewCommentFile:(id)sender
@@ -1180,7 +1179,7 @@
         Comment* comm = [_commentArray objectAtIndex:cIndex];
         
         NSArray* accArr = [NSArray arrayWithArray:comm.accessoryList];
-
+        
         Accessory * acc = accArr[index];
         
         // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 0: png/jpg 6:其他
@@ -1192,7 +1191,7 @@
             UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"PreviewViewController"];
             
             NSMutableArray * imageArr = [NSMutableArray array];
-
+            
             NSMutableDictionary * dic = [NSMutableDictionary dictionary];
             [dic setObject:acc.address forKey:@"PictureUrl"];
             if(acc.allUrl)
@@ -1210,7 +1209,7 @@
             {
                 ((PreviewViewController*)vc).dataArray = imageArr;
             }
-//            ((PreviewViewController*)vc).currentPage = btn.tag;
+            //            ((PreviewViewController*)vc).currentPage = btn.tag;
             
             [self.navigationController presentViewController:vc animated:YES completion:nil];
         }
@@ -1265,7 +1264,7 @@
     NSURL * fileUrl = [NSURL URLWithString:acc.address];
     
     XNDownload * d = [[XNDownload alloc] init];
-        
+    
     [d downloadWithURL:fileUrl progress:^(float progress) {
         
         if(progress < 1)
@@ -1284,7 +1283,7 @@
             if (URL) {
                 // Initialize Document Interaction Controller
                 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
-                                
+                
                 // Configure Document Interaction Controller
                 [self.documentInteractionController setDelegate:self];
                 
@@ -1409,7 +1408,7 @@
         titleLbl.textColor = [UIColor whiteColor];
         titleLbl.text = [dic valueForKey:@"lableUserName"];
         [cell.contentView addSubview:titleLbl];
-
+        
         return cell;
     }
     else
@@ -1449,7 +1448,7 @@
             }
             
             [photo setImageWithURL:[NSURL URLWithString:_currentMission.userImg] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-
+            
             
             UIButton * photoBtn = [cell.contentView viewWithTag:101];
             if(!photoBtn)
@@ -1461,7 +1460,7 @@
                 photoBtn.tag = 101;
                 [cell.contentView addSubview:photoBtn];
             }
-
+            
             
             CGFloat titleWidth = [UICommon getSizeFromString:_currentMission.userName withSize:CGSizeMake(100, H(photo)) withFont:Font(16)].width;
             
@@ -1540,7 +1539,7 @@
             
             //描述
             NSString* content = _currentMission.main;
-
+            
             contentHeight = [UICommon getSizeFromString:content withSize:CGSizeMake(contentWidth, 1000) withFont:font].height;
             
             UILabel* desLbl = [[UILabel alloc] initWithFrame:CGRectMake(26, YH(title) + 16, contentWidth, contentHeight)];
@@ -1548,7 +1547,7 @@
             [desLbl setBackgroundColor:[UIColor clearColor]];
             [desLbl setTextColor:RGBCOLOR(172, 172, 173)];
             [desLbl setFont:font];
-
+            
             if(content.length)
             {
                 [desLbl setNumberOfLines:0];
@@ -1558,7 +1557,7 @@
                 content = @"暂无描述";
             }
             [desLbl setText:content];
-
+            
             [cell.contentView addSubview:desLbl];
             
             CGFloat duiImgWidth = SCREENWIDTH - 13 * 2;
@@ -1716,7 +1715,7 @@
                 [cell.contentView addSubview:attchView];
                 
                 accY = YH(attchView) - intevalHeight;
-
+                
             }
             else
             {
@@ -1917,11 +1916,12 @@
                     UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
                     layout.sectionInset = insets;
                     
-                    _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine3), duiImgWidth, 95) collectionViewLayout:layout];
+                    UICollectionView * _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine3), duiImgWidth, 95) collectionViewLayout:layout];
                     _partCollView.delegate = self;
                     _partCollView.dataSource = self;
                     _partCollView.scrollEnabled = NO;
                     _partCollView.backgroundColor = [UIColor clearColor];
+                    _partCollView.tag = 11112;
                     
                     [_partCollView registerClass:[PartiCell class] forCellWithReuseIdentifier:@"PartiCell"];
                     
@@ -2095,13 +2095,13 @@
                 
                 newcHeight = YH(bSecondView) + 34;
                 
-                if(!_isMainMission && _isChildMission)//子任务
+                if(!_isMainMission)//子任务
                 {
                     newcHeight = YH(_duiimageview) + 34;
                 }
                 
                 duiImgHeight = YH(bFirstView) + 14 - 78 - 14 + H(tagLbl);
-
+                
             }
             else//问题、建议、其它
             {
@@ -2144,7 +2144,7 @@
                     UIEdgeInsets insets = {.top = 14,.left = 13,.bottom = 14,.right = 13};
                     layout.sectionInset = insets;
                     
-                    _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine2), duiImgWidth, 95) collectionViewLayout:layout];
+                    UICollectionView * _partCollView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, Y(dashLine2), duiImgWidth, 95) collectionViewLayout:layout];
                     _partCollView.delegate = self;
                     _partCollView.dataSource = self;
                     _partCollView.scrollEnabled = NO;
@@ -2192,7 +2192,7 @@
                         NSInteger row = 1;
                         
                         row = (count % lineCount) ? count / lineCount + 1: count / lineCount;
-
+                        
                         float height = 14 + row * (50 + 30);
                         
                         _partCollView.height = height;
@@ -2211,10 +2211,10 @@
                 }
                 
                 duiImgHeight = YH(bFirstView) + 14 - 78 - 14 + H(tagLbl);
-
+                
                 newcHeight = YH(_duiimageview) + 34;
             }
-
+            
             /*
              if (_currentMission != nil) {
              
@@ -2452,7 +2452,7 @@
                     
                     [revContent setAttributedText:attrStr];
                 }
-
+                
                 UILabel* date = [[UILabel alloc] initWithFrame:CGRectMake(cWidth - 60 - 40, 10, 86, 12)];
                 [date setBackgroundColor:[UIColor clearColor]];
                 
@@ -2476,7 +2476,7 @@
                     [cell.contentView addSubview:fileIcon];
                     
                     [cell.contentView addSubview:fileLbl];
-
+                    
                     int lineCount = 4;
                     
                     if(SCREENWIDTH == 320)
@@ -2494,11 +2494,11 @@
                     }
                     
                     CGFloat attchHeight = ((comm.accessoryList.count - 1) / lineCount + 1) * accHeight;
-
+                    
                     UIView* attchView = [[UIView alloc] init];
                     attchView.frame = CGRectMake(XW(photo) + 6, YH(fileLbl) + 10, SCREENWIDTH - (XW(photo) + 6), attchHeight);
                     [attchView setBackgroundColor:[UIColor clearColor]];
-
+                    
                     for(int i = 0; i < comm.accessoryList.count; i ++)
                     {
                         int j = i / lineCount;
@@ -2521,7 +2521,7 @@
                         // 1: doc/docx  2: xls/xlsx 3: ppt/pptx 4: pdf 0: png/jpg 6:其他
                         
                         int fileType = [[UICommon findFileType:acc.name] intValue];
-//                        int fileType = [acc.fileType intValue];
+                        //                        int fileType = [acc.fileType intValue];
                         
                         attachment.userInteractionEnabled = YES;
                         
@@ -2532,14 +2532,14 @@
                                                 options:SDWebImageDelayPlaceholder
                             usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                             
-//                            UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
-//                            imgBtn.backgroundColor = [UIColor clearColor];
+                            //                            UIButton * imgBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(attachment), H(attachment))];
+                            //                            imgBtn.backgroundColor = [UIColor clearColor];
                             
-//                            NSInteger fileCount = comm.accessoryList.count - _imageArray.count;
-//                            imgBtn.tag = fileCount > 0 ? i - fileCount : i;
-//                            
-//                            [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
-//                            [attachment addSubview:imgBtn];
+                            //                            NSInteger fileCount = comm.accessoryList.count - _imageArray.count;
+                            //                            imgBtn.tag = fileCount > 0 ? i - fileCount : i;
+                            //
+                            //                            [imgBtn addTarget:self action:@selector(seeFullScreenImg:) forControlEvents:UIControlEventTouchUpInside];
+                            //                            [attachment addSubview:imgBtn];
                         }
                         else
                         {
@@ -2585,7 +2585,7 @@
                 else
                 {
                     [cell.contentView addSubview:revContent];
-
+                    
                     if(comm.level == 2)
                     {
                         UIButton* par = [[UIButton alloc] initWithFrame:CGRectMake(cWidth - 39, YH(date) + 20, 25, 20)];
@@ -2627,7 +2627,7 @@
                         height = height + 35 + 24;
                     }
                 }
-
+                
                 [cell setFrame:CGRectMake(0, 0, cWidth ,height)];
                 
                 UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 1, cWidth, 0.5)];
@@ -2663,16 +2663,16 @@
         //NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:_replyList.count-1 inSection:0];
         
         
-//        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-//        [_inputBar.textField becomeFirstResponder];
-//        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//        
-//        _indexRow = 1099;
+        //        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        //        [_inputBar.textField becomeFirstResponder];
+        //        [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        //
+        //        _indexRow = 1099;
     }
     else
     {
         NSInteger index = indexPath.row;
-
+        
         NSInteger cIndex = index - 1;
         
         Comment* comm = [_commentArray objectAtIndex:cIndex];
@@ -2682,12 +2682,12 @@
         
         _indexRow = indexPath.row;
         BOOL hasLoad = NO;
-         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 1)];
+        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 1)];
         id obj = [_reReplyDic valueForKey:key];
         
-//        NSInteger cIndex = _indexRow - 1;
-//        Comment* comm = [_commentArray objectAtIndex:cIndex];
-//        [textf setPlaceholder:[NSString stringWithFormat:@"回复:%@",comm.userName]];
+        //        NSInteger cIndex = _indexRow - 1;
+        //        Comment* comm = [_commentArray objectAtIndex:cIndex];
+        //        [textf setPlaceholder:[NSString stringWithFormat:@"回复:%@",comm.userName]];
         
         if ([obj isKindOfClass:[NSArray class]])
         {
@@ -2715,7 +2715,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma -   
+#pragma -
 #pragma mark Input Bar Action
 -(void)inputBar:(YFInputBar *)inputBar sendBtnPress:(UIButton *)sendBtn withInputString:(NSString *)str
 {
@@ -2762,7 +2762,7 @@
                     
                     _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                     [self reloadTableView];
-
+                    
                     return;
                     
                     cm.parentId = newCommentId;
@@ -2788,7 +2788,7 @@
                 
                 _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                 [self reloadTableView];
-
+                
                 return;
                 
                 cm.commentsId = newCommentId;
@@ -2853,7 +2853,7 @@
             cm.taskId = _taskId;
             
             [SVProgressHUD showWithStatus:@"发送评论中..."];
-
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 for (Comment* pc in _commentArray) {
                     if (pc.commentsId == pid) {
@@ -2864,14 +2864,14 @@
                     }
                 }
                 if (cm != nil) {
-
+                    
                     NSString* newCommentId = @"";
                     BOOL isOk = [cm sendComment:&newCommentId];
                     BOOL isChild = NO;
                     if(isOk)
                     {
                         [SVProgressHUD dismiss];
-
+                        
                         _inputBar.textField.text = @"";
                         _inputBar.textField.placeHolderLabel.text = @"点击回复";
                         _sendButtonTag = 0;
@@ -2879,7 +2879,7 @@
                         
                         _commentsId = [NSString stringWithFormat:@"%@", newCommentId];
                         [self reloadTableView];
-
+                        
                         return;
                         
                         cm.commentsId = newCommentId;
@@ -2905,27 +2905,27 @@
                         [_tableView scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
                         
                         /* momo todo
-                        NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 3)];
-                        id obj = [_reReplyDic valueForKey:key];
-                        if ([obj isKindOfClass:[NSArray class]]) {
-                            NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
-                            if (reArray.count > 0) {
-                                
-                                
-                                [reArray addObject:str];
-                                [_reReplyDic setObject:reArray forKey:key];
-                            }
-                        }
-                        else
-                        {
-                            NSMutableArray* reArray = [NSMutableArray array];
-                            [reArray addObject:str];
-                            [_reReplyDic setObject:reArray forKey:key];
-                            
-                        }
-                        
-                        [_tableView reloadData];
-                        _indexRow = 1099;
+                         NSString* key = [NSString stringWithFormat:@"ReIndex%d",(int)(_indexRow - 3)];
+                         id obj = [_reReplyDic valueForKey:key];
+                         if ([obj isKindOfClass:[NSArray class]]) {
+                         NSMutableArray* reArray = [NSMutableArray arrayWithArray:(NSArray *)obj];
+                         if (reArray.count > 0) {
+                         
+                         
+                         [reArray addObject:str];
+                         [_reReplyDic setObject:reArray forKey:key];
+                         }
+                         }
+                         else
+                         {
+                         NSMutableArray* reArray = [NSMutableArray array];
+                         [reArray addObject:str];
+                         [_reReplyDic setObject:reArray forKey:key];
+                         
+                         }
+                         
+                         [_tableView reloadData];
+                         _indexRow = 1099;
                          */
                     }
                     
@@ -2951,20 +2951,20 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-//    [_navBarLeftButtonPopTipView dismissAnimated:YES];
+    //    [_navBarLeftButtonPopTipView dismissAnimated:YES];
     
-//    if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {
-//        if (_hasDel) {
-//            [self.icMainViewController setValue:[NSString stringWithFormat:@"%ld",(NSInteger)_indexInMainArray] forKey:@"strIndexForDetail"];
-//        }
-//        else
-//            [self.icMainViewController setValue:nil forKey:@"strIndexForDetail"];
-//    }
-//    if (_workGroupId != nil ) {
-//        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
-//            [self.icMainViewController setValue:_workGroupId forKey:@"pubGroupId"];
-//        }
-//    }
+    //    if ([self.icMainViewController respondsToSelector:@selector(setStrIndexForDetail:)]) {
+    //        if (_hasDel) {
+    //            [self.icMainViewController setValue:[NSString stringWithFormat:@"%ld",(NSInteger)_indexInMainArray] forKey:@"strIndexForDetail"];
+    //        }
+    //        else
+    //            [self.icMainViewController setValue:nil forKey:@"strIndexForDetail"];
+    //    }
+    //    if (_workGroupId != nil ) {
+    //        if ([self.icMainViewController respondsToSelector:@selector(setPubGroupId:)]) {
+    //            [self.icMainViewController setValue:_workGroupId forKey:@"pubGroupId"];
+    //        }
+    //    }
     if ([self.icMainViewController respondsToSelector:@selector(setIsRefreshBottom:)]) {
         [self.icMainViewController setValue:@"1" forKey:@"isRefreshBottom"];
     }
@@ -3013,7 +3013,7 @@
 {
     _isShowAllChildMission = !_isShowAllChildMission;
     
-//    [_childTableView reloadData];
+    //    [_childTableView reloadData];
     [_tableView reloadData];
 }
 
@@ -3040,9 +3040,9 @@
     NSArray* commentsArray = [NSArray array];
     NSArray * imgArr = [NSArray array];
     
-    Mission * miss = [Mission detail:taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
+    _currentMission = [Mission detail:taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
     
-    if(!miss)
+    if(!_currentMission)
     {
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:@"你不在该任务中" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         
@@ -3052,22 +3052,22 @@
     }
     else
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQDetailViewController"];
-        ((MQDetailViewController*)vc).taskId = taskId;
-        ((MQDetailViewController*)vc).indexInMainArray = _indexInMainArray;
-        ((MQDetailViewController*)vc).icMainViewController = _icMainViewController;
-        ((MQDetailViewController*)vc).workGroupId = _workGroupId;
-        ((MQDetailViewController*)vc).isChildMission = YES;
-        
-        [self.navigationController pushViewController:vc animated:YES];
+//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+//        ((ICWorkingDetailViewController*)vc).taskId = taskId;
+//        ((ICWorkingDetailViewController*)vc).indexInMainArray = _indexInMainArray;
+//        ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
+//        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+//        ((ICWorkingDetailViewController*)vc).isChildMission = YES;
+//        
+//        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     _inputBar.clearInputWhenSend = NO;
-
+    
     if(_inputBar.btnTypeHasClicked)
     {
         [_inputBar removeType];
@@ -3209,8 +3209,8 @@
                 
                 if(isOk)
                 {
-//                    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-//                    [dic setObject:userImgPath forKey:@"url"];
+                    //                    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+                    //                    [dic setObject:userImgPath forKey:@"url"];
                     
                     Accessory * acc = [Accessory new];
                     acc.address = [imageDic valueForKey:@"path"];
