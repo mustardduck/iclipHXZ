@@ -146,6 +146,8 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            [_tableView reloadData];
+            
             [self loadBottomMenuView:nil isSearchBarOne:YES];
 
         });
