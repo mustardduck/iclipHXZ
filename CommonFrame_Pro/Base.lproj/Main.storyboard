@@ -2990,6 +2990,9 @@
                         </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="navBar" destination="GBo-FD-9w6" id="ZpO-jl-uMT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tef-F8-CJX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

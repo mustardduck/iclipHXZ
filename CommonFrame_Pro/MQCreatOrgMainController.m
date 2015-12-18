@@ -19,6 +19,7 @@
     
     NSArray * _orgArr;
 }
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
 @end
 
@@ -32,7 +33,32 @@
     [tb setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:tb];
     
+    if(_isFromRegister)
+    {
+        UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+        [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
+        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+        [leftButton addSubview:imgview];
+        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 80, 20)];
+        [ti setBackgroundColor:[UIColor clearColor]];
+        [ti setTextColor:[UIColor whiteColor]];
+        [ti setText:@"返回"];
+        [ti setFont:[UIFont systemFontOfSize:17]];
+        [leftButton addSubview:ti];
+        
+        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"创建/加入企业"];
+        [item setLeftBarButtonItem:leftBarButton];
+        [_navBar pushNavigationItem:item animated:YES];
+    }
+    
     [self initTableView];
+}
+
+- (void)btnBackButtonClicked:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) initTableView

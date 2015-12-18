@@ -620,6 +620,7 @@
 {
 //    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 //    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+//    ((MQCreatOrgMainController *)controller).isFromRegister = YES;
 //    [self presentViewController:controller animated:YES completion:nil];
 //    
 //    return;//todo
@@ -660,6 +661,8 @@
             
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+            ((MQCreatOrgMainController *)controller).isFromRegister = YES;
+            
             [self presentViewController:controller animated:YES completion:nil];
         }
         else
