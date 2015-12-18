@@ -2690,7 +2690,7 @@
                                                             <action selector="photoBtnClicked:" destination="3Mc-sL-gjJ" eventType="touchUpInside" id="3r5-RB-nwM"/>
                                                         </connections>
                                                     </button>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KlH-Wm-DpA">
+                                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KlH-Wm-DpA">
                                                         <rect key="frame" x="18" y="205" width="171" height="1"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </view>
@@ -2722,7 +2722,7 @@
                                                             <outlet property="delegate" destination="3Mc-sL-gjJ" id="UiK-7v-xuj"/>
                                                         </connections>
                                                     </textView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="请输入目标及使命" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wBq-0s-b2i">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="请输入愿景及使命" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wBq-0s-b2i">
                                                         <rect key="frame" x="13" y="206" width="181" height="32"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67843137249999996" alpha="1" colorSpace="calibratedRGB"/>
@@ -2796,6 +2796,7 @@
                         <outlet property="sloganPlaceholder" destination="wBq-0s-b2i" id="Y9A-kA-5Vd"/>
                         <outlet property="sloganTextView" destination="veV-Kg-xcE" id="MLc-JI-W4n"/>
                         <outlet property="textViewHieght" destination="TaP-op-Yjd" id="CWj-WQ-bGR"/>
+                        <outlet property="topImgView" destination="6X4-pM-Iw9" id="UoG-VQ-fdd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h8c-2j-jQf" userLabel="First Responder" sceneMemberID="firstResponder"/>

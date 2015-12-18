@@ -1356,7 +1356,7 @@
 {
     CGFloat width = SCREENWIDTH;
 
-    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 78)];
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 78 + 16)];
     
     [groupHeadView setBackgroundColor:[UIColor backgroundColor]];
     
@@ -1392,12 +1392,19 @@
     lbl1.backgroundColor = [UIColor clearColor];
     [groupHeadView addSubview:lbl1];
     
-    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl1), YH(lbl1) + 5, W(lbl1) , 14)];
-    lbl2.text = [NSString stringWithFormat:@"目标及使命：%@", _currentGroup.workGroupMain];
+    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl1), YH(lbl1) + 5, W(lbl1) , 14 + 16)];
+//    lbl2.text = @"愿景及使命：使命使命使命使命使";
+    lbl2.text = [NSString stringWithFormat:@"愿景及使命：%@", _currentGroup.workGroupMain];
+    lbl2.numberOfLines = 2;
     lbl2.textColor = [UIColor whiteColor];
     lbl2.font = Font(12);
     lbl2.backgroundColor = [UIColor clearColor];
     
+    CGFloat workGroupMainHeight = [UICommon getHeightFromLabel:lbl2].height;
+    lbl2.height = workGroupMainHeight;
+    
+    workGroupMainHeight = workGroupMainHeight - 18;
+
     [groupHeadView addSubview:lbl2];
     
     
@@ -1427,7 +1434,7 @@
     
     UILabel* bottomLine = [[UILabel alloc] init];
     
-    [bottomLine setFrame:CGRectMake(0, 77, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setFrame:CGRectMake(0, 77 + workGroupMainHeight, [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:RGBCOLOR(19, 19, 19)];
 
     [groupHeadView addSubview:bottomLine];
@@ -1438,8 +1445,8 @@
     
     [groupHeadView addSubview:btnPhoto];
     
-    groupHeadView.height = 78 + H(_textSelectionList);
-    _textSelectionList.top = 78;
+    groupHeadView.height = 78 + workGroupMainHeight + H(_textSelectionList);
+    _textSelectionList.top = 78 + workGroupMainHeight;
     [groupHeadView addSubview:_textSelectionList];
     
     UIView * line2 = [[UIView alloc] init];
@@ -1508,7 +1515,7 @@
 {
     CGFloat width = SCREENWIDTH;
     
-    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 78)];
+    UIView * groupHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 78 + 16)];
     
     [groupHeadView setBackgroundColor:[UIColor backgroundColor]];
     
@@ -1544,17 +1551,25 @@
     lbl1.backgroundColor = [UIColor clearColor];
     [groupHeadView addSubview:lbl1];
     
-    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl1), YH(lbl1) + 5, W(lbl1) , 14)];
-    lbl2.text = [NSString stringWithFormat:@"目标及使命：%@", _currentGroup.workGroupMain];
+    UILabel* lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(X(lbl1), YH(lbl1) + 5, W(lbl1) , 14 + 16)];
+//    lbl2.text = @"愿景及使命：使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命使命";
+    
+    lbl2.numberOfLines = 2;
+    lbl2.text = [NSString stringWithFormat:@"愿景及使命：%@", _currentGroup.workGroupMain];
     lbl2.textColor = [UIColor whiteColor];
     lbl2.font = Font(12);
     lbl2.backgroundColor = [UIColor clearColor];
     
+    CGFloat workGroupMainHeight = [UICommon getHeightFromLabel:lbl2].height;
+    lbl2.height = workGroupMainHeight;
+
+    workGroupMainHeight = workGroupMainHeight - 18;
+
     [groupHeadView addSubview:lbl2];
     
     UILabel* bottomLine = [[UILabel alloc] init];
     
-    [bottomLine setFrame:CGRectMake(0, 77, [UIScreen mainScreen].bounds.size.width, 0.5)];
+    [bottomLine setFrame:CGRectMake(0, 77 + workGroupMainHeight, [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:RGBCOLOR(19, 19, 19)];
     
     [groupHeadView addSubview:bottomLine];
@@ -1669,7 +1684,7 @@
     line2.backgroundColor = RGBCOLOR(19, 19, 19);
     [searchHeadView addSubview:line2];
 
-    searchHeadView.top = 78;
+    searchHeadView.top = 78 + workGroupMainHeight;
     [groupHeadView addSubview:searchHeadView];
     
     UILabel * totalCountLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, YH(searchHeadView) + 6, SCREENWIDTH - 14 * 2, 14)];
@@ -1679,7 +1694,7 @@
     totalCountLbl.text = [NSString stringWithFormat:@"为您找到相关结果约 %ld 个", _totalCount];
     [groupHeadView addSubview:totalCountLbl];
     
-    groupHeadView.height = 78 + H(searchHeadView) + H(totalCountLbl) + 6;
+    groupHeadView.height = 78 + workGroupMainHeight + H(searchHeadView) + H(totalCountLbl) + 6;
 
     return groupHeadView;
 }

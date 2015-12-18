@@ -16,6 +16,7 @@
 #import "SVProgressHUD.h"
 #import "MQCreateGroupSecondController.h"
 #import "ICMemberInvitationTableViewController.h"
+#import "DashesLineView.h"
 
 @interface MQCreateGroupFirstController ()<UITextViewDelegate, UITextFieldDelegate, ZYQAssetPickerControllerDelegate, VPImageCropperDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
@@ -38,6 +39,7 @@
 @property (weak, nonatomic) IBOutlet PH_UITextView *sloganTextView;
 @property (weak, nonatomic) IBOutlet UILabel *sloganPlaceholder;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (weak, nonatomic) IBOutlet UIView *topImgView;
 
 @end
 
@@ -70,6 +72,14 @@
     [self addDoneToKeyboard:_groupTitleTxt];
 
     self.workGroup = [Group new];
+    
+    [_topImgView setRoundCorner:3.3];
+    
+    //虚线
+    DashesLineView * dashLine = [[DashesLineView alloc] init];
+    dashLine.frame = CGRectMake(18, 205, 171, 0.5);
+    dashLine.backgroundColor = [UIColor clearColor];
+    [_topImgView addSubview:dashLine];
 }
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField
@@ -181,7 +191,7 @@
     else
     {
         if ((name == nil || [name isEqualToString:@""]) || (desc == nil || [desc isEqualToString:@""])) {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"群组名和目标及使命不能为空!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"群组名和愿景及使命不能为空!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return;
         }
