@@ -40,7 +40,7 @@
     
     self.view.backgroundColor = [UIColor backgroundColor];
     
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat width = SCREENWIDTH;
     CGFloat height = 278;//172
     
     UIView* tb = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 20)];
@@ -65,7 +65,7 @@
     [txtView addSubview:imgName];
     
     
-    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, 0, width - 20, 50)];
+    _txtUserName = [[UITextField alloc] initWithFrame:CGRectMake(36, 0, width - 36 - 14, 50)];
     [_txtUserName setBackgroundColor:[UIColor orangeColor]];
     [_txtUserName setBorderStyle:UITextBorderStyleNone];
     [_txtUserName setFont:Font(15)];
@@ -94,7 +94,7 @@
     [imgPwd setImage:[UIImage imageNamed:@"icon_mima_1"]];
     [txtView addSubview:imgPwd];
     
-    _txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(36, _txtUserName.frame.size.height, width - 20, 50)];
+    _txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(36, _txtUserName.frame.size.height, width - 36 - 14, 50)];
     [_txtPwd setBackgroundColor:[UIColor orangeColor]];
     [_txtPwd setBorderStyle:UITextBorderStyleNone];
     [_txtPwd setFont:Font(15)];

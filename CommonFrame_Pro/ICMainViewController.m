@@ -2578,6 +2578,13 @@
     return YES;
 }
 
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (_topMenuController.isOpen) {
+        [_topMenuController showTopMenu:@"1"];
+    }
+}
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation

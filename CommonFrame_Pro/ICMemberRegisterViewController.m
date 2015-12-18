@@ -220,8 +220,11 @@
     _txtUserName.delegate = self;
     _txtUserName.placeholder = @"您的手机号";
     _txtUserName.keyboardType = UIKeyboardTypePhonePad;
+    _txtUserName.clearButtonMode = UITextFieldViewModeWhileEditing;
     [_txtUserName setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
     [self addDoneToKeyboard:_txtUserName];
+    
+    [_txtUserName becomeFirstResponder];
     
     [txtView addSubview:_txtUserName];
     
@@ -285,6 +288,8 @@
         _accountName.placeholder = @"您的姓名";
     }
     [_accountName setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
+    
+    _accountName.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addDoneToKeyboard:_accountName];
     
     [txtView addSubview:_accountName];
@@ -317,6 +322,7 @@
         _txtPwd.placeholder = @"密码";
     }
     [_txtPwd setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
+    _txtPwd.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addDoneToKeyboard:_txtPwd];
     
     [txtView addSubview:_txtPwd];
@@ -520,6 +526,8 @@
 
 - (IBAction)btnBackButtonClicked:(id)sender
 {
+    [_currentField resignFirstResponder];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
