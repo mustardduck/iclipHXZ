@@ -53,6 +53,8 @@ typedef void (^keyboardBlock) ();
 
 +(void)CheckAddressBookAuthorization:(void (^)(bool isAuthorized))block;
 
++ (BOOL) firstStringIsChineseOrLetter:(NSString *)str;
+
 #pragma mark image scale utility
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
 

@@ -12,9 +12,10 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <ZYQAssetPickerController.h>
 #import "VPImageCropperViewController.h"
+#import "SVProgressHUD.h"
 
 
-@interface ICPersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate, VPImageCropperDelegate>
+@interface ICPersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,ZYQAssetPickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate, VPImageCropperDelegate, UITextFieldDelegate>
 {
     IBOutlet UITableView*   _tableView;
     LoginUser*              _user;
@@ -29,6 +30,8 @@
     BOOL            _hasChanged;
     
     NSString *          _currentFileName;
+    
+    UITextField * _currentField;
 }
 
 @end
@@ -132,32 +135,61 @@
         _editButtonClicked = YES;
     }
     else{
+        if(_txtName.text == nil && [_txtName.text isEqualToString:@""])
+        {
+            [SVProgressHUD showErrorWithStatus:@"名字不能为空"];
+            
+            [_txtName becomeFirstResponder];
+            
+            return;
+        }
+        if(![UICommon firstStringIsChineseOrLetter:_txtName.text])
+        {
+            [SVProgressHUD showErrorWithStatus:@"姓名的第一位必须为中文或字母"];
+            
+            [_txtName becomeFirstResponder];
+            
+            return;
+        }
+        if(_txtPhoneName.text == nil && [_txtPhoneName.text isEqualToString:@""])
+        {
+            [SVProgressHUD showErrorWithStatus:@"手机号不能为空"];
+
+            [_txtPhoneName becomeFirstResponder];
+            
+            return;
+        }
+        if(_txtPhoneName.text != nil && ![_txtPhoneName.text isEqualToString:@""] && _txtPhoneName.text.length != 11)
+        {
+            [SVProgressHUD showErrorWithStatus:@"请输入11位手机号码"];
+            
+            [_txtPhoneName becomeFirstResponder];
+            
+            return;
+        }
+
+        
         _editButtonClicked = NO;
         [barButton setTitle:@"编辑"];
-        
-        if ((_txtName.text != nil && ![_txtName.text isEqualToString:@""]) && (_txtEmailName.text != nil && ![_txtEmailName.text isEqualToString:@""]) && (_txtPhoneName.text != nil && ![_txtPhoneName.text isEqualToString:@""]) )
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSString* na = _txtName.text;
-                BOOL isOk = [LoginUser updateInfo:na phone:_txtPhoneName.text email:_txtEmailName.text photo:(_cAccessoryArray.count > 0? ((Accessory*)[_cAccessoryArray objectAtIndex:0]).address:_user.img)];
-                if (isOk) {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"信息更改成功!" delegate:self
-                                                          cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                    [alert show];
-                    _user = [LoginUser getLoginInfo];
-                     [_tableView reloadData];
-                }
-                else
-                {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"保存信息失败!" delegate:self
-                                                          cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                    [alert show];
-                }
+  
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString* na = _txtName.text;
+            BOOL isOk = [LoginUser updateInfo:na phone:_txtPhoneName.text email:_txtEmailName.text photo:(_cAccessoryArray.count > 0? ((Accessory*)[_cAccessoryArray objectAtIndex:0]).address:_user.img)];
+            if (isOk) {
                 
-            });
+                [_currentField resignFirstResponder];
+                
+                [SVProgressHUD showSuccessWithStatus:@"更新资料成功"];
+
+                _user = [LoginUser getLoginInfo];
+                [_tableView reloadData];
+            }
+            else
+            {
+                [SVProgressHUD showErrorWithStatus:@"更新资料失败"];
+            }
             
-        }
-        
+        });
     }
    [_tableView reloadData];
 }
@@ -217,6 +249,7 @@
             [_txtName setFont:[UIFont systemFontOfSize:17]];
             [_txtName setTextColor:[UIColor whiteColor]];
             _txtName.text = _user.name;
+            _txtName.delegate = self;
             
             [view addSubview:_txtName];
         }
@@ -248,6 +281,7 @@
             [_txtPhoneName setBorderStyle:UITextBorderStyleNone];
             [_txtPhoneName setFont:[UIFont systemFontOfSize:17]];
             [_txtPhoneName setTextColor:[UIColor whiteColor]];
+            _txtPhoneName.delegate = self;
             _txtPhoneName.text = _user.mobile;
             
             [cell.contentView addSubview:_txtPhoneName];
@@ -277,7 +311,8 @@
             [_txtEmailName setFont:[UIFont systemFontOfSize:17]];
             [_txtEmailName setTextColor:[UIColor whiteColor]];
             _txtEmailName.text = _user.email;
-            
+            _txtEmailName.delegate = self;
+
             [cell.contentView addSubview:_txtEmailName];
             
         }
@@ -562,6 +597,11 @@
         }
           */
     }
+}
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField
+{
+    _currentField = textField;
 }
 
 #pragma mark - UINavigationControllerDelegate

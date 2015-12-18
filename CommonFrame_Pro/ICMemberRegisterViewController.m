@@ -594,6 +594,15 @@
             
             return NO;
         }
+        if(![UICommon firstStringIsChineseOrLetter:_accountName.text])
+        {
+            [SVProgressHUD showErrorWithStatus:@"姓名的第一位必须为中文或字母"];
+            
+            [_accountName becomeFirstResponder];
+            
+            return NO;
+        }
+        
         if(!_txtPwd.text.length)
         {
             [SVProgressHUD showErrorWithStatus:@"请输入密码"];
