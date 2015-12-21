@@ -3184,57 +3184,52 @@
         
         [SVProgressHUD showWithStatus:@"图片上传中"];
         
-        [picker dismissViewControllerAnimated:YES completion:^() {
-            //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        for(int i = 0; i < assets.count; i ++)
+        {
+            ALAsset * ass = assets[i];
             
-            for(int i = 0; i < assets.count; i ++)
+            ALAssetRepresentation* representation = [ass defaultRepresentation];
+            UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+            portraitImg = [UIImage
+                           imageWithCGImage:[representation fullScreenImage]
+                           scale:[representation scale]
+                           orientation:UIImageOrientationUp];
+            
+            NSString * currentFileName = [representation filename];
+            
+            //            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+            
+            NSMutableDictionary * imageDic = [NSMutableDictionary dictionary];
+            
+            BOOL isOk = [LoginUser uploadImageWithScale:portraitImg fileName:currentFileName imageDic:&imageDic];
+            
+            if(isOk)
             {
-                ALAsset * ass = assets[i];
+                //                    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+                //                    [dic setObject:userImgPath forKey:@"url"];
                 
-                ALAssetRepresentation* representation = [ass defaultRepresentation];
-                UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-                portraitImg = [UIImage
-                               imageWithCGImage:[representation fullScreenImage]
-                               scale:[representation scale]
-                               orientation:UIImageOrientationUp];
+                Accessory * acc = [Accessory new];
+                acc.address = [imageDic valueForKey:@"path"];
+                acc.name = [imageDic valueForKey:@"oldName"];
+                acc.originImageSize = [imageDic valueForKey:@"size"];
                 
-                NSString * currentFileName = [representation filename];
-                
-                //            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
-                
-                NSMutableDictionary * imageDic = [NSMutableDictionary dictionary];
-                
-                BOOL isOk = [LoginUser uploadImageWithScale:portraitImg fileName:currentFileName imageDic:&imageDic];
-                
-                if(isOk)
-                {
-//                    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-//                    [dic setObject:userImgPath forKey:@"url"];
-                    
-                    Accessory * acc = [Accessory new];
-                    acc.address = [imageDic valueForKey:@"path"];
-                    acc.name = [imageDic valueForKey:@"oldName"];
-                    acc.originImageSize = [imageDic valueForKey:@"size"];
-                    
-                    [self.cAccessoryArray addObject:acc];
-                }
-                
-                if(i == assets.count - 1)
-                {
-                    if(isOk)
-                    {
-                        [SVProgressHUD dismiss];
-                        
-                        [self showAccessory];
-                    }
-                    else
-                    {
-                        [SVProgressHUD showErrorWithStatus:@"图片上传失败"];
-                    }
-                }
+                [self.cAccessoryArray addObject:acc];
             }
             
-        }];
+            if(i == assets.count - 1)
+            {
+                if(isOk)
+                {
+                    [SVProgressHUD dismiss];
+                    
+                    [self showAccessory];
+                }
+                else
+                {
+                    [SVProgressHUD showErrorWithStatus:@"图片上传失败"];
+                }
+            }
+        }
     }
 }
 
