@@ -1755,12 +1755,12 @@
                 tdate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime]];
             }
             NSComparisonResult  dataCompare= [tdate compare:fdate];
-            if (dataCompare != NSOrderedDescending) {
+//            if (dataCompare != NSOrderedDescending) {
 //                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提醒时间必须在完成时间之前" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 //                [alert show];
 //                return;
-            }
-            else
+//            }
+//            else
                 _strRemindTime = strDate;
         }
         else
