@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B17A1251C27EAFB0032410C /* MQMyMessageMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B17A1241C27EAFB0032410C /* MQMyMessageMainController.m */; };
+		4B17A1281C27EB110032410C /* MQMyMessageListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B17A1271C27EB110032410C /* MQMyMessageListController.m */; };
+		4B17A12B1C28EF0B0032410C /* SystemMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B17A12A1C28EF0B0032410C /* SystemMessage.m */; };
 		4B1981A21BD4F86D00174CFD /* SDWebImageManager+MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1981A11BD4F86D00174CFD /* SDWebImageManager+MJ.m */; };
 		4B1981AE1BD4FBBB00174CFD /* UIButton+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1981A71BD4FBBB00174CFD /* UIButton+UIActivityIndicatorForSDWebImage.m */; };
 		4B1981AF1BD4FBBB00174CFD /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1981A91BD4FBBB00174CFD /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
@@ -185,6 +188,12 @@
 
 /* Begin PBXFileReference section */
 		1579B5EA179A50AC05B6E19A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B17A1231C27EAFB0032410C /* MQMyMessageMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMyMessageMainController.h; sourceTree = "<group>"; };
+		4B17A1241C27EAFB0032410C /* MQMyMessageMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMyMessageMainController.m; sourceTree = "<group>"; };
+		4B17A1261C27EB110032410C /* MQMyMessageListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMyMessageListController.h; sourceTree = "<group>"; };
+		4B17A1271C27EB110032410C /* MQMyMessageListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMyMessageListController.m; sourceTree = "<group>"; };
+		4B17A1291C28EF0A0032410C /* SystemMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemMessage.h; sourceTree = "<group>"; };
+		4B17A12A1C28EF0B0032410C /* SystemMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemMessage.m; sourceTree = "<group>"; };
 		4B1981A01BD4F86D00174CFD /* SDWebImageManager+MJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDWebImageManager+MJ.h"; sourceTree = "<group>"; };
 		4B1981A11BD4F86D00174CFD /* SDWebImageManager+MJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SDWebImageManager+MJ.m"; sourceTree = "<group>"; };
 		4B1981A61BD4FBBB00174CFD /* UIButton+UIActivityIndicatorForSDWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+UIActivityIndicatorForSDWebImage.h"; sourceTree = "<group>"; };
@@ -674,6 +683,10 @@
 			children = (
 				4BBB61281BDA28F100C7E79E /* MegListController.h */,
 				4BBB61291BDA28F100C7E79E /* MegListController.m */,
+				4B17A1231C27EAFB0032410C /* MQMyMessageMainController.h */,
+				4B17A1241C27EAFB0032410C /* MQMyMessageMainController.m */,
+				4B17A1261C27EB110032410C /* MQMyMessageListController.h */,
+				4B17A1271C27EB110032410C /* MQMyMessageListController.m */,
 			);
 			name = MessageNotify;
 			sourceTree = "<group>";
@@ -1111,6 +1124,8 @@
 				7851D6621B5F903C00C3D860 /* Comment.m */,
 				4BB560DB1C1E6DEC00A070C0 /* Organization.h */,
 				4BB560DC1C1E6DEC00A070C0 /* Organization.m */,
+				4B17A1291C28EF0A0032410C /* SystemMessage.h */,
+				4B17A12A1C28EF0B0032410C /* SystemMessage.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -1361,6 +1376,7 @@
 				4BC040321BABBF6E004C6F3B /* SVIndefiniteAnimatedView.m in Sources */,
 				4BC530001C196870002C20D8 /* LRIndexedCollationWithSearch.m in Sources */,
 				4B1F2AB51BB9251F00D55BAE /* UIImageView+MJWebCache.m in Sources */,
+				4B17A1251C27EAFB0032410C /* MQMyMessageMainController.m in Sources */,
 				4BC040341BABBF6E004C6F3B /* SVProgressHUD.m in Sources */,
 				786381CC1B3AA3F50078F156 /* ICGroupListViewController.m in Sources */,
 				7891826A1B0EDBC2004C6AF6 /* AppDelegate.m in Sources */,
@@ -1384,6 +1400,7 @@
 				4B1F2AA21BB9251F00D55BAE /* MJPhotoProgressView.m in Sources */,
 				7823E18E1B38FD8800061DAF /* ICPublishMissionViewController.m in Sources */,
 				781C1B1A1B1ED1CF008ECABF /* CDSideBarController.m in Sources */,
+				4B17A1281C27EB110032410C /* MQMyMessageListController.m in Sources */,
 				787EF9CF1B1D7B610030C560 /* ICPersonalInfoViewController.m in Sources */,
 				789182671B0EDBC2004C6AF6 /* main.m in Sources */,
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
@@ -1423,6 +1440,7 @@
 				4B7A89231BD4F05F00E42F7C /* SDWebImageCompat.m in Sources */,
 				4B8856101C0D4A7A00B50998 /* HTHorizontalSelectionList.m in Sources */,
 				78613FC71B3D48AD007ED169 /* ICMarkListViewController.m in Sources */,
+				4B17A12B1C28EF0B0032410C /* SystemMessage.m in Sources */,
 				4B1F2AA01BB9251F00D55BAE /* MJPhotoBrowser.m in Sources */,
 				4B1F2AB71BB9251F00D55BAE /* XLCycleScrollView.m in Sources */,
 				4BEC06BF1BCCDE3B009AFB5F /* MQPublishMissionController.m in Sources */,
