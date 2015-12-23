@@ -28,6 +28,7 @@
 #import "Organization.h"
 #import "LoginUser.h"
 #import "ICSettingViewController.h"
+#import "MQMyMessageMainController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -2015,6 +2016,13 @@
     UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICGroupListViewController"];
     ((ICGroupListViewController*)vc).currentViewGroupType = GroupTypeProject;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) btnMyMessageClicked:(id)sender
+{
+    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQMyMessageMainController"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

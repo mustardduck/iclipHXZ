@@ -22,6 +22,7 @@
 @property (nonatomic,assign) NSInteger       productId;
 @property (nonatomic,strong) NSString*       version;
 @property (nonatomic,strong) NSString*       systemVersion;
+@property (nonatomic, strong) NSString *        duty;//职位
 /*
  -2-- 冻结 -1-- 停用 0-- 未激活/无效 1-- 正常使用 3-- 待审核
  */
@@ -46,6 +47,7 @@
 + (NSString*)loginUserID;
 + (NSString*)loginUserOrgID;
 + (NSString*)loginUserName;
++ (NSString*)loginUserDuty;
 + (NSString*)loginUserPwd;
 + (NSString*)loginUserPhoto;
 + (NSString*)loginUserMobile;

@@ -106,6 +106,7 @@
          user.loginName = [dic valueForKey:@"loginName"];
          user.mobile = [dic valueForKey:@"mobile"];
          user.name = [dic valueForKey:@"name"];
+         user.duty = [dic valueForKey:@"duty"];
          user.password = [dic valueForKey:@"password"];
          user.productId = [[dic valueForKey:@"productId"] integerValue];
          user.score = [[dic valueForKey:@"score"] integerValue];
@@ -141,6 +142,11 @@
 + (NSString*)loginUserID
 {
     return [self getLoginInfo].userId;
+}
+
++ (NSString*)loginUserDuty
+{
+    return [self getLoginInfo].duty;
 }
 
 + (NSString*)loginUserOrgID

@@ -19,8 +19,15 @@
 @property (nonatomic, strong) NSString * userImg;//评论者头像
 @property (nonatomic, strong) NSString * missionText;//任务内容
 @property (nonatomic, strong) NSString * rightImg;//右边图片
-
+@property (nonatomic, strong) NSString * wgName;//群组名
 @property (nonatomic,assign) NSInteger  totalPages;
 
 + (NSMutableArray*)getMessageListByUserID:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)workGroupId;
+
+//找到消息中心评论消息
++ (NSMutableArray*)findMessageCenterByMessage:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount keyString:(NSString *)keyString;
+
+ 
++ (BOOL)findCommentMessageNum:(NSString *)userId commentNum:(NSString **)commentNum sysNum:(NSString **)sysNum allNum:(NSString **)allNum;
+
 @end

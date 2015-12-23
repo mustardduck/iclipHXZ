@@ -488,8 +488,9 @@
         
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         
-        //成员通讯录
-        UIView * msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(sv), width, 66)];
+        //我的
+        
+        UIView * msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(sv), width, 68)];
         [msgView setBackgroundColor:[UIColor clearColor]];
         [_messageView addSubview:msgView];
         
@@ -501,18 +502,48 @@
         [bottomLine setBackgroundColor:[UIColor grayColor]];
         [msgView addSubview:bottomLine];
         
-        UIImageView * photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 12, 42, 42)];
-        photo.image = [UIImage imageNamed:@"btn_cytxl"];
+        UIImageView * photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 14, 40, 40)];
+        photo.image = [UIImage imageNamed:@"icon_wode"];
         [msgView addSubview:photo];
         
         UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 0, width, H(msgView))];
+        titLbl.backgroundColor = [UIColor clearColor];
+        titLbl.text = @"我的";
+        titLbl.font = [UIFont systemFontOfSize:16];
+        titLbl.textColor = [UIColor whiteColor];
+        [msgView addSubview:titLbl];
+        
+        UIButton * btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
+        [btn addTarget:self action:@selector(btnMyMessageClicked:) forControlEvents:UIControlEventTouchUpInside];
+        btn.backgroundColor = [UIColor clearColor];
+        [msgView addSubview:btn];
+        
+        
+        //成员通讯录
+        msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(msgView), width, 68)];
+        [msgView setBackgroundColor:[UIColor clearColor]];
+        [_messageView addSubview:msgView];
+        
+        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0.5f)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [msgView addSubview:bottomLine];
+        
+        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, H(msgView) - 0.5, width, 0.5f)];
+        [bottomLine setBackgroundColor:[UIColor grayColor]];
+        [msgView addSubview:bottomLine];
+        
+        photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 14, 40, 40)];
+        photo.image = [UIImage imageNamed:@"icon_chengyuantongxunlu"];
+        [msgView addSubview:photo];
+        
+        titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 0, width, H(msgView))];
         titLbl.backgroundColor = [UIColor clearColor];
         titLbl.text = @"成员通讯录";
         titLbl.font = [UIFont systemFontOfSize:16];
         titLbl.textColor = [UIColor whiteColor];
         [msgView addSubview:titLbl];
         
-        UIButton * btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
+        btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
         [btn addTarget:self action:@selector(jumpToMemberList:) forControlEvents:UIControlEventTouchUpInside];
         btn.backgroundColor = [UIColor clearColor];
         [msgView addSubview:btn];
@@ -1062,6 +1093,14 @@
     if ([self.delegate respondsToSelector:@selector(btnCreateNewGroup:)])
         [self.delegate btnCreateNewGroup:sender];
 }
+
+- (void)btnMyMessageClicked:(id)sender
+{
+//    [self restoreTextName:_lblSearch textField:_txtSearch];
+    if ([self.delegate respondsToSelector:@selector(btnMyMessageClicked:)])
+        [self.delegate btnMyMessageClicked:sender];
+}
+
 
 - (void) jumpToMemberList:(id)sender
 {

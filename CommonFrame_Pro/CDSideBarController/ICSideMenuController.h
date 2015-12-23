@@ -23,6 +23,8 @@
 
 - (void)btnGroupProjectClicked:(id)sender;
 
+- (void)btnMyMessageClicked:(id)sender;
+
 - (void)btnGroupDepartmentClicked:(id)sender;
 
 - (void)tableViewCellDidClicked:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
