@@ -10,6 +10,6 @@
 
 @interface MQMyMessageListController : UIViewController
 
-@property (nonatomic, assign) BOOL isShowRedPoint;
+@property (nonatomic, assign) BOOL sysBtnSelected;
 
 @end

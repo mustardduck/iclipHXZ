@@ -96,10 +96,7 @@
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMyMessageListController"];
-    if([_sysNum intValue] > 0)
-    {
-        ((MQMyMessageListController *)vc).isShowRedPoint = YES;
-    }
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 

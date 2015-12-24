@@ -34,7 +34,12 @@
     UITextField * _searchField;
     UIButton * _searchBtn;
     
-    BOOL _sysBtnSelected;
+    
+    NSString * _commentNum;
+    NSString * _sysNum;
+    NSString * _allNum;
+    
+    BOOL _isShowRedPoint;
 }
 
 @end
@@ -45,8 +50,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notiForJumpToSystemList:) name:@"jumpToSystemList"
+                                               object:nil];
+    
     _keyString = @"";
     
+    _tableView.scrollsToTop = YES;
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -79,6 +89,11 @@
     [self resetHeaderView];
 }
 
+- (void)notiForJumpToSystemList:(NSNotification *)note {
+    
+    [self systemBtnClicked:nil];
+}
+
 - (void) commentBtnClicked:(id) sender
 {
     _sysBtnSelected = NO;
@@ -97,7 +112,6 @@
 
 - (void) systemBtnClicked:(id) sender
 {
-    _redPoint.hidden = YES;
     _keyString = @"";
     _searchField.text = @"";
     
@@ -144,7 +158,7 @@
     _searchField.placeholder = @"请输入您要查找的关键字";
     [_searchField setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
     _searchField.font = Font(15);
-    _searchField.textColor = [UIColor grayTitleColor];
+    _searchField.textColor = [UIColor blackColor];
     _searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addDoneToKeyboard:_searchField];
     
@@ -157,6 +171,18 @@
     
     _yellowLine = [[UIView alloc] initWithFrame:CGRectMake(0, 41, SCREENWIDTH / 2, 3)];
     _yellowLine.backgroundColor = [UIColor yellowTitleColor];
+    
+    if(_sysBtnSelected)
+    {
+        _sysBtn.backgroundColor = [UIColor backgroundColor];
+        [_sysBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        _commentBtn.backgroundColor = RGBCOLOR(40, 40, 40);
+        [_commentBtn setTitleColor:RGBACOLOR(255, 255, 255, 0.3) forState:UIControlStateNormal];
+        
+        _yellowLine.left = SCREENWIDTH / 2;
+    }
+
 }
 
 - (void) hiddenKeyboard
@@ -173,6 +199,33 @@
     [self resetHeaderView];
     [_tableView.footer resetNoMoreData];
 
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    NSString * commentNum = @"";
+    NSString * sysNum = @"";
+    NSString * allNum = @"";
+
+    BOOL isOk = [MessageCenter findCommentMessageNum:[LoginUser loginUserID] commentNum:&commentNum sysNum:&sysNum allNum:&allNum];
+    if(isOk)
+    {
+        _commentNum = commentNum;
+        _sysNum = sysNum;
+        _allNum = allNum;
+        
+        if([_sysNum intValue] > 0)
+        {
+            _isShowRedPoint = YES;
+            _redPoint.hidden = NO;
+        }
+        else
+        {
+            _isShowRedPoint = NO;
+            _redPoint.hidden = YES;
+
+        }
+    }
 }
 
 - (UIView *) searchHeaderView

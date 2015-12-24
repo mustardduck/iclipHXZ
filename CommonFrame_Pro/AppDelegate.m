@@ -14,6 +14,7 @@
 #import "ICMainViewController.h"
 #import "ICWorkingDetailViewController.h"
 #import "APService.h"
+#import "MQMyMessageListController.h"
 
 #define checkCurrentConWith(_model) \
 if ([currentViewCon isKindOfClass:[_model class]]) \
@@ -145,7 +146,7 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
     NSString * sourceId = [userInfo objectForKey:@"sourceId"];
     NSString * mainStr = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
 
-    // 1 任务  2：异常  3议题  6加入工作组  7：评论 8:申请
+    // 1 任务  2：异常  3议题  6加入工作组  7：评论 8:申请 9:审核加入org 10:任务超时
     switch (type) {
         case 6:
             _workGroupId = sourceId;
@@ -167,6 +168,24 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
                     [self jumpToMainView:_workGroupId];
                 }
             }
+            break;
+        case 9:
+            
+            if (application.applicationState == UIApplicationStateActive) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:mainStr
+                                                               delegate:self
+                                                      cancelButtonTitle:@"关闭"
+                                                      otherButtonTitles:@"查看", nil];
+                alert.tag = type;
+                [alert show];
+            }
+            else if (application.applicationState == UIApplicationStateInactive)
+            {
+                [self jumpToSystemList];
+            }
+            
             break;
         default:
             
@@ -255,6 +274,29 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         
     }
     */
+}
+
+- (void) jumpToSystemList
+{
+    UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+    
+    UIViewController* currentViewCon = nav.topViewController;
+    
+    if([currentViewCon isKindOfClass:[MQMyMessageListController class]])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToSystemList"
+                                                            object:nil];
+    }
+    else
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMyMessageListController"];
+        ((MQMyMessageListController *)vc).sysBtnSelected = YES;
+        
+        [nav pushViewController:vc animated:YES];
+    }
+
+ 
 }
 
 - (void) jumpToMissionDetail:(NSString *)taskId
@@ -357,6 +399,10 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         if(alertView.tag == 6)
         {
             [self jumpToMainView:_workGroupId];
+        }
+        else if (alertView.tag == 9)
+        {
+            [self jumpToSystemList];
         }
         else
         {
