@@ -29,6 +29,7 @@
 #import "LoginUser.h"
 #import "ICSettingViewController.h"
 #import "MQMyMessageMainController.h"
+#import "MQCreatOrgMainController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -215,6 +216,8 @@
         {
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+            ((MQCreatOrgMainController *)controller).isFromLogin = YES;
+            
             [self presentViewController:controller animated:YES completion:nil];
             
             return;
@@ -242,6 +245,8 @@
                 {
                     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                     UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+                    ((MQCreatOrgMainController *)controller).isFromLogin = YES;
+
                     [self presentViewController:controller animated:YES completion:nil];
                     
                     return;

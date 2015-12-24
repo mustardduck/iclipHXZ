@@ -11,5 +11,6 @@
 @interface MQCreatOrgMainController : UIViewController
 
 @property (nonatomic, assign) BOOL isFromRegister;
+@property (nonatomic, assign) BOOL isFromLogin;
 
 @end

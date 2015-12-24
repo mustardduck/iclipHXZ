@@ -12,6 +12,7 @@
 #import "APService.h"
 #import "UICommon.h"
 #import "ICMemberRegisterViewController.h"
+#import "MQCreatOrgMainController.h"
 
 @interface ViewController ()<InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
 {
@@ -308,6 +309,7 @@
         {
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"MQCreatOrgMainController"];
+            ((MQCreatOrgMainController *)controller).isFromLogin = YES;
             [self presentViewController:controller animated:YES completion:nil];
         }
     }

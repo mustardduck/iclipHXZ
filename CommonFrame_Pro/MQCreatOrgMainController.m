@@ -12,6 +12,7 @@
 #import "MQOrgSearchController.h"
 #import "MQCreateOrgController.h"
 #import "LoginUser.h"
+#import "APService.h"
 
 @interface MQCreatOrgMainController ()<UITableViewDataSource, UITableViewDelegate>
 {
@@ -33,17 +34,17 @@
     [tb setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:tb];
     
-    if(_isFromRegister)
+    if(_isFromRegister || _isFromLogin)
     {
         UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
         [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
-        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
-        [leftButton addSubview:imgview];
-        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 0, 80, 20)];
+//        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
+//        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
+//        [leftButton addSubview:imgview];
+        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
         [ti setBackgroundColor:[UIColor clearColor]];
         [ti setTextColor:[UIColor whiteColor]];
-        [ti setText:@"返回"];
+        [ti setText:@"返回登录"];
         [ti setFont:[UIFont systemFontOfSize:17]];
         [leftButton addSubview:ti];
         
@@ -58,7 +59,33 @@
 
 - (void)btnBackButtonClicked:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if(_isFromRegister)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        BOOL isQuit = [LoginUser quit];
+        if (isQuit) {
+            
+            __autoreleasing NSMutableSet *tags = [NSMutableSet set];
+            [APService setTags:tags
+                         alias:@""
+              callbackSelector:@selector(tagsAliasCallback:tags:alias:)
+                        target:self];
+            
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"ViewController"];
+            [self presentViewController:controller animated:YES completion:nil];
+        }
+    }
+}
+
+
+- (void)tagsAliasCallback:(int)iResCode
+                     tags:(NSSet *)tags
+                    alias:(NSString *)alias
+{
 }
 
 - (void) initTableView
@@ -83,7 +110,19 @@
     
     _orgArr = [Organization fineExamOrg: userId];
     
-    if(_orgArr.count)
+    BOOL cleanTableHeader = NO;
+    
+    for (Organization * org in _orgArr)
+    {
+        if([org.status intValue] == 0)//待审核
+        {
+            cleanTableHeader = YES;
+            
+            break;
+        }
+    }
+    
+    if(cleanTableHeader)
     {
         _mainTableView.tableHeaderView = nil;
         
@@ -234,7 +273,7 @@
     else if ([org.status intValue] == -2)
     {
             str = @"审核不通过";
-            txtColor = [UIColor redTextColor];
+            txtColor = [UIColor grayTitleColor];
     }
 //    else if ([org.status intValue] == -2 ||
 //             [org.status intValue] == -1)
