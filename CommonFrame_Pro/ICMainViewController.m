@@ -405,7 +405,7 @@
     
     if(markArray.count)
     {
-        _selectionArr = markArray[0][1];
+        _selectionArr = markArray[0][2];
     }
     
     _allNum = allnum;
@@ -499,14 +499,21 @@
 #pragma mark - HTHorizontalSelectionListDataSource Protocol Methods
 
 - (NSInteger)numberOfItemsInSelectionList:(HTHorizontalSelectionList *)selectionList {
-    return _selectionArr.count;
+    
+    NSInteger count = _selectionArr.count;
+    
+    if(count > 5)
+    {
+        count = 5;
+    }
+    return count;
 }
 
 - (NSString *)selectionList:(HTHorizontalSelectionList *)selectionList titleForItemWithIndex:(NSInteger)index {
     
     Mark * mark = _selectionArr[index];
     
-    if([mark.labelName isEqualToString:@"发布"])
+    if([mark.labelName isEqualToString:@"自助分类"])
     {
         return @"全部";
     }
