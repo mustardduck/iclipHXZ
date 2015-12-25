@@ -19,4 +19,6 @@
 
 @property (nonatomic, strong) NSMutableArray * dataListArr;
 
+@property (nonatomic, strong) id icMainVC;
+
 @end

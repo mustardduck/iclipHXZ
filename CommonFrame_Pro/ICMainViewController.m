@@ -2067,6 +2067,7 @@
         UIViewController* vc;
         vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
         ((ICMemberInfoViewController*)vc).memberObj = m;
+        ((ICMemberInfoViewController*)vc).icMainVC = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -2099,6 +2100,7 @@
         vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
         ((ICMemberInfoViewController*)vc).memberObj = me;
         ((ICMemberInfoViewController*)vc).dataListArr = dataArr;
+        ((ICMemberInfoViewController*)vc).icMainVC = self;
 
         [self.navigationController pushViewController:vc animated:YES];
 

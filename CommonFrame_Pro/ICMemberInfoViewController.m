@@ -13,6 +13,8 @@
 #import "PreviewViewController.h"
 #import "RRAttributedString.h"
 #import "ICWorkingDetailViewController.h"
+#import "SVProgressHUD.h"
+#import "ICMainViewController.h"
 
 @interface ICMemberInfoViewController() <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 {
@@ -828,11 +830,22 @@
 
 -(void)displayEmail
 {
-    if (_memberObj.email == nil) {
+    if (_memberObj.email == nil || !_memberObj.email.length) {
+        
+        [SVProgressHUD showErrorWithStatus:@"没有邮箱，不能发送邮件"];
+
         return;
     }
     
     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    
+    if(!picker)
+    {
+//        [SVProgressHUD showErrorWithStatus:@"该设备还没有添加邮件账户,请去设置->邮件里添加"];
+        
+        return;
+    }
+    
     picker.mailComposeDelegate = self;
     
     [picker setSubject:_memberObj.name];
@@ -856,6 +869,13 @@
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.icMainVC respondsToSelector:@selector(setIsNotRefreshMain:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isNotRefreshMain"];
+    }
 }
 
 @end
