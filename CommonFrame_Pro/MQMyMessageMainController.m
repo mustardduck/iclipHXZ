@@ -72,11 +72,6 @@
         {
             _redPoint.hidden = NO;
             [_redPoint setRoundCorner:W(_redPoint) / 2];
-            _megBtn.hidden = NO;
-        }
-        else
-        {
-            _megBtn.hidden = YES;
         }
     }
     
