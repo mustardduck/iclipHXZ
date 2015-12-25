@@ -45,5 +45,6 @@
 @property (nonatomic,strong) id                icMyMegListController;
 @property (nonatomic,assign) BOOL              isFromMyMegList;
 @property (nonatomic,strong) NSMutableArray * contentArr;
+@property (nonatomic,strong) id                     icDetaiVC;
 
 @end

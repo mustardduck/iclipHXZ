@@ -2987,6 +2987,10 @@
         [self.icMainViewController setValue:@"1" forKey:@"isRefreshBottom"];
     }
     
+    if ([self.icDetaiVC respondsToSelector:@selector(setContent:)]) {
+        [self.icDetaiVC setValue:@"1" forKey:@"content"];
+    }
+    
     if (_currentMission) {
         
         Mission * ms = _contentArr[_indexInMainArray];
@@ -3095,7 +3099,8 @@
         ((ICWorkingDetailViewController*)vc).icMainViewController = _icMainViewController;
         ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
         ((ICWorkingDetailViewController*)vc).isChildMission = YES;
-        
+        ((ICWorkingDetailViewController*)vc).icDetaiVC = self;
+
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
