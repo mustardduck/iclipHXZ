@@ -13,5 +13,6 @@
 @property (nonatomic, assign) BOOL sysBtnSelected;
 @property (nonatomic, assign) BOOL sysMegEdit;
 
+@property (nonatomic, strong) id icMainVC;
 
 @end

@@ -293,6 +293,11 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMyMessageListController"];
         ((MQMyMessageListController *)vc).sysBtnSelected = YES;
         
+        if([currentViewCon isKindOfClass:[ICMainViewController class]])
+        {
+            ((MQMyMessageListController *)vc).icMainVC = currentViewCon;
+        }
+        
         [nav pushViewController:vc animated:YES];
     }
 

@@ -15,6 +15,7 @@
 #import "SystemMessage.h"
 #import "ICWorkingDetailViewController.h"
 #import "SVProgressHUD.h"
+#import "ICMainViewController.h"
 
 @interface MQMyMessageListController ()<UITableViewDataSource, UITableViewDelegate>
 {
@@ -199,12 +200,12 @@
 
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void) layoutHeaderView
 {
     NSString * commentNum = @"";
     NSString * sysNum = @"";
     NSString * allNum = @"";
-
+    
     BOOL isOk = [MessageCenter findCommentMessageNum:[LoginUser loginUserID] commentNum:&commentNum sysNum:&sysNum allNum:&allNum];
     if(isOk)
     {
@@ -225,6 +226,12 @@
         
         [self resetHeaderView];
     }
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [self layoutHeaderView];
+
     if(_sysBtnSelected && _sysMegEdit)
     {
         [self resetHeaderView];
@@ -392,6 +399,13 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.icMainVC respondsToSelector:@selector(setIsNotRefreshMain:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isNotRefreshMain"];
+    }
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -706,7 +720,8 @@
     if(isOk)
     {
         [SVProgressHUD dismiss];
-        [self resetHeaderView];
+        
+        [self layoutHeaderView];
         [_tableView.footer resetNoMoreData];
     }
     else
@@ -729,7 +744,8 @@
     {
         [SVProgressHUD dismiss];
         
-        [self resetHeaderView];
+        [self layoutHeaderView];
+        
         [_tableView.footer resetNoMoreData];
     }
     else
