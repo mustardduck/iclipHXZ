@@ -58,6 +58,8 @@
     BOOL _isMainMission;
     
     NSInteger _sendButtonTag;
+    
+    BOOL _isDeleteMission;
 }
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
@@ -985,6 +987,8 @@
                 
                 if(_contentArr.count)
                 {
+                    _isDeleteMission = YES;
+                    
                     [_contentArr removeObjectAtIndex:_indexInMainArray];
                     
                     if ([self.icMainViewController respondsToSelector:@selector(setContentArray:)]) {
@@ -2991,7 +2995,7 @@
         [self.icDetaiVC setValue:@"1" forKey:@"content"];
     }
     
-    if (_currentMission) {
+    if (_currentMission && !_isDeleteMission) {
         
         Mission * ms = _contentArr[_indexInMainArray];
 
@@ -3001,7 +3005,8 @@
         _currentMission.hour = ms.hour;
         _currentMission.accessoryNum = (int)_currentMission.accessoryList.count;
         _currentMission.replayNum = (int)_commentArray.count;
-        
+        _currentMission.childNum = (int)ms.childTaskList.count;
+
         [_contentArr replaceObjectAtIndex:_indexInMainArray withObject:_currentMission];
 
         if ([self.icMainViewController respondsToSelector:@selector(setContentArray:)]) {
