@@ -176,6 +176,11 @@
 - (void)refreshMainView:(NSNotification *)note
 {
 //    [self addRefrish];
+    
+    if(note.object)
+    {
+        _workGroupId = [NSString stringWithFormat:@"%@", note.object];
+    }
 
     [self refreshBottomView];
     

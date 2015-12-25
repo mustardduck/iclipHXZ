@@ -244,6 +244,10 @@
     UIViewController * model = [UICommon getOldViewController:[ICMainViewController class] withNavController:self.navigationController];
     if(model)
     {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshMainView"
+                                                            object:_workGroup.workGroupId];
+        
         [self.navigationController popToViewController:model animated:YES];
     }
     
