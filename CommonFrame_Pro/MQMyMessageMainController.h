@@ -10,4 +10,6 @@
 
 @interface MQMyMessageMainController : UIViewController
 
+@property (nonatomic, strong) id icMainVC;
+
 @end

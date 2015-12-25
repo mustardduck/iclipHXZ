@@ -21,6 +21,7 @@
 #import "MQPublishMissionMainController.h"
 #import "MQPublishSharedAndNotifyController.h"
 #import "ICMainViewController.h"
+#import "MQMyMessageListController.h"
 
 @interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 {
@@ -966,6 +967,10 @@
             {
                 [SVProgressHUD showSuccessWithStatus:@"更新任务状态成功"];
                 
+                if ([self.icMyMegListController respondsToSelector:@selector(setSysMegEdit:)]) {
+                    [self.icMyMegListController setValue:@"1" forKey:@"sysMegEdit"];
+                }
+
                 [self reloadTableView];
 
             }
@@ -977,6 +982,11 @@
             BOOL isRemoved = [Mission reomveMission:_currentMission.taskId];
             if (isRemoved) {
                 _hasDel = YES;
+                
+                if ([self.icMyMegListController respondsToSelector:@selector(setSysMegEdit:)]) {
+                    [self.icMyMegListController setValue:@"1" forKey:@"sysMegEdit"];
+                }
+                
                 [self.navigationController popViewControllerAnimated:YES];
             }
         }

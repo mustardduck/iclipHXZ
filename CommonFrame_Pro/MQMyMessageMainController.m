@@ -12,6 +12,7 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "LoginUser.h"
 #import "MessageCenter.h"
+#import "ICMainViewController.h"
 
 @interface MQMyMessageMainController ()
 {
@@ -57,10 +58,14 @@
     _titleLbl.text = [LoginUser loginUserName];
     _jobLbl.text = [LoginUser loginUserDuty];
     
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
     NSString * commentNum = @"";
     NSString * sysNum = @"";
     NSString * allNum = @"";
-
+    
     BOOL isOk = [MessageCenter findCommentMessageNum:[LoginUser loginUserID] commentNum:&commentNum sysNum:&sysNum allNum:&allNum];
     if(isOk)
     {
@@ -73,13 +78,23 @@
             _redPoint.hidden = NO;
             [_redPoint setRoundCorner:W(_redPoint) / 2];
         }
+        else
+        {
+            _redPoint.hidden = YES;
+        }
     }
-    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.icMainVC respondsToSelector:@selector(setIsNotRefreshMain:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isNotRefreshMain"];
+    }
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender

@@ -42,4 +42,8 @@
 @property (nonatomic,assign) BOOL              isChildMission;
 //@property(nonatomic,strong) Mission* currentMission;
 
+@property (nonatomic,strong) id                icMyMegListController;
+@property (nonatomic,assign) BOOL              isFromMyMegList;
+
+
 @end

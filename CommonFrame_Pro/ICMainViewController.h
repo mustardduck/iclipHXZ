@@ -34,6 +34,6 @@
 @property(nonatomic,strong) NSString * isRefreshBottom;
 @property(nonatomic,strong) NSString * isSetting;
 
-
+@property (nonatomic, assign) BOOL isNotRefreshMain;
 
 @end

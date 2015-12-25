@@ -10,7 +10,6 @@
 #import "UICommon.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <MJRefresh.h>
-#import "ICWorkingDetailViewController.h"
 #import "MessageCenter.h"
 #import "LoginUser.h"
 #import "SystemMessage.h"
@@ -83,10 +82,9 @@
     _tableView.delegate = self;
     
     [self addRefrish];
-    
+
     [self initHeaderView];
     
-    [self resetHeaderView];
 }
 
 - (void)notiForJumpToSystemList:(NSNotification *)note {
@@ -223,9 +221,16 @@
         {
             _isShowRedPoint = NO;
             _redPoint.hidden = YES;
-
         }
+        
+        [self resetHeaderView];
     }
+    if(_sysBtnSelected && _sysMegEdit)
+    {
+        [self resetHeaderView];
+        [_tableView.footer resetNoMoreData];
+    }
+
 }
 
 - (UIView *) searchHeaderView
@@ -742,7 +747,8 @@
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
     ((ICWorkingDetailViewController*)vc).taskId = sm.sourceId;
-    
+    ((ICWorkingDetailViewController*)vc).icMyMegListController = self;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 

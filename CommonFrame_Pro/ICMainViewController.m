@@ -159,8 +159,15 @@
     }
     else
     {
-        [self addRefrish];
-        
+        if(!_isNotRefreshMain)
+        {
+            [self addRefrish];
+            
+        }
+        else
+        {
+            _isNotRefreshMain = NO;
+        }
     }
 
     
@@ -2035,6 +2042,8 @@
 {
     UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQMyMessageMainController"];
+    ((MQMyMessageMainController *)vc).icMainVC = self;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 

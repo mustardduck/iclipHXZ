@@ -11,5 +11,7 @@
 @interface MQMyMessageListController : UIViewController
 
 @property (nonatomic, assign) BOOL sysBtnSelected;
+@property (nonatomic, assign) BOOL sysMegEdit;
+
 
 @end
