@@ -310,11 +310,6 @@
     }];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:^(){
-    }];
-}
-
 #pragma mark VPImageCropperDelegate
 - (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
     
@@ -382,29 +377,31 @@
 {
     NSLog(@"%@",assets);
     
-    if (assets.count > 0) {
-        
-        ALAsset * ass = assets[0];
-        
-        ALAssetRepresentation* representation = [ass defaultRepresentation];
-        UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-        portraitImg = [UIImage
-                       imageWithCGImage:[representation fullScreenImage]
-                       scale:[representation scale]
-                       orientation:UIImageOrientationUp];
-        
-        _currentFileName = [representation filename];
-        
-        portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
-        // present the cropper view controller
-        VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
-        imgCropperVC.delegate = self;
-        [self presentViewController:imgCropperVC animated:YES completion:^{
-            // TO DO
-        }];
-        
-    }
-    
+    [picker dismissViewControllerAnimated:YES completion:^()
+    {
+        if (assets.count > 0) {
+            
+            ALAsset * ass = assets[0];
+            
+            ALAssetRepresentation* representation = [ass defaultRepresentation];
+            UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+            portraitImg = [UIImage
+                           imageWithCGImage:[representation fullScreenImage]
+                           scale:[representation scale]
+                           orientation:UIImageOrientationUp];
+            
+            _currentFileName = [representation filename];
+            
+            portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+            // present the cropper view controller
+            VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+            imgCropperVC.delegate = self;
+            [self presentViewController:imgCropperVC animated:YES completion:^{
+                // TO DO
+            }];
+            
+        }
+    }];
     
 }
 

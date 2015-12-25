@@ -634,7 +634,9 @@
     
     self.navigationItem.rightBarButtonItems = tright;
     
-    [self setNaviLeftBarItem:@"回形针"];
+    Group * gr = _bottomArray[0];
+    
+    [self setNaviLeftBarItem:gr.workGroupName];
 }
 
 - (void) setNaviLeftBarItem:(NSString *)titleName

@@ -499,102 +499,106 @@
 #pragma mark - ZYQAssetPickerController Delegate
 -(void)assetPickerController:(ZYQAssetPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    NSLog(@"%@",assets);
-    
-    if (assets.count > 0) {
-        
-        //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-        
-        ALAsset * ass = assets[0];
-        
-        ALAssetRepresentation* representation = [ass defaultRepresentation];
-        UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-        portraitImg = [UIImage
-                       imageWithCGImage:[representation fullScreenImage]
-                       scale:[representation scale]
-                       orientation:UIImageOrientationUp];
-        
-        _currentFileName = [representation filename];
-        
-        portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
-        // present the cropper view controller
-        VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
-        imgCropperVC.delegate = self;
-        [self presentViewController:imgCropperVC animated:YES completion:^{
-            // TO DO
-        }];
+    [picker dismissViewControllerAnimated:YES completion:^()
+     {
+         NSLog(@"%@",assets);
+         
+         if (assets.count > 0) {
+             
+             //            UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+             
+             ALAsset * ass = assets[0];
+             
+             ALAssetRepresentation* representation = [ass defaultRepresentation];
+             UIImage* portraitImg = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+             portraitImg = [UIImage
+                            imageWithCGImage:[representation fullScreenImage]
+                            scale:[representation scale]
+                            orientation:UIImageOrientationUp];
+             
+             _currentFileName = [representation filename];
+             
+             portraitImg = [UICommon imageByScalingToMaxSize:portraitImg];
+             // present the cropper view controller
+             VPImageCropperViewController *imgCropperVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+             imgCropperVC.delegate = self;
+             [self presentViewController:imgCropperVC animated:YES completion:^{
+                 // TO DO
+             }];
+             
+             
+             //ALAssetRepresentation* representation = [asset defaultRepresentation];
+             /*
+              CGSize dimension = [representation dimensions];
+              UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+              NSString* filename = [representation filename];
+              NSLog(@"filename:%@",filename);
+              CGFloat size = [representation size];
+              NSDictionary* dic = [representation metadata];
+              NSURL* url = [representation url];
+              NSLog(@"url:%@",url);
+              NSLog(@"uti:%@",[representation UTI]);
+              */
+             
+             //momo
+             /*
+              if (_accessoryArray == nil) {
+              _accessoryArray = [NSMutableArray array];
+              }
+              
+              for (ALAsset* asset in assets)
+              {
+              BOOL isExits = NO;
+              for (ALAsset* acc in _accessoryArray) {
+              ALAssetRepresentation* representation = [asset defaultRepresentation];
+              ALAssetRepresentation* accRepresentation = [acc defaultRepresentation];
+              if ([representation.filename isEqualToString:accRepresentation.filename]) {
+              isExits = YES;
+              break;
+              }
+              }
+              if (!isExits) {
+              [_accessoryArray addObject:asset];
+              }
+              }
+              
+              if (_accessoryArray.count > 0) {
+              
+              //            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+              //            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
+              //            ((ICFileViewController*)vc).uploadFileArray = _accessoryArray;
+              //            ((ICFileViewController*)vc).hasUploadedFileArray = (_cAccessoryArray == nil? [NSMutableArray array] :[NSMutableArray arrayWithArray:_cAccessoryArray]);
+              //            ((ICFileViewController*)vc).icPublishMissionController = self;
+              //
+              //            [self.navigationController pushViewController:vc animated:YES];
+              
+              NSString * userImgPath = @"";
+              
+              BOOL isOk = [LoginUser uploadImage:_accessoryArray withUserImgPath:&userImgPath];
+              
+              if(isOk)
+              {
+              ALAsset * ass = _accessoryArray[0];
+              
+              ALAssetRepresentation* representation = [ass defaultRepresentation];
+              UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+              imgH = [UIImage
+              imageWithCGImage:[representation fullScreenImage]
+              scale:[representation scale]
+              orientation:UIImageOrientationUp];
+              UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+              [img setBackgroundColor:[UIColor clearColor]];
+              [img setImage:imgH];
+              
+              [_imgButton setImage:img.image forState:UIControlStateNormal];
+              
+              _user.img = userImgPath;
+              }
+              }
+              */
+         }
+     }];
 
-        
-        //ALAssetRepresentation* representation = [asset defaultRepresentation];
-        /*
-         CGSize dimension = [representation dimensions];
-         UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-         NSString* filename = [representation filename];
-         NSLog(@"filename:%@",filename);
-         CGFloat size = [representation size];
-         NSDictionary* dic = [representation metadata];
-         NSURL* url = [representation url];
-         NSLog(@"url:%@",url);
-         NSLog(@"uti:%@",[representation UTI]);
-         */
-        
-        //momo
-        /*
-        if (_accessoryArray == nil) {
-            _accessoryArray = [NSMutableArray array];
-        }
-        
-        for (ALAsset* asset in assets)
-        {
-            BOOL isExits = NO;
-            for (ALAsset* acc in _accessoryArray) {
-                ALAssetRepresentation* representation = [asset defaultRepresentation];
-                ALAssetRepresentation* accRepresentation = [acc defaultRepresentation];
-                if ([representation.filename isEqualToString:accRepresentation.filename]) {
-                    isExits = YES;
-                    break;
-                }
-            }
-            if (!isExits) {
-                [_accessoryArray addObject:asset];
-            }
-        }
-        
-        if (_accessoryArray.count > 0) {
-            
-//            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
-//            ((ICFileViewController*)vc).uploadFileArray = _accessoryArray;
-//            ((ICFileViewController*)vc).hasUploadedFileArray = (_cAccessoryArray == nil? [NSMutableArray array] :[NSMutableArray arrayWithArray:_cAccessoryArray]);
-//            ((ICFileViewController*)vc).icPublishMissionController = self;
-//            
-//            [self.navigationController pushViewController:vc animated:YES];
-            
-            NSString * userImgPath = @"";
-            
-            BOOL isOk = [LoginUser uploadImage:_accessoryArray withUserImgPath:&userImgPath];
-            
-            if(isOk)
-            {
-                ALAsset * ass = _accessoryArray[0];
-                
-                ALAssetRepresentation* representation = [ass defaultRepresentation];
-                UIImage* imgH = [UIImage imageWithCGImage:[representation fullResolutionImage]];
-                imgH = [UIImage
-                        imageWithCGImage:[representation fullScreenImage]
-                        scale:[representation scale]
-                        orientation:UIImageOrientationUp];
-                UIImageView* img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-                [img setBackgroundColor:[UIColor clearColor]];
-                [img setImage:imgH];
-                
-                [_imgButton setImage:img.image forState:UIControlStateNormal];
-                
-                _user.img = userImgPath;
-            }
-        }
-          */
-    }
 }
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField
