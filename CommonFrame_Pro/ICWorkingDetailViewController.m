@@ -983,6 +983,15 @@
             if (isRemoved) {
                 _hasDel = YES;
                 
+                if(_contentArr.count)
+                {
+                    [_contentArr removeObjectAtIndex:_indexInMainArray];
+                    
+                    if ([self.icMainViewController respondsToSelector:@selector(setContentArray:)]) {
+                        [self.icMainViewController setValue:_contentArr forKey:@"contentArray"];
+                    }
+                }
+
                 if ([self.icMyMegListController respondsToSelector:@selector(setSysMegEdit:)]) {
                     [self.icMyMegListController setValue:@"1" forKey:@"sysMegEdit"];
                 }
@@ -2976,6 +2985,24 @@
 //    }
     if ([self.icMainViewController respondsToSelector:@selector(setIsRefreshBottom:)]) {
         [self.icMainViewController setValue:@"1" forKey:@"isRefreshBottom"];
+    }
+    
+    if (_currentMission) {
+        
+        Mission * ms = _contentArr[_indexInMainArray];
+
+        _currentMission.isRead = YES;
+        _currentMission.isNewCom = NO;
+        _currentMission.monthAndDay = ms.monthAndDay;
+        _currentMission.hour = ms.hour;
+        _currentMission.accessoryNum = (int)_currentMission.accessoryList.count;
+        _currentMission.replayNum = (int)_commentArray.count;
+        
+        [_contentArr replaceObjectAtIndex:_indexInMainArray withObject:_currentMission];
+
+        if ([self.icMainViewController respondsToSelector:@selector(setContentArray:)]) {
+            [self.icMainViewController setValue:_contentArr forKey:@"contentArray"];
+        }
     }
 }
 

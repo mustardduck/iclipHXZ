@@ -52,7 +52,6 @@
     NSInteger               _pageNo;
     NSInteger               _pageRowCount;
     NSString*               _workGroupId;
-    NSMutableArray*         _contentArray;
     NSMutableArray*         _badges;
     NSMutableArray*         _allNumbadges;
 
@@ -2600,7 +2599,8 @@
     ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
     ((ICWorkingDetailViewController*)vc).icMainViewController = self;
     ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
-    
+    ((ICWorkingDetailViewController*)vc).contentArr = _contentArray;
+
     ms.isRead = YES;
     ms.isNewCom = NO;
     

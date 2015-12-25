@@ -36,4 +36,9 @@
 
 @property (nonatomic, assign) BOOL isNotRefreshMain;
 
+@property (nonatomic, strong) NSMutableArray * contentArray;
+
+
+
+
 @end
