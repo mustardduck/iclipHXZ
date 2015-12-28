@@ -899,9 +899,15 @@
                 
                 [mDic setObject:cm.title forKey:@"title"];
                 
-                [curDic setObject:cm.main forKey:@"main"];
+                if(cm.main.length)
+                {
+                    [curDic setObject:cm.main forKey:@"main"];
+                }
                 [curDic setObject:cm.finishTime forKey:@"finishTime"];
-                [curDic setObject:cm.remindTime forKey:@"remindTime"];
+                if(cm.remindTime.length)
+                {
+                    [curDic setObject:cm.remindTime forKey:@"remindTime"];
+                }
                 [curDic setObject:cm.title forKey:@"title"];
                 [curDic setObject:cm.taskId forKey:@"taskId"];
                 [curDic setObject:cm.parentId forKey:@"parentId"];
