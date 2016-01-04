@@ -67,6 +67,10 @@
 		4B9AE10D1B94009100E2124D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE10C1B94009100E2124D /* Security.framework */; };
 		4B9AE10F1B94009800E2124D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9AE10E1B94009800E2124D /* libz.dylib */; };
 		4B9AE1121B94029F00E2124D /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B9AE1111B94029F00E2124D /* PushConfig.plist */; };
+		4B9BC9531C322FE400F4EC41 /* WorkPlanMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9BC9521C322FE300F4EC41 /* WorkPlanMainController.m */; };
+		4B9BC9561C32301800F4EC41 /* WorkPlanEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9BC9551C32301800F4EC41 /* WorkPlanEditController.m */; };
+		4B9BC9591C32316A00F4EC41 /* WorkPlanAddMissionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9BC9581C32316A00F4EC41 /* WorkPlanAddMissionController.m */; };
+		4B9BC95C1C3279EF00F4EC41 /* WorkPlanMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9BC95B1C3279EF00F4EC41 /* WorkPlanMainCell.m */; };
 		4B9C73961BE7407B0070135C /* DashesLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C73951BE7407B0070135C /* DashesLineView.m */; };
 		4B9C73991BE84FBF0070135C /* PartiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C73981BE84FBF0070135C /* PartiCell.m */; };
 		4BB33A8D1B9EC5CF009D80E2 /* expandableImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A851B9EC5CF009D80E2 /* expandableImage.png */; };
@@ -299,6 +303,14 @@
 		4B9AE10C1B94009100E2124D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4B9AE10E1B94009800E2124D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		4B9AE1111B94029F00E2124D /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		4B9BC9511C322FE300F4EC41 /* WorkPlanMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanMainController.h; sourceTree = "<group>"; };
+		4B9BC9521C322FE300F4EC41 /* WorkPlanMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanMainController.m; sourceTree = "<group>"; };
+		4B9BC9541C32301800F4EC41 /* WorkPlanEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanEditController.h; sourceTree = "<group>"; };
+		4B9BC9551C32301800F4EC41 /* WorkPlanEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanEditController.m; sourceTree = "<group>"; };
+		4B9BC9571C32316A00F4EC41 /* WorkPlanAddMissionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanAddMissionController.h; sourceTree = "<group>"; };
+		4B9BC9581C32316A00F4EC41 /* WorkPlanAddMissionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanAddMissionController.m; sourceTree = "<group>"; };
+		4B9BC95A1C3279EF00F4EC41 /* WorkPlanMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanMainCell.h; sourceTree = "<group>"; };
+		4B9BC95B1C3279EF00F4EC41 /* WorkPlanMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanMainCell.m; sourceTree = "<group>"; };
 		4B9C73941BE7407B0070135C /* DashesLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashesLineView.h; sourceTree = "<group>"; };
 		4B9C73951BE7407B0070135C /* DashesLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashesLineView.m; sourceTree = "<group>"; };
 		4B9C73971BE84FBF0070135C /* PartiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartiCell.h; sourceTree = "<group>"; };
@@ -663,6 +675,21 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		4B9BC9501C322FC700F4EC41 /* workPlan */ = {
+			isa = PBXGroup;
+			children = (
+				4B9BC9511C322FE300F4EC41 /* WorkPlanMainController.h */,
+				4B9BC9521C322FE300F4EC41 /* WorkPlanMainController.m */,
+				4B9BC95A1C3279EF00F4EC41 /* WorkPlanMainCell.h */,
+				4B9BC95B1C3279EF00F4EC41 /* WorkPlanMainCell.m */,
+				4B9BC9541C32301800F4EC41 /* WorkPlanEditController.h */,
+				4B9BC9551C32301800F4EC41 /* WorkPlanEditController.m */,
+				4B9BC9571C32316A00F4EC41 /* WorkPlanAddMissionController.h */,
+				4B9BC9581C32316A00F4EC41 /* WorkPlanAddMissionController.m */,
+			);
+			path = workPlan;
+			sourceTree = "<group>";
+		};
 		4BB33A841B9EC5CF009D80E2 /* SKSTableVeiwImp */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,6 +1042,7 @@
 		787EF9C91B1D77BC0030C560 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				4B9BC9501C322FC700F4EC41 /* workPlan */,
 				4BBB61271BDA1E2100C7E79E /* MessageNotify */,
 				784B061C1B43C48D0033C0EA /* Setting */,
 				786381C91B3AA3C90078F156 /* Group */,
@@ -1360,11 +1388,13 @@
 				4B7A89241BD4F05F00E42F7C /* SDWebImageDecoder.m in Sources */,
 				783AC2DB1B55FDF800EE3E37 /* Group.m in Sources */,
 				4B7A892A1BD4F05F00E42F7C /* UIImage+GIF.m in Sources */,
+				4B9BC9531C322FE400F4EC41 /* WorkPlanMainController.m in Sources */,
 				4B3222B91B8DB64900957DEF /* PH_UITextView.m in Sources */,
 				784B061F1B43C5BD0033C0EA /* ICSettingViewController.m in Sources */,
 				4BC5301B1C1968B3002C20D8 /* README.md in Sources */,
 				4BC530031C196870002C20D8 /* ZLResultsTableViewController.m in Sources */,
 				4B7A89291BD4F05F00E42F7C /* UIButton+WebCache.m in Sources */,
+				4B9BC9591C32316A00F4EC41 /* WorkPlanAddMissionController.m in Sources */,
 				4B88560F1C0D4A7A00B50998 /* HTHorizontalSelectionListLabelCell.m in Sources */,
 				78CB22441B2926F8003B6707 /* PRTween.m in Sources */,
 				4B23BE0E1C0317AB00FDF082 /* MQSearchMenuController.m in Sources */,
@@ -1438,8 +1468,10 @@
 				4B7A892B1BD4F05F00E42F7C /* UIImage+MultiFormat.m in Sources */,
 				7851D6631B5F903C00C3D860 /* Comment.m in Sources */,
 				4B7A89231BD4F05F00E42F7C /* SDWebImageCompat.m in Sources */,
+				4B9BC95C1C3279EF00F4EC41 /* WorkPlanMainCell.m in Sources */,
 				4B8856101C0D4A7A00B50998 /* HTHorizontalSelectionList.m in Sources */,
 				78613FC71B3D48AD007ED169 /* ICMarkListViewController.m in Sources */,
+				4B9BC9561C32301800F4EC41 /* WorkPlanEditController.m in Sources */,
 				4B17A12B1C28EF0B0032410C /* SystemMessage.m in Sources */,
 				4B1F2AA01BB9251F00D55BAE /* MJPhotoBrowser.m in Sources */,
 				4B1F2AB71BB9251F00D55BAE /* XLCycleScrollView.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import "Group.h"
+#import "Mission.h"
 
 #define CURL                @"/index/findIndexMessageNum.hz"
 #define WORKLIST_URL        @"/workgroup/findMeWgList.hz"
@@ -16,8 +17,14 @@
 #define NEW_GROUP           @"/workgroup/addWorkgroup.hz"
 #define DETAIL_URL          @"/workgroup/intoWorkgroupDetail.hz"
 #define UPDATE_URL          @"/workgroup/updateWorkgroup.hz"
-#define WORKLIST_SETTING_URL  @"/workgroup/findMeWgMessageList.hz"
-#define UPDATE_GROUP_SETT_URL @"/workgroup/updateWgSubscribeStatus.hz"
+#define WORKLIST_SETTING_URL    @"/workgroup/findMeWgMessageList.hz"
+#define UPDATE_GROUP_SETT_URL   @"/workgroup/updateWgSubscribeStatus.hz"
+#define FindUserMainLabel_URL   @"/workgroup/findUserMainLabel.hz"
+#define FindUserMainLabelTask_URL   @"/workgroup/findUserMainLabelTask.hz"
+#define CreateWorkPlan_URL          @"/task/createWorkPlan.hz"
+#define FindWorkPlanDetailTx_URL    @"/task/findWorkPlanDetailTx.hz"
+#define IntoUpdateWorkPlan_URL      @"/task/intoUpdateWorkPlan.hz"
+#define FindUserTaskByTime_URL          @"/workgroup/findUserTaskByTime.hz"
 
 @implementation Group
 
@@ -468,6 +475,192 @@
     
     return isOk;
 
+}
+
++ (NSArray *) findUserMainLabel:(NSString *)userId workGroupId:(NSString *) workGroupId
+{
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@",FindUserMainLabel_URL, userId, workGroupId]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSArray class]])
+                {
+                    NSArray* dArr = (NSArray*)dataDic;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            
+                            NSDictionary* di = (NSDictionary*)data;
+                            
+                            Mark* ma = [Mark new];
+                            ma.labelId = [di valueForKey:@"labelId"];
+                            ma.labelName = [di valueForKey:@"labelName"];
+                            
+                            [array addObject:ma];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return array;
+}
+
++ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelId
+{
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@&labelId=%@",FindUserMainLabelTask_URL, userId, workGroupId, labelId]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSArray class]])
+                {
+                    NSArray* dArr = (NSArray*)dataDic;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            
+                            NSDictionary* di = (NSDictionary*)data;
+                            
+                            Mission* mi = [Mission new];
+                            mi.taskId = [di valueForKey:@"taskId"];
+                            mi.title = [di valueForKey:@"title"];
+                            mi.status = [[di valueForKey:@"status"] integerValue];
+                            mi.finishTime = [di valueForKey:@"finishTimeStr"];
+                            mi.userName = [di valueForKey:@"createName"];
+                            mi.createUserId = [di valueForKey:@"createUserId"];
+
+                            [array addObject:mi];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return array;
+}
+
++ (NSArray *) findUserTaskByTime:(NSString *)userId workGroupId:(NSString *) workGroupId
+{
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSMutableArray * arrayNow = [NSMutableArray array];
+    NSMutableArray * arraySeven = [NSMutableArray array];
+    NSMutableArray * arraySevenAfter = [NSMutableArray array];
+
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@",FindUserTaskByTime_URL, userId, workGroupId]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSArray class]])
+                {
+                    NSArray* dArr = (NSArray*)dataDic;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            
+                            NSDictionary* di = (NSDictionary*)data;
+                            
+                            NSArray * arr = [di objectForKey:@"now"];
+                            
+                            for(NSDictionary * mDic in arr)
+                            {
+                                Mission* mi = [Mission new];
+                                mi.userName = [mDic valueForKey:@"createName"];
+                                mi.createUserId = [mDic valueForKey:@"createUserId"];
+                                mi.finishTime = [mDic valueForKey:@"finishTimeStr"];
+                                mi.lableUserName = [mDic valueForKey:@"lableUserName"];
+                                mi.status = [[mDic valueForKey:@"status"] integerValue];
+                                mi.taskId = [mDic valueForKey:@"taskId"];
+                                mi.title = [mDic valueForKey:@"title"];
+                                
+                                [arrayNow addObject:mi];
+
+                            }
+                            
+                            NSArray * arrSeven = [di objectForKey:@"seven"];
+                            
+                            for(NSDictionary * mDic in arrSeven)
+                            {
+                                Mission* mi = [Mission new];
+                                mi.userName = [mDic valueForKey:@"createName"];
+                                mi.createUserId = [mDic valueForKey:@"createUserId"];
+                                mi.finishTime = [mDic valueForKey:@"finishTimeStr"];
+                                mi.lableUserName = [mDic valueForKey:@"lableUserName"];
+                                mi.status = [[mDic valueForKey:@"status"] integerValue];
+                                mi.taskId = [mDic valueForKey:@"taskId"];
+                                mi.title = [mDic valueForKey:@"title"];
+                                
+                                [arraySeven addObject:mi];
+                                
+                            }
+                            
+                            NSArray * arrSevenAfter = [di objectForKey:@"sevenAfter"];
+                            
+                            for(NSDictionary * mDic in arrSevenAfter)
+                            {
+                                Mission* mi = [Mission new];
+                                mi.userName = [mDic valueForKey:@"createName"];
+                                mi.createUserId = [mDic valueForKey:@"createUserId"];
+                                mi.finishTime = [mDic valueForKey:@"finishTimeStr"];
+                                mi.lableUserName = [mDic valueForKey:@"lableUserName"];
+                                mi.status = [[mDic valueForKey:@"status"] integerValue];
+                                mi.taskId = [mDic valueForKey:@"taskId"];
+                                mi.title = [mDic valueForKey:@"title"];
+                                
+                                [arraySevenAfter addObject:mi];
+                                
+                            }
+                        }
+                    }
+                    
+                    [array addObject:arrayNow];
+                    [array addObject:arraySeven];
+                    [array addObject:arraySevenAfter];
+                }
+            }
+        }
+    }
+    
+    return array;
 }
 
 @end

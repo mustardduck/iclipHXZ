@@ -30,6 +30,7 @@
 #import "ICSettingViewController.h"
 #import "MQMyMessageMainController.h"
 #import "MQCreatOrgMainController.h"
+#import "WorkPlanMainController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -679,6 +680,15 @@
 {
     //    if (_group.isAdmin) {
     UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
+    ((WorkPlanMainController*)vc).workGroupId = _currentGroup.workGroupId;
+    ((WorkPlanMainController*)vc).workGroupName = _currentGroup.workGroupName;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    return;
+    
     UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
     ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;
     ((ICSettingGroupViewController*)controller).workGroup = _currentGroup;
