@@ -63,6 +63,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL      isInstructions;           //批示权限
 @property (nonatomic, strong) NSString * parentId;
 
+@property (nonatomic, strong) NSNumber * labelId;
 
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr keyString:(NSString *)keyStr;
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;

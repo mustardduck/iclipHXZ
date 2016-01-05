@@ -4058,7 +4058,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WorkPlanMainCell" rowHeight="34" id="rFR-6C-LkM" customClass="WorkPlanMainCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WorkPlanMainSelectCell" rowHeight="34" id="rFR-6C-LkM" customClass="WorkPlanMainSelectCell">
                                         <rect key="frame" x="0.0" y="132" width="320" height="34"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rFR-6C-LkM" id="uqz-1i-cfC">
@@ -4066,7 +4066,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5L1-Do-TtU">
-                                                    <rect key="frame" x="14" y="-2" width="203" height="16"/>
+                                                    <rect key="frame" x="40" y="-2" width="177" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="16" id="1vy-DM-dyn"/>
                                                     </constraints>
@@ -4091,6 +4091,9 @@
                                                         <constraint firstAttribute="height" constant="10" id="Vcw-yp-19o"/>
                                                     </constraints>
                                                 </imageView>
+                                                <imageView userInteractionEnabled="NO" tag="1010" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="btn_kuang" translatesAutoresizingMaskIntoConstraints="NO" id="W7c-hX-DK1">
+                                                    <rect key="frame" x="14" y="0.0" width="16" height="14"/>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.1843137255" green="0.1843137255" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -4100,7 +4103,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="b2C-OG-Xop" secondAttribute="bottom" constant="20" id="Rhi-uN-xbL"/>
                                                 <constraint firstAttribute="bottom" secondItem="5L1-Do-TtU" secondAttribute="bottom" constant="20" id="a9F-hw-YV4"/>
                                                 <constraint firstAttribute="bottom" secondItem="MTT-JX-Pqi" secondAttribute="bottom" constant="22" id="f5c-Oq-tXz"/>
-                                                <constraint firstItem="5L1-Do-TtU" firstAttribute="leading" secondItem="uqz-1i-cfC" secondAttribute="leading" constant="14" id="khg-cZ-rPs"/>
+                                                <constraint firstItem="5L1-Do-TtU" firstAttribute="leading" secondItem="uqz-1i-cfC" secondAttribute="leading" constant="40" id="khg-cZ-rPs"/>
                                                 <constraint firstItem="b2C-OG-Xop" firstAttribute="top" secondItem="uqz-1i-cfC" secondAttribute="topMargin" constant="-10" id="q3Y-7L-aFy"/>
                                                 <constraint firstAttribute="trailing" secondItem="MTT-JX-Pqi" secondAttribute="trailing" constant="14" id="s1S-fy-Woz"/>
                                                 <constraint firstItem="b2C-OG-Xop" firstAttribute="top" secondItem="uqz-1i-cfC" secondAttribute="top" constant="2" id="st6-eE-GC4"/>
@@ -4119,6 +4122,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="icon" destination="MTT-JX-Pqi" id="KZ3-oT-QN4"/>
+                                            <outlet property="selectIcon" destination="W7c-hX-DK1" id="dQ8-NX-nHy"/>
                                             <outlet property="statusLbl" destination="b2C-OG-Xop" id="OMV-WJ-Xjf"/>
                                             <outlet property="titleLbl" destination="5L1-Do-TtU" id="iAY-ym-4ZM"/>
                                         </connections>
@@ -4178,6 +4182,7 @@
         <image name="btn_jiantou_2" width="12" height="12"/>
         <image name="btn_jiezhishijian" width="38" height="30"/>
         <image name="btn_jiezhishijian_hover" width="38" height="30"/>
+        <image name="btn_kuang" width="16" height="14"/>
         <image name="btn_shanchu_2" width="8" height="8"/>
         <image name="btn_shanchu_2_hover" width="8" height="8"/>
         <image name="btn_tixingshijian" width="38" height="30"/>

@@ -8,17 +8,19 @@
 
 #import "WorkPlanAddMissionController.h"
 #import "UICommon.h"
-#import "WorkPlanMainCell.h"
+#import "WorkPlanMainSelectCell.h"
 #import "Group.h"
 #import "Mission.h"
 #import "ICWorkingDetailViewController.h"
 #import "MQPublishMissionMainController.h"
+#import "WorkPlanEditController.h"
 
 @interface WorkPlanAddMissionController ()<UITableViewDataSource, UITableViewDelegate>
 {
     NSArray* _rows;
     
     BOOL _statusLayoutShow;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIView *jiaView;
@@ -34,6 +36,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    if(!_selectedIndexList)
+    {
+        _selectedIndexList = [[NSMutableArray alloc] init];
+    }
+    
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
     [leftButton addTarget:self action:@selector(btnBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1, 10, 18)];
@@ -48,7 +55,7 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
 
-    _rows = [Group findUserMainLabelTask:[LoginUser loginUserID] workGroupId:_workGroupId labelId:_labelId];
+    _rows = [Group findUserMainLabelTask:[LoginUser loginUserID] workGroupId:_workGroupId labelId:_labelIdStr];
     
     [_jiaView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
 }
@@ -65,7 +72,44 @@
 
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
-    
+    if([self.MQPlanEditVC respondsToSelector:@selector(setRows:)])
+    {
+        NSMutableArray * arr = [NSMutableArray array];
+        
+        [arr addObjectsFromArray:_selectedRows];
+        
+        for(int i = 0; i < arr.count; i ++)
+        {
+            NSDictionary * dic = arr[i];
+            
+            NSMutableArray * keyArr = [NSMutableArray array];
+
+            NSNumber * num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+
+            for(Mission * mi in _selectedIndexList)
+            {
+                if(mi.labelId == num)
+                {
+                    [keyArr addObject:mi];
+                }
+            }
+            
+            NSMutableDictionary * ddic = [NSMutableDictionary dictionary];
+            
+            [ddic setObject:keyArr forKey:num];
+            
+            [arr replaceObjectAtIndex:i withObject:ddic];
+            
+        }
+        
+        if(arr.count)
+        {
+            [self.MQPlanEditVC setValue:arr forKey:@"rows"];
+        }
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+
 }
 
 - (IBAction)btnJiaButtonClicked:(id)sender
@@ -117,12 +161,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return _rows.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger count = [_rows count];
+    NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+
+    NSArray * arr = [_rows[section] objectForKey:numKey];
+    
+    NSInteger count = [arr count];
     
     if(count == 0)
     {
@@ -134,7 +182,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 48;
+    return 34;
 }
 
 
@@ -144,23 +192,21 @@
     myView.backgroundColor = [UIColor backgroundColor];
     
     UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 28)];
-    titleView.backgroundColor = [UIColor grayMarkColor];
+    titleView.backgroundColor = [UIColor clearColor];
     [myView addSubview:titleView];
     
-    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 0.5)];
-    line.backgroundColor = [UIColor grayLineColor];
-    [titleView addSubview:line];
+    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 0, 8, 11)];
+    icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
+    [titleView addSubview:icon];
     
-    line = [[UIView alloc] initWithFrame:CGRectMake(0, H(titleView) - 0.5, SCREENWIDTH, 0.5)];
-    line.backgroundColor = [UIColor grayLineColor];
-    [titleView addSubview:line];
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, 200, 28)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -4, 200, 18)];
     titleLabel.textColor=[UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = Font(14);
-        
-    titleLabel.text= _headerTitle;
+    titleLabel.font = Font(15);
+    
+    NSDictionary * titleDic = [_rows[section] objectForKey:@"label"];
+
+    titleLabel.text = [titleDic valueForKey:@"labelName"];
     [titleView addSubview:titleLabel];
     
     return myView;
@@ -175,15 +221,17 @@
 {
     if(!_statusLayoutShow)
     {
-        static NSString *cellId = @"WorkPlanMainCell";
-        WorkPlanMainCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        static NSString *cellId = @"WorkPlanMainSelectCell";
+        WorkPlanMainSelectCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
         if (cell == nil){
-            cell = [[WorkPlanMainCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+            cell = [[WorkPlanMainSelectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        Mission * mis = _rows[indexPath.row];
+        NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+        
+        Mission * mis = [_rows[indexPath.section] objectForKey:numKey][indexPath.row];
         
         cell.titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
         
@@ -207,6 +255,17 @@
         
         cell.statusLbl.text = statusStr;
         
+        if ([self hasExitsInSelectArray:indexPath])
+        {
+            cell.selectIcon.tag = 1011;
+            cell.selectIcon.image = [UIImage imageNamed:@"btn_gou"];
+        }
+        else
+        {
+            cell.selectIcon.tag = 1010;
+            cell.selectIcon.image = [UIImage imageNamed:@"btn_kuang"];
+        }
+        
         return cell;
     }
     else
@@ -224,9 +283,11 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        Mission * mis = _rows[indexPath.row];
+        NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
         
-        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38, 16)];
+        Mission * mis = [_rows[indexPath.section] objectForKey:numKey][indexPath.row];
+        
+        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, SCREENWIDTH - 40 - 38, 16)];
         titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
         titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
         
@@ -243,6 +304,23 @@
         UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10, 4, 10, 10)];
         icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
         [cell.contentView addSubview:icon];
+        
+        UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 16, 14)];
+        choseImg.image = [UIImage imageNamed:@"btn_kuang"];
+        
+        if ([self hasExitsInSelectArray:indexPath])
+        {
+            choseImg.image = [UIImage imageNamed:@"btn_gou"];
+            choseImg.tag = 1011;
+        }
+        else
+        {
+            choseImg.image = [UIImage imageNamed:@"btn_kuang"];
+            choseImg.tag = 1010;
+        }
+        
+        [cell.contentView addSubview:choseImg];
+
         
         //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
         NSString * statusStr = @"未开始";
@@ -261,7 +339,7 @@
             
         }
         
-        UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+        UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30 + 27, titleLbl.bottom + 7, 54, 24)];
         statusLbl.backgroundColor = [UIColor grayMarkColor];
         [statusLbl setRoundCorner:1.7];
         statusLbl.textColor = [UIColor grayTitleColor];
@@ -321,22 +399,96 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray * mArr = _rows[indexPath.row];
-    
-    if(mArr.count)
-    {
-//        Mission *ms = mArr[indexPath.row];
-//
-//        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-//        ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
-//        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
-//        
-//        [self.navigationController pushViewController:vc animated:YES];
-        
+    UITableViewCell* cell = [_mainTableView cellForRowAtIndexPath:indexPath];
+    for (UIControl* control in cell.contentView.subviews) {
+        if (control.tag == 1010) {
+            UIImageView* img = (UIImageView*)control;
+            img.tag = 1011;
+            img.image = [UIImage imageNamed:@"btn_gou"];
+            [self addIndexPathToSelectArray:indexPath];
+            break;
+        }
+        else if (control.tag == 1011)
+        {
+            UIImageView* img = (UIImageView*)control;
+            img.tag = 1010;
+            img.image = [UIImage imageNamed:@"btn_kuang"];
+            [self removeIndexPathFromSelectArray:indexPath];
+            break;
+        }
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)addIndexPathToSelectArray:(NSIndexPath*)indexPath
+{
+    NSInteger row = indexPath.row;
+    
+    BOOL isEx = NO;
+    
+    NSString * labId = [[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"];
+    
+    NSNumber * numKey = [NSNumber numberWithInteger:[labId integerValue]];
+    
+    Mission* mi = [_rows[indexPath.section] objectForKey:numKey][row];
+    
+    mi.labelId = numKey;
+    
+    if (_selectedIndexList.count > 0) {
+        for (Mission* ip in _selectedIndexList) {
+            if (ip.taskId == mi.taskId) {
+                isEx = YES;
+                break;
+            }
+        }
+        if (!isEx) {
+            [_selectedIndexList addObject:mi];
+        }
+    }
+    else{
+        [_selectedIndexList addObject:mi];
+    }
+}
+
+- (void)removeIndexPathFromSelectArray:(NSIndexPath*)indexPath
+{
+    NSInteger row = indexPath.row;
+    
+    NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+    
+    Mission* mi = [_rows[indexPath.section] objectForKey:numKey][row];
+    
+    if (_selectedIndexList.count > 0) {
+        
+        NSMutableArray * selArr = [[NSMutableArray alloc]initWithArray:_selectedIndexList];
+        
+        for (Mission* ip in selArr) {
+            if (ip.taskId == mi.taskId) {
+                [_selectedIndexList removeObject:ip];
+            }
+        }
+    }
+}
+
+- (BOOL)hasExitsInSelectArray:(NSIndexPath*)indexPath
+{
+    NSInteger row = indexPath.row;
+    NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+    
+    Mission* mi = [_rows[indexPath.section] objectForKey:numKey][row];
+    BOOL isEx = NO;
+    if (_selectedIndexList.count > 0) {
+        for (Mission* ip in _selectedIndexList) {
+            if (ip.taskId == mi.taskId) {
+                isEx = YES;
+                break;
+            }
+            
+        }
+    }
+    
+    return isEx;
 }
 
 /*

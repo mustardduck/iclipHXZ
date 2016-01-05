@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString * workGroupId;
 @property (nonatomic, strong) NSString * workGroupName;
+@property (nonatomic, strong) NSMutableArray * rows;
 
 @end

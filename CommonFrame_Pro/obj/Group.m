@@ -520,11 +520,11 @@
     return array;
 }
 
-+ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelId
++ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelIdStr
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@&labelId=%@",FindUserMainLabelTask_URL, userId, workGroupId, labelId]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@&labelIdStr=%@",FindUserMainLabelTask_URL, userId, workGroupId, labelIdStr]];
     
     if (responseString == nil) {
         return array;
@@ -546,17 +546,38 @@
                     for (id data in dArr) {
                         if ([data isKindOfClass:[NSDictionary class]]) {
                             
-                            NSDictionary* di = (NSDictionary*)data;
+                            NSDictionary * labDic = (NSDictionary *)data;
                             
-                            Mission* mi = [Mission new];
-                            mi.taskId = [di valueForKey:@"taskId"];
-                            mi.title = [di valueForKey:@"title"];
-                            mi.status = [[di valueForKey:@"status"] integerValue];
-                            mi.finishTime = [di valueForKey:@"finishTimeStr"];
-                            mi.userName = [di valueForKey:@"createName"];
-                            mi.createUserId = [di valueForKey:@"createUserId"];
-
-                            [array addObject:mi];
+                            NSMutableArray * labelArr = [NSMutableArray array];
+                            
+                            NSArray * listArr = [labDic valueForKey:@"list"];
+                            NSDictionary * labelDic = [labDic valueForKey:@"label"];
+                            
+                            for(id labData in listArr)
+                            {
+                                if([labData isKindOfClass:[NSDictionary class]])
+                                {
+                                    NSDictionary* di = (NSDictionary*)labData;
+                                    
+                                    Mission* mi = [Mission new];
+                                    mi.taskId = [di valueForKey:@"taskId"];
+                                    mi.title = [di valueForKey:@"title"];
+                                    mi.status = [[di valueForKey:@"status"] integerValue];
+                                    mi.finishTime = [di valueForKey:@"finishTimeStr"];
+                                    mi.userName = [di valueForKey:@"createName"];
+                                    mi.createUserId = [di valueForKey:@"createUserId"];
+                                    
+                                    [labelArr addObject:mi];
+                                }
+                            }
+                            
+                            NSMutableDictionary * lddic = [NSMutableDictionary dictionary];
+                            [lddic setObject:labelDic forKey:@"label"];
+                            
+                            NSNumber * num = [NSNumber numberWithInteger:[[labelDic valueForKey:@"labelId"] integerValue]];
+                            [lddic setObject:labelArr forKey:num];
+                            
+                            [array addObject:lddic];
                         }
                     }
                 }
