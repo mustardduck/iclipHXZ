@@ -680,14 +680,14 @@
 {
     //    if (_group.isAdmin) {
     UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
-    ((WorkPlanMainController*)vc).workGroupId = _currentGroup.workGroupId;
-    ((WorkPlanMainController*)vc).workGroupName = _currentGroup.workGroupName;
-    
-    [self.navigationController pushViewController:vc animated:YES];
-    
-    return;
+//
+//    UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
+//    ((WorkPlanMainController*)vc).workGroupId = _currentGroup.workGroupId;
+//    ((WorkPlanMainController*)vc).workGroupName = _currentGroup.workGroupName;
+//    
+//    [self.navigationController pushViewController:vc animated:YES];
+//    
+//    return;
     
     UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
     ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;

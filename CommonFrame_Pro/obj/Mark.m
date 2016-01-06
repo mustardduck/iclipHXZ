@@ -17,7 +17,105 @@
 #define UPDATE_URL          @"/workgroup/updateWgLabel.hz"
 #define UPDATE_MEM_URL      @"/workgroup/updateWgPeopleLabel.hz"
 
+#define UPDATE_LABEL_MAIN_WORK_URL @"/workgroup/updateLabelMainWork.hz"
+
 @implementation Mark
+
++ (BOOL)updateLabelMainWork:(NSString *)labelId isMainLabel:(BOOL) isMainLabel
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    NSString * status = @"1";
+    if(!isMainLabel)
+    {
+        status = @"0";
+    }
+    [dic setObject:status forKey:@"type"];
+    [dic setObject:labelId forKey:@"labelId"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:UPDATE_LABEL_MAIN_WORK_URL postData:dic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+    
+    return isOk;
+    
+}
+
++ (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid andUrl:(NSString *)url selectArr:(NSMutableArray **)selectArr
+{
+    NSMutableArray* array = [NSMutableArray array];
+    NSMutableArray * selArr = [NSMutableArray array];
+
+    NSData* responseString = nil;
+    
+    responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?workGroupId=%@&levelStr=1,2&statusStr=1",url,workGroupId]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSArray class]])
+                {
+                    
+                    NSArray* dArr = (NSArray*)dataDic;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            
+                            NSDictionary* di = (NSDictionary*)data;
+                            
+                            Mark* cm = [Mark new];
+                            
+                            cm.labelId = [di valueForKey:@"labelId"];
+                            cm.labelName = [di valueForKey:@"labelName"];
+                            cm.isSystem = [[di valueForKey:@"level"] intValue] == 1?YES:NO;
+                            cm.mainLabel = [[di valueForKey:@"type"] intValue] == 1 ? YES: NO;
+                            if(cm.mainLabel)
+                            {
+                                [selArr addObject:cm];
+                            }
+                            
+                            [array addObject:cm];
+                            
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    *selectArr = selArr;
+    
+    return array;
+}
 
 + (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid andUrl:(NSString *)url
 {

@@ -107,6 +107,7 @@
 		4BC66A241B745EFD00353789 /* icon_du@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A231B745EFD00353789 /* icon_du@2x.png */; };
 		4BC66A3F1B748E4900353789 /* btn_fujianIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A3E1B748E4900353789 /* btn_fujianIcon@2x.png */; };
 		4BC94B9E1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94B9D1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m */; };
+		4BC94BA11C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BA01C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m */; };
 		4BE1F57A1BD641D7007CF6C4 /* AddPicCell88.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F5781BD641D7007CF6C4 /* AddPicCell88.m */; };
 		4BE1F57B1BD641D7007CF6C4 /* AddPicCell88.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE1F5791BD641D7007CF6C4 /* AddPicCell88.xib */; };
 		4BE1F57F1BD642B1007CF6C4 /* AddPicCell80.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F57D1BD642B1007CF6C4 /* AddPicCell80.m */; };
@@ -380,6 +381,8 @@
 		4BC66A3E1B748E4900353789 /* btn_fujianIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_fujianIcon@2x.png"; sourceTree = "<group>"; };
 		4BC94B9C1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanMainSelectCell.h; sourceTree = "<group>"; };
 		4BC94B9D1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanMainSelectCell.m; sourceTree = "<group>"; };
+		4BC94B9F1C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGroupMainLabelSettingController.h; sourceTree = "<group>"; };
+		4BC94BA01C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGroupMainLabelSettingController.m; sourceTree = "<group>"; };
 		4BE1F5771BD641D7007CF6C4 /* AddPicCell88.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPicCell88.h; sourceTree = "<group>"; };
 		4BE1F5781BD641D7007CF6C4 /* AddPicCell88.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPicCell88.m; sourceTree = "<group>"; };
 		4BE1F5791BD641D7007CF6C4 /* AddPicCell88.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPicCell88.xib; sourceTree = "<group>"; };
@@ -972,6 +975,8 @@
 				784B061E1B43C5BD0033C0EA /* ICSettingViewController.m */,
 				4BC03FD01BABA59E004C6F3B /* ICGroupMessageSettingController.h */,
 				4BC03FD11BABA59E004C6F3B /* ICGroupMessageSettingController.m */,
+				4BC94B9F1C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.h */,
+				4BC94BA01C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1439,6 +1444,7 @@
 				4B17A1281C27EB110032410C /* MQMyMessageListController.m in Sources */,
 				787EF9CF1B1D7B610030C560 /* ICPersonalInfoViewController.m in Sources */,
 				789182671B0EDBC2004C6AF6 /* main.m in Sources */,
+				4BC94BA11C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m in Sources */,
 				783D2C401B5CFADE007B197E /* NSStringEx.m in Sources */,
 				4BE5CC641C070BD4008964BA /* MQSearchCollReusableView.m in Sources */,
 				78354CD01B40E03000E2F00A /* ICMemberAccessControlViewContoller.m in Sources */,

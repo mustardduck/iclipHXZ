@@ -21,6 +21,7 @@
 @property (nonatomic,assign) BOOL       isSystem;
 @property (nonatomic,assign) NSInteger section;
 @property (nonatomic,assign) NSInteger row;
+@property (nonatomic, assign) BOOL mainLabel;
 
 + (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid andUrl:(NSString *)url;
 + (BOOL)createNewMark:(NSString*)labelName workGroupID:(NSString*)workGroupId;
@@ -28,5 +29,9 @@
 + (BOOL)update:(NSString*)labelID labelName:(NSString*)name;
 + (BOOL)updateMarkMember:(NSString*)labelID workGroupID:(NSString*)workGroupId memberIdArray:(NSArray*)memberIDArray;
 + (BOOL)addWgLabelList:(NSArray*)labelNameList workGroupID:(NSString*)workGroupId;
+
++ (NSArray*)getMarkListByWorkGroupID:(NSString*)workGroupId loginUserID:(NSString*)userid andUrl:(NSString *)url selectArr:(NSMutableArray **)selectArr;
+
++ (BOOL)updateLabelMainWork:(NSString *)labelId isMainLabel:(BOOL) isMainLabel;
 
 @end

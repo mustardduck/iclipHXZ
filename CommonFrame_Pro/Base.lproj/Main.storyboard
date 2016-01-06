@@ -1025,6 +1025,46 @@
             </objects>
             <point key="canvasLocation" x="3175" y="1913"/>
         </scene>
+        <!--Group Main Label Setting Controller-->
+        <scene sceneID="u2N-pb-6hS">
+            <objects>
+                <tableViewController storyboardIdentifier="ICGroupMainLabelSettingController" id="8ym-3g-49c" customClass="ICGroupMainLabelSettingController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="22" sectionFooterHeight="22" id="obi-aJ-Mje">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupMainLabelSettingCell" id="9X0-I4-VHa">
+                                <rect key="frame" x="0.0" y="22" width="320" height="54"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9X0-I4-VHa" id="Q40-Ib-O09">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="8ym-3g-49c" id="w4a-2S-vio"/>
+                            <outlet property="delegate" destination="8ym-3g-49c" id="E3S-tv-7a7"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="_tableView" destination="obi-aJ-Mje" id="emv-kf-0Ou"/>
+                    </connections>
+                </tableViewController>
+                <navigationItem title="标签列表" id="aqg-D5-02I">
+                    <barButtonItem key="leftBarButtonItem" title="返回" id="YdM-5K-coU">
+                        <connections>
+                            <action selector="backButtonClicked:" destination="8ym-3g-49c" id="cN5-75-L0U"/>
+                        </connections>
+                    </barButtonItem>
+                </navigationItem>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pxb-iI-DdH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3175" y="1913"/>
+        </scene>
         <!--群组详情-->
         <scene sceneID="iLF-9N-QlU">
             <objects>
@@ -1143,6 +1183,15 @@
                                         <rect key="frame" x="0.0" y="392" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c0v-FH-vUG" id="XNa-6M-Aea">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="49"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.17254901959999999" green="0.17254901959999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingGroupTableViewCellId7" rowHeight="50" id="EmT-hV-uUZ">
+                                        <rect key="frame" x="0.0" y="442" width="320" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EmT-hV-uUZ" id="kPA-hd-M3C">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>

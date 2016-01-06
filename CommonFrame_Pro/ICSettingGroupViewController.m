@@ -10,6 +10,7 @@
 #import "UIColor+HexString.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 //#import <AVOSCloud/AVOSCloud.h>
+#import "ICGroupMainLabelSettingController.h"
 
 @interface ICSettingGroupViewController()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -217,6 +218,10 @@
     if (section == 0) {
         return 1;
     }
+    else if (section == 2)
+    {
+        return 4;
+    }
     return 3;
 }
 
@@ -287,6 +292,10 @@
     }
     else if (index == 2 && section == 2) {
         cellId = @"SettingGroupTableViewCellId6";
+        cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    }
+    else if (index == 3 && section == 2) {
+        cellId = @"SettingGroupTableViewCellId7";
         cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     }
     
@@ -419,7 +428,15 @@
             
             [cell.contentView addSubview:text];
         }
-        
+        else if (index == 3 && section == 2) {
+            UILabel* text = [[UILabel alloc] initWithFrame:CGRectMake(12, 13, 120, 13)];
+            text.text = @"设置主要工作";
+            text.textColor = [UIColor whiteColor];
+            text.font = font;
+            text.backgroundColor = [UIColor clearColor];
+            
+            [cell.contentView addSubview:text];
+        }
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setBackgroundColor:[UIColor colorWithRed:0.19 green:0.19 blue:0.26 alpha:1.0]];
@@ -524,11 +541,25 @@
  
     }
     else if (index == 2 && section == 2) {
-        // 7
+        // 7 标签可见管理
         if ([self hasAuthory:@"7"]) {
             controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICMarkListViewController"];
             ((ICMarkListViewController*)controller).workGroupId = _workGroupId;
             ((ICMarkListViewController*)controller).isSetting = YES;
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+        else
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"权限不足，因为您不是该工作组创建者！" delegate:self
+                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }
+    else if (index == 3 && section == 2) {
+        // 9 设置主要工作
+        if ([self hasAuthory:@"9"]) {
+            controller  = [mainStory instantiateViewControllerWithIdentifier:@"ICGroupMainLabelSettingController"];
+            ((ICGroupMainLabelSettingController*)controller).workGroupId = _workGroupId;
             [self.navigationController pushViewController:controller animated:YES];
         }
         else
