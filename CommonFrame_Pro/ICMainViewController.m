@@ -574,8 +574,8 @@
     [btn2 setTitle:@"发布" forState:UIControlStateNormal];
 //    [btn2 setImage:[UIImage imageNamed:@"btn_fabu"] forState:UIControlStateNormal];
     
-    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_wenti"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_qita"]];
-    NSArray* topMenuNameList = @[@"任务",@"异常",@"申请", @"议题"];
+    NSArray* topMenuImageList = @[[UIImage imageNamed:@"btn_renwu"], [UIImage imageNamed:@"btn_wenti"], [UIImage imageNamed:@"btn_jianyi"], [UIImage imageNamed:@"btn_qita"], [UIImage imageNamed:@"btn_jihua"]];
+    NSArray* topMenuNameList = @[@"任务",@"异常",@"申请", @"议题", @"计划"];
     
     _topMenuController = [[ICSideTopMenuController alloc] initWithMenuNameList:topMenuNameList menuImageList:topMenuImageList actionControl:btn2 parentView:_topMenuView];
     _topMenuController.delegate = self;
@@ -1122,6 +1122,15 @@
 //        ((ICGroupListViewController*)vc).isShared = 3;
 //        [self.navigationController pushViewController:vc animated:YES];
         
+    }
+    else if (index == 4)//计划
+    {
+        UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
+        ((WorkPlanMainController*)vc).workGroupId = _currentGroup.workGroupId;
+        ((WorkPlanMainController*)vc).workGroupName = _currentGroup.workGroupName;
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

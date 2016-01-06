@@ -11,6 +11,8 @@
 @interface ICSideTopMenuController()
 {
     UIView* _mainView;
+    
+    CGFloat _viewHeight;
 
 }
 
@@ -31,15 +33,22 @@
     
     int index = 0;
     NSInteger columeCount = nameList.count;
-    CGFloat menuWidth = (width - 20 - 30) / 4;
+    NSInteger lineCount = 4;
+    CGFloat menuWidth = (width - 20 - 30) / lineCount;
     CGFloat menuHeight = 80;
+    
+    NSInteger row = 1;
+    row = (columeCount % lineCount) ? columeCount / lineCount + 1: columeCount / lineCount;
     
     for (int j = 0; j < columeCount; j++)
     {
         index = j;
         
+        NSInteger xIndex = j % lineCount;
+        NSInteger yIndex = j / lineCount;
+
         UIView* menuView = [[UIView alloc]
-                            initWithFrame:CGRectMake((menuWidth * j) + (j+1)*10, 5, menuWidth, menuHeight)];
+                            initWithFrame:CGRectMake((menuWidth * xIndex) + (xIndex + 1) *10, 5 + yIndex * menuHeight, menuWidth, menuHeight)];
         
         UIImageView* image = [[UIImageView alloc] initWithFrame:CGRectMake((menuWidth - 24) / 2, 10, 24, 24)];
         [image setImage:[imageList objectAtIndex:index]];
@@ -70,7 +79,9 @@
         
     }
     
-    UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 80, width, 18)];
+    _viewHeight = menuHeight * row + 20;
+    
+    UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, menuHeight * row, width, 18)];
     mbutton.backgroundColor = [UIColor clearColor];
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [mbutton addTarget:self action:@selector(showTopMenu:) forControlEvents:UIControlEventTouchUpInside];
@@ -124,7 +135,8 @@
 - (void)performDismissAnimation
 {
     [UIView animateWithDuration:0.4 animations:^{
-        _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -100);
+
+        _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, - _viewHeight);
     }];
 }
 
