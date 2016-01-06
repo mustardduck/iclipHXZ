@@ -160,6 +160,57 @@
     return array;
 }
 
++ (NSArray*)findMeWgListByUserID:(NSString*)userID
+{
+    NSMutableArray* array = [NSMutableArray array];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@",WORKLIST_URL,userID]];
+    
+    if (responseString == nil) {
+        return array;
+    }
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                
+                id dataDic = [dic valueForKey:@"data"];
+                
+                if ([dataDic isKindOfClass:[NSArray class]])
+                {
+                    NSArray* dArr = (NSArray*)dataDic;
+                    
+                    for (id data in dArr) {
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            
+                            NSDictionary* di = (NSDictionary*)data;
+                            
+                            Group* cm = [Group new];
+                            
+                            cm.messageCount = [NSString stringWithFormat:@"%d",[[di valueForKey:@"num"] intValue]];
+                            cm.workGroupImg = [di valueForKey:@"workGroupImg"];
+                            cm.workGroupId = [di valueForKey:@"workGroupId"];
+                            cm.workGroupName = [di valueForKey:@"workGroupName"];
+                            cm.workGroupMain = [di valueForKey:@"workGroupMain"];
+                            cm.isAdmin = [[di valueForKey:@"isAdmin"] boolValue];
+
+                            [array addObject:cm];
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+        
+    }
+    
+    return array;
+}
+
 + (NSArray*)getWorkGroupListByUserID:(NSString*)userID selectArr:(NSMutableArray **)selectArr
 {
     NSMutableArray* array = [NSMutableArray array];

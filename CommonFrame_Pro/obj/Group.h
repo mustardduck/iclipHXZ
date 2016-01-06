@@ -29,6 +29,7 @@
 + (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str allNum:(NSString **)allNum;
 
 + (NSArray*)getWorkGroupListByUserID:(NSString*)userID selectArr:(NSMutableArray **)selectArr;
++ (NSArray*)findMeWgListByUserID:(NSString*)userID;//查找我加入的群组
 + (BOOL)inviteNewUser:(NSString*)loginUserId workGroupId:(NSString*)workGroupId source:(NSInteger)source sourceValue:(NSString*)sourceStr;
 + (BOOL)inviteNewUserList:(NSString*)loginUserId workGroupId:(NSString*)workGroupId inviteArr:(NSArray*)inviteArr;
 
@@ -43,5 +44,6 @@
 + (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelIdStr;//找到用户的主要标签下的任务
 
 + (NSArray *) findUserTaskByTime:(NSString *)userId workGroupId:(NSString *) workGroupId;//查找工作组工作管理
+
 
 @end

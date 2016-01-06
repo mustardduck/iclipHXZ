@@ -3994,6 +3994,26 @@
                                     <outlet property="delegate" destination="UAL-iB-SQb" id="jG6-jX-kPh"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsS-5M-faQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="204" id="XUD-zl-7Qj"/>
+                                    <constraint firstAttribute="width" constant="187" id="yG5-FL-Pmc"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="XUD-zl-7Qj"/>
+                                        <exclude reference="yG5-FL-Pmc"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="XUD-zl-7Qj"/>
+                                        <include reference="yG5-FL-Pmc"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.1843137255" green="0.1843137255" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -4002,6 +4022,16 @@
                             <constraint firstItem="F8H-Um-BzE" firstAttribute="centerY" secondItem="jk2-i5-flH" secondAttribute="centerY" id="nz8-6Q-7ne"/>
                             <constraint firstItem="F8H-Um-BzE" firstAttribute="centerX" secondItem="jk2-i5-flH" secondAttribute="centerX" id="tJ7-vI-pDs"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="YsS-5M-faQ"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="YsS-5M-faQ"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="新工作计划" id="Ydh-zh-K1m">
                         <barButtonItem key="leftBarButtonItem" title="返回" id="4Zq-aD-Zzb">
@@ -4019,6 +4049,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="_leftMenuView" destination="YsS-5M-faQ" id="ncC-0O-PZY"/>
                         <outlet property="groupBtn" destination="CGv-wC-mC7" id="hTq-qC-R9q"/>
                         <outlet property="layoutBtn" destination="Ne9-wq-pbn" id="mXz-0A-M5w"/>
                         <outlet property="mainTableView" destination="F8H-Um-BzE" id="ByF-IW-Xku"/>

@@ -12,13 +12,18 @@
 #import "WorkPlanMainCell.h"
 #import "Mission.h"
 #import "WorkPlanAddMissionController.h"
+#import "MQworkGroupSelectVC.h"
 
 
-@interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate>
+@interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate>
 {
     NSArray * _tags;
     
     BOOL _statusLayoutShow;
+    
+    MQworkGroupSelectVC * _MQworkGroupSelectVC;
+    IBOutlet UIView*      _leftMenuView;
+    IBOutlet UIView*      _rightpMenuView;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *workGroupNameLbl;
@@ -71,8 +76,37 @@
         [_rows addObject:dic];
         
     }
+    [self initGroupSelectView];
+}
+
+- (void) initGroupSelectView
+{
+    NSArray * groupList = [Group findMeWgListByUserID:[LoginUser loginUserID]];
+        
+    _MQworkGroupSelectVC = [[MQworkGroupSelectVC alloc] initWithMenuNameList:groupList actionControl:_groupBtn parentView:_leftMenuView];
+    _MQworkGroupSelectVC.delegate = self;
     
 }
+
+#pragma -
+#pragma Side Menu delegate
+
+- (void)partfarmButtonClicked:(NSString*)val
+{
+    NSInteger index = [val integerValue];
+    if(index == 1)
+    {
+        if (_MQworkGroupSelectVC.isOpen) {
+            [_MQworkGroupSelectVC showTopMenu:@"1"];
+        }
+        else
+        {
+            _MQworkGroupSelectVC.isOpen = NO;
+            [_MQworkGroupSelectVC showTopMenu:@"1"];
+        }
+    }
+}
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
