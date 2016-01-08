@@ -13,26 +13,33 @@
 #import "Mission.h"
 #import "WorkPlanAddMissionController.h"
 #import "MQworkGroupSelectVC.h"
+#import "MQworkTimeSelectVC.h"
+#import "NSDate+DateTools.h"
+#import "WorkPlanTime.h"
 
-
-@interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate>
+@interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate, MQworkTimeSelectDelegate>
 {
     NSArray * _tags;
     
     BOOL _statusLayoutShow;
     
     MQworkGroupSelectVC * _MQworkGroupSelectVC;
+    MQworkTimeSelectVC * _MQworkTimeSelectVC;
+    
     IBOutlet UIView*      _leftMenuView;
     IBOutlet UIView*      _rightpMenuView;
+    
+    UILabel  *  _workGroupNameLbl;
+    UIButton *  _groupBtn;
+    
+    UILabel  *  _timeLbl;
+    UIButton *  _timeBtn;
+    UIButton *  _layoutBtn;
 }
 
-@property (weak, nonatomic) IBOutlet UILabel *workGroupNameLbl;
-@property (weak, nonatomic) IBOutlet UIButton *groupBtn;
-@property (weak, nonatomic) IBOutlet UIButton *timeBtn;
-@property (weak, nonatomic) IBOutlet UILabel *timeLbl;
-@property (weak, nonatomic) IBOutlet UIButton *layoutBtn;
-
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewWidthCons;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightViewWidthCons;
 
 @end
 
@@ -76,16 +83,151 @@
         [_rows addObject:dic];
         
     }
+    
+    UIView * tView = [self layoutTopView];
+
     [self initGroupSelectView];
+    
+    [self initTimeSelectView];
+    
+    [self setTopView:tView];
+}
+
+- (UIView *)layoutTopView
+{
+    UIView * topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 44)];
+    topView.backgroundColor = [UIColor clearColor];
+    
+    _groupBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH / 2, 44)];
+    _groupBtn.backgroundColor = [UIColor backgroundColor];
+    [_groupBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_groupBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+    [_groupBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+    
+    [topView addSubview:_groupBtn];
+    
+    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2, 7, 1, 30)];
+    line.backgroundColor = [UIColor grayLineColor];
+    [topView addSubview:line];
+    
+    UILabel * userNameLbl = [[UILabel alloc] initWithFrame:CGRectMake( X(line) - 28 - 46, 0, 46, 44)];
+    userNameLbl.backgroundColor = [UIColor clearColor];
+    userNameLbl.font = Font(15);
+    userNameLbl.textColor = [UIColor whiteColor];
+    userNameLbl.textAlignment = NSTextAlignmentCenter;
+    userNameLbl.text = [LoginUser loginUserName];
+    [topView addSubview:userNameLbl];
+    
+    _workGroupNameLbl = [[UILabel alloc] initWithFrame:CGRectMake(7, 0, X(userNameLbl) - 9 * 2, 44)];
+    _workGroupNameLbl.backgroundColor = [UIColor clearColor];
+    _workGroupNameLbl.font = Font(15);
+    _workGroupNameLbl.textColor = [UIColor whiteColor];
+    _workGroupNameLbl.text = _workGroupName;
+    _workGroupNameLbl.textAlignment = NSTextAlignmentCenter;
+    [topView addSubview:_workGroupNameLbl];
+    
+    _timeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2 + 1, 0, SCREENWIDTH / 2 - 1, 44)];
+    _timeBtn.backgroundColor = [UIColor backgroundColor];
+    [_timeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_timeBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+    [_timeBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+    [topView addSubview:_timeBtn];
+
+    _timeLbl = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2 + 1, 0, SCREENWIDTH / 2 - 1, 44)];
+    _timeLbl.backgroundColor = [UIColor clearColor];
+    _timeLbl.font = Font(15);
+    _timeLbl.textColor = [UIColor whiteColor];
+    _timeLbl.textAlignment = NSTextAlignmentCenter;
+    [topView addSubview:_timeLbl];
+    
+    _layoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 76 - 14, 44, 76, 46)];
+    _layoutBtn.backgroundColor = [UIColor clearColor];
+    [_layoutBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+    [_layoutBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    _layoutBtn.titleLabel.font = Font(15);
+    [_layoutBtn setTitle:@"状态视图" forState:UIControlStateNormal];
+    [_layoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:_layoutBtn];
+    
+    line = [[UIView alloc] initWithFrame:CGRectMake(0, 43.5, SCREENWIDTH, 0.5)];
+    line.backgroundColor = [UIColor grayLineColor];
+    [topView addSubview:line];
+    
+    return topView;
+}
+
+- (void) setTopView:(UIView *)topView
+{
+    [self.view addSubview:topView];
 }
 
 - (void) initGroupSelectView
 {
     NSArray * groupList = [Group findMeWgListByUserID:[LoginUser loginUserID]];
-        
-    _MQworkGroupSelectVC = [[MQworkGroupSelectVC alloc] initWithMenuNameList:groupList actionControl:_groupBtn parentView:_leftMenuView];
+    
+    _leftViewWidthCons.constant = SCREENWIDTH / 2;
+    
+    _MQworkGroupSelectVC = [[MQworkGroupSelectVC alloc] initWithMenuNameList:groupList actionControl:_groupBtn parentView:_leftMenuView];//_groupBtn
     _MQworkGroupSelectVC.delegate = self;
     
+    
+}
+
+- (void) initTimeSelectView
+{
+    NSArray * timeList = [self getTimeArr];
+    
+    _rightViewWidthCons.constant = SCREENWIDTH / 2;
+
+    _MQworkTimeSelectVC = [[MQworkTimeSelectVC alloc] initWithMenuNameList:timeList actionControl:_timeBtn parentView:_rightpMenuView];
+    _MQworkTimeSelectVC.delegate = self;
+
+}
+
+- (NSMutableArray * ) getTimeArr
+{
+    NSMutableArray * timeArr = [NSMutableArray array];
+    
+    NSDate * nowDate = [NSDate date];
+    
+    NSLog(@"星期%ld", nowDate.weekday);//1：周天 2：周一 3：周二 4：周三 5：周四 6：周五 7：周六
+
+    NSInteger weekday = [UICommon weekday:nowDate];
+    
+    NSInteger weekdayOrdinal = 1;//第一个星期几
+    
+    NSDate *newDate = nowDate;
+    
+    if(weekday != 1)//今天不是周一
+    {
+       newDate = [nowDate dateBySubtractingDays:weekday - 1];//本周的周一
+    }
+    
+    NSDate * fiveYearsLaterDate = [newDate dateByAddingYears:5];
+    
+    while ([newDate isEarlierThanOrEqualTo:fiveYearsLaterDate]) {
+        
+        weekdayOrdinal = newDate.weekdayOrdinal;//第几周的周一
+        
+        if(newDate.day <= newDate.daysInMonth)//小于或等于最后一天
+        {
+            WorkPlanTime *wpt = [WorkPlanTime new];
+            
+            wpt.year = newDate.year;
+            wpt.month = newDate.month;
+            wpt.week = weekdayOrdinal;
+            
+            [timeArr addObject:wpt];
+            
+            newDate = [newDate dateByAddingWeeks:1];//下一周的周一
+            
+        }
+    }
+    
+    return timeArr;
 }
 
 #pragma -
@@ -103,6 +245,17 @@
         {
             _MQworkGroupSelectVC.isOpen = NO;
             [_MQworkGroupSelectVC showTopMenu:@"1"];
+        }
+    }
+    if(index == 2)
+    {
+        if (_MQworkTimeSelectVC.isOpen) {
+            [_MQworkTimeSelectVC showTopMenu:@"2"];
+        }
+        else
+        {
+            _MQworkTimeSelectVC.isOpen = NO;
+            [_MQworkTimeSelectVC showTopMenu:@"2"];
         }
     }
 }
@@ -241,7 +394,7 @@
     icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
     [titleView addSubview:icon];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -4, 200, 18)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -3, 200, 18)];
     titleLabel.textColor=[UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = Font(15);
@@ -679,6 +832,11 @@
 
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)didSelectGroup:(Group*)group
+{
+    _workGroupNameLbl.text = group.workGroupName;
 }
 
 @end

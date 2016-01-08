@@ -108,6 +108,17 @@
 		4BC66A3F1B748E4900353789 /* btn_fujianIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC66A3E1B748E4900353789 /* btn_fujianIcon@2x.png */; };
 		4BC94B9E1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94B9D1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m */; };
 		4BC94BA11C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BA01C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m */; };
+		4BC94BA41C3CF37B00F2FEAF /* MQworkGroupSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BA31C3CF37B00F2FEAF /* MQworkGroupSelectVC.m */; };
+		4BC94BA71C3E559F00F2FEAF /* MQworkTimeSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BA61C3E559F00F2FEAF /* MQworkTimeSelectVC.m */; };
+		4BC94BAA1C3E55EC00F2FEAF /* WorkPlanTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BA91C3E55EC00F2FEAF /* WorkPlanTime.m */; };
+		4BC94BBC1C3F9A1F00F2FEAF /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BC94BAC1C3F9A1F00F2FEAF /* DateTools.bundle */; };
+		4BC94BBD1C3F9A1F00F2FEAF /* DTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BAF1C3F9A1F00F2FEAF /* DTConstants.m */; };
+		4BC94BBE1C3F9A1F00F2FEAF /* DTError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BB11C3F9A1F00F2FEAF /* DTError.m */; };
+		4BC94BBF1C3F9A1F00F2FEAF /* DTTimePeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BB31C3F9A1F00F2FEAF /* DTTimePeriod.m */; };
+		4BC94BC01C3F9A1F00F2FEAF /* DTTimePeriodChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BB51C3F9A1F00F2FEAF /* DTTimePeriodChain.m */; };
+		4BC94BC11C3F9A1F00F2FEAF /* DTTimePeriodCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BB71C3F9A1F00F2FEAF /* DTTimePeriodCollection.m */; };
+		4BC94BC21C3F9A1F00F2FEAF /* DTTimePeriodGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BB91C3F9A1F00F2FEAF /* DTTimePeriodGroup.m */; };
+		4BC94BC31C3F9A1F00F2FEAF /* NSDate+DateTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BBB1C3F9A1F00F2FEAF /* NSDate+DateTools.m */; };
 		4BE1F57A1BD641D7007CF6C4 /* AddPicCell88.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F5781BD641D7007CF6C4 /* AddPicCell88.m */; };
 		4BE1F57B1BD641D7007CF6C4 /* AddPicCell88.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE1F5791BD641D7007CF6C4 /* AddPicCell88.xib */; };
 		4BE1F57F1BD642B1007CF6C4 /* AddPicCell80.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F57D1BD642B1007CF6C4 /* AddPicCell80.m */; };
@@ -383,6 +394,28 @@
 		4BC94B9D1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanMainSelectCell.m; sourceTree = "<group>"; };
 		4BC94B9F1C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGroupMainLabelSettingController.h; sourceTree = "<group>"; };
 		4BC94BA01C3BBA2F00F2FEAF /* ICGroupMainLabelSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGroupMainLabelSettingController.m; sourceTree = "<group>"; };
+		4BC94BA21C3CF37B00F2FEAF /* MQworkGroupSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQworkGroupSelectVC.h; sourceTree = "<group>"; };
+		4BC94BA31C3CF37B00F2FEAF /* MQworkGroupSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQworkGroupSelectVC.m; sourceTree = "<group>"; };
+		4BC94BA51C3E559F00F2FEAF /* MQworkTimeSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQworkTimeSelectVC.h; sourceTree = "<group>"; };
+		4BC94BA61C3E559F00F2FEAF /* MQworkTimeSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQworkTimeSelectVC.m; sourceTree = "<group>"; };
+		4BC94BA81C3E55EC00F2FEAF /* WorkPlanTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanTime.h; sourceTree = "<group>"; };
+		4BC94BA91C3E55EC00F2FEAF /* WorkPlanTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanTime.m; sourceTree = "<group>"; };
+		4BC94BAC1C3F9A1F00F2FEAF /* DateTools.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DateTools.bundle; sourceTree = "<group>"; };
+		4BC94BAD1C3F9A1F00F2FEAF /* DateTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTools.h; sourceTree = "<group>"; };
+		4BC94BAE1C3F9A1F00F2FEAF /* DTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTConstants.h; sourceTree = "<group>"; };
+		4BC94BAF1C3F9A1F00F2FEAF /* DTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTConstants.m; sourceTree = "<group>"; };
+		4BC94BB01C3F9A1F00F2FEAF /* DTError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTError.h; sourceTree = "<group>"; };
+		4BC94BB11C3F9A1F00F2FEAF /* DTError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTError.m; sourceTree = "<group>"; };
+		4BC94BB21C3F9A1F00F2FEAF /* DTTimePeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTTimePeriod.h; sourceTree = "<group>"; };
+		4BC94BB31C3F9A1F00F2FEAF /* DTTimePeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTTimePeriod.m; sourceTree = "<group>"; };
+		4BC94BB41C3F9A1F00F2FEAF /* DTTimePeriodChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTTimePeriodChain.h; sourceTree = "<group>"; };
+		4BC94BB51C3F9A1F00F2FEAF /* DTTimePeriodChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTTimePeriodChain.m; sourceTree = "<group>"; };
+		4BC94BB61C3F9A1F00F2FEAF /* DTTimePeriodCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTTimePeriodCollection.h; sourceTree = "<group>"; };
+		4BC94BB71C3F9A1F00F2FEAF /* DTTimePeriodCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTTimePeriodCollection.m; sourceTree = "<group>"; };
+		4BC94BB81C3F9A1F00F2FEAF /* DTTimePeriodGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTTimePeriodGroup.h; sourceTree = "<group>"; };
+		4BC94BB91C3F9A1F00F2FEAF /* DTTimePeriodGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTTimePeriodGroup.m; sourceTree = "<group>"; };
+		4BC94BBA1C3F9A1F00F2FEAF /* NSDate+DateTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+DateTools.h"; sourceTree = "<group>"; };
+		4BC94BBB1C3F9A1F00F2FEAF /* NSDate+DateTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DateTools.m"; sourceTree = "<group>"; };
 		4BE1F5771BD641D7007CF6C4 /* AddPicCell88.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPicCell88.h; sourceTree = "<group>"; };
 		4BE1F5781BD641D7007CF6C4 /* AddPicCell88.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPicCell88.m; sourceTree = "<group>"; };
 		4BE1F5791BD641D7007CF6C4 /* AddPicCell88.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPicCell88.xib; sourceTree = "<group>"; };
@@ -694,6 +727,10 @@
 				4B9BC9551C32301800F4EC41 /* WorkPlanEditController.m */,
 				4B9BC9571C32316A00F4EC41 /* WorkPlanAddMissionController.h */,
 				4B9BC9581C32316A00F4EC41 /* WorkPlanAddMissionController.m */,
+				4BC94BA21C3CF37B00F2FEAF /* MQworkGroupSelectVC.h */,
+				4BC94BA31C3CF37B00F2FEAF /* MQworkGroupSelectVC.m */,
+				4BC94BA51C3E559F00F2FEAF /* MQworkTimeSelectVC.h */,
+				4BC94BA61C3E559F00F2FEAF /* MQworkTimeSelectVC.m */,
 			);
 			path = workPlan;
 			sourceTree = "<group>";
@@ -729,6 +766,7 @@
 		4BC03FD31BABBBC7004C6F3B /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				4BC94BAB1C3F9A1F00F2FEAF /* DateTools */,
 				4BC52FF01C196870002C20D8 /* ZLPeoplePickerViewController */,
 				4B8856051C0D4A7A00B50998 /* HTHorizontalSelectionList */,
 				4B1F2A671BB9251F00D55BAE /* seeFullScreen */,
@@ -835,6 +873,29 @@
 				4B9AE1111B94029F00E2124D /* PushConfig.plist */,
 			);
 			name = UICommon;
+			sourceTree = "<group>";
+		};
+		4BC94BAB1C3F9A1F00F2FEAF /* DateTools */ = {
+			isa = PBXGroup;
+			children = (
+				4BC94BAC1C3F9A1F00F2FEAF /* DateTools.bundle */,
+				4BC94BAD1C3F9A1F00F2FEAF /* DateTools.h */,
+				4BC94BAE1C3F9A1F00F2FEAF /* DTConstants.h */,
+				4BC94BAF1C3F9A1F00F2FEAF /* DTConstants.m */,
+				4BC94BB01C3F9A1F00F2FEAF /* DTError.h */,
+				4BC94BB11C3F9A1F00F2FEAF /* DTError.m */,
+				4BC94BB21C3F9A1F00F2FEAF /* DTTimePeriod.h */,
+				4BC94BB31C3F9A1F00F2FEAF /* DTTimePeriod.m */,
+				4BC94BB41C3F9A1F00F2FEAF /* DTTimePeriodChain.h */,
+				4BC94BB51C3F9A1F00F2FEAF /* DTTimePeriodChain.m */,
+				4BC94BB61C3F9A1F00F2FEAF /* DTTimePeriodCollection.h */,
+				4BC94BB71C3F9A1F00F2FEAF /* DTTimePeriodCollection.m */,
+				4BC94BB81C3F9A1F00F2FEAF /* DTTimePeriodGroup.h */,
+				4BC94BB91C3F9A1F00F2FEAF /* DTTimePeriodGroup.m */,
+				4BC94BBA1C3F9A1F00F2FEAF /* NSDate+DateTools.h */,
+				4BC94BBB1C3F9A1F00F2FEAF /* NSDate+DateTools.m */,
+			);
+			path = DateTools;
 			sourceTree = "<group>";
 		};
 		781C1B101B1ED193008ECABF /* SliderMenu */ = {
@@ -1164,6 +1225,8 @@
 				4BB560DC1C1E6DEC00A070C0 /* Organization.m */,
 				4B17A1291C28EF0A0032410C /* SystemMessage.h */,
 				4B17A12A1C28EF0B0032410C /* SystemMessage.m */,
+				4BC94BA81C3E55EC00F2FEAF /* WorkPlanTime.h */,
+				4BC94BA91C3E55EC00F2FEAF /* WorkPlanTime.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -1324,6 +1387,7 @@
 				789182721B0EDBC2004C6AF6 /* Images.xcassets in Resources */,
 				4BE1F57B1BD641D7007CF6C4 /* AddPicCell88.xib in Resources */,
 				781C1B1F1B1ED1CF008ECABF /* menuUsers.png in Resources */,
+				4BC94BBC1C3F9A1F00F2FEAF /* DateTools.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1387,6 +1451,7 @@
 				78CB22451B2926F8003B6707 /* PRTweenTimingFunctions.m in Sources */,
 				4BC040351BABBF6E004C6F3B /* SVRadialGradientLayer.m in Sources */,
 				4BC530171C1968B3002C20D8 /* APAddressBook.m in Sources */,
+				4BC94BC01C3F9A1F00F2FEAF /* DTTimePeriodChain.m in Sources */,
 				4BB560DD1C1E6DEC00A070C0 /* Organization.m in Sources */,
 				78CB22431B2926F8003B6707 /* PPDragDropBadgeView.m in Sources */,
 				4BC52FFF1C196870002C20D8 /* APContact+Sorting.m in Sources */,
@@ -1413,15 +1478,20 @@
 				4BC03FD21BABA59E004C6F3B /* ICGroupMessageSettingController.m in Sources */,
 				78354CD31B40F5A000E2F00A /* ICMemberRegisterViewController.m in Sources */,
 				4B8AE4251BB910C9002B0143 /* ICFileViewController.m in Sources */,
+				4BC94BBD1C3F9A1F00F2FEAF /* DTConstants.m in Sources */,
+				4BC94BAA1C3E55EC00F2FEAF /* WorkPlanTime.m in Sources */,
 				4B1F2AA81BB9251F00D55BAE /* NSData+GIF.m in Sources */,
 				4BC040321BABBF6E004C6F3B /* SVIndefiniteAnimatedView.m in Sources */,
 				4BC530001C196870002C20D8 /* LRIndexedCollationWithSearch.m in Sources */,
 				4B1F2AB51BB9251F00D55BAE /* UIImageView+MJWebCache.m in Sources */,
+				4BC94BC31C3F9A1F00F2FEAF /* NSDate+DateTools.m in Sources */,
 				4B17A1251C27EAFB0032410C /* MQMyMessageMainController.m in Sources */,
+				4BC94BA71C3E559F00F2FEAF /* MQworkTimeSelectVC.m in Sources */,
 				4BC040341BABBF6E004C6F3B /* SVProgressHUD.m in Sources */,
 				786381CC1B3AA3F50078F156 /* ICGroupListViewController.m in Sources */,
 				7891826A1B0EDBC2004C6AF6 /* AppDelegate.m in Sources */,
 				4B7A89271BD4F05F00E42F7C /* SDWebImageManager.m in Sources */,
+				4BC94BBF1C3F9A1F00F2FEAF /* DTTimePeriod.m in Sources */,
 				4B831C2A1BA81E6200B01D20 /* VPImageCropperViewController.m in Sources */,
 				4B1981AE1BD4FBBB00174CFD /* UIButton+UIActivityIndicatorForSDWebImage.m in Sources */,
 				4B1981AF1BD4FBBB00174CFD /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
@@ -1460,13 +1530,16 @@
 				7830DDFF1B3BE99200D956C9 /* ICSettingGroupViewController.m in Sources */,
 				78613FC41B3D2FF3007ED169 /* ICMarkManagementViewController.m in Sources */,
 				7823E1A91B39447600061DAF /* ICPublishSharedAndNotifyViewController.m in Sources */,
+				4BC94BC21C3F9A1F00F2FEAF /* DTTimePeriodGroup.m in Sources */,
 				4BC530041C196870002C20D8 /* ZLPeoplePickerViewController.m in Sources */,
 				4B4114EA1BD4F6010003B56C /* UIImageView+HighlightedWebCache.m in Sources */,
 				4B1F2AA11BB9251F00D55BAE /* MJPhotoLoadingView.m in Sources */,
 				4B1F2A9E1BB9251F00D55BAE /* MJPhoto.m in Sources */,
+				4BC94BA41C3CF37B00F2FEAF /* MQworkGroupSelectVC.m in Sources */,
 				4BB33A901B9EC5CF009D80E2 /* SKSTableViewCell.m in Sources */,
 				4B1F2AA51BB9251F00D55BAE /* PreviewViewController.m in Sources */,
 				4B6C5AA11BE1B06D00CEB8C4 /* MQPublishMissionMainCell.m in Sources */,
+				4BC94BC11C3F9A1F00F2FEAF /* DTTimePeriodCollection.m in Sources */,
 				4B7A892D1BD4F05F00E42F7C /* UIImageView+WebCache.m in Sources */,
 				7823E1871B38F2B800061DAF /* YFInputBar.m in Sources */,
 				4B9C73961BE7407B0070135C /* DashesLineView.m in Sources */,
@@ -1508,6 +1581,7 @@
 				4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */,
 				4BC5301A1C1968B3002C20D8 /* APSocialProfile.m in Sources */,
 				78BE76CF1B1FEEA6008AF8AD /* ICAccountViewController.m in Sources */,
+				4BC94BBE1C3F9A1F00F2FEAF /* DTError.m in Sources */,
 				4BC530021C196870002C20D8 /* ZLBaseTableViewController.m in Sources */,
 				4B5F59CB1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m in Sources */,
 				783176041B5DF8FB00446283 /* Authority.m in Sources */,

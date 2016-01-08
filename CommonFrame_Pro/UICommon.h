@@ -55,6 +55,8 @@ typedef void (^keyboardBlock) ();
 
 + (BOOL) firstStringIsChineseOrLetter:(NSString *)str;
 
++ (NSInteger) weekday:(NSDate * )nowDate;//当前日期是星期几
+
 #pragma mark image scale utility
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
 
@@ -92,6 +94,7 @@ typedef void (^keyboardBlock) ();
 - (void)setRoundCorner:(float)cornerRadius;
 - (void)setRoundColorCorner:(float)cornerRadius;
 - (void)setRoundColorCorner:(float)cornerRadius withColor:(UIColor *)color;
+- (void)setBorderExceptTopWithColor:(UIColor *)color;
 
 @end
 

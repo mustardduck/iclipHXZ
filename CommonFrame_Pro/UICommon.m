@@ -10,10 +10,26 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NSStringEx.h"
 #import <AddressBook/AddressBook.h>
+#import "NSDate+DateTools.h"
 
 static UIViewController *imagePicker = nil;
 
 @implementation UICommon
+
++ (NSInteger) weekday:(NSDate * )nowDate
+{
+    NSInteger weekday = 0;
+    
+    if(nowDate.weekday == 1)
+    {
+        weekday = 7;
+    }
+    else
+    {
+        weekday = nowDate.weekday - 1;
+    }
+    return weekday;
+}
 
 + (NSString *) findFileType:(NSString *) name
 {
@@ -500,6 +516,20 @@ static UIViewController *imagePicker = nil;
     self.layer.borderWidth = 0.5f;
     self.layer.borderColor = color.CGColor;
 }
+
+- (void)setBorderExceptTopWithColor:(UIColor *)color
+{
+    CALayer *bottomBorder = [CALayer layer];
+    float height = self.frame.size.height - 0.5;
+    float width = self.frame.size.width;
+    
+    bottomBorder.frame = CGRectMake(0, height, width, 0.5);
+    bottomBorder.backgroundColor = color.CGColor;
+    
+//    self.layer.borderWidth = 0.5f;
+    [self.layer addSublayer:bottomBorder];
+}
+
 - (CGPoint)origin
 {
     return self.frame.origin;

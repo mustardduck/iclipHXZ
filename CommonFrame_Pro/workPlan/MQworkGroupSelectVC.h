@@ -20,7 +20,7 @@
 
 @property (nonatomic, assign) BOOL    isOpen;
 @property (nonatomic, strong) UITableView *mainTableView;
-@property (nonatomic, strong) NSMutableArray *groupList;
+//@property (nonatomic, strong) NSMutableArray *groupList;
 @property (nonatomic, strong)       id<MQworkGroupSelectDelegate> delegate;
 
 - (MQworkGroupSelectVC*)initWithMenuNameList:(NSArray*)groupList actionControl:(UIButton*)button parentView:(UIView*)pView;
