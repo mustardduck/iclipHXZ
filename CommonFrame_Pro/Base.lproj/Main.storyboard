@@ -3883,7 +3883,8 @@
                                 </variation>
                                 <variation key="widthClass=compact">
                                     <mask key="constraints">
-                                        <exclude reference="dPo-1K-wlY"/>
+                                        <include reference="dPo-1K-wlY"/>
+                                        <include reference="ilp-gd-eb3"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -3937,6 +3938,7 @@
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
+                                <include reference="FfR-zU-3X8"/>
                                 <include reference="YsS-5M-faQ"/>
                             </mask>
                         </variation>
