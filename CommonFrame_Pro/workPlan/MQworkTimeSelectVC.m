@@ -52,11 +52,11 @@
     
     _mainView = pView;
     
-    [_mainView setBackgroundColor:[UIColor blackColor]];
+    [_mainView setBackgroundColor:[UIColor clearColor]];
     
     [button addTarget:self action:@selector(showTopMenu:) forControlEvents:UIControlEventTouchUpInside];
     
-    CGRect tableFrame = CGRectMake(0, 0 , SCREENWIDTH / 2, 224);
+    CGRect tableFrame = CGRectMake(SCREENWIDTH / 2 + 1, 0 , SCREENWIDTH / 2, 224);
     
     _mainTableView = [[UITableView alloc]  initWithFrame:tableFrame];
     _mainTableView.showsVerticalScrollIndicator = NO;
@@ -74,11 +74,11 @@
     
     _mainView.hidden = YES;
     
-    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, H(_mainTableView) - 0.5, W(_mainTableView), 0.5)];
+    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2 + 1, H(_mainTableView) - 0.5, W(_mainTableView), 0.5)];
     line.backgroundColor = [UIColor grayLineColor];
     [_mainView addSubview:line];
     
-    line = [[UIView alloc] initWithFrame:CGRectMake(W(_mainTableView) - 0.5, 0, 0.5, H(_mainTableView))];
+    line = [[UIView alloc] initWithFrame:CGRectMake(X(line), 0, 0.5, H(_mainTableView))];
     line.backgroundColor = [UIColor grayLineColor];
     [_mainView addSubview:line];
     
@@ -111,7 +111,7 @@
     
     if(wpt.week == 0)
     {
-        timeStr = [NSString stringWithFormat:@"无  %ld月  %ld年", wpt.month, wpt.year];
+        timeStr = [NSString stringWithFormat:@"   无     %ld月  %ld年", wpt.month, wpt.year];
     }
     else
     {

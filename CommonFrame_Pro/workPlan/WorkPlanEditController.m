@@ -180,7 +180,22 @@
 {
     NSArray * timeList = [self getTimeArr];
     
-    _rightViewWidthCons.constant = SCREENWIDTH / 2;
+    WorkPlanTime * wpt = timeList[0];
+    
+    NSString * timeStr = @"";
+    
+    if(wpt.week == 0)
+    {
+        timeStr = [NSString stringWithFormat:@"无  %ld月  %ld年", wpt.month, wpt.year];
+    }
+    else
+    {
+        timeStr = [NSString stringWithFormat:@"第%ld周  %ld月  %ld年", wpt.week, wpt.month, wpt.year];
+    }
+    
+    _timeLbl.text = timeStr;
+    
+    _rightViewWidthCons.constant = SCREENWIDTH;
 
     _MQworkTimeSelectVC = [[MQworkTimeSelectVC alloc] initWithMenuNameList:timeList actionControl:_timeBtn parentView:_rightpMenuView];
     _MQworkTimeSelectVC.delegate = self;
@@ -214,18 +229,27 @@
         
         if(newDate.day <= newDate.daysInMonth)//小于或等于最后一天
         {
+            if(weekdayOrdinal == 1)
+            {
+                WorkPlanTime *wpt = [WorkPlanTime new];
+                wpt.year = newDate.year;
+                wpt.month = newDate.month;
+                wpt.week = 0;
+                [timeArr addObject:wpt];
+            }
+
             WorkPlanTime *wpt = [WorkPlanTime new];
-            
             wpt.year = newDate.year;
             wpt.month = newDate.month;
             wpt.week = weekdayOrdinal;
-            
             [timeArr addObject:wpt];
-            
+
             newDate = [newDate dateByAddingWeeks:1];//下一周的周一
             
         }
     }
+    
+    [timeArr removeObjectAtIndex:0];
     
     return timeArr;
 }
@@ -251,9 +275,11 @@
     {
         if (_MQworkTimeSelectVC.isOpen) {
             [_MQworkTimeSelectVC showTopMenu:@"2"];
+            _layoutBtn.hidden = NO;
         }
         else
         {
+            _layoutBtn.hidden = YES;
             _MQworkTimeSelectVC.isOpen = NO;
             [_MQworkTimeSelectVC showTopMenu:@"2"];
         }
@@ -837,6 +863,23 @@
 - (void)didSelectGroup:(Group*)group
 {
     _workGroupNameLbl.text = group.workGroupName;
+}
+
+- (void)didSelectTime:(WorkPlanTime *)time
+{
+    NSString * timeStr = @"";
+    
+    if(time.week == 0)
+    {
+        timeStr = [NSString stringWithFormat:@"无  %ld月  %ld年", time.month, time.year];
+    }
+    else
+    {
+        timeStr = [NSString stringWithFormat:@"第%ld周  %ld月  %ld年", time.week, time.month, time.year];
+    }
+    
+    _timeLbl.text = timeStr;
+
 }
 
 @end
