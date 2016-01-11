@@ -231,39 +231,53 @@
         
         NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
         
-        Mission * mis = [_rows[indexPath.section] objectForKey:numKey][indexPath.row];
+        NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
         
-        cell.titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
-        
-        //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
-        NSString * statusStr = @"未开始";
-        
-        if(mis.status == 1)
+        if(arr.count)
         {
-            statusStr = @"进行中";
-        }
-        else if (mis.status == 2)
-        {
-            statusStr = @"已完成";
-        }
-        else if (mis.status == -3)
-        {
-            statusStr = @"超时";
+            Mission * mis = arr[indexPath.row];
             
-            cell.statusLbl.textColor = [UIColor redTextColor];
-        }
-        
-        cell.statusLbl.text = statusStr;
-        
-        if ([self hasExitsInSelectArray:indexPath])
-        {
-            cell.selectIcon.tag = 1011;
-            cell.selectIcon.image = [UIImage imageNamed:@"btn_gou"];
+            cell.titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
+            
+            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+            NSString * statusStr = @"未开始";
+            
+            if(mis.status == 1)
+            {
+                statusStr = @"进行中";
+            }
+            else if (mis.status == 2)
+            {
+                statusStr = @"已完成";
+            }
+            else if (mis.status == -3)
+            {
+                statusStr = @"超时";
+                
+                cell.statusLbl.textColor = [UIColor redTextColor];
+            }
+            
+            cell.statusLbl.text = statusStr;
+            
+            if ([self hasExitsInSelectArray:indexPath])
+            {
+                cell.selectIcon.tag = 1011;
+                cell.selectIcon.image = [UIImage imageNamed:@"btn_gou"];
+            }
+            else
+            {
+                cell.selectIcon.tag = 1010;
+                cell.selectIcon.image = [UIImage imageNamed:@"btn_kuang"];
+            }
+            
+            cell.selectIcon.hidden = NO;
         }
         else
         {
-            cell.selectIcon.tag = 1010;
-            cell.selectIcon.image = [UIImage imageNamed:@"btn_kuang"];
+            cell.selectIcon.tag = 1012;
+            cell.selectIcon.hidden = YES;
+            cell.icon.hidden = YES;
+            cell.titleLbl.text = @"无";
         }
         
         return cell;

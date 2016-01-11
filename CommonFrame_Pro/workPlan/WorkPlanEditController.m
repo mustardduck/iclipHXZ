@@ -35,6 +35,8 @@
     UILabel  *  _timeLbl;
     UIButton *  _timeBtn;
     UIButton *  _layoutBtn;
+    
+    UILabel * _titleLeftLbl;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
@@ -69,7 +71,19 @@
     }
 
     _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
+    [self resetRowsData];
     
+    UIView * tView = [self layoutTopView];
+
+    [self initGroupSelectView];
+    
+    [self initTimeSelectView];
+    
+    [self setTopView:tView];
+}
+
+- (void) resetRowsData
+{
     for(int i = 0; i < _tags.count; i ++)
     {
         Mark * ma = _tags[i];
@@ -83,14 +97,6 @@
         [_rows addObject:dic];
         
     }
-    
-    UIView * tView = [self layoutTopView];
-
-    [self initGroupSelectView];
-    
-    [self initTimeSelectView];
-    
-    [self setTopView:tView];
 }
 
 - (UIView *)layoutTopView
@@ -141,6 +147,13 @@
     _timeLbl.textColor = [UIColor whiteColor];
     _timeLbl.textAlignment = NSTextAlignmentCenter;
     [topView addSubview:_timeLbl];
+    
+    _titleLeftLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 44, 76, 46)];
+    _titleLeftLbl.backgroundColor = [UIColor clearColor];
+    _titleLeftLbl.font = Font(15);
+    _titleLeftLbl.textColor = [UIColor whiteColor];
+    _titleLeftLbl.text = @"主要工作";
+    [self.view addSubview:_titleLeftLbl];
     
     _layoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 76 - 14, 44, 76, 46)];
     _layoutBtn.backgroundColor = [UIColor clearColor];
@@ -216,9 +229,12 @@
     
     NSDate *newDate = nowDate;
     
-    if(weekday != 1)//今天不是周一
+    if(weekday == 1)//今天是周一
     {
-       newDate = [nowDate dateBySubtractingDays:weekday - 1];//本周的周一
+    }
+    else
+    {
+        newDate = [nowDate dateBySubtractingDays:weekday - 1];//本周的周一
     }
     
     NSDate * fiveYearsLaterDate = [newDate dateByAddingYears:5];
@@ -247,9 +263,13 @@
             newDate = [newDate dateByAddingWeeks:1];//下一周的周一
             
         }
+        
+        WorkPlanTime * wop = timeArr[0];
+        if(wop.week == 0)
+        {
+            [timeArr removeObjectAtIndex:0];
+        }
     }
-    
-    [timeArr removeObjectAtIndex:0];
     
     return timeArr;
 }
@@ -264,9 +284,11 @@
     {
         if (_MQworkGroupSelectVC.isOpen) {
             [_MQworkGroupSelectVC showTopMenu:@"1"];
+            _titleLeftLbl.hidden = NO;
         }
         else
         {
+            _titleLeftLbl.hidden = YES;
             _MQworkGroupSelectVC.isOpen = NO;
             [_MQworkGroupSelectVC showTopMenu:@"1"];
         }
@@ -863,6 +885,15 @@
 - (void)didSelectGroup:(Group*)group
 {
     _workGroupNameLbl.text = group.workGroupName;
+    
+    _workGroupName = group.workGroupName;
+    _workGroupId = group.workGroupId;
+    
+    [_rows removeAllObjects];
+    
+    [self resetRowsData];
+    [_mainTableView reloadData];
+    
 }
 
 - (void)didSelectTime:(WorkPlanTime *)time
