@@ -2189,8 +2189,8 @@
         [view removeFromSuperview];
     }
     
-    if (cell.contentView.subviews.count == 0) {
-        
+    if (cell.contentView.subviews.count == 0)
+    {
         //        CGFloat cellHeight = _screenHeight * 0.321;
         Mission* ms = [_contentArray objectAtIndex:indexPath.row];
 //        
@@ -2429,6 +2429,12 @@
                 break;
             case 3:
                 type = @"议题";
+                break;
+            case 4:
+                type = @"计划";
+                break;
+            case 5:
+                type = @"总结";
                 break;
             default:
                 break;

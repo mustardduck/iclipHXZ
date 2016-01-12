@@ -3963,6 +3963,7 @@
                         <outlet property="_rightpMenuView" destination="FfR-zU-3X8" id="B8g-kX-dFi"/>
                         <outlet property="leftViewWidthCons" destination="yG5-FL-Pmc" id="w3K-ae-jlQ"/>
                         <outlet property="mainTableView" destination="F8H-Um-BzE" id="ByF-IW-Xku"/>
+                        <outlet property="rightBarBtnItem" destination="LIW-Mz-xbe" id="NRe-a8-LOM"/>
                         <outlet property="rightViewWidthCons" destination="ilp-gd-eb3" id="h9S-H3-uJn"/>
                         <outlet property="view" destination="jk2-i5-flH" id="QcE-So-aVx"/>
                     </connections>

@@ -21,9 +21,6 @@
 #define UPDATE_GROUP_SETT_URL   @"/workgroup/updateWgSubscribeStatus.hz"
 #define FindUserMainLabel_URL   @"/workgroup/findUserMainLabel.hz"
 #define FindUserMainLabelTask_URL   @"/workgroup/findUserMainLabelTask.hz"
-#define CreateWorkPlan_URL          @"/task/createWorkPlan.hz"
-#define FindWorkPlanDetailTx_URL    @"/task/findWorkPlanDetailTx.hz"
-#define IntoUpdateWorkPlan_URL      @"/task/intoUpdateWorkPlan.hz"
 #define FindUserTaskByTime_URL          @"/workgroup/findUserTaskByTime.hz"
 
 @implementation Group
@@ -617,6 +614,7 @@
                                     mi.finishTime = [di valueForKey:@"finishTimeStr"];
                                     mi.userName = [di valueForKey:@"createName"];
                                     mi.createUserId = [di valueForKey:@"createUserId"];
+                                    mi.workGroupId = workGroupId;
                                     
                                     [labelArr addObject:mi];
                                 }

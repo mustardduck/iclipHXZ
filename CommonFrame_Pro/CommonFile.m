@@ -65,6 +65,11 @@
 + (NSString*)toJson:(id)theData
 {
     NSError *error = nil;
+    
+    if(![NSJSONSerialization isValidJSONObject:theData])
+    {
+        return nil;
+    }
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];

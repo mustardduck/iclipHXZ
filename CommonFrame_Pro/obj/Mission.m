@@ -21,6 +21,9 @@
 #define FIND_WGPEOPLE_TRENDS_URL  @"/user/findWgPeopleTrends.hz"
 #define UPDATE_TASK_STATUS_URL  @"/task/updateTaskStatus.hz"
 #define FIND_TASK_LIST_URL   @"/task/findTaskList.hz"
+#define CreateWorkPlan_URL          @"/task/createWorkPlan.hz"
+#define FindWorkPlanDetailTx_URL    @"/task/findWorkPlanDetailTx.hz"
+#define IntoUpdateWorkPlan_URL      @"/task/intoUpdateWorkPlan.hz"
 
 @class LoginUser;
 
@@ -1244,6 +1247,60 @@
     //*comments = array;
     
     return cm;
+}
+
++ (BOOL)createWorkPlan:(NSString*)loginUserId workGroupId:(NSString*)workGroupId workPlanTitle:(NSString *)workPlanTitle finishTime:(NSString *)finishTime taskList:(NSArray*)taskList
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    NSMutableDictionary* mainDic = [NSMutableDictionary dictionary];
+
+    [dic setObject:@"0" forKey:@"taskId"];
+    [dic setObject:loginUserId forKey:@"userId"];
+    if(workGroupId)
+    {
+        [dic setObject:workGroupId forKey:@"workGroupId"];
+    }
+    [dic setObject:workPlanTitle forKey:@"title"];
+    [dic setObject:@"0" forKey:@"lableUserId"];
+    [dic setObject:@"0" forKey:@"isLabel"];
+    [dic setObject:@"0" forKey:@"isAccessory"];
+    [dic setObject:@"4" forKey:@"type"];
+    [dic setObject:@"2" forKey:@"platform"];
+    [dic setObject:@"0" forKey:@"parentId"];
+    [dic setObject:finishTime forKey:@"finishTime"];
+
+    [mainDic setObject:dic forKey:@"vo"];
+    [mainDic setObject:taskList forKey:@"taskList"];
+        
+    NSString* jsonStr = [CommonFile toJson:mainDic];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CreateWorkPlan_URL postData:tmpDic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
+        
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                isOk = YES;
+                NSLog(@"Dic:%@",dic);
+            }
+        }
+        
+    }
+    
+    return isOk;
 }
 
 

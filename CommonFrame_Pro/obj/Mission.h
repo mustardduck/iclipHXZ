@@ -84,4 +84,7 @@ typedef enum {
 
 + (BOOL)updateTaskStatus:(NSString*)taskId status:(NSInteger )status;//3.12、更改任务状态(V1.1新增接口)POST
 + (NSArray *)findTaskList:(NSString*)taskId mainMissionDic:(NSMutableDictionary **)mainMissionDic;
+
++ (BOOL)createWorkPlan:(NSString*)loginUserId workGroupId:(NSString*)workGroupId workPlanTitle:(NSString *)workPlanTitle finishTime:(NSString *)finishTime taskList:(NSArray*)taskList;//创建工作计划
+
 @end

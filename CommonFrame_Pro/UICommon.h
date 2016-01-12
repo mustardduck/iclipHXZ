@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
+#import "WorkPlanTime.h"
 
 #define ORIGINAL_MAX_WIDTH 640.0f
 
@@ -56,6 +57,8 @@ typedef void (^keyboardBlock) ();
 + (BOOL) firstStringIsChineseOrLetter:(NSString *)str;
 
 + (NSInteger) weekday:(NSDate * )nowDate;//当前日期是星期几
++ (NSDate *)weekendDateFromWPT:(WorkPlanTime *)wpt;//wpt转成周天的日期
++ (NSString *)stringFromDate:(NSDate *)date;//日期转字符串
 
 #pragma mark image scale utility
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;

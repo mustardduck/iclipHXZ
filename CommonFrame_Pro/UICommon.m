@@ -31,6 +31,62 @@ static UIViewController *imagePicker = nil;
     return weekday;
 }
 
++ (NSDate *)weekendDateFromWPT:(WorkPlanTime *)wpt
+{
+    NSString * monthStr = wpt.month < 10 ? [NSString stringWithFormat:@"0%ld", wpt.month] : [NSString stringWithFormat:@"%ld", wpt.month];
+    
+    NSString * timeStr = [NSString stringWithFormat:@"%ld-%@-01 23:59:59", wpt.year, monthStr];
+    
+    NSDate * nowDate = [UICommon formatDate:timeStr];
+    
+    NSLog(@"星期%ld", nowDate.weekday);//1：周天 2：周一 3：周二 4：周三 5：周四 6：周五 7：周六
+    
+    NSInteger weekday = [UICommon weekday:nowDate];
+    
+    NSDate *newDate = nowDate;
+    
+    if(weekday == 1)//今天是周一
+    {
+        newDate = [nowDate dateByAddingDays:6];//本周的周天
+    }
+    else
+    {
+        newDate = [nowDate dateByAddingDays:7 - weekday];//本周的周天
+        newDate = [newDate dateByAddingWeeks:1];//本月第一周的周天
+    }
+    
+    if(wpt.week == 0)
+    {
+        newDate = [nowDate dateByAddingDays:nowDate.daysInMonth - 1];
+    }
+    else
+    {
+        NSInteger weekGap =  wpt.week - 1;
+        
+        if(weekGap > 0)
+        {
+            newDate = [newDate dateByAddingWeeks:weekGap];
+        }
+    }
+    
+    return newDate;
+    
+}
+
++ (NSString *)stringFromDate:(NSDate *)date
+{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+
+    //zzz表示时区，zzz可以删除，这样返回的日期字符将不包含时区信息。
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSString *destDateString = [dateFormatter stringFromDate:date];
+
+    return destDateString;
+}
+
 + (NSString *) findFileType:(NSString *) name
 {
     NSRange range = [name rangeOfString:@"." options:NSBackwardsSearch];
@@ -214,9 +270,9 @@ static UIViewController *imagePicker = nil;
     
     NSString *text = [input stringByReplacingOccurrencesOfString:@"T" withString:@" "];
     
-    if ([text length] > 16) {
+    if ([text length] > 19) {
         
-        text = [text substringToIndex:16];
+        text = [text substringToIndex:19];
     }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

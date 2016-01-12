@@ -16,6 +16,7 @@
 #import "MQworkTimeSelectVC.h"
 #import "NSDate+DateTools.h"
 #import "WorkPlanTime.h"
+#import "SVProgressHUD.h"
 
 @interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate, MQworkTimeSelectDelegate>
 {
@@ -37,11 +38,14 @@
     UIButton *  _layoutBtn;
     
     UILabel * _titleLeftLbl;
+    
+    WorkPlanTime * _selectedWPT;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewWidthCons;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightViewWidthCons;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarBtnItem;
 
 @end
 
@@ -80,6 +84,8 @@
     [self initTimeSelectView];
     
     [self setTopView:tView];
+    
+    _rightBarBtnItem.enabled = NO;
 }
 
 - (void) resetRowsData
@@ -194,6 +200,8 @@
     NSArray * timeList = [self getTimeArr];
     
     WorkPlanTime * wpt = timeList[0];
+    
+    _selectedWPT = wpt;
     
     NSString * timeStr = @"";
     
@@ -311,6 +319,18 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+    for(NSDictionary * dic in _rows)
+    {
+        NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+        NSArray * nArr = [dic objectForKey:num];
+        
+        if(nArr.count)
+        {
+            _rightBarBtnItem.enabled = YES;
+            
+            break;
+        }
+    }
     [_mainTableView reloadData];
 }
 
@@ -336,7 +356,69 @@
 
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
+    NSMutableArray * taskList = [NSMutableArray array];
     
+    for(NSDictionary * dic in _rows)
+    {
+        NSMutableDictionary * taskDic = [NSMutableDictionary dictionary];
+        
+        NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+        NSArray * nArr = [dic objectForKey:num];
+        
+        NSMutableArray * taskArr = [NSMutableArray array];
+        
+        for(Mission * mi in nArr)
+        {
+            NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
+            
+            [mdic setObject:mi.taskId forKey:@"taskId"];
+            [mdic setObject:mi.workGroupId forKey:@"workGroupId"];
+            [mdic setObject:@"" forKey:@"reason"];
+            
+            [taskArr addObject:mdic];
+        }
+        
+        if(taskArr.count)
+        {
+            [taskDic setObject:taskArr forKey:[NSString stringWithFormat:@"%ld", [[dic allKeys][0] integerValue]]];
+        }
+        
+        if(taskDic.allKeys.count)
+        {
+            [taskList addObject:taskDic];
+        }
+    }
+    
+    NSString * title = @"";
+    
+    if(_selectedWPT.week == 0)
+    {
+        title = [NSString stringWithFormat:@"%ld年%ld月工作计划", _selectedWPT.year, _selectedWPT.month];
+    }
+    else
+    {
+        title = [NSString stringWithFormat:@"%ld年%ld月第%ld周工作计划", _selectedWPT.year, _selectedWPT.month, _selectedWPT.week];
+
+    }
+    
+    NSDate * selectedDate = [UICommon weekendDateFromWPT:_selectedWPT];
+    
+    NSString * finishTime = [UICommon stringFromDate:selectedDate];
+    
+    BOOL isOk = [Mission createWorkPlan:[LoginUser loginUserID] workGroupId:_workGroupId workPlanTitle:title finishTime:finishTime taskList:taskList];
+    
+    [SVProgressHUD showInfoWithStatus:@"工作计划发布中..."];
+    
+    if(isOk)
+    {
+        [SVProgressHUD showSuccessWithStatus:@"工作计划发布成功"];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        [SVProgressHUD showErrorWithStatus:@"发布工作计划失败"];
+    }
 }
 
 - (IBAction)btnLayoutButtonClicked:(id)sender
@@ -910,6 +992,8 @@
     }
     
     _timeLbl.text = timeStr;
+    
+    _selectedWPT = time;
 
 }
 
