@@ -73,6 +73,7 @@
 		4B9BC95C1C3279EF00F4EC41 /* WorkPlanMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9BC95B1C3279EF00F4EC41 /* WorkPlanMainCell.m */; };
 		4B9C73961BE7407B0070135C /* DashesLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C73951BE7407B0070135C /* DashesLineView.m */; };
 		4B9C73991BE84FBF0070135C /* PartiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C73981BE84FBF0070135C /* PartiCell.m */; };
+		4BAE39A91C44DEE500D7FC41 /* WorkPlanDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAE39A81C44DEE500D7FC41 /* WorkPlanDetailController.m */; };
 		4BB33A8D1B9EC5CF009D80E2 /* expandableImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A851B9EC5CF009D80E2 /* expandableImage.png */; };
 		4BB33A8E1B9EC5CF009D80E2 /* expandableImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */; };
 		4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB33A881B9EC5CF009D80E2 /* SKSTableView.m */; };
@@ -328,6 +329,8 @@
 		4B9C73951BE7407B0070135C /* DashesLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashesLineView.m; sourceTree = "<group>"; };
 		4B9C73971BE84FBF0070135C /* PartiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartiCell.h; sourceTree = "<group>"; };
 		4B9C73981BE84FBF0070135C /* PartiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartiCell.m; sourceTree = "<group>"; };
+		4BAE39A71C44DEE500D7FC41 /* WorkPlanDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanDetailController.h; sourceTree = "<group>"; };
+		4BAE39A81C44DEE500D7FC41 /* WorkPlanDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanDetailController.m; sourceTree = "<group>"; };
 		4BB33A851B9EC5CF009D80E2 /* expandableImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expandableImage.png; sourceTree = "<group>"; };
 		4BB33A861B9EC5CF009D80E2 /* expandableImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expandableImage@2x.png"; sourceTree = "<group>"; };
 		4BB33A871B9EC5CF009D80E2 /* SKSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableView.h; sourceTree = "<group>"; };
@@ -720,9 +723,9 @@
 				4B9BC9511C322FE300F4EC41 /* WorkPlanMainController.h */,
 				4B9BC9521C322FE300F4EC41 /* WorkPlanMainController.m */,
 				4B9BC95A1C3279EF00F4EC41 /* WorkPlanMainCell.h */,
+				4B9BC95B1C3279EF00F4EC41 /* WorkPlanMainCell.m */,
 				4BC94B9C1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.h */,
 				4BC94B9D1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m */,
-				4B9BC95B1C3279EF00F4EC41 /* WorkPlanMainCell.m */,
 				4B9BC9541C32301800F4EC41 /* WorkPlanEditController.h */,
 				4B9BC9551C32301800F4EC41 /* WorkPlanEditController.m */,
 				4B9BC9571C32316A00F4EC41 /* WorkPlanAddMissionController.h */,
@@ -731,6 +734,8 @@
 				4BC94BA31C3CF37B00F2FEAF /* MQworkGroupSelectVC.m */,
 				4BC94BA51C3E559F00F2FEAF /* MQworkTimeSelectVC.h */,
 				4BC94BA61C3E559F00F2FEAF /* MQworkTimeSelectVC.m */,
+				4BAE39A71C44DEE500D7FC41 /* WorkPlanDetailController.h */,
+				4BAE39A81C44DEE500D7FC41 /* WorkPlanDetailController.m */,
 			);
 			path = workPlan;
 			sourceTree = "<group>";
@@ -1461,6 +1466,7 @@
 				787EF9CC1B1D784B0030C560 /* ICMainViewController.m in Sources */,
 				786381CF1B3AA55C0078F156 /* ICGroupNaviController.m in Sources */,
 				4B7A89241BD4F05F00E42F7C /* SDWebImageDecoder.m in Sources */,
+				4BAE39A91C44DEE500D7FC41 /* WorkPlanDetailController.m in Sources */,
 				783AC2DB1B55FDF800EE3E37 /* Group.m in Sources */,
 				4B7A892A1BD4F05F00E42F7C /* UIImage+GIF.m in Sources */,
 				4B9BC9531C322FE400F4EC41 /* WorkPlanMainController.m in Sources */,

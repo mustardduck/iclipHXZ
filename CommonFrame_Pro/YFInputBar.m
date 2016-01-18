@@ -8,6 +8,7 @@
 
 #import "YFInputBar.h"
 #import "AppDelegate.h"
+#import "WorkPlanDetailController.h"
 
 @interface YFInputBar()
 {
@@ -387,6 +388,7 @@
 {
     _isSendButtonClicked = YES;
     _isBackClicked = NO;
+    self.isWorkPlanDetail = NO;
     
     if (self.clearInputWhenSend) {
         self.textField.text = @"";
@@ -441,33 +443,67 @@
                                  self.transform = CGAffineTransformMakeTranslation(0, y);
                              } completion:nil];
             
-            for (UIControl* control in ((ICWorkingDetailViewController*)self.parentController).view.subviews) {
-                
-                if ([control isKindOfClass:[UITableView class]]) {
+            if(_isWorkPlanDetail)
+            {
+                for (UIControl* control in ((WorkPlanDetailController*)self.parentController).view.subviews) {
                     
-                    CGRect afr = ((ICWorkingDetailViewController*)self.parentController).tableView.frame;
-                    if (CGRectGetWidth(afr) == 0 && CGRectGetHeight(afr) == 0) {
-                        CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
-                        _relativeControlOriFrame = frame;
+                    if ([control isKindOfClass:[UITableView class]]) {
+                        
+                        CGRect afr = ((WorkPlanDetailController*)self.parentController).tableView.frame;
+                        if (CGRectGetWidth(afr) == 0 && CGRectGetHeight(afr) == 0) {
+                            CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
+                            _relativeControlOriFrame = frame;
+                        }
+                        else
+                            _relativeControlOriFrame = afr;
+                        control.frame = CGRectMake(_relativeControlOriFrame.origin.x, _relativeControlOriFrame.origin.y, _relativeControlOriFrame.size.width, _relativeControlOriFrame.size.height + y);
+                        
+                        NSInteger index = ((WorkPlanDetailController*)self.parentController).indexRow;
+                        if (index != 1099) {
+                            NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                            [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                        else
+                        {
+                            NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:(((WorkPlanDetailController*)self.parentController).replyList.count - 1) inSection:0];
+                            [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                        
+                        break;
                     }
-                    else
-                        _relativeControlOriFrame = afr;
-                    control.frame = CGRectMake(_relativeControlOriFrame.origin.x, _relativeControlOriFrame.origin.y, _relativeControlOriFrame.size.width, _relativeControlOriFrame.size.height + y);
-                    
-                    NSInteger index = ((ICWorkingDetailViewController*)self.parentController).indexRow;
-                    if (index != 1099) {
-                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                        [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                    }
-                    else
-                    {
-                        NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:(((ICWorkingDetailViewController*)self.parentController).replyList.count - 1) inSection:0];
-                        [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                    }
-                    
-                    break;
                 }
             }
+            else
+            {
+                for (UIControl* control in ((ICWorkingDetailViewController*)self.parentController).view.subviews) {
+                    
+                    if ([control isKindOfClass:[UITableView class]]) {
+                        
+                        CGRect afr = ((ICWorkingDetailViewController*)self.parentController).tableView.frame;
+                        if (CGRectGetWidth(afr) == 0 && CGRectGetHeight(afr) == 0) {
+                            CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
+                            _relativeControlOriFrame = frame;
+                        }
+                        else
+                            _relativeControlOriFrame = afr;
+                        control.frame = CGRectMake(_relativeControlOriFrame.origin.x, _relativeControlOriFrame.origin.y, _relativeControlOriFrame.size.width, _relativeControlOriFrame.size.height + y);
+                        
+                        NSInteger index = ((ICWorkingDetailViewController*)self.parentController).indexRow;
+                        if (index != 1099) {
+                            NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                            [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                        else
+                        {
+                            NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:(((ICWorkingDetailViewController*)self.parentController).replyList.count - 1) inSection:0];
+                            [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                        }
+                        
+                        break;
+                    }
+                }
+            }
+
             _hasShowed = YES;
             
         }
@@ -514,14 +550,33 @@
             control.frame = CGRectMake(_relativeControlOriFrame.origin.x, _relativeControlOriFrame.origin.y, _relativeControlOriFrame.size.width, _relativeControlOriFrame.size.height);
             _relativeControlOriFrame = control.frame;
             
-            NSInteger index = ((ICWorkingDetailViewController*)self.parentController).indexRow;
+            NSInteger index;
+            if(_isWorkPlanDetail)
+            {
+            index = ((WorkPlanDetailController*)self.parentController).indexRow;
+            }
+            else
+            {
+                index = ((ICWorkingDetailViewController*)self.parentController).indexRow;
+            }
+            
             if (index != 1099) {
                 NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
                 [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             }
             else
             {
-                NSIndexPath* buttomIndexPath = [NSIndexPath indexPathForRow:(((ICWorkingDetailViewController*)self.parentController).replyList.count - 1) inSection:0];
+                NSIndexPath* buttomIndexPath;
+                if(_isWorkPlanDetail)
+                {
+                   buttomIndexPath = [NSIndexPath indexPathForRow:(((WorkPlanDetailController*)self.parentController).replyList.count - 1) inSection:0];
+
+                }
+                else
+                {
+                    buttomIndexPath = [NSIndexPath indexPathForRow:(((ICWorkingDetailViewController*)self.parentController).replyList.count - 1) inSection:0];
+                }
+                
                 [((UITableView*)control) scrollToRowAtIndexPath:buttomIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             }
             

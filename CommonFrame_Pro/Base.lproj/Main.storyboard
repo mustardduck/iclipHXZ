@@ -799,6 +799,32 @@
             </objects>
             <point key="canvasLocation" x="1844" y="629"/>
         </scene>
+        <!--工作计划详情-->
+        <scene sceneID="aq7-x0-MIw">
+            <objects>
+                <viewController storyboardIdentifier="WorkPlanDetailController" id="2Tb-Us-GP5" customClass="WorkPlanDetailController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cs4-O6-9cF"/>
+                        <viewControllerLayoutGuide type="bottom" id="cq8-WF-dXc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="277-hI-4HL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="工作计划详情" id="hLi-W9-Z6C">
+                        <barButtonItem key="leftBarButtonItem" title="返回" id="BDp-RF-qsY">
+                            <connections>
+                                <action selector="btnBackButtonClicked:" destination="2Tb-Us-GP5" id="OTN-Ym-n6j"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="khL-ma-5Pc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1527" y="1015"/>
+        </scene>
         <!--成员-->
         <scene sceneID="6Rv-eo-g1Q">
             <objects>

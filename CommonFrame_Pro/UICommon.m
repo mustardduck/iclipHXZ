@@ -31,6 +31,93 @@ static UIViewController *imagePicker = nil;
     return weekday;
 }
 
++ (WorkPlanTime *)WPTFromStartTime:(NSString *) startTime andFinishTime:(NSString *)finishTime
+{
+    NSDate * startDate = [UICommon formatDate:startTime];
+    NSDate * finishDate = [UICommon formatDate:finishTime];
+
+    NSInteger dayCount = [finishDate daysFrom:startDate];
+    
+    WorkPlanTime * wpt = [WorkPlanTime new];
+
+    if (dayCount > 6)//月计划
+    {
+        wpt.week = 0;
+        wpt.year = startDate.year;
+        wpt.month = startDate.month;
+    }
+    else
+    {
+        wpt = [UICommon WPTFromDate:startDate];
+    }
+    
+    return wpt;
+}
+
++ (WorkPlanTime *)WPTFromDate:(NSDate *)nowDate
+{
+    NSInteger weekday = [UICommon weekday:nowDate];
+    
+    NSDate *newDate = nowDate;
+    
+    if(weekday == 1)//今天是周一
+    {
+    }
+    else
+    {
+        newDate = [nowDate dateBySubtractingDays:weekday - 1];//本周的周一
+    }
+    
+    WorkPlanTime *wpt = [WorkPlanTime new];
+    wpt.year = newDate.year;
+    wpt.month = newDate.month;
+    wpt.week = newDate.weekdayOrdinal;//第几周的周一
+    
+    return wpt;
+}
+
++ (NSDate *)mondayDateFromWPT:(WorkPlanTime *)wpt
+{
+    NSString * monthStr = wpt.month < 10 ? [NSString stringWithFormat:@"0%ld", wpt.month] : [NSString stringWithFormat:@"%ld", wpt.month];
+    
+    NSString * timeStr = [NSString stringWithFormat:@"%ld-%@-01 00:00:00", wpt.year, monthStr];
+    
+    NSDate * nowDate = [UICommon formatDate:timeStr];
+    
+    NSLog(@"星期%ld", nowDate.weekday);//1：周天 2：周一 3：周二 4：周三 5：周四 6：周五 7：周六
+    
+    NSInteger weekday = [UICommon weekday:nowDate];
+    
+    NSDate *newDate = nowDate;
+    
+    if(weekday == 1)//当前月第一天是周一
+    {
+//        newDate = [nowDate dateByAddingDays:6];//本周的周天
+    }
+    else
+    {
+        newDate = [nowDate dateBySubtractingDays:weekday - 1];//本周的周一
+        newDate = [newDate dateByAddingWeeks:1];//本月第一周的周一
+    }
+    
+    if(wpt.week == 0)
+    {
+        newDate = nowDate;
+    }
+    else
+    {
+        NSInteger weekGap =  wpt.week - 1;
+        
+        if(weekGap > 0)
+        {
+            newDate = [newDate dateByAddingWeeks:weekGap];
+        }
+    }
+    
+    return newDate;
+    
+}
+
 + (NSDate *)weekendDateFromWPT:(WorkPlanTime *)wpt
 {
     NSString * monthStr = wpt.month < 10 ? [NSString stringWithFormat:@"0%ld", wpt.month] : [NSString stringWithFormat:@"%ld", wpt.month];

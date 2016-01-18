@@ -83,8 +83,16 @@
             NSDictionary * dic = arr[i];
             
             NSMutableArray * keyArr = [NSMutableArray array];
-
-            NSNumber * num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+            
+            NSNumber * num = 0;
+            if(_isEdit)
+            {
+                num = [NSNumber numberWithInteger:[[dic objectForKey:@"labelId"] integerValue]];
+            }
+            else
+            {
+                num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+            }
 
             for(Mission * mi in _selectedIndexList)
             {
@@ -96,7 +104,21 @@
             
             NSMutableDictionary * ddic = [NSMutableDictionary dictionary];
             
-            [ddic setObject:keyArr forKey:num];
+            if(_isEdit)
+            {
+                [ddic setObject:keyArr forKey:@"taskList"];
+                NSString * labelId =[NSString stringWithFormat:@"%@", [dic objectForKey:@"labelId"]];
+                
+                [ddic setObject:labelId forKey:@"labelId"];
+                [ddic setObject:[dic objectForKey:@"labelName"] forKey:@"labelName"];
+                [ddic setObject:[dic objectForKey:@"workGroupId"] forKey:@"workGroupId"];
+
+            }
+            else
+            {
+                [ddic setObject:keyArr forKey:num];
+
+            }
             
             [arr replaceObjectAtIndex:i withObject:ddic];
             
@@ -299,114 +321,137 @@
         
         NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
         
-        Mission * mis = [_rows[indexPath.section] objectForKey:numKey][indexPath.row];
+        NSArray * misArr = [_rows[indexPath.section] objectForKey:numKey];
         
-        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, SCREENWIDTH - 40 - 38, 16)];
-        titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
-        titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
-        
-        if(titleLbl.height > 70)
+        if(misArr.count)
         {
-            titleLbl.height = 70;
-        }
-        titleLbl.backgroundColor = [UIColor clearColor];
-        titleLbl.textColor = [UIColor whiteColor];
-        titleLbl.numberOfLines = 3;
-        titleLbl.font = Font(14);
-        [cell.contentView addSubview:titleLbl];
-        
-        UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10, 4, 10, 10)];
-        icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
-        [cell.contentView addSubview:icon];
-        
-        UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 16, 14)];
-        choseImg.image = [UIImage imageNamed:@"btn_kuang"];
-        
-        if ([self hasExitsInSelectArray:indexPath])
-        {
-            choseImg.image = [UIImage imageNamed:@"btn_gou"];
-            choseImg.tag = 1011;
-        }
-        else
-        {
+            Mission * mis = misArr[indexPath.row];
+            
+            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, SCREENWIDTH - 40 - 38, 16)];
+            titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
+            titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
+            
+            if(titleLbl.height > 70)
+            {
+                titleLbl.height = 70;
+            }
+            titleLbl.backgroundColor = [UIColor clearColor];
+            titleLbl.textColor = [UIColor whiteColor];
+            titleLbl.numberOfLines = 3;
+            titleLbl.font = Font(14);
+            [cell.contentView addSubview:titleLbl];
+            
+            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10, 4, 10, 10)];
+            icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
+            [cell.contentView addSubview:icon];
+            
+            UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 16, 14)];
             choseImg.image = [UIImage imageNamed:@"btn_kuang"];
-            choseImg.tag = 1010;
-        }
-        
-        [cell.contentView addSubview:choseImg];
-
-        
-        //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
-        NSString * statusStr = @"未开始";
-        
-        if(mis.status == 1)
-        {
-            statusStr = @"进行中";
-        }
-        else if (mis.status == 2)
-        {
-            statusStr = @"已完成";
-        }
-        else if (mis.status == -3)
-        {
-            statusStr = @"超时";
             
-        }
-        
-        UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30 + 27, titleLbl.bottom + 7, 54, 24)];
-        statusLbl.backgroundColor = [UIColor grayMarkColor];
-        [statusLbl setRoundCorner:1.7];
-        statusLbl.textColor = [UIColor grayTitleColor];
-        statusLbl.font = Font(14);
-        statusLbl.textAlignment = NSTextAlignmentCenter;
-        statusLbl.text = statusStr;
-        
-        UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
-        
-        dateLbl.backgroundColor = [UIColor grayMarkColor];
-        [dateLbl setRoundCorner:1.7];
-        dateLbl.textColor = [UIColor grayTitleColor];
-        dateLbl.font = Font(14);
-        dateLbl.textAlignment = NSTextAlignmentCenter;
-        dateLbl.text = [NSString stringWithFormat:@"%@      %@", [LoginUser loginUserName], mis.finishTime];
-        
-        [cell.contentView addSubview:dateLbl];
-        
-        if(mis.status != -3)
-        {
-            [cell.contentView addSubview:statusLbl];
+            if ([self hasExitsInSelectArray:indexPath])
+            {
+                choseImg.image = [UIImage imageNamed:@"btn_gou"];
+                choseImg.tag = 1011;
+            }
+            else
+            {
+                choseImg.image = [UIImage imageNamed:@"btn_kuang"];
+                choseImg.tag = 1010;
+            }
+            
+            [cell.contentView addSubview:choseImg];
+            
+            
+            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+            NSString * statusStr = @"未开始";
+            
+            if(mis.status == 1)
+            {
+                statusStr = @"进行中";
+            }
+            else if (mis.status == 2)
+            {
+                statusStr = @"已完成";
+            }
+            else if (mis.status == -3)
+            {
+                statusStr = @"超时";
+                
+            }
+            
+            UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
+            statusLbl.backgroundColor = [UIColor grayMarkColor];
+            [statusLbl setRoundCorner:1.7];
+            statusLbl.textColor = [UIColor grayTitleColor];
+            statusLbl.font = Font(14);
+            statusLbl.textAlignment = NSTextAlignmentCenter;
+            statusLbl.text = statusStr;
+            
+            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+            
+            dateLbl.backgroundColor = [UIColor grayMarkColor];
+            [dateLbl setRoundCorner:1.7];
+            dateLbl.textColor = [UIColor grayTitleColor];
+            dateLbl.font = Font(14);
+            dateLbl.textAlignment = NSTextAlignmentCenter;
+            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+            
+            [cell.contentView addSubview:dateLbl];
+            
+            if(mis.status != -3)
+            {
+                [cell.contentView addSubview:statusLbl];
+            }
+            else
+            {
+                UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
+                statusView.backgroundColor = [UIColor grayMarkColor];
+                [statusView setRoundCorner:1.7];
+                
+                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
+                icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
+                [statusView addSubview:icon];
+                
+                statusLbl.left = icon.right - 8;
+                statusLbl.top = 0;
+                statusLbl.backgroundColor = [UIColor clearColor];
+                statusLbl.textColor = [UIColor redTextColor];
+                [statusView addSubview:statusLbl];
+                
+                [cell.contentView addSubview:statusView];
+                
+                dateLbl.left = statusView.right + 7;
+                
+            }
+            
+            CGFloat he = dateLbl.bottom + 20;
+            
+            CGRect rect = cell.frame;
+            rect.size.height = he;
+            cell.frame = rect;
+            
+            cell.contentView.backgroundColor = [UIColor backgroundColor];
+            
+            return cell;
         }
         else
         {
-            UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
-            statusView.backgroundColor = [UIColor grayMarkColor];
-            [statusView setRoundCorner:1.7];
+            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, 100, 16)];
+            titleLbl.text = @"无";
+            titleLbl.backgroundColor = [UIColor clearColor];
+            titleLbl.textColor = [UIColor whiteColor];
+            titleLbl.font = Font(14);
+            [cell.contentView addSubview:titleLbl];
             
-            UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
-            icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
-            [statusView addSubview:icon];
+            CGRect rect = cell.frame;
+            rect.size.height = 34;
+            cell.frame = rect;
             
-            statusLbl.left = icon.right - 8;
-            statusLbl.top = 0;
-            statusLbl.backgroundColor = [UIColor clearColor];
-            statusLbl.textColor = [UIColor redTextColor];
-            [statusView addSubview:statusLbl];
+            cell.contentView.backgroundColor = [UIColor backgroundColor];
             
-            [cell.contentView addSubview:statusView];
-            
-            dateLbl.left = statusView.right + 7;
-            
+            return cell;
         }
         
-        CGFloat he = dateLbl.bottom + 20;
-        
-        CGRect rect = cell.frame;
-        rect.size.height = he;
-        cell.frame = rect;
-
-        cell.contentView.backgroundColor = [UIColor backgroundColor];
-        
-        return cell;
     }
 }
 

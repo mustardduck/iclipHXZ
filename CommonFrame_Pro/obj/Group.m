@@ -612,7 +612,7 @@
                                     mi.title = [di valueForKey:@"title"];
                                     mi.status = [[di valueForKey:@"status"] integerValue];
                                     mi.finishTime = [di valueForKey:@"finishTimeStr"];
-                                    mi.userName = [di valueForKey:@"createName"];
+                                    mi.lableUserName = [di valueForKey:@"createName"];//责任人
                                     mi.createUserId = [di valueForKey:@"createUserId"];
                                     mi.workGroupId = workGroupId;
                                     

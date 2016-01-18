@@ -58,6 +58,9 @@ typedef void (^keyboardBlock) ();
 
 + (NSInteger) weekday:(NSDate * )nowDate;//当前日期是星期几
 + (NSDate *)weekendDateFromWPT:(WorkPlanTime *)wpt;//wpt转成周天的日期
++ (NSDate *)mondayDateFromWPT:(WorkPlanTime *)wpt;//wpt转成周一的日期
++ (WorkPlanTime *)WPTFromStartTime:(NSString *) startTime andFinishTime:(NSString *)finishTime;//开始和结束时间转成WPT
++ (WorkPlanTime *)WPTFromDate:(NSDate *)nowDate;//日期转成WPT周一
 + (NSString *)stringFromDate:(NSDate *)date;//日期转字符串
 
 #pragma mark image scale utility

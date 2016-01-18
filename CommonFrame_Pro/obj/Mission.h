@@ -22,7 +22,9 @@ typedef enum {
     TaskTypeShare           = 2,//异常
     TaskTypeNoitification   = 8,//申请
     TaskTypeApplication     = 4,//(没有用了）
-    TaskTypeJianYi          = 3//议题
+    TaskTypeJianYi          = 3,//议题
+    TaskTypePlan            = 5,//工作计划
+    TaskTypeConclusion      = 6//工作总结
 }TaskType;
 
 @interface Mission : NSObject
@@ -33,6 +35,7 @@ typedef enum {
 @property (nonatomic,assign) BOOL       isAccessory;
 @property (nonatomic,strong) NSString*  planExecTime;
 @property (nonatomic,strong) NSString*  finishTime;
+@property (nonatomic,strong) NSString*  startTime;
 @property (nonatomic,strong) NSString*  remindTime;
 @property (nonatomic,strong) NSString*  createUserId;
 @property (nonatomic,strong) NSString*  taskId;
@@ -64,6 +67,7 @@ typedef enum {
 @property (nonatomic, strong) NSString * parentId;
 
 @property (nonatomic, strong) NSNumber * labelId;
+@property (nonatomic, strong) NSString * reason;
 
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr keyString:(NSString *)keyStr;
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;
@@ -85,6 +89,12 @@ typedef enum {
 + (BOOL)updateTaskStatus:(NSString*)taskId status:(NSInteger )status;//3.12、更改任务状态(V1.1新增接口)POST
 + (NSArray *)findTaskList:(NSString*)taskId mainMissionDic:(NSMutableDictionary **)mainMissionDic;
 
-+ (BOOL)createWorkPlan:(NSString*)loginUserId workGroupId:(NSString*)workGroupId workPlanTitle:(NSString *)workPlanTitle finishTime:(NSString *)finishTime taskList:(NSArray*)taskList;//创建工作计划
++ (BOOL)createWorkPlan:(NSString*)loginUserId workGroupId:(NSString*)workGroupId workPlanTitle:(NSString *)workPlanTitle startTime:(NSString *)startTime finishTime:(NSString *)finishTime taskList:(NSArray*)taskList;//创建工作计划
+
++ (Mission*)findWorkPlanDetailTx:(NSString*)taskId commentArray:(NSArray**)comments finishArray:(NSArray**)finishArr unfinishArray:(NSArray **)unfinishArr;//找到工作计划详情
+
++ (Mission*)intoUpdateWorkPlan:(NSString*)taskId startTime:(NSString *)startTime andFinishTime:(NSString *)finishTime;//进入修改工作计划详情
+
++ (BOOL)updateWorkPlan:(NSString*)loginUserId taskId:(NSString *)taskId workGroupId:(NSString*)workGroupId workPlanTitle:(NSString *)workPlanTitle startTime:(NSString *)startTime finishTime:(NSString *)finishTime taskList:(NSArray*)taskList andType:(NSString *)type;//修改工作计划
 
 @end

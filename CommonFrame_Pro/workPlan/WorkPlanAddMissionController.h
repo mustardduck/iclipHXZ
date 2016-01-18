@@ -18,5 +18,6 @@
 @property (nonatomic, strong) NSMutableArray * selectedRows;//所有标签已选择的任务数组
 @property (nonatomic, assign) NSInteger selectedIndex;//某个标签在所有数组中的index
 @property (nonatomic, strong) NSMutableArray * selectedIndexList;//某个标签下已选择的任务数组
+@property (nonatomic, assign) BOOL isEdit;
 
 @end

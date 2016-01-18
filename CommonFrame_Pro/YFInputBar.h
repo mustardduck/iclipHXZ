@@ -44,6 +44,7 @@
 
 @property(strong,nonatomic)id parentController;
 @property(assign,nonatomic)NSInteger dataCount;
+@property(assign,nonatomic) BOOL isWorkPlanDetail;
 
 //隐藏键盘
 -(BOOL)resignFirstResponder;

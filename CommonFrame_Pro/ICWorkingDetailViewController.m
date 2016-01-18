@@ -23,7 +23,7 @@
 #import "ICMainViewController.h"
 #import "MQMyMessageListController.h"
 
-@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
+@interface ICWorkingDetailViewController() <UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate, UIDocumentInteractionControllerDelegate,UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSMutableDictionary*        _reReplyDic;
     Mission*                    _currentMission;
@@ -361,6 +361,8 @@
             _inputBar.parentController = self;
             _inputBar.dataCount = _replyList.count - 1;
             _inputBar.textField.placeholder = @"点击回复";
+            _inputBar.isWorkPlanDetail = NO;
+            
             [_inputBar.sendCommentBtn addTarget:self action:@selector(btnSendCommentPress:) forControlEvents:UIControlEventTouchUpInside];
 
 //            [self addSendToKeyboard:_inputBar.textField];
@@ -2728,6 +2730,7 @@
         
         if (!hasLoad)
         {
+            _inputBar.isWorkPlanDetail = NO;
             [_inputBar.textField becomeFirstResponder];
             [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             _indexRow = indexPath.row;

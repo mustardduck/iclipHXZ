@@ -7,11 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Group.h"
 
 @interface WorkPlanEditController : UIViewController
 
 @property (nonatomic, strong) NSString * workGroupId;
 @property (nonatomic, strong) NSString * workGroupName;
 @property (nonatomic, strong) NSMutableArray * rows;
+@property (nonatomic, strong) NSString * taskId;
+@property (nonatomic, strong) NSString * startTime;
+@property (nonatomic, strong) NSString * finishTime;
+@property (nonatomic, assign) BOOL isEdit;
+@property (nonatomic, strong) Group * currentGroup;
+@property(nonatomic,strong) id       icDetailViewController;
 
 @end

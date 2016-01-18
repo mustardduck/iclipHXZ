@@ -30,7 +30,8 @@
 #import "ICSettingViewController.h"
 #import "MQMyMessageMainController.h"
 #import "MQCreatOrgMainController.h"
-#import "WorkPlanMainController.h"
+#import "WorkPlanEditController.h"
+#import "WorkPlanDetailController.h"
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -680,15 +681,6 @@
 {
     //    if (_group.isAdmin) {
     UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//
-//    UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
-//    ((WorkPlanMainController*)vc).workGroupId = _currentGroup.workGroupId;
-//    ((WorkPlanMainController*)vc).workGroupName = _currentGroup.workGroupName;
-//    
-//    [self.navigationController pushViewController:vc animated:YES];
-//    
-//    return;
-    
     UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
     ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;
     ((ICSettingGroupViewController*)controller).workGroup = _currentGroup;
@@ -1126,10 +1118,11 @@
     else if (index == 4)//计划
     {
         UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
-        ((WorkPlanMainController*)vc).workGroupId = _currentGroup.workGroupId;
-        ((WorkPlanMainController*)vc).workGroupName = _currentGroup.workGroupName;
-        
+        UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanEditController"];
+        ((WorkPlanEditController*)vc).workGroupId = _currentGroup.workGroupId;
+        ((WorkPlanEditController*)vc).workGroupName = _currentGroup.workGroupName;
+        ((WorkPlanEditController*)vc).currentGroup = _currentGroup;
+
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -2567,12 +2560,26 @@
         
         CGFloat fujianWidth = [UICommon getWidthFromLabel:fujianLbl].width;
         fujianLbl.frame = CGRectMake(X(plIcon) - space - fujianWidth, Y(plLbl), fujianWidth, 12);
-        [cell.contentView addSubview:fujianLbl];
+        
+        if(ms.type
+           == 4 || ms.type == 5)
+        {
+        }
+        else
+        {
+            [cell.contentView addSubview:fujianLbl];
+        }
         
         UIImageView* attachment = [[UIImageView alloc] initWithFrame:CGRectMake(X(fujianLbl) - 4 - 12, Y(plLbl) + 2, 12, 10)];
         attachment.image = [UIImage imageNamed:@"btn_fujianIcon"];
-        [cell.contentView addSubview:attachment];
-        
+        if(ms.type
+           == 4 || ms.type == 5)
+        {
+        }
+        else
+        {
+            [cell.contentView addSubview:attachment];
+        }
         
         if(ms.type == 1)
         {
@@ -2618,20 +2625,47 @@
 {
     Mission* ms = [_contentArray objectAtIndex:indexPath.row];
     
-    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-    ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
-    ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
-    ((ICWorkingDetailViewController*)vc).icMainViewController = self;
-    ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
-    ((ICWorkingDetailViewController*)vc).contentArr = _contentArray;
+    if(ms.type == 4 || ms.type == 5)
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanDetailController"];
+        ((WorkPlanDetailController*)vc).taskId = ms.taskId;
+        ((WorkPlanDetailController*)vc).indexInMainArray = indexPath.row;
+        ((WorkPlanDetailController*)vc).icMainViewController = self;
+        ((WorkPlanDetailController*)vc).workGroupId = _workGroupId;
+        ((WorkPlanDetailController*)vc).contentArr = _contentArray;
+        
+        if(ms.type == 5)
+        {
+            ((WorkPlanDetailController*)vc).isZJ = YES;
+            ((WorkPlanDetailController*)vc).isZJReason = YES;
 
-    ms.isRead = YES;
-    ms.isNewCom = NO;
-    
-    [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
-    
-    [self.navigationController pushViewController:vc animated:YES];
+        }
+
+        ms.isRead = YES;
+        ms.isNewCom = NO;
+        
+        [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+        ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
+        ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
+        ((ICWorkingDetailViewController*)vc).icMainViewController = self;
+        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+        ((ICWorkingDetailViewController*)vc).contentArr = _contentArray;
+        
+        ms.isRead = YES;
+        ms.isNewCom = NO;
+        
+        [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

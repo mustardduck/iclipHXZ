@@ -7,7 +7,6 @@
 //
 
 #import "WorkPlanEditController.h"
-#import "Group.h"
 #import "UICommon.h"
 #import "WorkPlanMainCell.h"
 #import "Mission.h"
@@ -17,8 +16,9 @@
 #import "NSDate+DateTools.h"
 #import "WorkPlanTime.h"
 #import "SVProgressHUD.h"
+#import "ICSettingGroupViewController.h"
 
-@interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate, MQworkTimeSelectDelegate>
+@interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate, MQworkTimeSelectDelegate, UIAlertViewDelegate>
 {
     NSArray * _tags;
     
@@ -40,6 +40,7 @@
     UILabel * _titleLeftLbl;
     
     WorkPlanTime * _selectedWPT;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
@@ -73,15 +74,18 @@
     {
         _rows = [NSMutableArray array];
     }
-
-    _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
-    [self resetRowsData];
     
+    NSDate * nowDate = [NSDate date];
+    
+    _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
+
+    [self resetRowsData];
+
     UIView * tView = [self layoutTopView];
 
     [self initGroupSelectView];
     
-    [self initTimeSelectView];
+    [self initTimeSelectView:nowDate];
     
     [self setTopView:tView];
     
@@ -102,6 +106,60 @@
         
         [_rows addObject:dic];
         
+    }
+}
+
+- (void) resetRowsEditData
+{
+    if(_isEdit)
+    {
+        NSMutableArray * taskRows = [NSMutableArray array];
+        
+        for(int i = 0; i < _tags.count; i ++)
+        {
+            Mark * ma = _tags[i];
+            
+            NSMutableArray * arr = [NSMutableArray array];
+            
+            NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+            
+            [dic setObject:arr forKey:@"taskList"];
+            [dic setObject:ma.labelId forKey:@"labelId"];
+            [dic setObject:ma.labelName forKey:@"labelName"];
+            [dic setObject:_workGroupId forKey:@"workGroupId"];
+
+            [taskRows addObject:dic];
+        }
+
+        for(int i = 0; i < taskRows.count; i ++)
+        {
+            NSDictionary * taskDic = taskRows[i];
+            
+            NSMutableDictionary * tDic = [NSMutableDictionary dictionaryWithDictionary:taskDic];
+            
+            for(NSDictionary * dic in _rows)
+            {
+                NSString * labelId = [NSString stringWithFormat:@"%@", [dic valueForKey:@"labelId"]];
+                
+                NSString * taskLblId = [NSString stringWithFormat:@"%@", [taskDic valueForKey:@"labelId"]];
+                
+                if([labelId isEqualToString:taskLblId])
+                {
+                    NSArray * taskArr = [dic objectForKey:@"taskList"];
+                    
+                    if(taskArr.count)
+                    {
+                        [tDic setObject:taskArr forKey:@"taskList"];
+                        
+                        [taskRows replaceObjectAtIndex:i withObject:tDic];
+                    }
+                    
+                    break;
+                }
+            }
+        }
+        
+        _rows = taskRows;
     }
 }
 
@@ -195,11 +253,16 @@
     
 }
 
-- (void) initTimeSelectView
+- (void) initTimeSelectView:(NSDate *)nowDate
 {
-    NSArray * timeList = [self getTimeArr];
+    NSArray * timeList = [self getTimeArr:nowDate];
     
     WorkPlanTime * wpt = timeList[0];
+
+    if(_isEdit)
+    {
+        wpt = [UICommon WPTFromStartTime:_startTime andFinishTime:_finishTime];
+    }
     
     _selectedWPT = wpt;
     
@@ -223,11 +286,9 @@
 
 }
 
-- (NSMutableArray * ) getTimeArr
+- (NSMutableArray * ) getTimeArr:(NSDate *)nowDate
 {
     NSMutableArray * timeArr = [NSMutableArray array];
-    
-    NSDate * nowDate = [NSDate date];
     
     NSLog(@"星期%ld", nowDate.weekday);//1：周天 2：周一 3：周二 4：周三 5：周四 6：周五 7：周六
 
@@ -316,21 +377,61 @@
     }
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
+        [self.icDetailViewController setValue:@"1" forKey:@"content"];
+    }
+}
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    for(NSDictionary * dic in _rows)
+    _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
+    
+    if(_tags.count)
     {
-        NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
-        NSArray * nArr = [dic objectForKey:num];
+        if(_isEdit)
+        {
+            [self resetRowsEditData];
+        }
+    }
+    else
+    {
+        [self showAlertView];
+    }
+    
+    NSInteger totalTaskCount = 0;
+    
+    for(int i = 0 ; i < _rows.count; i ++)
+    {
+        NSDictionary * dic = _rows[i];
+        
+        NSArray * nArr;
+        if(_isEdit)
+        {
+            nArr = [dic objectForKey:@"taskList"];
+        }
+        else
+        {
+            NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+            nArr = [dic objectForKey:num];
+        }
         
         if(nArr.count)
         {
+            totalTaskCount += nArr.count;
+            
             _rightBarBtnItem.enabled = YES;
             
             break;
         }
+        else if (nArr.count == 0 && i == _rows.count - 1 && totalTaskCount == 0)
+        {
+            _rightBarBtnItem.enabled = NO;
+        }
     }
+    
     [_mainTableView reloadData];
 }
 
@@ -362,8 +463,20 @@
     {
         NSMutableDictionary * taskDic = [NSMutableDictionary dictionary];
         
-        NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
-        NSArray * nArr = [dic objectForKey:num];
+        NSArray * nArr;
+        if(_isEdit)
+        {
+            nArr = [dic objectForKey:@"taskList"];
+
+        }
+        else
+        {
+            NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+            
+            nArr = [dic objectForKey:num];
+
+        }
+
         
         NSMutableArray * taskArr = [NSMutableArray array];
         
@@ -372,7 +485,7 @@
             NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
             
             [mdic setObject:mi.taskId forKey:@"taskId"];
-            [mdic setObject:mi.workGroupId forKey:@"workGroupId"];
+            [mdic setObject:mi.labelId forKey:@"labelId"];
             [mdic setObject:@"" forKey:@"reason"];
             
             [taskArr addObject:mdic];
@@ -380,7 +493,17 @@
         
         if(taskArr.count)
         {
-            [taskDic setObject:taskArr forKey:[NSString stringWithFormat:@"%ld", [[dic allKeys][0] integerValue]]];
+            if(_isEdit)
+            {
+                [taskDic setObject:[NSString stringWithFormat:@"%@", [dic valueForKey:@"labelId"]] forKey:@"labelId"];
+            }
+            else
+            {
+                [taskDic setObject:[NSString stringWithFormat:@"%ld", [[dic allKeys][0] integerValue]] forKey:@"labelId"];
+            }
+            
+            [taskDic setObject:taskArr forKey:@"taskReasonList"];
+
         }
         
         if(taskDic.allKeys.count)
@@ -401,11 +524,22 @@
 
     }
     
-    NSDate * selectedDate = [UICommon weekendDateFromWPT:_selectedWPT];
+    NSDate * selectedStartDate = [UICommon mondayDateFromWPT:_selectedWPT];
+    NSDate * selectedFinishDate = [UICommon weekendDateFromWPT:_selectedWPT];
     
-    NSString * finishTime = [UICommon stringFromDate:selectedDate];
+    NSString * startTime = [UICommon stringFromDate:selectedStartDate];
+    NSString * finishTime = [UICommon stringFromDate:selectedFinishDate];
     
-    BOOL isOk = [Mission createWorkPlan:[LoginUser loginUserID] workGroupId:_workGroupId workPlanTitle:title finishTime:finishTime taskList:taskList];
+    BOOL isOk;
+    
+    if(_isEdit)
+    {
+        isOk = [Mission updateWorkPlan:[LoginUser loginUserID] taskId:_taskId workGroupId:_workGroupId workPlanTitle:title startTime:startTime finishTime:finishTime taskList:taskList andType:@"4"];
+    }
+    else
+    {
+        isOk = [Mission createWorkPlan:[LoginUser loginUserID] workGroupId:_workGroupId workPlanTitle:title startTime:startTime finishTime:finishTime taskList:taskList];
+    }
     
     [SVProgressHUD showInfoWithStatus:@"工作计划发布中..."];
     
@@ -441,69 +575,120 @@
 #pragma mark Table View Action
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(!_statusLayoutShow)
+    if(_isEdit)
     {
-        Mark * ma = _tags[indexPath.section];
-        
-        NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
-        
-        if(indexPath.row == count && count > 0)
+        if(!_statusLayoutShow)
         {
-            return 44 + 40;
+            return 34;
         }
-    
-        return 34;
+        else
+        {
+            UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            if(cell)
+            {
+                return cell.frame.size.height;
+            }
+        }
     }
     else
     {
-        Mark * ma = _tags[indexPath.section];
-        
-        NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
-        
-        if(indexPath.row == count && count > 0)
+        if(!_statusLayoutShow)
         {
-            return 44 + 40;
+            Mark * ma = _tags[indexPath.section];
+            
+            NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            
+            if(indexPath.row == count && count > 0)
+            {
+                return 44 + 40;
+            }
+            
+            return 34;
         }
-        
-        UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-        if(cell)
+        else
         {
-            return cell.frame.size.height;
+            Mark * ma = _tags[indexPath.section];
+            
+            NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            
+            if(indexPath.row == count && count > 0)
+            {
+                return 44 + 40;
+            }
+            
+            UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            if(cell)
+            {
+                return cell.frame.size.height;
+            }
         }
     }
-    
+
     return 34;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _tags.count;
+    if(_isEdit)
+    {
+        return _rows.count;
+    }
+    else
+    {
+        return _tags.count;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    Mark * ma = _tags[section];
-    
-    NSInteger count = [[_rows[section] objectForKey:ma.labelId] count];
-    
-    if(count == 0)
+    if(_isEdit)
     {
-        count = 1;
+        NSInteger count = [[_rows[section] objectForKey:@"taskList"] count];
         
-        if(section == _tags.count - 1)
+        if(count == 0)
         {
-            count = 2;
+            count = 1;
+            
+            if(section == _rows.count - 1)
+            {
+                count = 2;
+            }
         }
+        else
+        {
+            if(section == _rows.count - 1)
+            {
+                count += 1;
+            }
+        }
+        
+        return count;
     }
     else
     {
-        if(section == _tags.count - 1)
+        Mark * ma = _tags[section];
+        
+        NSInteger count = [[_rows[section] objectForKey:ma.labelId] count];
+        
+        if(count == 0)
         {
-            count += 1;
+            count = 1;
+            
+            if(section == _tags.count - 1)
+            {
+                count = 2;
+            }
         }
+        else
+        {
+            if(section == _tags.count - 1)
+            {
+                count += 1;
+            }
+        }
+        
+        return count;
     }
-    
-    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -529,9 +714,16 @@
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = Font(15);
     
-    Mark * ma = _tags[section];
-    
-    titleLabel.text= ma.labelName;
+    if(_isEdit)
+    {
+        titleLabel.text = [_rows[section] valueForKey:@"labelName"];
+    }
+    else
+    {
+        Mark * ma = _tags[section];
+        titleLabel.text= ma.labelName;
+    }
+
     [titleView addSubview:titleLabel];
     
     return myView;
@@ -546,9 +738,17 @@
 {
     if(!_statusLayoutShow)
     {
-        Mark * ma = _tags[indexPath.section];
+        NSArray * mArr;
+        if(_isEdit)
+        {
+            mArr = [_rows[indexPath.section] objectForKey:@"taskList"];
+        }
+        else
+        {
+            Mark * ma = _tags[indexPath.section];
 
-        NSArray * mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+            mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+        }
         
         if(mArr.count)
         {
@@ -706,9 +906,16 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        Mark * ma = _tags[indexPath.section];
-
-        NSArray * mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+        NSArray * mArr;
+        if(_isEdit)
+        {
+            mArr = [_rows[indexPath.section] objectForKey:@"taskList"];
+        }
+        else
+        {
+            Mark * ma = _tags[indexPath.section];
+            mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+        }
 
         if(mArr.count)
         {
@@ -766,7 +973,7 @@
                 dateLbl.textColor = [UIColor grayTitleColor];
                 dateLbl.font = Font(14);
                 dateLbl.textAlignment = NSTextAlignmentCenter;
-                dateLbl.text = [NSString stringWithFormat:@"%@      %@", [LoginUser loginUserName], mis.finishTime];
+                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
                 
                 [cell.contentView addSubview:dateLbl];
                 
@@ -919,11 +1126,29 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Mark * ma = _tags[indexPath.section];
+    NSInteger count;
+    if(_isEdit)
+    {
+        count = [[_rows[indexPath.section] objectForKey:@"taskList"] count];
+    }
+    else
+    {
+        Mark * ma = _tags[indexPath.section];
+        count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+    }
     
-    NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
-
-    if((count == indexPath.row && count > 0) || (indexPath.row == 1 && indexPath.section == _tags.count - 1))
+    NSInteger sectionCount = 0;
+    
+    if(_isEdit)
+    {
+        sectionCount = _rows.count;
+    }
+    else
+    {
+        sectionCount = _tags.count;
+    }
+    
+    if((count == indexPath.row && count > 0) || (indexPath.row == 1 && indexPath.section == sectionCount - 1))
     {
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         
@@ -931,12 +1156,21 @@
         ((WorkPlanAddMissionController*)vc).workGroupId = _workGroupId;
         ((WorkPlanAddMissionController*)vc).workGroupName = _workGroupName;
         
-//        Mark * ma = _tags[indexPath.section];
         NSString * labelIdStr = @"";
-        for(int i = 0; i < _tags.count; i ++)
+//        if(_isEdit)
+//        {
+//            for(int i = 0; i < _rows.count; i ++)
+//            {
+//                labelIdStr = [labelIdStr stringByAppendingString:[NSString stringWithFormat:@"%@,", [_rows[i] objectForKey:@"labelId"]]];
+//            }
+//        }
+//        else
         {
-            Mark * ma = _tags[i];
-            labelIdStr = [labelIdStr stringByAppendingString:[NSString stringWithFormat:@"%@,",ma.labelId]];
+            for(int i = 0; i < _tags.count; i ++)
+            {
+                Mark * ma = _tags[i];
+                labelIdStr = [labelIdStr stringByAppendingString:[NSString stringWithFormat:@"%@,",ma.labelId]];
+            }
         }
         
         if(labelIdStr.length > 1)
@@ -947,18 +1181,30 @@
         ((WorkPlanAddMissionController*)vc).labelIdStr = labelIdStr;
         
         NSMutableArray * selectArr = [NSMutableArray array];
+
         for(NSDictionary * dic in _rows)
         {
-            NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
-            NSArray * nArr = [dic objectForKey:num];
+            NSArray * nArr;
+            if(_isEdit)
+            {
+                nArr = [dic objectForKey:@"taskList"];
+            }
+            else
+            {
+                NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+                nArr = [dic objectForKey:num];
+                
+            }
             
             [selectArr addObjectsFromArray:nArr];
+
         }
         ((WorkPlanAddMissionController*)vc).selectedIndexList = selectArr;
         ((WorkPlanAddMissionController*)vc).selectedRows = _rows;
         
         ((WorkPlanAddMissionController*)vc).MQPlanEditVC = self;
-//        ((WorkPlanAddMissionController*)vc).selectedIndexList = _rows[indexPath.section];
+        ((WorkPlanAddMissionController*)vc).isEdit = _isEdit;
+
 
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -966,6 +1212,8 @@
 
 - (void)didSelectGroup:(Group*)group
 {
+    _currentGroup = group;
+    
     _workGroupNameLbl.text = group.workGroupName;
     
     _workGroupName = group.workGroupName;
@@ -973,13 +1221,46 @@
     
     [_rows removeAllObjects];
     
-    [self resetRowsData];
+    _rightBarBtnItem.enabled = NO;
+    _titleLeftLbl.hidden = NO;
+
+    _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
+    if(_tags.count)
+    {
+        [self resetRowsData];
+    }
+    else
+    {
+        [self showAlertView];
+    }
+    
     [_mainTableView reloadData];
     
 }
 
+- (void) showAlertView
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"没有主要工作标签"
+                                                    message:@"请先去添加!" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去添加", nil];
+    [alert show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
+        ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;
+        ((ICSettingGroupViewController*)controller).workGroup = _currentGroup;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+}
+
 - (void)didSelectTime:(WorkPlanTime *)time
 {
+    _layoutBtn.hidden = NO;
+
     NSString * timeStr = @"";
     
     if(time.week == 0)
