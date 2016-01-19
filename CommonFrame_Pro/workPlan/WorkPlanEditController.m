@@ -249,6 +249,7 @@
     _leftViewWidthCons.constant = SCREENWIDTH / 2;
     
     _MQworkGroupSelectVC = [[MQworkGroupSelectVC alloc] initWithMenuNameList:groupList actionControl:_groupBtn parentView:_leftMenuView];//_groupBtn
+    _MQworkGroupSelectVC.wgId = _workGroupId;
     _MQworkGroupSelectVC.delegate = self;
     
     
@@ -283,6 +284,7 @@
     _rightViewWidthCons.constant = SCREENWIDTH;
 
     _MQworkTimeSelectVC = [[MQworkTimeSelectVC alloc] initWithMenuNameList:timeList actionControl:_timeBtn parentView:_rightpMenuView];
+    _MQworkTimeSelectVC.currentWPT = _selectedWPT;
     _MQworkTimeSelectVC.delegate = self;
 
 }
@@ -340,6 +342,8 @@
             [timeArr removeObjectAtIndex:0];
         }
     }
+    
+    WorkPlanTime * wop = timeArr[0];
     
     return timeArr;
 }

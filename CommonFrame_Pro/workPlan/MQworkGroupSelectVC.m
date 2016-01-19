@@ -119,6 +119,11 @@
     
     cell.contentView.backgroundColor = [UIColor grayMarkColor];
     
+    if(_wgId == gr.workGroupId)
+    {
+        [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+    }
+    
     cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
     cell.selectedBackgroundView.backgroundColor = [UIColor tagBlueBackColor];
     

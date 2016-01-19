@@ -96,6 +96,11 @@
     
     WorkPlanTime * wpt = _timeList[indexPath.row];
     
+    if(wpt.year == _currentWPT.year && wpt.month == _currentWPT.month && wpt.week == _currentWPT.week)
+    {
+        [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+    }
+    
     UILabel * titleLbl = [cell viewWithTag:111];
     if(!titleLbl)
     {

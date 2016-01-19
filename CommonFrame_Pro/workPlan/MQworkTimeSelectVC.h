@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL    isOpen;
 @property (nonatomic, strong) UITableView *mainTableView;
 @property (nonatomic, strong)       id<MQworkTimeSelectDelegate> delegate;
+@property (nonatomic, strong) WorkPlanTime *currentWPT;
 
 - (MQworkTimeSelectVC*)initWithMenuNameList:(NSArray*)timeList actionControl:(UIButton*)button parentView:(UIView*)pView;
 
