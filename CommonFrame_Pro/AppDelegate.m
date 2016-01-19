@@ -150,6 +150,7 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
     // 1 任务  2：异常  3议题  6加入工作组  7：评论 8:申请 9:审核加入org 10:任务超时
     switch (type) {
         case 6:
+        {
             _workGroupId = sourceId;
             
             if(_workGroupId.length)
@@ -170,8 +171,74 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
                 }
             }
             break;
-        case 9:
+        }
+        case 4:
+        {
+            _taskId = sourceId;
             
+            NSString * commentId = [userInfo objectForKey:@"commentId"];
+            
+            if(commentId.length > 0)
+            {
+                _commentsId = commentId;
+            }
+            else
+            {
+                _commentsId = @"";
+            }
+
+            if (application.applicationState == UIApplicationStateActive) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:mainStr
+                                                               delegate:self
+                                                      cancelButtonTitle:@"关闭"
+                                                      otherButtonTitles:@"查看", nil];
+                alert.tag = type;
+                [alert show];
+            }
+            else if (application.applicationState == UIApplicationStateInactive)
+            {
+                [self jumpToWorkPlanView:_taskId];
+            }
+
+            break;
+        }
+        case 5:
+        {
+            _taskId = sourceId;
+            
+            
+            NSString * commentId = [userInfo objectForKey:@"commentId"];
+            
+            if(commentId.length > 0)
+            {
+                _commentsId = commentId;
+            }
+            else
+            {
+                _commentsId = @"";
+            }
+
+            if (application.applicationState == UIApplicationStateActive) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:mainStr
+                                                               delegate:self
+                                                      cancelButtonTitle:@"关闭"
+                                                      otherButtonTitles:@"查看", nil];
+                alert.tag = type;
+                [alert show];
+            }
+            else if (application.applicationState == UIApplicationStateInactive)
+            {
+                [self jumpToWorkPlanView:_taskId];
+            }
+
+            break;
+        }
+        case 9:
+        {
             if (application.applicationState == UIApplicationStateActive) {
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
@@ -188,8 +255,10 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
             }
             
             break;
+        }
+
         default:
-            
+        {
             _taskId = sourceId;
             
             NSString * commentId = [userInfo objectForKey:@"commentId"];
@@ -220,8 +289,10 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
                     [self jumpToMissionDetail:_taskId];
                 }
             }
-
+            
             break;
+        }
+
     }
     
     /*LEAN CLOUD
