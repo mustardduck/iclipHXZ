@@ -60,6 +60,8 @@
     UIButton *  _layoutBtn;
     
     CGFloat _layoutHeight;
+    CGFloat _layoutReasonHeight;
+
     
     NSArray * _finishArr;
     NSArray * _unfinishArr;
@@ -390,6 +392,8 @@
     // Do any additional setup after loading the view.
     
     _layoutHeight = 0;
+    _layoutReasonHeight = 0;
+
     _finishArr = [NSMutableArray array];
     _unfinishArr = [NSMutableArray array];
     
@@ -719,23 +723,36 @@
         _finishArr = finishArr;
         _unfinishArr = unfinishArr;
         
-//        _currentMission = [Mission detail:_taskId commentArray:&commentsArray imgArr:&imgArr messageId:_messageId];
     }
     else
     {
-        commentsArray = _commentsArr;
-        imgArr = _imageArr;
+        if(_isZJ)
+        {
+            _currentMission = [Mission new];
+            
+            NSArray * finishArr = [NSArray array];
+            NSArray * unfinishArr = [NSArray array];
+            
+            _currentMission = [Mission findWorkPlanDetailTx:_taskId commentArray:&commentsArray finishArray:&finishArr unfinishArray:&unfinishArr];
+            _rows = _currentMission.labelList;
+            
+            _finishArr = finishArr;
+            _unfinishArr = unfinishArr;
+        }
+        else
+        {
+            commentsArray = _commentsArr;
+            imgArr = _imageArr;
+        }
+
     }
     
     if (_currentMission != nil) {
         
         NSString * title = @"工作计划详情";
-        if(_currentMission.type == TaskTypeConclusion)
+        if(_currentMission.type == 5)
         {
-//            self.isZJ = YES;
             title = @"工作计划总结";
-            
-//            [_tableView reloadData];
         }
         
         self.navigationItem.title = title;
@@ -744,10 +761,16 @@
         
         if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
         {
-            UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(btnRightEditClicked:)];
-            [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
-            self.navigationItem.rightBarButtonItem = rightBarButton;
-            
+            if(_currentMission.type != 5)
+            {
+                UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(btnRightEditClicked:)];
+                [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+                self.navigationItem.rightBarButtonItem = rightBarButton;
+            }
+            else
+            {
+                self.navigationItem.rightBarButtonItem = nil;
+            }
         }
     }
     
@@ -1039,6 +1062,8 @@
 
 - (void) doneZJClick:(id)sender
 {
+    [SVProgressHUD showWithStatus:@"工作总结发布中..."];
+
     UIButton * btn = (UIButton *)sender;
     
     UITableView *mTableView = (UITableView *)[[[[btn superview] superview] superview] superview];//获取tableview
@@ -1163,17 +1188,27 @@
         
         title = [NSString stringWithFormat:@"%@总结", title];
         
-        BOOL isOk = [Mission updateWorkPlan:[LoginUser loginUserID] taskId:_taskId workGroupId:_workGroupId workPlanTitle:title startTime:_currentMission.startTime finishTime:_currentMission.finishTime taskList:taskList andType:@"5"];
-        
-        if(isOk)
-        {
+        dispatch_async(dispatch_get_main_queue(), ^{
             
-        }
-        else
-        {
-            [SVProgressHUD showErrorWithStatus:@"完成总结失败"];
-        }
-
+            BOOL isOk = [Mission updateWorkPlan:[LoginUser loginUserID] taskId:_taskId workGroupId:_workGroupId workPlanTitle:title startTime:_currentMission.startTime finishTime:_currentMission.finishTime taskList:taskList andType:@"5"];
+            
+            if(isOk)
+            {
+                _isZJ = YES;
+                
+                _isZJReason = YES;
+                
+                [self loadData];
+                
+                [_tableView reloadData];
+                
+                [SVProgressHUD showSuccessWithStatus:@"工作总结发布成功"];
+            }
+            else
+            {
+                [SVProgressHUD showErrorWithStatus:@"工作总结发布失败"];
+            }
+        });
     }
     
 }
@@ -1474,12 +1509,10 @@
     if(!_statusLayoutShow)
     {
         _statusLayoutShow = YES;
-        [_layoutBtn setTitle:@"简易视图" forState:UIControlStateNormal];
     }
     else
     {
         _statusLayoutShow = NO;
-        [_layoutBtn setTitle:@"状态视图" forState:UIControlStateNormal];
     }
     
     [_tableView reloadData];
@@ -1551,11 +1584,25 @@
                     
                     if(index == _unfinishArr.count - 1)
                     {
-                        return 72;
+                        if(_isZJReason)
+                        {
+                            return 51;
+                        }
+                        else
+                        {
+                            return 72;
+                        }
                     }
                     else if (index < _unfinishArr.count - 1)
                     {
-                        return 72;
+                        if(_isZJReason)
+                        {
+                            return 51;
+                        }
+                        else
+                        {
+                            return 72;
+                        }
                     }
                     else//未完成为空->写上“无” + “完成总结”
                     {
@@ -1570,20 +1617,40 @@
             else
             {
                 _layoutHeight = 0;
+                
+                _layoutReasonHeight = 0;
+
                 return 34;
             }
         }
         else
         {
-            if(indexPath.row == 0 && indexPath.section == _rows.count - 1)
-            {
-                _layoutHeight = 0;
-            }
+//            if(_isZJ)
+//            {
+//                if(indexPath.row == 0 && indexPath.section == [_planTableView numberOfSections] - 1)
+//                {
+//                    _layoutReasonHeight = 0;
+//                }
+//            }
+//            else
+//            {
+//                if(indexPath.row == 0 && indexPath.section == _rows.count - 1)
+//                {
+//                    _layoutHeight = 0;
+//                }
+//            }
             
             UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
             if(cell)
             {
-                _layoutHeight += cell.frame.size.height;
+//                if(_isZJ)
+//                {
+//                    _layoutReasonHeight += cell.frame.size.height;
+//                }
+//                else
+//                {
+//                    _layoutHeight += cell.frame.size.height;
+//                }
                 
                 return cell.frame.size.height;
             }
@@ -1618,6 +1685,11 @@
                     
                     NSInteger count = [arr count];
                     
+                    if(_isZJReason)
+                    {
+                        return count;
+                    }
+                    
                     count += 1;
 
                     return count;
@@ -1632,7 +1704,14 @@
                 }
                 else//未完成为空->写上“无” + “完成总结”
                 {
-                    return 2;
+                    if(_isZJReason)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 2;
+                    }
                 }
             }
             else if(section >= 0)//已完成
@@ -1655,16 +1734,23 @@
         }
         else
         {
-            NSArray * arr = [_rows[section] objectForKey:@"taskList"];
-            
-            NSInteger count = [arr count];
-            
-            if(section == _rows.count - 1)
+            if(section < _rows.count)
             {
-                count += 1;
+                NSArray * arr = [_rows[section] objectForKey:@"taskList"];
+                
+                NSInteger count = [arr count];
+                
+                if(section == _rows.count - 1)
+                {
+                    count += 1;
+                }
+                
+                return count;
             }
-            
-            return count;
+            else
+            {
+                return 0;
+            }
         }
         
     }
@@ -1733,7 +1819,14 @@
                 
                 if(index == _unfinishArr.count - 1)
                 {
-                    return 34;
+                    if(_unfinishArr.count == 1)
+                    {
+                        return 74;
+                    }
+                    else
+                    {
+                        return 34;
+                    }
                 }
                 else if (index < _unfinishArr.count - 1)
                 {
@@ -1789,26 +1882,67 @@
                 
                 if(index == _unfinishArr.count - 1)
                 {
-                    UIView* myView = [[UIView alloc] init];
-                    myView.backgroundColor = [UIColor backgroundColor];
-                    
-                    UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 28)];
-                    titleView.backgroundColor = [UIColor clearColor];
-                    [myView addSubview:titleView];
-                    
-                    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-                    icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-                    [titleView addSubview:icon];
-                    
-                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
-                    titleLabel.textColor=[UIColor whiteColor];
-                    titleLabel.backgroundColor = [UIColor clearColor];
-                    titleLabel.font = Font(15);
-                    
-                    titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
-                    [titleView addSubview:titleLabel];
-                    
-                    return myView;
+                    if(_unfinishArr.count == 1)
+                    {
+                        UIView* myView = [[UIView alloc] init];
+                        myView.backgroundColor = [UIColor backgroundColor];
+                        
+                        //未完成线
+                        UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 0.5)];
+                        line.backgroundColor = [UIColor grayLineColor];
+                        [myView addSubview:line];
+                        
+                        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 14, 100, 18)];
+                        titleLbl.backgroundColor = [UIColor clearColor];
+                        titleLbl.textColor = [UIColor whiteColor];
+                        titleLbl.font = Font(17);
+                        
+                        [myView addSubview:titleLbl];
+                        
+                        UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 28 + Y(titleLbl), SCREENWIDTH, 28)];
+                        titleView.backgroundColor = [UIColor clearColor];
+                        [myView addSubview:titleView];
+                        
+                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
+                        icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
+                        [titleView addSubview:icon];
+                        
+                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+                        titleLabel.textColor=[UIColor whiteColor];
+                        titleLabel.backgroundColor = [UIColor clearColor];
+                        titleLabel.font = Font(15);
+                        
+                        titleLbl.text = @"未完成";
+                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
+                        
+                        [titleView addSubview:titleLabel];
+                        
+                        return myView;
+                    }
+                    else
+                    {
+                        UIView* myView = [[UIView alloc] init];
+                        myView.backgroundColor = [UIColor backgroundColor];
+                        
+                        UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 28)];
+                        titleView.backgroundColor = [UIColor clearColor];
+                        [myView addSubview:titleView];
+                        
+                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
+                        icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
+                        [titleView addSubview:icon];
+                        
+                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+                        titleLabel.textColor=[UIColor whiteColor];
+                        titleLabel.backgroundColor = [UIColor clearColor];
+                        titleLabel.font = Font(15);
+                        
+                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
+                        [titleView addSubview:titleLabel];
+                        
+                        return myView;
+                    }
+
                 }
                 else if (index < _unfinishArr.count - 1)
                 {
@@ -1842,19 +1976,8 @@
                         titleLabel.backgroundColor = [UIColor clearColor];
                         titleLabel.font = Font(15);
                         
-                        if(_finishArr.count)
-                        {
-                            titleLbl.text = @"已完成";
-                            
-                            titleLabel.text = [_finishArr[section] valueForKey:@"labelName"];
-                            
-                        }
-                        else
-                        {
-                            titleLbl.text = @"未完成";
-                            
-                            titleLabel.text = [_unfinishArr[section] valueForKey:@"labelName"];
-                        }
+                        titleLbl.text = @"未完成";
+                        titleLabel.text = [_unfinishArr[section] valueForKey:@"labelName"];
                         
                         [titleView addSubview:titleLabel];
                         
@@ -1928,19 +2051,8 @@
                     titleLabel.backgroundColor = [UIColor clearColor];
                     titleLabel.font = Font(15);
                     
-                    if(_finishArr.count)
-                    {
-                        titleLbl.text = @"已完成";
-                        
-                        titleLabel.text = [_finishArr[section] valueForKey:@"labelName"];
-                        
-                    }
-                    else
-                    {
-                        titleLbl.text = @"未完成";
-                        
-                        titleLabel.text = [_unfinishArr[section] valueForKey:@"labelName"];
-                    }
+                    titleLbl.text = @"已完成";
+                    titleLabel.text = [_finishArr[section] valueForKey:@"labelName"];
                     
                     [titleView addSubview:titleLabel];
                     
@@ -2072,7 +2184,15 @@
             
             
             //标题
+            
             NSString* titleStr = _currentMission.title;
+
+            if(_isZJ)
+            {
+                titleStr = [titleStr substringToIndex:titleStr.length - 2];
+                
+                titleStr = [NSString stringWithFormat:@"%@总结", titleStr];
+            }
             
             CGFloat contentWidth = cWidth - 27 * 2;
             UIFont* font = Font(14);
@@ -2107,7 +2227,13 @@
             [_layoutBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
             [_layoutBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
             _layoutBtn.titleLabel.font = Font(15);
-            [_layoutBtn setTitle:@"状态视图" forState:UIControlStateNormal];
+            
+            NSString * statusTitle = @"状态视图";
+            if(_statusLayoutShow)
+            {
+                statusTitle = @"简易视图";
+            }
+            [_layoutBtn setTitle:statusTitle forState:UIControlStateNormal];
             [_layoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:_layoutBtn];
             
@@ -2122,23 +2248,50 @@
             {
                 if(_isZJ)
                 {
-                    NSInteger count = 0;
+                    NSInteger finishCount = 0;
+                    NSInteger unfinishCount = 0;
+
                     for(int i = 0; i < _finishArr.count; i ++)
                     {
                         NSArray * arr = [_finishArr[i] objectForKey:@"taskList"];
                         
-                        count += arr.count;
+                        finishCount += arr.count;
                     }
                     for(int i = 0; i < _unfinishArr.count; i ++)
                     {
                         NSArray * arr = [_unfinishArr[i] objectForKey:@"taskList"];
                         
-                        count += arr.count;
+                        unfinishCount += arr.count;
                     }
                     CGFloat finishHeaderHeight = _finishArr.count ? 60 + (_finishArr.count - 1) * 34 : 34;
                     CGFloat unfinishHeaderHeight = _unfinishArr.count ? 74 + (_unfinishArr.count - 1) * 34 : 34;
+                    
+                    CGFloat planTableHeight = 0;
+                    if(_isZJReason)
+                    {
+                        planTableHeight = unfinishCount * 51 + finishCount * 34 + finishHeaderHeight + unfinishHeaderHeight;
+                        if(!finishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                        if(!unfinishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                    }
+                    else
+                    {
+                        planTableHeight = unfinishCount * 72 + finishCount * 34 + finishHeaderHeight + unfinishHeaderHeight + 34;
+                        if(!finishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                        if(!unfinishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                    }
 
-                    CGFloat planTableHeight = count * 72 + finishHeaderHeight + unfinishHeaderHeight + 34 + 34;
                     _planTableView.height = planTableHeight;
 
                 }
@@ -2157,7 +2310,180 @@
             }
             else
             {
-                _planTableView.height = _layoutHeight + 18;
+                if(_isZJ)
+                {
+                    CGFloat unfinishHe = 0;
+                    CGFloat finishHe = 0;
+                    
+                    NSInteger finishCount = 0;
+                    NSInteger unfinishCount = 0;
+
+                    CGFloat finishHeaderHeight = _finishArr.count ? 60 + (_finishArr.count - 1) * 34 : 34;
+                    CGFloat unfinishHeaderHeight = _unfinishArr.count ? 74 + (_unfinishArr.count - 1) * 34 : 34;
+                    
+                    for(NSDictionary * dic in _unfinishArr)
+                    {
+                        NSArray * ddArr = [dic objectForKey:@"taskList"];
+                        
+                        unfinishCount += ddArr.count;
+
+                        for(int i = 0; i < ddArr.count; i ++)
+                        {
+                            Mission * mis = ddArr[i];
+                            
+                            NSString * title = [NSString stringWithFormat:@"%d. %@",i + 1, mis.title];
+                            
+                            CGFloat height = [UICommon getSizeFromString:title withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
+                            
+                            if(height > 70)
+                            {
+                                height = 70;
+                            }
+                            
+                            if(_isZJReason)
+                            {
+                                height += 69;
+                            }
+                            else
+                            {
+                                height += 91;
+                            }
+                            
+                            unfinishHe += height;
+                            
+                        }
+                    }
+                    
+                    for(NSDictionary * dic in _finishArr)
+                    {
+                        NSArray * ddArr = [dic objectForKey:@"taskList"];
+                        
+                        finishCount += ddArr.count;
+
+                        for(int i = 0; i < ddArr.count; i ++)
+                        {
+                            Mission * mis = ddArr[i];
+                            
+                            NSString * title = [NSString stringWithFormat:@"%d. %@",i + 1, mis.title];
+                            
+                            CGFloat height = [UICommon getSizeFromString:title withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
+                            
+                            if(height > 70)
+                            {
+                                height = 70;
+                            }
+                            
+                            height += 51;
+                            
+                            finishHe += height;
+                        }
+                    }
+                    
+                    CGFloat planTableHeight = 0;
+                    if(_isZJReason)
+                    {
+                        planTableHeight = unfinishHe + finishHe + finishHeaderHeight + unfinishHeaderHeight;
+                        
+                        if(!finishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                        if(!unfinishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                    }
+                    else
+                    {
+                        planTableHeight = unfinishHe + finishHe + finishHeaderHeight + unfinishHeaderHeight + 34;
+                        if(!finishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                        if(!unfinishCount)
+                        {
+                            planTableHeight += 34;
+                        }
+                    }
+                    
+                    _planTableView.height = planTableHeight;
+
+                    
+                    /*
+                    CGFloat he = _layoutReasonHeight + 18;
+                    
+                    CGFloat he = rHe + 18;
+                    
+                    NSInteger finishCount = 0;
+                    
+                    for(int i = 0; i < _finishArr.count; i ++)
+                    {
+                        NSArray * arr = [_finishArr[i] objectForKey:@"taskList"];
+                        
+                        finishCount += arr.count;
+                    }
+                    
+                    if(_finishArr.count)
+                    {
+                        he += finishCount * 34;
+                    }
+                    else
+                    {
+                        he += 34 * 3;
+                    }
+                    
+                    _planTableView.height = he;*/
+                }
+                else
+                {
+//                    _planTableView.height = _layoutHeight + 18;
+                    
+                    CGFloat rowsHe = 0;
+                    
+                    for(NSDictionary * dic in _rows)
+                    {
+                        NSArray * ddArr = [dic objectForKey:@"taskList"];
+                        
+                        for(int i = 0; i < ddArr.count; i ++)
+                        {
+                            Mission * mis = ddArr[i];
+                            
+                            NSString * title = [NSString stringWithFormat:@"%d. %@",i + 1, mis.title];
+                            
+                            CGFloat height = [UICommon getSizeFromString:title withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
+                            
+                            if(height > 70)
+                            {
+                                height = 70;
+                            }
+                            
+                            if(_isZJReason)
+                            {
+                                height += 69;
+                            }
+                            else
+                            {
+                                height += 51;
+                            }
+                            
+                            rowsHe += height;
+                        }
+                    }
+                    
+                    CGFloat planTableHeight = 0;
+//                    if(_isZJReason)
+//                    {
+//                            planTableHeight = unfinishCount * 51 + finishCount * 34 + finishHeaderHeight + unfinishHeaderHeight + 34;
+//                    }
+//                    else
+                    {
+                       planTableHeight = rowsHe + _rows.count * 34 + 34;
+                    }
+                    
+                    _planTableView.height = planTableHeight;
+                    
+
+                }
             }
             
             
@@ -2654,7 +2980,17 @@
                             
                             if(_isZJReason)
                             {
+                                UILabel * reasonLbl = [[UILabel alloc] initWithFrame:CGRectMake(28, YH(titleLbl) + 5, SCREENWIDTH - 13 * 2 - 30 * 2, 16)];
+                                reasonLbl.backgroundColor = [UIColor clearColor];
+                                reasonLbl.font = Font(14);
+                                reasonLbl.textColor = [UIColor whiteColor];
                                 
+                                NSString * nameStr = [NSString stringWithFormat:@"原因：%@。", mis.reason];
+                                NSAttributedString *nameAttrStr = [RRAttributedString setText:nameStr font:Font(14) color:RGBCOLOR(249, 223, 100) range:NSMakeRange(0, 3)];
+
+                                reasonLbl.attributedText = nameAttrStr;
+                                
+                                [cell.contentView addSubview:reasonLbl];
                             }
                             else
                             {
@@ -2950,141 +3286,501 @@
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            //            NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
-            
-            if(indexPath.section < _rows.count)
+            if(_isZJ)
             {
+                NSInteger section = indexPath.section;
                 
-                NSArray * arr = [_rows[indexPath.section] objectForKey:@"taskList"];
-                
-                if(arr.count)
+                if(section >= _finishArr.count && section != 0)//未完成
                 {
-                    if(indexPath.row < arr.count)
+                    NSInteger index = section - _finishArr.count;
+                    
+                    if(!_finishArr.count)
                     {
-                        Mission *mis = arr[indexPath.row];
+                        index = section - 1;
+                    }
+                    
+                    if(_unfinishArr.count)
+                    {
+                        NSArray * arr = [_unfinishArr[index] objectForKey:@"taskList"];
                         
-                        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
-                        titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
-                        titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
-                        
-                        if(titleLbl.height > 70)
+                        if(indexPath.row == arr.count)
                         {
-                            titleLbl.height = 70;
-                        }
-                        titleLbl.backgroundColor = [UIColor clearColor];
-                        titleLbl.textColor = [UIColor whiteColor];
-                        titleLbl.numberOfLines = 3;
-                        titleLbl.font = Font(14);
-                        [cell.contentView addSubview:titleLbl];
-                        
-                        UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
-                        icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
-                        [cell.contentView addSubview:icon];
-                        
-                        //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
-                        NSString * statusStr = @"未开始";
-                        
-                        if(mis.status == 1)
-                        {
-                            statusStr = @"进行中";
-                        }
-                        else if (mis.status == 2)
-                        {
-                            statusStr = @"已完成";
-                        }
-                        else if (mis.status == -3)
-                        {
-                            statusStr = @"超时";
+                            UIButton * titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(28, 0, 85, 20)];
+                            titleBtn.backgroundColor = [UIColor clearColor];
+                            [titleBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                            titleBtn.titleLabel.font = Font(17);
+                            [titleBtn setTitle:@"完成总结" forState:UIControlStateNormal];
+                            titleBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
+                            [titleBtn addTarget:self action:@selector(doneZJClick:) forControlEvents:UIControlEventTouchUpInside];
+                            
+                            UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2 + Y(titleBtn), 15, 15)];
+                            icon.image = [UIImage imageNamed:@"icon_gongzuozongjie"];
+                            
+                            UIButton * cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 13 - 60 - 14, Y(titleBtn), 60, 20)];
+                            cancelBtn.backgroundColor = [UIColor clearColor];
+                            [cancelBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                            cancelBtn.titleLabel.font = Font(17);
+                            [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+                            cancelBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+                            [cancelBtn addTarget:self action:@selector(cancelZJClick:) forControlEvents:UIControlEventTouchUpInside];
+                            
+                            [cell.contentView addSubview:icon];
+                            [cell.contentView addSubview:titleBtn];
+                            [cell.contentView addSubview:cancelBtn];
+                            
+                            cell.contentView.backgroundColor = [UIColor backgroundColor];
+                            cell.tag = 123;
+                            
+                            return cell;
                             
                         }
-                        
-                        UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
-                        statusLbl.backgroundColor = [UIColor grayMarkColor];
-                        [statusLbl setRoundCorner:1.7];
-                        statusLbl.textColor = [UIColor grayTitleColor];
-                        statusLbl.font = Font(14);
-                        statusLbl.textAlignment = NSTextAlignmentCenter;
-                        statusLbl.text = statusStr;
-                        
-                        UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
-                        
-                        dateLbl.backgroundColor = [UIColor grayMarkColor];
-                        [dateLbl setRoundCorner:1.7];
-                        dateLbl.textColor = [UIColor grayTitleColor];
-                        dateLbl.font = Font(14);
-                        dateLbl.textAlignment = NSTextAlignmentCenter;
-                        dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
-                        
-                        [cell.contentView addSubview:dateLbl];
-                        
-                        if(mis.status != -3)
+                        else if (indexPath.row < arr.count)
                         {
-                            [cell.contentView addSubview:statusLbl];
+                            Mission *mis = arr[indexPath.row];
+                            
+                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
+                            titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
+                            titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
+                            
+                            if(titleLbl.height > 70)
+                            {
+                                titleLbl.height = 70;
+                            }
+                            titleLbl.backgroundColor = [UIColor clearColor];
+                            titleLbl.textColor = [UIColor whiteColor];
+                            titleLbl.numberOfLines = 3;
+                            titleLbl.font = Font(14);
+                            [cell.contentView addSubview:titleLbl];
+                            
+                            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
+                            icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
+                            [cell.contentView addSubview:icon];
+                            
+                            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                            NSString * statusStr = @"未开始";
+                            
+                            if(mis.status == 1)
+                            {
+                                statusStr = @"进行中";
+                            }
+                            else if (mis.status == 2)
+                            {
+                                statusStr = @"已完成";
+                            }
+                            else if (mis.status == -3)
+                            {
+                                statusStr = @"超时";
+                                
+                            }
+                            
+                            UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+                            statusLbl.backgroundColor = [UIColor grayMarkColor];
+                            [statusLbl setRoundCorner:1.7];
+                            statusLbl.textColor = [UIColor grayTitleColor];
+                            statusLbl.font = Font(14);
+                            statusLbl.textAlignment = NSTextAlignmentCenter;
+                            statusLbl.text = statusStr;
+                            
+                            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                            
+                            dateLbl.backgroundColor = [UIColor grayMarkColor];
+                            [dateLbl setRoundCorner:1.7];
+                            dateLbl.textColor = [UIColor grayTitleColor];
+                            dateLbl.font = Font(14);
+                            dateLbl.textAlignment = NSTextAlignmentCenter;
+                            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+                            
+                            [cell.contentView addSubview:dateLbl];
+                            
+                            if(mis.status != -3)
+                            {
+                                [cell.contentView addSubview:statusLbl];
+                            }
+                            else
+                            {
+                                UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+                                statusView.backgroundColor = [UIColor grayMarkColor];
+                                [statusView setRoundCorner:1.7];
+                                
+                                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
+                                icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
+                                [statusView addSubview:icon];
+                                
+                                statusLbl.left = icon.right - 8;
+                                statusLbl.top = 0;
+                                statusLbl.backgroundColor = [UIColor clearColor];
+                                statusLbl.textColor = [UIColor redTextColor];
+                                [statusView addSubview:statusLbl];
+                                
+                                [cell.contentView addSubview:statusView];
+                                
+                                dateLbl.left = statusView.right + 7;
+                                
+                            }
+                            
+                            if(_isZJReason)
+                            {
+                                UILabel * reasonLbl = [[UILabel alloc] initWithFrame:CGRectMake(28, YH(dateLbl) + 5, SCREENWIDTH - 13 * 2 - 30 * 2, 16)];
+                                reasonLbl.backgroundColor = [UIColor clearColor];
+                                reasonLbl.font = Font(14);
+                                reasonLbl.textColor = [UIColor whiteColor];
+                                
+                                NSString * nameStr = [NSString stringWithFormat:@"原因：%@。", mis.reason];
+                                NSAttributedString *nameAttrStr = [RRAttributedString setText:nameStr font:Font(14) color:RGBCOLOR(249, 223, 100) range:NSMakeRange(0, 3)];
+                                
+                                reasonLbl.attributedText = nameAttrStr;
+                                
+                                [cell.contentView addSubview:reasonLbl];
+                                
+                                CGFloat he = dateLbl.bottom + 38;
+                                
+                                CGRect rect = cell.frame;
+                                rect.size.height = he;
+                                cell.frame = rect;
+                            }
+                            else
+                            {
+                                UITextField * reasonTxt = [[UITextField alloc] initWithFrame:CGRectMake(7, 0, SCREENWIDTH - 13 * 2 - 30 * 2 - 7, 33)];
+                                reasonTxt.placeholder = @"请总结未完成原因";
+                                [reasonTxt setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
+                                reasonTxt.font = Font(14);
+                                reasonTxt.text = mis.reason;
+                                reasonTxt.textColor = [UIColor blackColor];
+                                reasonTxt.backgroundColor = [UIColor clearColor];
+                                reasonTxt.textAlignment = NSTextAlignmentLeft;
+                                [self addDoneToKeyboard:reasonTxt];
+                                reasonTxt.delegate = self;
+                                reasonTxt.tag = 100 + indexPath.row;
+                                
+                                UIView * txtView = [[UIView alloc] initWithFrame:CGRectMake(30, YH(dateLbl) + 6, SCREENWIDTH - 13 * 2 - 30 * 2, 33)];
+                                txtView.backgroundColor = [UIColor whiteColor];
+                                [txtView setRoundColorCorner:5 withColor:[UIColor grayLineColor]];
+                                
+                                [txtView addSubview:reasonTxt];
+                                [cell.contentView addSubview:txtView];
+                                
+                                CGFloat he = dateLbl.bottom + 60;
+                                
+                                CGRect rect = cell.frame;
+                                rect.size.height = he;
+                                cell.frame = rect;
+                            }
+
+                            cell.backgroundColor = [UIColor backgroundColor];
+                            
+                            return cell;
+                        }
+                    }
+                    else//未完成为空->写上“无” + “完成总结”
+                    {
+                        if(indexPath.row == 0)
+                        {
+                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, 100, 16)];
+                            titleLbl.text = @"无";
+                            titleLbl.backgroundColor = [UIColor clearColor];
+                            titleLbl.textColor = [UIColor whiteColor];
+                            titleLbl.font = Font(14);
+                            [cell.contentView addSubview:titleLbl];
+                            
+                            cell.contentView.backgroundColor = [UIColor backgroundColor];
+                            
+                            return cell;
                         }
                         else
                         {
-                            UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
-                            statusView.backgroundColor = [UIColor grayMarkColor];
-                            [statusView setRoundCorner:1.7];
+                            UIButton * titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(28, 0, 85, 20)];
+                            titleBtn.backgroundColor = [UIColor clearColor];
+                            [titleBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                            titleBtn.titleLabel.font = Font(17);
+                            [titleBtn setTitle:@"完成总结" forState:UIControlStateNormal];
+                            titleBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
+                            [titleBtn addTarget:self action:@selector(doneZJClick:) forControlEvents:UIControlEventTouchUpInside];
                             
-                            UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
-                            icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
-                            [statusView addSubview:icon];
+                            UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2 + Y(titleBtn), 15, 15)];
+                            icon.image = [UIImage imageNamed:@"icon_gongzuozongjie"];
                             
-                            statusLbl.left = icon.right - 8;
-                            statusLbl.top = 0;
-                            statusLbl.backgroundColor = [UIColor clearColor];
-                            statusLbl.textColor = [UIColor redTextColor];
-                            [statusView addSubview:statusLbl];
+                            UIButton * cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 13 - 60 - 14, Y(titleBtn), 60, 20)];
+                            cancelBtn.backgroundColor = [UIColor clearColor];
+                            [cancelBtn setTitleColor:[UIColor blueTextColor] forState:UIControlStateNormal];
+                            cancelBtn.titleLabel.font = Font(17);
+                            [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+                            cancelBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+                            [cancelBtn addTarget:self action:@selector(cancelZJClick:) forControlEvents:UIControlEventTouchUpInside];
                             
-                            [cell.contentView addSubview:statusView];
+                            [cell.contentView addSubview:icon];
+                            [cell.contentView addSubview:titleBtn];
+                            [cell.contentView addSubview:cancelBtn];
                             
-                            dateLbl.left = statusView.right + 7;
+                            cell.contentView.backgroundColor = [UIColor backgroundColor];
+                            cell.tag = 123;
+                            
+                            return cell;
                             
                         }
+                    }
+                }
+                else if(section >= 0)//已完成
+                {
+                    if(section < _finishArr.count)
+                    {
+                        NSArray * arr = [_finishArr[indexPath.section] objectForKey:@"taskList"];
                         
-                        CGFloat he = dateLbl.bottom + 20;
+                        if(arr.count)
+                        {
+                            if(indexPath.row < arr.count)
+                            {
+                                Mission *mis = arr[indexPath.row];
+                                
+                                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
+                                titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
+                                titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
+                                
+                                if(titleLbl.height > 70)
+                                {
+                                    titleLbl.height = 70;
+                                }
+                                titleLbl.backgroundColor = [UIColor clearColor];
+                                titleLbl.textColor = [UIColor whiteColor];
+                                titleLbl.numberOfLines = 3;
+                                titleLbl.font = Font(14);
+                                [cell.contentView addSubview:titleLbl];
+                                
+                                UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
+                                icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
+                                [cell.contentView addSubview:icon];
+                                
+                                //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                                NSString * statusStr = @"未开始";
+                                
+                                if(mis.status == 1)
+                                {
+                                    statusStr = @"进行中";
+                                }
+                                else if (mis.status == 2)
+                                {
+                                    statusStr = @"已完成";
+                                }
+                                else if (mis.status == -3)
+                                {
+                                    statusStr = @"超时";
+                                    
+                                }
+                                
+                                UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+                                statusLbl.backgroundColor = [UIColor grayMarkColor];
+                                [statusLbl setRoundCorner:1.7];
+                                statusLbl.textColor = [UIColor grayTitleColor];
+                                statusLbl.font = Font(14);
+                                statusLbl.textAlignment = NSTextAlignmentCenter;
+                                statusLbl.text = statusStr;
+                                
+                                UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                                
+                                dateLbl.backgroundColor = [UIColor grayMarkColor];
+                                [dateLbl setRoundCorner:1.7];
+                                dateLbl.textColor = [UIColor grayTitleColor];
+                                dateLbl.font = Font(14);
+                                dateLbl.textAlignment = NSTextAlignmentCenter;
+                                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+                                
+                                [cell.contentView addSubview:dateLbl];
+                                
+                                if(mis.status != -3)
+                                {
+                                    [cell.contentView addSubview:statusLbl];
+                                }
+                                else
+                                {
+                                    UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+                                    statusView.backgroundColor = [UIColor grayMarkColor];
+                                    [statusView setRoundCorner:1.7];
+                                    
+                                    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
+                                    icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
+                                    [statusView addSubview:icon];
+                                    
+                                    statusLbl.left = icon.right - 8;
+                                    statusLbl.top = 0;
+                                    statusLbl.backgroundColor = [UIColor clearColor];
+                                    statusLbl.textColor = [UIColor redTextColor];
+                                    [statusView addSubview:statusLbl];
+                                    
+                                    [cell.contentView addSubview:statusView];
+                                    
+                                    dateLbl.left = statusView.right + 7;
+                                    
+                                }
+                                
+                                CGFloat he = dateLbl.bottom + 20;
+                                
+                                CGRect rect = cell.frame;
+                                rect.size.height = he;
+                                cell.frame = rect;
+                                
+                                cell.contentView.backgroundColor = [UIColor backgroundColor];
+                                
+                                return cell;
+                            }
+                        }
+                    }
+                    else//已完成为空->写上“无”
+                    {
+                        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, 100, 16)];
+                        titleLbl.text = @"无";
+                        titleLbl.backgroundColor = [UIColor clearColor];
+                        titleLbl.textColor = [UIColor whiteColor];
+                        titleLbl.font = Font(14);
+                        [cell.contentView addSubview:titleLbl];
                         
                         CGRect rect = cell.frame;
-                        rect.size.height = he;
+                        rect.size.height = 34;
                         cell.frame = rect;
                         
                         cell.contentView.backgroundColor = [UIColor backgroundColor];
                         
                         return cell;
                     }
-                    else if (indexPath.row == arr.count)
+                }
+                
+                return cell;
+            }
+            else
+            {
+                if(indexPath.section < _rows.count)
+                {
+                    
+                    NSArray * arr = [_rows[indexPath.section] objectForKey:@"taskList"];
+                    
+                    if(arr.count)
                     {
-                        static NSString *cellId = @"Cell";
-                        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-                        if (cell == nil){
-                            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-                            cell.frame = CGRectMake(0, 0, SCREENWIDTH - 13 * 2, 84);
+                        if(indexPath.row < arr.count)
+                        {
+                            Mission *mis = arr[indexPath.row];
+                            
+                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
+                            titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
+                            titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
+                            
+                            if(titleLbl.height > 70)
+                            {
+                                titleLbl.height = 70;
+                            }
+                            titleLbl.backgroundColor = [UIColor clearColor];
+                            titleLbl.textColor = [UIColor whiteColor];
+                            titleLbl.numberOfLines = 3;
+                            titleLbl.font = Font(14);
+                            [cell.contentView addSubview:titleLbl];
+                            
+                            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
+                            icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
+                            [cell.contentView addSubview:icon];
+                            
+                            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                            NSString * statusStr = @"未开始";
+                            
+                            if(mis.status == 1)
+                            {
+                                statusStr = @"进行中";
+                            }
+                            else if (mis.status == 2)
+                            {
+                                statusStr = @"已完成";
+                            }
+                            else if (mis.status == -3)
+                            {
+                                statusStr = @"超时";
+                                
+                            }
+                            
+                            UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+                            statusLbl.backgroundColor = [UIColor grayMarkColor];
+                            [statusLbl setRoundCorner:1.7];
+                            statusLbl.textColor = [UIColor grayTitleColor];
+                            statusLbl.font = Font(14);
+                            statusLbl.textAlignment = NSTextAlignmentCenter;
+                            statusLbl.text = statusStr;
+                            
+                            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                            
+                            dateLbl.backgroundColor = [UIColor grayMarkColor];
+                            [dateLbl setRoundCorner:1.7];
+                            dateLbl.textColor = [UIColor grayTitleColor];
+                            dateLbl.font = Font(14);
+                            dateLbl.textAlignment = NSTextAlignmentCenter;
+                            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+                            
+                            [cell.contentView addSubview:dateLbl];
+                            
+                            if(mis.status != -3)
+                            {
+                                [cell.contentView addSubview:statusLbl];
+                            }
+                            else
+                            {
+                                UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
+                                statusView.backgroundColor = [UIColor grayMarkColor];
+                                [statusView setRoundCorner:1.7];
+                                
+                                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
+                                icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
+                                [statusView addSubview:icon];
+                                
+                                statusLbl.left = icon.right - 8;
+                                statusLbl.top = 0;
+                                statusLbl.backgroundColor = [UIColor clearColor];
+                                statusLbl.textColor = [UIColor redTextColor];
+                                [statusView addSubview:statusLbl];
+                                
+                                [cell.contentView addSubview:statusView];
+                                
+                                dateLbl.left = statusView.right + 7;
+                                
+                            }
+                            
+                            CGFloat he = dateLbl.bottom + 20;
+                            
+                            CGRect rect = cell.frame;
+                            rect.size.height = he;
+                            cell.frame = rect;
+                            
+                            cell.contentView.backgroundColor = [UIColor backgroundColor];
+                            
+                            return cell;
                         }
-                        
-                        for(UIView *view in cell.contentView.subviews) {
-                            [view removeFromSuperview];
+                        else if (indexPath.row == arr.count)
+                        {
+                            static NSString *cellId = @"Cell";
+                            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+                            if (cell == nil){
+                                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+                                cell.frame = CGRectMake(0, 0, SCREENWIDTH - 13 * 2, 84);
+                            }
+                            
+                            for(UIView *view in cell.contentView.subviews) {
+                                [view removeFromSuperview];
+                            }
+                            
+                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                            
+                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, 200, 20)];
+                            titleLbl.backgroundColor = [UIColor clearColor];
+                            titleLbl.textColor = [UIColor blueTextColor];
+                            titleLbl.font = Font(17);
+                            titleLbl.text = @"工作总结";
+                            
+                            UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 15, 15)];
+                            icon.image = [UIImage imageNamed:@"icon_gongzuozongjie"];
+                            [cell.contentView addSubview:icon];
+                            
+                            [cell.contentView addSubview:titleLbl];
+                            cell.backgroundColor = [UIColor backgroundColor];
+                            
+                            return cell;
                         }
-                        
-                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        
-                        UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, 200, 20)];
-                        titleLbl.backgroundColor = [UIColor clearColor];
-                        titleLbl.textColor = [UIColor blueTextColor];
-                        titleLbl.font = Font(17);
-                        titleLbl.text = @"工作总结";
-                        
-                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 15, 15)];
-                        icon.image = [UIImage imageNamed:@"icon_gongzuozongjie"];
-                        [cell.contentView addSubview:icon];
-                        
-                        [cell.contentView addSubview:titleLbl];
-                        cell.backgroundColor = [UIColor backgroundColor];
-                        
-                        return cell;
                     }
                 }
             }
+
         }
     }
     

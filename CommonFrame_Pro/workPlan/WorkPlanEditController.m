@@ -457,6 +457,8 @@
 
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
+    [SVProgressHUD showWithStatus:@"工作计划发布中..."];
+
     NSMutableArray * taskList = [NSMutableArray array];
     
     for(NSDictionary * dic in _rows)
@@ -530,29 +532,31 @@
     NSString * startTime = [UICommon stringFromDate:selectedStartDate];
     NSString * finishTime = [UICommon stringFromDate:selectedFinishDate];
     
-    BOOL isOk;
-    
-    if(_isEdit)
-    {
-        isOk = [Mission updateWorkPlan:[LoginUser loginUserID] taskId:_taskId workGroupId:_workGroupId workPlanTitle:title startTime:startTime finishTime:finishTime taskList:taskList andType:@"4"];
-    }
-    else
-    {
-        isOk = [Mission createWorkPlan:[LoginUser loginUserID] workGroupId:_workGroupId workPlanTitle:title startTime:startTime finishTime:finishTime taskList:taskList];
-    }
-    
-    [SVProgressHUD showInfoWithStatus:@"工作计划发布中..."];
-    
-    if(isOk)
-    {
-        [SVProgressHUD showSuccessWithStatus:@"工作计划发布成功"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL isOk;
         
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        [SVProgressHUD showErrorWithStatus:@"发布工作计划失败"];
-    }
+        if(_isEdit)
+        {
+            isOk = [Mission updateWorkPlan:[LoginUser loginUserID] taskId:_taskId workGroupId:_workGroupId workPlanTitle:title startTime:startTime finishTime:finishTime taskList:taskList andType:@"4"];
+        }
+        else
+        {
+            isOk = [Mission createWorkPlan:[LoginUser loginUserID] workGroupId:_workGroupId workPlanTitle:title startTime:startTime finishTime:finishTime taskList:taskList];
+        }
+        
+        if(isOk)
+        {
+            [SVProgressHUD showSuccessWithStatus:@"工作计划发布成功"];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:@"发布工作计划失败"];
+        }
+        
+    });
+
 }
 
 - (IBAction)btnLayoutButtonClicked:(id)sender

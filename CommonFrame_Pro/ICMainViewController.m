@@ -2375,7 +2375,7 @@
 //        NSString * nameStr = [NSString stringWithFormat:@"%@   %@   %@",ms.userName, ms.workGroupName, tagStr];
         
 //        NSAttributedString *nameAttrStr = [RRAttributedString setText:nameStr font:Font(16) color:RGBCOLOR(53, 159, 219) range:NSMakeRange(0, ms.userName.length)];
-//        
+//
 //        name.attributedText = nameAttrStr;
         
         NSString * nameStr = [NSString stringWithFormat:@"%@          负责人：%@",ms.workGroupName, ms.lableUserName];
@@ -2639,7 +2639,6 @@
         {
             ((WorkPlanDetailController*)vc).isZJ = YES;
             ((WorkPlanDetailController*)vc).isZJReason = YES;
-
         }
 
         ms.isRead = YES;
