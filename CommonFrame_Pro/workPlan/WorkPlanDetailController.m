@@ -3864,7 +3864,47 @@
     {
         if(_isZJ)
         {
+            NSInteger section = indexPath.section;
             
+            Mission * ms;
+            
+            if(section >= _finishArr.count&& section != 0)//未完成
+            {
+                NSInteger index = section - _finishArr.count;
+                
+                if(!_finishArr.count)
+                {
+                    index = section - 1;
+                }
+                
+                if(index <= _unfinishArr.count - 1)
+                {
+                    NSArray * arr = [_unfinishArr[index] objectForKey:@"taskList"];
+                    
+                    ms = arr[index];
+                    
+                }
+            }
+            else if(section >= 0)//已完成
+            {
+                if(section < _finishArr.count)
+                {
+                    NSArray * arr = [_finishArr[section] objectForKey:@"taskList"];
+                    
+                    ms = arr[indexPath.row];
+                }
+            }
+            
+            if(ms)
+            {
+                UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+                ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
+                ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+
         }
         else
         {
@@ -3878,6 +3918,22 @@
 
                 
                 [_tableView reloadData];
+            }
+            else
+            {
+                NSArray * arr = [_rows[indexPath.section] objectForKey:@"taskList"];
+                
+                if(arr.count)
+                {
+                    Mission * ms = arr[indexPath.row];
+                    
+                    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+                    ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
+                    ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+                    
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
             }
         }
 

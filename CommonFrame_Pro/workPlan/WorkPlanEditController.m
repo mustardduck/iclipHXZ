@@ -17,6 +17,7 @@
 #import "WorkPlanTime.h"
 #import "SVProgressHUD.h"
 #import "ICSettingGroupViewController.h"
+#import "ICWorkingDetailViewController.h"
 
 @interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate, MQworkTimeSelectDelegate, UIAlertViewDelegate>
 {
@@ -1211,6 +1212,24 @@
 
 
         [self.navigationController pushViewController:vc animated:YES];
+    }
+    else
+    {        
+        NSNumber * numKey = [NSNumber numberWithInteger:[[_rows[indexPath.section] allKeys][0] integerValue]];
+        
+        NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
+        
+        if(arr.count)
+        {
+            Mission * ms = arr[indexPath.row];
+            
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+            ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
+            ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 

@@ -55,9 +55,14 @@
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
 
-    _rows = [Group findUserMainLabelTask:[LoginUser loginUserID] workGroupId:_workGroupId labelId:_labelIdStr];
-    
     [_jiaView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    _rows = [Group findUserMainLabelTask:[LoginUser loginUserID] workGroupId:_workGroupId labelId:_labelIdStr];
+
+    [_mainTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -143,6 +148,59 @@
     ((MQPublishMissionMainController*)vc).workGroupName = _workGroupName;
     
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)selectBtnClick:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    UITableView *  mTableView = (UITableView *)[[[[btn superview] superview] superview] superview];
+    UITableViewCell *  cell = (UITableViewCell *)[[btn superview] superview];
+    NSIndexPath * indexPath = [mTableView indexPathForCell:cell];
+    
+    for (UIControl* control in cell.contentView.subviews) {
+        if (control.tag == 1010) {
+            UIImageView* img = (UIImageView*)control;
+            img.tag = 1011;
+            img.image = [UIImage imageNamed:@"btn_gou"];
+            [self addIndexPathToSelectArray:indexPath];
+            break;
+        }
+        else if (control.tag == 1011)
+        {
+            UIImageView* img = (UIImageView*)control;
+            img.tag = 1010;
+            img.image = [UIImage imageNamed:@"btn_kuang"];
+            [self removeIndexPathFromSelectArray:indexPath];
+            break;
+        }
+    }
+}
+
+- (void)jumpBtnClick:(id)sender
+{
+    UIButton * btn = (UIButton *)sender;
+    
+    UITableView *  mTableView = (UITableView *)[[[[btn superview] superview] superview] superview];
+    UITableViewCell *  cell = (UITableViewCell *)[[btn superview] superview];
+    NSIndexPath * indexPath = [mTableView indexPathForCell:cell];
+    
+    NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+    
+    NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
+    
+    if(arr.count)
+    {
+        Mission * ms = arr[indexPath.row];
+        
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+        ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
+        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 
 - (IBAction)btnLayoutButtonClicked:(id)sender
@@ -302,6 +360,9 @@
             cell.titleLbl.text = @"无";
         }
         
+        [cell.selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.jumpBtn addTarget:self action:@selector(jumpBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        
         return cell;
     }
     else
@@ -425,10 +486,21 @@
             }
             
             CGFloat he = dateLbl.bottom + 20;
-            
+
             CGRect rect = cell.frame;
             rect.size.height = he;
             cell.frame = rect;
+            
+            UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, he)];
+            selectBtn.backgroundColor = [UIColor clearColor];
+            UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 0, SCREENWIDTH, he)];
+            jumpBtn.backgroundColor = [UIColor clearColor];
+            
+            [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+            [jumpBtn addTarget:self action:@selector(jumpBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell.contentView addSubview:selectBtn];
+            [cell.contentView addSubview:jumpBtn];
             
             cell.contentView.backgroundColor = [UIColor backgroundColor];
             
@@ -458,26 +530,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [_mainTableView cellForRowAtIndexPath:indexPath];
-    for (UIControl* control in cell.contentView.subviews) {
-        if (control.tag == 1010) {
-            UIImageView* img = (UIImageView*)control;
-            img.tag = 1011;
-            img.image = [UIImage imageNamed:@"btn_gou"];
-            [self addIndexPathToSelectArray:indexPath];
-            break;
-        }
-        else if (control.tag == 1011)
-        {
-            UIImageView* img = (UIImageView*)control;
-            img.tag = 1010;
-            img.image = [UIImage imageNamed:@"btn_kuang"];
-            [self removeIndexPathFromSelectArray:indexPath];
-            break;
-        }
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)addIndexPathToSelectArray:(NSIndexPath*)indexPath

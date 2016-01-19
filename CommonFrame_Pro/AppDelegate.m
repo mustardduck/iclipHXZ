@@ -373,8 +373,6 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToWorkPlanDetail"
                                                             object:dic];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToMissionDetail"
-//                                                            object:dic];
     }
     else
     {
