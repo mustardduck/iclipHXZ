@@ -69,6 +69,9 @@ typedef enum {
 @property (nonatomic, strong) NSNumber * labelId;
 @property (nonatomic, strong) NSString * reason;
 
+@property (nonatomic, assign) NSInteger section;//工作计划添加任务该任务所在的section
+
+
 + (NSDictionary*)getMssionListbyUserID:(NSString*)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)wgId termString:(NSString*)termStr keyString:(NSString *)keyStr;
 + (NSMutableArray*)getMssionListbyWorkGroupID:(NSString*)groupId andUserId:(NSString *)userId currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount;
 

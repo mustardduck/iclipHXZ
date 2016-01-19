@@ -87,7 +87,6 @@
         {
             NSDictionary * dic = arr[i];
             
-            NSMutableArray * keyArr = [NSMutableArray array];
             
             NSNumber * num = 0;
             if(_isEdit)
@@ -98,6 +97,8 @@
             {
                 num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
             }
+            
+            NSMutableArray * keyArr = [NSMutableArray array];
 
             for(Mission * mi in _selectedIndexList)
             {
@@ -551,12 +552,11 @@
     NSNumber * numKey = [NSNumber numberWithInteger:[labId integerValue]];
     
     Mission* mi = [_rows[indexPath.section] objectForKey:numKey][row];
-    
     mi.labelId = numKey;
     
     if (_selectedIndexList.count > 0) {
         for (Mission* ip in _selectedIndexList) {
-            if (ip.taskId == mi.taskId) {
+            if (ip.taskId == mi.taskId && ip.labelId == mi.labelId) {
                 isEx = YES;
                 break;
             }
@@ -577,13 +577,14 @@
     NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
     
     Mission* mi = [_rows[indexPath.section] objectForKey:numKey][row];
+    mi.labelId = numKey;
     
     if (_selectedIndexList.count > 0) {
         
         NSMutableArray * selArr = [[NSMutableArray alloc]initWithArray:_selectedIndexList];
         
         for (Mission* ip in selArr) {
-            if (ip.taskId == mi.taskId) {
+            if (ip.taskId == mi.taskId && ip.labelId == mi.labelId) {
                 [_selectedIndexList removeObject:ip];
             }
         }
@@ -596,10 +597,11 @@
     NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
     
     Mission* mi = [_rows[indexPath.section] objectForKey:numKey][row];
+    mi.labelId = numKey;
     BOOL isEx = NO;
     if (_selectedIndexList.count > 0) {
         for (Mission* ip in _selectedIndexList) {
-            if (ip.taskId == mi.taskId) {
+            if (ip.taskId == mi.taskId && ip.labelId == mi.labelId) {
                 isEx = YES;
                 break;
             }
