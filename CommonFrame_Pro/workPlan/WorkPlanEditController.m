@@ -1214,10 +1214,20 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     else
-    {        
-        NSNumber * numKey = [NSNumber numberWithInteger:[[_rows[indexPath.section] allKeys][0] integerValue]];
-        
-        NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
+    {
+        NSNumber * numKey;
+        NSArray * arr;
+        if(_isEdit)
+        {
+            arr = [_rows[indexPath.section] objectForKey:@"taskList"];
+        }
+        else
+        {
+            numKey = [NSNumber numberWithInteger:[[_rows[indexPath.section] allKeys][0] integerValue]];
+            
+            arr = [_rows[indexPath.section] objectForKey:numKey];
+
+        }
         
         if(arr.count)
         {
