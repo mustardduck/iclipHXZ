@@ -756,7 +756,7 @@
                                     fileNum = @"4";
                                     [pdfArr addObject:acc];
                                 }
-                                else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"])
+                                else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"] || [fileType equalsIgnoreCase:@"jpeg"])
                                 {
                                     fileNum = @"5";
                                     [imageArr addObject:acc];

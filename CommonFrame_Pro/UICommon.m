@@ -198,7 +198,7 @@ static UIViewController *imagePicker = nil;
     {
         fileNum = @"4";
     }
-    else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"])
+    else if ([fileType equalsIgnoreCase:@"png"] || [fileType equalsIgnoreCase:@"jpg"] || [fileType equalsIgnoreCase:@"jpeg"])
     {
         fileNum = @"0";
     }
