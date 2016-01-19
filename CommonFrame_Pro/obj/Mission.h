@@ -76,6 +76,7 @@ typedef enum {
 
 //pusblish mission
 - (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId;
+- (BOOL)sendMissionFromWorkPlan:(BOOL)isMission taksId:(NSString **)taskId;//从工作计划创建任务
 
 + (BOOL)reomveMission:(NSString*)taskId;
 + (Mission*)missionInfo:(NSString*)taskId responsible:(NSArray**)responsibleArray participants:(NSArray**)participantArray copyTo:(NSArray**)copyToArray labels:(NSArray**)labelArray accessories:(NSArray**)accessoryArray;

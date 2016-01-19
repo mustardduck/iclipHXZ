@@ -52,5 +52,6 @@
 @property(nonatomic,strong) NSString* parentId;
 @property(nonatomic,strong) NSString* lableUserImg;
 
+@property (nonatomic, assign) BOOL isFromWorkPlanToCreateMission;
 
 @end

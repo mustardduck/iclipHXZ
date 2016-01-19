@@ -12,7 +12,7 @@
 #import "Group.h"
 #import "Mission.h"
 #import "ICWorkingDetailViewController.h"
-#import "MQPublishMissionMainController.h"
+#import "MQPublishMissionController.h"
 #import "WorkPlanEditController.h"
 
 @interface WorkPlanAddMissionController ()<UITableViewDataSource, UITableViewDelegate>
@@ -143,11 +143,18 @@
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionMainController"];
-    ((MQPublishMissionMainController*)vc).workGroupId = _workGroupId;
-    ((MQPublishMissionMainController*)vc).workGroupName = _workGroupName;
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+    ((MQPublishMissionController*)vc).workGroupId = _workGroupId;
+    ((MQPublishMissionController*)vc).workGroupName = _workGroupName;
     
+    ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
+    ((MQPublishMissionController*)vc).isMainMission = NO;
+    
+    ((MQPublishMissionController*)vc).isEditMission = NO;//新增主任务
+    ((MQPublishMissionController*)vc).isFromWorkPlanToCreateMission = YES;
+
     [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 - (void)selectBtnClick:(id)sender

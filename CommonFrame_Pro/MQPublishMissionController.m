@@ -2282,9 +2282,38 @@
     }
     else
     {
-        [self setData:m];
-        
-        [self.navigationController popViewControllerAnimated:YES];
+        if(_isFromWorkPlanToCreateMission)
+        {
+            [SVProgressHUD showWithStatus:@"任务添加中..."];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                NSString * taskId = @"";
+                
+                BOOL isSendOK = [m sendMissionFromWorkPlan:YES taksId:&taskId];
+                
+                if (isSendOK) {
+                    
+                    [SVProgressHUD showSuccessWithStatus:@"任务添加成功"];
+                    
+                    [self hiddenKeyboard];
+                    
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else
+                {
+                    [SVProgressHUD showSuccessWithStatus:@"任务添加失败"];
+                }
+                
+            });
+
+        }
+        else
+        {
+            [self setData:m];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+        }
 
     }
     

@@ -415,6 +415,100 @@
     return isOk;
 }
 
+- (BOOL)sendMissionFromWorkPlan:(BOOL)isMission taksId:(NSString **)taskId
+{
+    BOOL isOk = NO;
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    
+    [dic setObject:self.createUserId forKey:@"userId"];
+    
+    if (self.taskId != nil) {
+        [dic setObject:self.taskId forKey:@"taskId"];
+    }
+    
+    [dic setObject:self.workGroupId forKey:@"workGroupId"];
+    [dic setObject:self.main forKey:@"main"];
+    [dic setObject:self.title forKey:@"title"];
+    
+    if (isMission) {
+        [dic setObject:self.liableUserId forKey:@"lableUserId"];
+        if(self.partList != nil)
+            [dic setObject:self.partList forKey:@"partList"];
+        if(self.cclist != nil)
+            [dic setObject:self.cclist forKey:@"ccList"];
+        
+        
+        [dic setObject:self.finishTime forKey:@"finishTime"];
+        
+        if(self.remindTime != nil)
+            [dic setObject:self.remindTime forKey:@"remindTime"];
+    }
+    
+    [dic setObject:[NSString stringWithFormat:@"%d",self.isLabel?1:0] forKey:@"isLabel"];
+
+    if(_cclist.count > 0)
+    {
+        [dic setObject:self.cclist forKey:@"ccList"];
+    }
+    
+    if (self.isLabel)
+        [dic setObject:self.labelList forKey:@"labelList"];
+    [dic setObject:[NSString stringWithFormat:@"%d",self.isAccessory?1:0]  forKey:@"isAccessory"];
+    if (self.isAccessory) {
+        //[dic setObject:self.accessoryList forKey:@"accessoryList"];
+        NSMutableArray* tA = [NSMutableArray array];
+        for (int i = 0; i < self.accessoryList.count; i++) {
+            NSMutableDictionary* di = [NSMutableDictionary dictionary];
+            
+            Accessory* acc = [self.accessoryList objectAtIndex:i];
+            
+            [di setObject:acc.name forKey:@"name"];
+            [di setObject:acc.address forKey:@"address"];
+            [di setObject:[NSString stringWithFormat:@"%ld",acc.source] forKey:@"source"];
+            //            [di setObject:acc.size forKey:@"size"];
+            [tA addObject:di];
+        }
+        [dic setObject:tA forKey:@"accessoryList"];
+    }
+    [dic setObject:[NSString stringWithFormat:@"%ld",self.type] forKey:@"type"];
+    
+    if(!self.taskId)
+    {
+        [dic setObject:@"2" forKey:@"platform"];//来源平台：1：web  2：IOs  3：android  4:微信
+    }
+    
+    NSString* jsonStr = [CommonFile toJson:dic];
+    
+    NSMutableDictionary* tmpDic = [NSMutableDictionary dictionary];
+    [tmpDic setObject:jsonStr forKey:@"json"];
+    
+    NSData* responseString;
+    
+    responseString = [HttpBaseFile requestDataWithSyncByPost:PUBLISH_SHARE_URL postData:tmpDic];
+    
+    if (responseString == nil) {
+        return isOk;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    NSString * taStr = @"";
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        if ([[((NSDictionary*)val) valueForKey:@"state"] integerValue] == 1) {
+            
+            taStr = [((NSDictionary*)val) valueForKey:@"data"];
+            
+            isOk = YES;
+        }
+    }
+    
+    *taskId = taStr;
+    
+    return isOk;
+}
+
 - (BOOL)sendMission:(BOOL)isMission taksId:(NSString **)taskId
 {
     BOOL isOk = NO;
