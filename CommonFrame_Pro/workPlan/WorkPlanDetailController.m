@@ -866,6 +866,13 @@
     textField.returnKeyType = UIReturnKeyDone;
 }
 
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    [_currentTextField resignFirstResponder];
+
+    return YES;
+}
+
 - (void) textFieldDidEndEditing:(UITextField *)textField
 {
     _inputBar.hidden = NO;
@@ -2002,7 +2009,7 @@
                         titleLabel.font = Font(15);
                         
                         titleLbl.text = @"未完成";
-                        titleLabel.text = [_unfinishArr[section] valueForKey:@"labelName"];
+                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
                         
                         [titleView addSubview:titleLabel];
                         
