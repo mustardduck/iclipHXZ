@@ -70,6 +70,7 @@
     
     NSArray* _reasonZJRows;
 
+    BOOL _isCreater;
 }
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
@@ -767,6 +768,15 @@
         
         if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
         {
+            if(_currentMission.createUserId == [LoginUser loginUserID])
+            {
+                _isCreater = YES;
+            }
+            else
+            {
+                _isCreater = NO;
+            }
+            
             if(_currentMission.type != 5)
             {
                 UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(btnRightEditClicked:)];
@@ -1695,6 +1705,10 @@
                     {
                         return count;
                     }
+                    if(!_isCreater)
+                    {
+                        return count;
+                    }
                     
                     count += 1;
 
@@ -1745,9 +1759,14 @@
                 NSArray * arr = [_rows[section] objectForKey:@"taskList"];
                 
                 NSInteger count = [arr count];
-                
+
                 if(section == _rows.count - 1)
                 {
+                    if(!_isCreater)
+                    {
+                        return count;
+                    }
+                    
                     count += 1;
                 }
                 
@@ -2492,6 +2511,17 @@
                 }
             }
             
+            if(!_isCreater)
+            {
+                CGFloat planHe = _planTableView.height;
+                
+                if(!_isZJReason)
+                {
+                    planHe -= 34;
+                }
+
+                _planTableView.height = planHe;
+            }
             
             [cell.contentView addSubview:_planTableView];
             
