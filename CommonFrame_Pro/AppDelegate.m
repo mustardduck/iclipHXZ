@@ -15,6 +15,7 @@
 #import "ICWorkingDetailViewController.h"
 #import "APService.h"
 #import "MQMyMessageListController.h"
+#import "WorkPlanDetailController.h"
 
 #define checkCurrentConWith(_model) \
 if ([currentViewCon isKindOfClass:[_model class]]) \
@@ -357,6 +358,36 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
     */
 }
 
+- (void) jumpToWorkPlanView:(NSString *)taskId
+{
+    UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+    
+    UIViewController* currentViewCon = nav.topViewController;
+    
+    if([currentViewCon isKindOfClass:[WorkPlanDetailController class]])
+    {
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        
+        [dic setObject:taskId forKey:@"taskId"];
+        [dic setObject:_commentsId forKey:@"commentId"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToWorkPlanDetail"
+                                                            object:dic];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToMissionDetail"
+//                                                            object:dic];
+    }
+    else
+    {
+        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanDetailController"];
+        
+        ((WorkPlanDetailController*)vc).taskId = taskId;
+        ((WorkPlanDetailController*)vc).commentsId = _commentsId;
+
+        [nav pushViewController:vc animated:YES];
+    }
+}
+
 - (void) jumpToMainView:(NSString *)workGroupId
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -408,6 +439,10 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         else if (alertView.tag == 9)
         {
             [self jumpToSystemList];
+        }
+        else if (alertView.tag == 4 || alertView.tag == 5)
+        {
+            [self jumpToWorkPlanView:_taskId];
         }
         else
         {

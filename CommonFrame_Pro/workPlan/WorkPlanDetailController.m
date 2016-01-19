@@ -81,7 +81,7 @@
 
 @implementation WorkPlanDetailController
 
-- (void)notiForJumpToMissionDetail:(NSNotification *)note {
+- (void)notiForJumpToWorkPlanDetail:(NSNotification *)note {
     
     NSDictionary * dic = note.object;
     
@@ -398,7 +398,7 @@
     _unfinishArr = [NSMutableArray array];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notiForJumpToMissionDetail:) name:@"jumpToMissionDetail"
+                                             selector:@selector(notiForJumpToWorkPlanDetail:) name:@"jumpToWorkPlanDetail"
                                                object:nil];
     
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
@@ -752,7 +752,13 @@
         NSString * title = @"工作计划详情";
         if(_currentMission.type == 5)
         {
+            self.isZJReason = YES;
+            
             title = @"工作计划总结";
+        }
+        else
+        {
+            self.isZJReason = NO;
         }
         
         self.navigationItem.title = title;
