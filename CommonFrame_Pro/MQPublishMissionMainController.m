@@ -109,9 +109,9 @@
     // animationDuration = 0.250000
 }
 
-- (void) changeAddBtnLblColor:(MQPublishMissionMainCell*)cell
+- (void) changeAddBtnLblColor:(MQPublishMissionMainCell*)cell textStr:(NSString *)textStr
 {
-    if(_mainTextView.text.length)
+    if(textStr.length)
     {
         [cell.addBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
@@ -159,7 +159,7 @@
     
     MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexpath];
     
-    [self changeAddBtnLblColor:cell];
+    [self changeAddBtnLblColor:cell textStr:_mainTextView.text];
 }
 
 - (void) textViewDidEndEditing:(UITextView *)textView
@@ -172,7 +172,7 @@
     }
     MQPublishMissionMainCell * cell = [_mainTableView cellForRowAtIndexPath:indexpath];
     
-    [self changeAddBtnLblColor:cell];
+    [self changeAddBtnLblColor:cell textStr:_mainTextView.text];
 }
 
 - (void) setHeaderView
@@ -689,7 +689,11 @@
             
             //        cell.addBtn.tag = 2222;
             
-            [self changeAddBtnLblColor:cell];
+            NSDictionary * titleDic = _childMissionArr[indexPath.row - 1];
+            
+            NSString * ctitle = [titleDic valueForKey:@"title"];
+            
+            [self changeAddBtnLblColor:cell textStr:ctitle];
             
             [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -789,7 +793,7 @@
         
         //        cell.addBtn.tag = 2222;
         
-        [self changeAddBtnLblColor:cell];
+        [self changeAddBtnLblColor:cell textStr:_mainTextView.text];
         
         [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
     }
