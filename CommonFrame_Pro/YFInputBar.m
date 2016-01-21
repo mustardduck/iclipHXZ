@@ -451,7 +451,7 @@
                         
                         CGRect afr = ((WorkPlanDetailController*)self.parentController).tableView.frame;
                         if (CGRectGetWidth(afr) == 0 && CGRectGetHeight(afr) == 0) {
-                            CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66);
+                            CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 44 - 66 + 54);//momo + 54
                             _relativeControlOriFrame = frame;
                         }
                         else
