@@ -168,7 +168,9 @@
                                 cm.missionText = [di valueForKey:@"main"];
                                 cm.wgName = [di valueForKey:@"wgName"];
                                 cm.totalPages = totalPages;
-                                
+                                cm.type = [[di valueForKey:@"type"] integerValue];
+                                cm.wgID = [di valueForKey:@"workGroupId"];
+
                                 [array addObject:cm];
                             }
                         }

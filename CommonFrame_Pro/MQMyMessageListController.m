@@ -16,6 +16,7 @@
 #import "ICWorkingDetailViewController.h"
 #import "SVProgressHUD.h"
 #import "ICMainViewController.h"
+#import "WorkPlanDetailController.h"
 
 @interface MQMyMessageListController ()<UITableViewDataSource, UITableViewDelegate>
 {
@@ -85,6 +86,14 @@
     [self addRefrish];
 
     [self initHeaderView];
+    
+    [self layoutHeaderView];
+    
+    if(_sysBtnSelected && _sysMegEdit)
+    {
+        [self resetHeaderView];
+        [_tableView.footer resetNoMoreData];
+    }
     
 }
 
@@ -230,13 +239,13 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self layoutHeaderView];
-
-    if(_sysBtnSelected && _sysMegEdit)
-    {
-        [self resetHeaderView];
-        [_tableView.footer resetNoMoreData];
-    }
+//    [self layoutHeaderView];
+//
+//    if(_sysBtnSelected && _sysMegEdit)
+//    {
+//        [self resetHeaderView];
+//        [_tableView.footer resetNoMoreData];
+//    }
 
 }
 
@@ -774,12 +783,33 @@
     {
         MessageCenter * mc = _megArr[indexPath.row];
         
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-        ((ICWorkingDetailViewController*)vc).taskId = mc.taskId;
-        ((ICWorkingDetailViewController*)vc).messageId = mc.megId;
-        
-        [self.navigationController pushViewController:vc animated:YES];
+        if(mc.type == 4 || mc.type == 5)
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanDetailController"];
+            ((WorkPlanDetailController*)vc).taskId = mc.taskId;
+            ((WorkPlanDetailController*)vc).messageId = mc.megId;            ((WorkPlanDetailController*)vc).indexInMainArray = indexPath.row;
+            ((WorkPlanDetailController*)vc).workGroupId = mc.wgID;
+            
+            if(mc.type == 5)
+            {
+                ((WorkPlanDetailController*)vc).isZJ = YES;
+                ((WorkPlanDetailController*)vc).isZJReason = YES;
+            }
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+            
+            ((ICWorkingDetailViewController*)vc).taskId = mc.taskId;
+            ((ICWorkingDetailViewController*)vc).messageId = mc.megId;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }

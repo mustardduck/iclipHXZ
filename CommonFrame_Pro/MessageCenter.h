@@ -21,6 +21,10 @@
 @property (nonatomic, strong) NSString * rightImg;//右边图片
 @property (nonatomic, strong) NSString * wgName;//群组名
 @property (nonatomic,assign) NSInteger  totalPages;
+@property (nonatomic,assign) NSInteger  type;// 1 任务  2：异常  3议题 4 计划 5 总结  6加入工作组  7：评论 8:申请 9:审核加入org 10:任务超时
+@property (nonatomic, strong) NSString * wgID;//群组ID
+
+
 
 + (NSMutableArray*)getMessageListByUserID:(NSString*)userID currentPageIndex:(NSInteger)page pageSize:(NSInteger)rowCount workGroupId:(NSString *)workGroupId;
 
