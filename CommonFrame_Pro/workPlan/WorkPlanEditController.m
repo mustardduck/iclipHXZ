@@ -870,15 +870,15 @@
                 titleLbl.backgroundColor = [UIColor grayMarkColor];
                 titleLbl.textColor = [UIColor whiteColor];
                 titleLbl.font = Font(15);
-                titleLbl.text = @"+  添加任务";
+                titleLbl.text = @"     添加任务";
                 titleLbl.textAlignment = NSTextAlignmentCenter;
                 [titleLbl setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
 
                 [cell.contentView addSubview:titleLbl];
                 
-//                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 0, 14, 14)];
-//                icon.image = [UIImage imageNamed:@"icon_tianjiarenwu"];
-//                [cell.contentView addSubview:icon];
+                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(X(titleLbl) + 60, 15, 14, 14)];
+                icon.image = [UIImage imageNamed:@"icon_xinjianrenwu"];
+                [cell.contentView addSubview:icon];
                 
                 cell.backgroundColor = [UIColor backgroundColor];
                 
@@ -907,15 +907,15 @@
                 titleLbl.backgroundColor = [UIColor grayMarkColor];
                 titleLbl.textColor = [UIColor whiteColor];
                 titleLbl.font = Font(15);
-                titleLbl.text = @"+  添加任务";
+                titleLbl.text = @"     添加任务";
                 titleLbl.textAlignment = NSTextAlignmentCenter;
                 [titleLbl setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
                 
                 [cell.contentView addSubview:titleLbl];
                 
-                //                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 0, 14, 14)];
-                //                icon.image = [UIImage imageNamed:@"icon_tianjiarenwu"];
-                //                [cell.contentView addSubview:icon];
+                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(X(titleLbl) + 60, 15, 14, 14)];
+                icon.image = [UIImage imageNamed:@"icon_xinjianrenwu"];
+                [cell.contentView addSubview:icon];
                 
                 cell.backgroundColor = [UIColor backgroundColor];
                 
@@ -1096,15 +1096,15 @@
                 titleLbl.backgroundColor = [UIColor grayMarkColor];
                 titleLbl.textColor = [UIColor whiteColor];
                 titleLbl.font = Font(15);
-                titleLbl.text = @"+  添加任务";
+                titleLbl.text = @"     添加任务";
                 titleLbl.textAlignment = NSTextAlignmentCenter;
                 [titleLbl setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
                 
                 [cell.contentView addSubview:titleLbl];
                 
-                //                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 0, 14, 14)];
-                //                icon.image = [UIImage imageNamed:@"icon_tianjiarenwu"];
-                //                [cell.contentView addSubview:icon];
+                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(X(titleLbl) + 60, 15, 14, 14)];
+                icon.image = [UIImage imageNamed:@"icon_xinjianrenwu"];
+                [cell.contentView addSubview:icon];
                 
                 cell.backgroundColor = [UIColor backgroundColor];
                 
@@ -1133,15 +1133,15 @@
                 titleLbl.backgroundColor = [UIColor grayMarkColor];
                 titleLbl.textColor = [UIColor whiteColor];
                 titleLbl.font = Font(15);
-                titleLbl.text = @"+  添加任务";
+                titleLbl.text = @"     添加任务";
                 titleLbl.textAlignment = NSTextAlignmentCenter;
                 [titleLbl setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
                 
                 [cell.contentView addSubview:titleLbl];
                 
-                //                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 0, 14, 14)];
-                //                icon.image = [UIImage imageNamed:@"icon_tianjiarenwu"];
-                //                [cell.contentView addSubview:icon];
+                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(X(titleLbl) + 60, 15, 14, 14)];
+                icon.image = [UIImage imageNamed:@"icon_xinjianrenwu"];
+                [cell.contentView addSubview:icon];
                 
                 cell.backgroundColor = [UIColor backgroundColor];
                 
