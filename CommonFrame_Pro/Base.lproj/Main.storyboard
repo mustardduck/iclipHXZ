@@ -3896,7 +3896,7 @@
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FfR-zU-3X8">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="224" id="dPo-1K-wlY"/>
                                     <constraint firstAttribute="width" constant="187" id="ilp-gd-eb3"/>
@@ -3916,9 +3916,9 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsS-5M-faQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="224" id="XUD-zl-7Qj"/>
+                                    <constraint firstAttribute="height" constant="568" id="XUD-zl-7Qj"/>
                                     <constraint firstAttribute="width" constant="187" id="yG5-FL-Pmc"/>
                                 </constraints>
                                 <variation key="default">
@@ -3987,9 +3987,11 @@
                     <connections>
                         <outlet property="_leftMenuView" destination="YsS-5M-faQ" id="ncC-0O-PZY"/>
                         <outlet property="_rightpMenuView" destination="FfR-zU-3X8" id="B8g-kX-dFi"/>
+                        <outlet property="leftViewHeightCons" destination="XUD-zl-7Qj" id="8T9-7k-POI"/>
                         <outlet property="leftViewWidthCons" destination="yG5-FL-Pmc" id="w3K-ae-jlQ"/>
                         <outlet property="mainTableView" destination="F8H-Um-BzE" id="ByF-IW-Xku"/>
                         <outlet property="rightBarBtnItem" destination="LIW-Mz-xbe" id="NRe-a8-LOM"/>
+                        <outlet property="rightViewHeightCons" destination="dPo-1K-wlY" id="cbk-pG-k9o"/>
                         <outlet property="rightViewWidthCons" destination="ilp-gd-eb3" id="h9S-H3-uJn"/>
                         <outlet property="view" destination="jk2-i5-flH" id="QcE-So-aVx"/>
                     </connections>

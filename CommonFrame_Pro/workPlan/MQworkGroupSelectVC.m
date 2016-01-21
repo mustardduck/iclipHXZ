@@ -21,6 +21,10 @@
 
 @implementation MQworkGroupSelectVC
 
+- (void) closeButtonClick
+{
+    [self showTopMenu:@"1"];
+}
 
 #pragma mark -
 #pragma mark TableViewDelegate
@@ -31,9 +35,14 @@
 
     _mainView = pView;
     
-    [_mainView setBackgroundColor:[UIColor blackColor]];
+//    [_mainView setBackgroundColor:[UIColor clearColor]];
     
     [button addTarget:self action:@selector(showTopMenu:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton * closeBtn = [[UIButton alloc] initWithFrame:_mainView.frame];
+    closeBtn.backgroundColor = [UIColor clearColor];
+    [closeBtn addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [_mainView addSubview:closeBtn];
 
     CGRect tableFrame = CGRectMake(0, 0 , SCREENWIDTH / 2, 224);
     
@@ -69,6 +78,8 @@
     if ([sender isKindOfClass:[NSString class]]) {
         
         if (_isOpen) {
+            [_mainView setBackgroundColor:[UIColor clearColor]];
+
             [self performDismissAnimation];
             _isOpen = FALSE;
         }
@@ -103,7 +114,7 @@
         titleLbl.tag = 111;
         titleLbl.backgroundColor = [UIColor clearColor];
         titleLbl.textAlignment = NSTextAlignmentCenter;
-        titleLbl.font = Font(17);
+        titleLbl.font = Font(15);
         titleLbl.textColor = [UIColor whiteColor];
     }
     titleLbl.text = gr.workGroupName;
@@ -177,12 +188,18 @@
 
 }
 
+- (void)delayMethodShadow
+{
+    [_mainView setBackgroundColor:RGBACOLOR(0, 0, 0, 0.5 )];
+}
+
 - (void)performOpenAnimation
 {
     _mainView.hidden = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.2 animations:^{
             _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 44);
+            [self performSelector:@selector(delayMethodShadow) withObject:nil afterDelay:0.2f];
 
         }];
     });

@@ -48,6 +48,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewWidthCons;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightViewWidthCons;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarBtnItem;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewHeightCons;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightViewHeightCons;
 
 @end
 
@@ -167,13 +169,15 @@
 - (UIView *)layoutTopView
 {
     UIView * topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 44)];
-    topView.backgroundColor = [UIColor clearColor];
     
     _groupBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH / 2, 44)];
-    _groupBtn.backgroundColor = [UIColor backgroundColor];
+    _groupBtn.backgroundColor = [UIColor grayMarkColor];
     [_groupBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_groupBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-    [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+    [_groupBtn addTarget:self action:@selector(groupBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+
+//    [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
     [_groupBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
     
     [topView addSubview:_groupBtn];
@@ -199,10 +203,11 @@
     [topView addSubview:_workGroupNameLbl];
     
     _timeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2 + 1, 0, SCREENWIDTH / 2 - 1, 44)];
-    _timeBtn.backgroundColor = [UIColor backgroundColor];
+    _timeBtn.backgroundColor = [UIColor grayMarkColor];
     [_timeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_timeBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-    [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+    [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+    [_timeBtn addTarget:self action:@selector(timeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_timeBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
     [topView addSubview:_timeBtn];
 
@@ -234,6 +239,8 @@
     line.backgroundColor = [UIColor grayLineColor];
     [topView addSubview:line];
     
+    topView.backgroundColor = [UIColor grayMarkColor];
+    
     return topView;
 }
 
@@ -246,7 +253,9 @@
 {
     NSArray * groupList = [Group findMeWgListByUserID:[LoginUser loginUserID]];
     
-    _leftViewWidthCons.constant = SCREENWIDTH / 2;
+//    _leftViewWidthCons.constant = SCREENWIDTH / 2;
+    _leftViewWidthCons.constant = SCREENWIDTH;
+    _leftViewHeightCons.constant = SCREENHEIGHT;
     
     _MQworkGroupSelectVC = [[MQworkGroupSelectVC alloc] initWithMenuNameList:groupList actionControl:_groupBtn parentView:_leftMenuView];//_groupBtn
     _MQworkGroupSelectVC.wgId = _workGroupId;
@@ -282,6 +291,7 @@
     _timeLbl.text = timeStr;
     
     _rightViewWidthCons.constant = SCREENWIDTH;
+    _rightViewHeightCons.constant = SCREENHEIGHT;
 
     _MQworkTimeSelectVC = [[MQworkTimeSelectVC alloc] initWithMenuNameList:timeList actionControl:_timeBtn parentView:_rightpMenuView];
     _MQworkTimeSelectVC.currentWPT = _selectedWPT;
@@ -356,7 +366,19 @@
     NSInteger index = [val integerValue];
     if(index == 1)
     {
+        if(_timeBtn.tag == 1)
+        {
+            _timeBtn.tag = 0;
+            [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+        }
+        
+        if (_MQworkTimeSelectVC.isOpen) {
+            
+            [_MQworkTimeSelectVC showTopMenu:@"2"];
+            _layoutBtn.hidden = NO;
+        }
         if (_MQworkGroupSelectVC.isOpen) {
+            
             [_MQworkGroupSelectVC showTopMenu:@"1"];
             _titleLeftLbl.hidden = NO;
         }
@@ -369,7 +391,19 @@
     }
     if(index == 2)
     {
+        if(_groupBtn.tag == 1)
+        {
+            _groupBtn.tag = 0;
+            [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+        }
+        
+        if (_MQworkGroupSelectVC.isOpen) {
+            
+            [_MQworkGroupSelectVC showTopMenu:@"1"];
+            _titleLeftLbl.hidden = NO;
+        }
         if (_MQworkTimeSelectVC.isOpen) {
+
             [_MQworkTimeSelectVC showTopMenu:@"2"];
             _layoutBtn.hidden = NO;
         }
@@ -442,12 +476,32 @@
 
 - (IBAction)groupBtnClicked:(id)sender
 {
-    
+    if(_groupBtn.tag != 1)
+    {
+        _groupBtn.tag = 1;
+        [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        _groupBtn.tag = 0;
+        [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+
+    }
 }
 
 - (IBAction)timeBtnClicked:(id)sender
 {
-    
+    if(_timeBtn.tag != 1)
+    {
+        _timeBtn.tag = 1;
+        [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_2"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        _timeBtn.tag = 0;
+        [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -1249,6 +1303,12 @@
 
 - (void)didSelectGroup:(Group*)group
 {
+    if(_groupBtn.tag == 1)
+    {
+        _groupBtn.tag = 0;
+        [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+    }
+    
     _currentGroup = group;
     
     _workGroupNameLbl.text = group.workGroupName;
@@ -1296,6 +1356,12 @@
 
 - (void)didSelectTime:(WorkPlanTime *)time
 {
+    if(_timeBtn.tag == 1)
+    {
+        _timeBtn.tag = 0;
+        [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+    }
+    
     _layoutBtn.hidden = NO;
 
     NSString * timeStr = @"";
