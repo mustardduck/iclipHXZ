@@ -840,14 +840,14 @@
     }
     
     CGRect frame = _mainTableView.frame;
-    frame.size.height = self.view.bounds.size.height-self.keyboardHeight - 50;
+    frame.size.height = self.view.bounds.size.height-self.keyboardHeight;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:0.250000];
     self.mainTableView.frame = frame;
     [UIView commitAnimations];
     
-    NSIndexPath * localIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    NSIndexPath * localIndexPath = [NSIndexPath indexPathForRow:index + 1 inSection:0];
 
     [self.mainTableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
