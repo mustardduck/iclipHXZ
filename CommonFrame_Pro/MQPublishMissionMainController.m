@@ -116,13 +116,14 @@
         [cell.addBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         [cell.addBtn setImage:[UIImage imageNamed:@"icon_tianjia_1"] forState:UIControlStateNormal];
+        
     }
     else
     {
         [cell.addBtn setTitleColor:RGBACOLOR(255, 255, 255, 0.3) forState:UIControlStateNormal];
         
         [cell.addBtn setImage:[UIImage imageNamed:@"icon_tianjia_2"] forState:UIControlStateNormal];
-
+        
     }
 }
 
@@ -696,6 +697,7 @@
             [self changeAddBtnLblColor:cell textStr:ctitle];
             
             [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
+
         }
         else
         {
@@ -838,7 +840,7 @@
     }
     
     CGRect frame = _mainTableView.frame;
-    frame.size.height = self.view.bounds.size.height-self.keyboardHeight;
+    frame.size.height = self.view.bounds.size.height-self.keyboardHeight - 50;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:0.250000];
@@ -990,9 +992,24 @@
 
 - (void) addMissionCell:(id)sender
 {
-//    _dataCount ++;
+    UIButton * btn = (UIButton * )sender;
     
-    if(_mainTextView.text.length > 0)
+    UITableView *  mTableView = (UITableView *)[[[[[[btn superview] superview] superview] superview] superview] superview];
+    UITableViewCell *  cell = (UITableViewCell *)[[[[btn superview] superview] superview] superview];
+
+    NSIndexPath * indexp = [mTableView indexPathForCell:cell];
+    
+    NSString * ctitle = @"";
+    if(indexp.row <= _childMissionArr.count && indexp.row >= 1)
+    {
+       ctitle = [_childMissionArr[indexp.row - 1] valueForKey:@"title"];
+    }
+    else
+    {
+        ctitle = _mainTextView.text;
+    }
+
+    if(ctitle.length)
     {
         NSMutableDictionary * dic = [NSMutableDictionary dictionary];
         [dic setObject:@"" forKey:@"title"];
@@ -1016,7 +1033,14 @@
     }
     else
     {
-        [SVProgressHUD showErrorWithStatus:@"请先填写主任务"];
+        if(!_childMissionArr.count)
+        {
+            [SVProgressHUD showErrorWithStatus:@"请先填写主任务"];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:@"请先填写子任务"];
+        }
     }
 }
 
