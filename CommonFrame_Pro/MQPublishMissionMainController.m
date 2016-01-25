@@ -697,7 +697,13 @@
             [self changeAddBtnLblColor:cell textStr:ctitle];
             
             [cell.addBtn addTarget:self action:@selector(addMissionCell:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UILabel* numLbl = [cell viewWithTag:3];
 
+            if(numLbl)
+            {
+                numLbl.hidden = YES;
+            }
         }
         else
         {
@@ -721,6 +727,20 @@
                 line2.tag = 2;
             }
             [cell.contentView addSubview:line2];
+            
+            UILabel* numLbl = [cell viewWithTag:3];
+            numLbl.hidden = NO;
+            if(!numLbl)
+            {
+                numLbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 14, 16, 44)];
+                numLbl.font = Font(15);
+                numLbl.textColor = [UIColor whiteColor];
+                numLbl.backgroundColor = [UIColor clearColor];
+                numLbl.tag = 3;
+            }
+            
+            numLbl.text = [NSString stringWithFormat:@"%ld", indexPath.row + 1];
+            [cell.contentView addSubview:numLbl];
             
             [self addDoneToKeyboard:cell.titleLbl];
             
@@ -794,6 +814,7 @@
         [cell.contentView addSubview:line2];
         
         //        cell.addBtn.tag = 2222;
+        
         
         [self changeAddBtnLblColor:cell textStr:_mainTextView.text];
         
