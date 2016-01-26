@@ -1309,6 +1309,8 @@
         
         cell.titleLbl.text = mark.labelName;
         
+        cell.delBtn.tag = indexPath.row;
+        
         [cell.delBtn addTarget:self action:@selector(delTagItem:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell setRoundCorner:3.3];
