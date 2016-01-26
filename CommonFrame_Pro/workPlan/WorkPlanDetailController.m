@@ -4219,6 +4219,10 @@
         [self.icMainViewController setValue:@"1" forKey:@"isRefreshBottom"];
     }
     
+    if ([self.icMainViewController respondsToSelector:@selector(setIsSetting:)]) {
+        [self.icMainViewController setValue:@"1" forKey:@"isSetting"];
+    }
+    
     if ([self.icDetaiVC respondsToSelector:@selector(setContent:)]) {
         [self.icDetaiVC setValue:@"1" forKey:@"content"];
     }

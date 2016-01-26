@@ -2623,47 +2623,55 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Mission* ms = [_contentArray objectAtIndex:indexPath.row];
     
-    if(ms.type == 4 || ms.type == 5)
+    if(_tableView.header.state == MJRefreshHeaderStateIdle && [_isSetting intValue] == 1)
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanDetailController"];
-        ((WorkPlanDetailController*)vc).taskId = ms.taskId;
-        ((WorkPlanDetailController*)vc).indexInMainArray = indexPath.row;
-        ((WorkPlanDetailController*)vc).icMainViewController = self;
-        ((WorkPlanDetailController*)vc).workGroupId = _workGroupId;
-        ((WorkPlanDetailController*)vc).contentArr = _contentArray;
+        Mission* ms = [_contentArray objectAtIndex:indexPath.row];
         
-        if(ms.type == 5)
+        if(ms.type == 4 || ms.type == 5)
         {
-            ((WorkPlanDetailController*)vc).isZJ = YES;
-            ((WorkPlanDetailController*)vc).isZJReason = YES;
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanDetailController"];
+            ((WorkPlanDetailController*)vc).taskId = ms.taskId;
+            ((WorkPlanDetailController*)vc).indexInMainArray = indexPath.row;
+            ((WorkPlanDetailController*)vc).icMainViewController = self;
+            ((WorkPlanDetailController*)vc).workGroupId = _workGroupId;
+            ((WorkPlanDetailController*)vc).contentArr = _contentArray;
+            
+            if(ms.type == 5)
+            {
+                ((WorkPlanDetailController*)vc).isZJ = YES;
+                ((WorkPlanDetailController*)vc).isZJReason = YES;
+            }
+            
+            ms.isRead = YES;
+            ms.isNewCom = NO;
+            
+            [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
+            
+            _isSetting = @"0";
+            
+            [self.navigationController pushViewController:vc animated:YES];
         }
-
-        ms.isRead = YES;
-        ms.isNewCom = NO;
-        
-        [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else
-    {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
-        ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
-        ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
-        ((ICWorkingDetailViewController*)vc).icMainViewController = self;
-        ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
-        ((ICWorkingDetailViewController*)vc).contentArr = _contentArray;
-        
-        ms.isRead = YES;
-        ms.isNewCom = NO;
-        
-        [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
-        
-        [self.navigationController pushViewController:vc animated:YES];
+        else
+        {
+            UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICWorkingDetailViewController"];
+            ((ICWorkingDetailViewController*)vc).taskId = ms.taskId;
+            ((ICWorkingDetailViewController*)vc).indexInMainArray = indexPath.row;
+            ((ICWorkingDetailViewController*)vc).icMainViewController = self;
+            ((ICWorkingDetailViewController*)vc).workGroupId = _workGroupId;
+            ((ICWorkingDetailViewController*)vc).contentArr = _contentArray;
+            
+            ms.isRead = YES;
+            ms.isNewCom = NO;
+            
+            [_contentArray replaceObjectAtIndex:indexPath.row withObject:ms];
+            
+            _isSetting = @"0";
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
