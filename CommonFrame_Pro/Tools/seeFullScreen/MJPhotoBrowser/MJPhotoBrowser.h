@@ -19,6 +19,9 @@
 
 @property (nonatomic, assign) BOOL isShowLogo;
 
+@property (nonatomic, strong) id icWorkingVC;
+
+
 // 显示
 - (void)show;
 @end

@@ -32,7 +32,6 @@
     
     NSInteger                   _oriIndexRow;
     NSMutableArray*             _commentArray;
-    NSMutableArray*                   _imageArray;
     NSMutableArray*             _attachmentImageHeightArray;
     BOOL                        _hasLoaded;
     CMPopTipView*               _navBarLeftButtonPopTipView;
@@ -1348,7 +1347,8 @@
         ((PreviewViewController*)vc).dataArray = _imageArray;
     }
     ((PreviewViewController*)vc).currentPage = btn.tag;
-    
+    ((PreviewViewController*)vc).icWorkingVC = self;
+
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 

@@ -12,6 +12,7 @@
 #import "MJPhotoToolbar.h"
 //#import "RTLabel.h"
 #import "UICommon.h"
+#import "ICWorkingDetailViewController.h"
 
 #define kPadding 10
 #define kPhotoViewTagOffset 1000
@@ -118,6 +119,23 @@
     
     photoView.frame = photoViewFrame;
     photo.showedOriginImage = YES;
+    photo.url = photo.originUrl;
+    
+    NSMutableDictionary * daDic = [[NSMutableDictionary alloc] initWithDictionary:_dataArray[index]];
+    [daDic setObject:photo.url.absoluteString forKey:@"PictureUrl"];
+    
+    NSMutableArray * dArr = [NSMutableArray arrayWithArray:_dataArray];
+    [dArr replaceObjectAtIndex:index withObject:daDic];
+    
+    _dataArray = dArr;
+    
+    if(_dataArray.count)
+    {
+        if ([self.icWorkingVC respondsToSelector:@selector(setImageArray:)]) {
+            [self.icWorkingVC setValue:_dataArray forKey:@"imageArray"];
+        }
+    }
+    
     photo.firstShow = YES;
     photoView.photo = photo;
         
@@ -129,9 +147,11 @@
     
     [_photoScrollView addSubview:photoView];
     
-    NSString * str = [NSString stringWithFormat:@"查看原图 (%@)", photo.originSize];
-    [_oriBtn setTitle:str forState:UIControlStateNormal];
-    _oriBtn.hidden = photo.originUrl ? NO : YES;//momo
+    
+    _oriBtn.hidden = YES;
+//    NSString * str = [NSString stringWithFormat:@"查看原图 (%@)", photo.originSize];
+//    [_oriBtn setTitle:str forState:UIControlStateNormal];
+//    _oriBtn.hidden = photo.originUrl ? NO : YES;//momo
 
 }
 
@@ -334,10 +354,18 @@
     [_photoScrollView addSubview:photoView];
     
     [self createSeeOriginImage];
-    NSString * str = [NSString stringWithFormat:@"查看原图 (%@)", photo.originSize];
-    [_oriBtn setTitle:str forState:UIControlStateNormal];
-    _oriBtn.hidden = photo.originUrl ? NO : YES;//momo
-    _oriBtn.tag = index;
+    
+    if(photo.showedOriginImage || [photo.originUrl isEqual:photo.url])
+    {
+        _oriBtn.hidden = YES;
+    }
+    else
+    {
+        NSString * str = [NSString stringWithFormat:@"查看原图 (%@)", photo.originSize];
+        [_oriBtn setTitle:str forState:UIControlStateNormal];
+        _oriBtn.hidden = photo.originUrl ? NO : YES;//momo
+        _oriBtn.tag = index;
+    }
     
     [self loadImageNearIndex:index];
 }
@@ -348,12 +376,26 @@
     if (index > 0) {
         MJPhoto *photo = _photos[index - 1];
         
-        [SDWebImageManager downloadWithURL:photo.url];
+        if(photo.showedOriginImage)
+        {
+            [SDWebImageManager downloadWithURL:photo.originUrl];
+        }
+        else
+        {
+            [SDWebImageManager downloadWithURL:photo.url];
+        }
     }
     
     if (index < _photos.count - 1) {
         MJPhoto *photo = _photos[index + 1];
-        [SDWebImageManager downloadWithURL:photo.url];
+        if(photo.showedOriginImage)
+        {
+            [SDWebImageManager downloadWithURL:photo.originUrl];
+        }
+        else
+        {
+            [SDWebImageManager downloadWithURL:photo.url];
+        }
     }
 }
 

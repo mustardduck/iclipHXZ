@@ -69,6 +69,7 @@
     MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
     browser.delegate = self;
     browser.dataArray = _dataArray;
+    browser.icWorkingVC = self.icWorkingVC;
     browser.currentPhotoIndex = _currentPage; // 弹出相册时显示的第一张图片是？
     browser.photos = photos; // 设置所有的图片
     browser.isShowLogo = _isShowLogo;
