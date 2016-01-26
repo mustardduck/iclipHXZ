@@ -4283,6 +4283,10 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    _inputBar.textField.placeHolderLabel.width = 200;
+    _inputBar.textField.placeHolderLabel.text = @"点击回复";
+    _indexRow = 1099;
+    
     _inputBar.clearInputWhenSend = NO;
     
     if(_inputBar.btnTypeHasClicked)
