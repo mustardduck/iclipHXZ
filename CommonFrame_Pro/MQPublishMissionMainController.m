@@ -934,13 +934,18 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         [self hiddenKeyboard];
-        dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC);
-        dispatch_after(time, dispatch_get_main_queue(), ^{
-            
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否删除该任务？"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-            alert.tag = indexPath.row;
-            [alert show];
-        });
+        
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否删除该任务？"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = indexPath.row;
+        [alert show];
+        
+//        dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC);
+//        dispatch_after(time, dispatch_get_main_queue(), ^{
+//            
+//            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"是否删除该任务？"] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//            alert.tag = indexPath.row;
+//            [alert show];
+//        });
     }
 }
 
