@@ -1098,6 +1098,18 @@
         }
     }
     
+    for(int i = 0; i < _cMarkAarry.count; i ++)
+    {
+        Mark * ma = _cMarkAarry[i];
+        
+        if(ma.labelId == mark.labelId)
+        {
+            [_cMarkAarry removeObjectAtIndex:i];
+            
+            break;
+        }
+    }
+    
     [self refreshTagCollView];
 
 }
