@@ -487,7 +487,10 @@
             }
             [imgs addObject:gp.workGroupImg];
             [names addObject:gp.workGroupName];
-            [_badges addObject:gp.messageCount];
+            
+            NSString * badgeStr = [NSString stringWithFormat:@"%ld", [gp.messageCount integerValue] + [gp.allNum integerValue] ];
+            
+            [_badges addObject:badgeStr];
             [_allNumbadges addObject:gp.allNum];
         }
         _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne allNumBadge:_allNumbadges];
