@@ -399,7 +399,8 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         
         ((ICWorkingDetailViewController*)vc).taskId = taskId;
         ((ICWorkingDetailViewController*)vc).commentsId = _commentsId;
-        
+        ((ICWorkingDetailViewController*)vc).isJumpToBottom = YES;
+
         [nav pushViewController:vc animated:YES];
     }
     
@@ -452,6 +453,7 @@ if ([currentViewCon isKindOfClass:[_model class]]) \
         
         ((WorkPlanDetailController*)vc).taskId = taskId;
         ((WorkPlanDetailController*)vc).commentsId = _commentsId;
+        ((WorkPlanDetailController*)vc).isJumpToBottom = YES;
 
         [nav pushViewController:vc animated:YES];
     }

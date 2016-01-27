@@ -48,4 +48,6 @@
 @property (nonatomic,strong) id                     icDetaiVC;
 @property (nonatomic,strong) NSMutableArray*   imageArray;
 
+@property (nonatomic, assign) BOOL  isJumpToBottom;
+
 @end

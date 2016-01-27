@@ -460,11 +460,23 @@
             [self.view addSubview:_inputBar];
             
             [acInd stopAnimating];
+            
+            if(_isJumpToBottom)
+            {
+                [self jumpToBottomComment];
+            }
         });
     });
     
     //_dataList = [NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10", nil];
     //_replyList = [NSMutableArray arrayWithObjects:@" ",@" ",@"回形针工具上线申请1！",@"回形针工具上线申请2！",@"回形针工具上线申请3！",@"回形针工具上线申请！",@"回形针工具上线申请！",@"回形针工具上线申请8！",@"回形针工具上线申请9！",@"回形针工具上线申请10！", nil];
+    
+}
+
+- (void)jumpToBottomComment{
+    
+    NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:_commentArray.count inSection:0];
+    [_tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
 }
 

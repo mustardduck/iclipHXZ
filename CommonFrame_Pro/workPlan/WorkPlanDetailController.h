@@ -47,4 +47,6 @@
 @property (nonatomic, assign) BOOL              isZJ;
 @property (nonatomic, assign) BOOL              isZJReason;
 
+@property (nonatomic, assign) BOOL  isJumpToBottom;
+
 @end

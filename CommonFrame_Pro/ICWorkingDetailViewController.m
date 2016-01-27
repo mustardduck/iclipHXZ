@@ -72,6 +72,13 @@
 
 @implementation ICWorkingDetailViewController
 
+- (void)jumpToBottomComment{
+    
+    NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:_commentArray.count inSection:0];
+    [_tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
+}
+
 - (void)notiForJumpToMissionDetail:(NSNotification *)note {
         
     NSDictionary * dic = note.object;
@@ -369,6 +376,11 @@
             [self.view addSubview:_inputBar];
             
             [acInd stopAnimating];
+            
+            if(_isJumpToBottom)
+            {
+                [self jumpToBottomComment];
+            }
         });
     });
 
