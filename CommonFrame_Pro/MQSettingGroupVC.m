@@ -10,6 +10,7 @@
 #import "UICommon.h"
 #import "ICCreateNewGroupViewController.h"
 #import "MQCreateNewGroupVC.h"
+#import "WorkPlanMainController.h"
 
 @interface MQSettingGroupVC ()
 @property (weak, nonatomic) IBOutlet UILabel *groupNameLbl;
@@ -102,6 +103,7 @@
     ((MQCreateNewGroupVC*)controller).workGroup = _workGroup;
     ((MQCreateNewGroupVC*)controller).icSettingController = self;
     [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -123,10 +125,22 @@
     
 }
 - (IBAction)clickFile:(id)sender {
-    
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICFileViewController"];
+    ((ICFileViewController *)vc).workGroupId = _workGroup.workGroupId;
+    ((ICFileViewController *)vc).isRead = YES;
+
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)clickPlan:(id)sender {
+    
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* controller  = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanMainController"];
+    ((WorkPlanMainController*)controller).workGroupName = _workGroup.workGroupName;
+    ((WorkPlanMainController*)controller).workGroupId = _workGroup.workGroupId;
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 

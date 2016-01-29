@@ -27,4 +27,7 @@
 
 @property(nonatomic,strong) NSString*    workGroupId;
 
+@property(nonatomic,assign) BOOL    isRead;
+
+
 @end

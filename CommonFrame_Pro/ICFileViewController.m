@@ -61,11 +61,14 @@ typedef enum {
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = leftBarButton;
     
-    UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(btnDoneClicked:)];
-    [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor disableGreyColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
-
-    self.navigationItem.rightBarButtonItem = rightBarButton;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    if(!_isRead)
+    {
+        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(btnDoneClicked:)];
+        [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor disableGreyColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+        
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
     
     CGFloat cWidth = [UIScreen mainScreen].bounds.size.width;
     
@@ -819,64 +822,68 @@ typedef enum {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_tableDataType == TableDataTypeFile)
+    if(!_isRead)
     {
-        id obj = [_myFilesArray objectAtIndex:indexPath.row];
-        
-        if ([obj isKindOfClass:[NSString class]]) {
+        if (_tableDataType == TableDataTypeFile)
+        {
+            id obj = [_myFilesArray objectAtIndex:indexPath.row];
             
-        }
-        else if ([obj isKindOfClass:[Accessory class]]) {
-            
-            _isDone = YES;
-
-            Accessory * acc = (Accessory *)obj;
-            
-            if (acc != nil) {
+            if ([obj isKindOfClass:[NSString class]]) {
                 
-                if(!_AccessoryArray.count)
-                {
-                    _AccessoryArray = [NSMutableArray array];
+            }
+            else if ([obj isKindOfClass:[Accessory class]]) {
+                
+                _isDone = YES;
+                
+                Accessory * acc = (Accessory *)obj;
+                
+                if (acc != nil) {
+                    
+                    if(!_AccessoryArray.count)
+                    {
+                        _AccessoryArray = [NSMutableArray array];
+                        
+                    }
+                    
+                    [_AccessoryArray addObject:acc];
                     
                 }
                 
-                [_AccessoryArray addObject:acc];
-                
-            }
-            
-            if (_hasUploadedFileArray.count > 0) {
-                
-                for (int i = 0; i < _hasUploadedFileArray.count; i++) {
-                    Accessory* ac = [_hasUploadedFileArray objectAtIndex:i];
-                    BOOL isEx = NO;
-                    for (int j = 0; j < _AccessoryArray.count; j++) {
-                        Accessory* acc = [_AccessoryArray objectAtIndex:j];
-                        
-                        if ([ac.address isEqualToString:acc.address]) {
-                            isEx = YES;
-                            break;
-                        }
-                    }
-                    if (!isEx) {
-                        if(!_AccessoryArray.count)
-                        {
-                            _AccessoryArray = [NSMutableArray array];
+                if (_hasUploadedFileArray.count > 0) {
+                    
+                    for (int i = 0; i < _hasUploadedFileArray.count; i++) {
+                        Accessory* ac = [_hasUploadedFileArray objectAtIndex:i];
+                        BOOL isEx = NO;
+                        for (int j = 0; j < _AccessoryArray.count; j++) {
+                            Accessory* acc = [_AccessoryArray objectAtIndex:j];
                             
+                            if ([ac.address isEqualToString:acc.address]) {
+                                isEx = YES;
+                                break;
+                            }
                         }
-                        [_AccessoryArray addObject:ac];
+                        if (!isEx) {
+                            if(!_AccessoryArray.count)
+                            {
+                                _AccessoryArray = [NSMutableArray array];
+                                
+                            }
+                            [_AccessoryArray addObject:ac];
+                        }
                     }
+                    
+                    //[_AccessoryArray addObjectsFromArray:_hasUploadedFileArray];
                 }
                 
-                //[_AccessoryArray addObjectsFromArray:_hasUploadedFileArray];
+                
+                
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                
             }
-            
-
-
-            
-            [self.navigationController popViewControllerAnimated:YES];
-
         }
     }
+
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
