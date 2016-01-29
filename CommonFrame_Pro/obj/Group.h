@@ -21,6 +21,9 @@
 @property (nonatomic,strong) NSString*  workGroupId;
 @property (nonatomic,strong) NSString*  workGroupMain;//slogan
 @property (nonatomic,strong) NSString*  workGroupPeopleNum;//人员数
+
+@property (nonatomic,strong) NSString*  workGroupLabelNum;//标签数
+
 @property (nonatomic,assign) BOOL  isAdmin;
 @property (nonatomic,strong) NSString*  userName;
 @property (nonatomic,assign) BOOL isReceive;

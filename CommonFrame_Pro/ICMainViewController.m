@@ -32,6 +32,8 @@
 #import "MQCreatOrgMainController.h"
 #import "WorkPlanEditController.h"
 #import "WorkPlanDetailController.h"
+#import "MQSettingGroupVC.h"
+
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
 {
@@ -683,12 +685,22 @@
 - (void)btnPhotoClicked:(id)sender
 {
     //    if (_group.isAdmin) {
+    
+    UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"MQSettingGroupVC"];
+    ((MQSettingGroupVC*)controller).workGroup = _currentGroup;
+//    ((MQSettingGroupVC*)controller).icGroupDetailController = self;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    /*
     UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
     ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;
     ((ICSettingGroupViewController*)controller).workGroup = _currentGroup;
     ((ICSettingGroupViewController*)controller).icGroupDetailController = self;
     [self.navigationController pushViewController:controller animated:YES];
+     */
+     
     //    }
     //    else
     //    {
@@ -719,6 +731,7 @@
             gr.workGroupImg = [dic valueForKey:@"workGroupImg"];
             gr.workGroupMain = [dic valueForKey:@"workGroupMain"];
             gr.workGroupPeopleNum = [dic valueForKey:@"peopleNum"];
+            gr.workGroupLabelNum = [dic valueForKey:@"labelNum"];
             _currentGroup = gr;
         }
     }
