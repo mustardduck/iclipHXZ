@@ -12,6 +12,7 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "UICommon.h"
 #import "MQCreateGroupSecondController.h"
+#import "MQMemberTableVC.h"
 
 @interface ICMemberTableViewController() <UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate>
 {

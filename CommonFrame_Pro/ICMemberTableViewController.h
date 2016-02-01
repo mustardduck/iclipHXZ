@@ -11,18 +11,7 @@
 #import "Member.h"
 #import "ICMemberInfoViewController.h"
 #import "ICMemberAccessControlViewContoller.h"
-
-typedef enum{
-    MemberViewFromControllerDefault                         = 0,    //默认成员列表
-    MemberViewFromControllerGroupList                       = 1,    //所有群组
-    MemberViewFromControllerAuthority                       = 2,    //成员权限
-    MemberViewFromControllerGroup                           = 3,    //群组成员
-    MemberViewFromControllerPublishSharedAndNotification    = 4,     //发布
-    MemberViewFromControllerPublishMissionResponsible       = 5,     //责任人
-    MemberViewFromControllerPublishMissionParticipants      = 6,     //参与人
-    MemberViewFromControllerGroupMembers                    = 7,    //群组成员
-    MemberViewFromControllerCopyTo                          = 8     //抄送
-}MemberViewFromControllerType;
+#import "UICommon.h"
 
 
 @interface ICMemberTableViewController : UIViewController

@@ -23,6 +23,8 @@
 #define FindUserMainLabelTask_URL   @"/workgroup/findUserMainLabelTask.hz"
 #define FindUserTaskByTime_URL          @"/workgroup/findUserTaskByTime.hz"
 
+
+
 @implementation Group
 
 + (NSArray*)getGroupsByUserID:(NSString*)userID marks:(NSArray**)markArray workGroupId:(NSString *)workGroupId searchString:(NSString*)str allNum:(NSString **)allNum
@@ -636,6 +638,7 @@
     
     return array;
 }
+
 
 + (NSArray *) findUserTaskByTime:(NSString *)userId workGroupId:(NSString *) workGroupId
 {

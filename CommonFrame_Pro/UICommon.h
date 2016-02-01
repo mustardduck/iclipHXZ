@@ -17,6 +17,18 @@ typedef void (^keyboardBlock) ();
 
 @interface UICommon : NSObject
 
+typedef enum{
+    MemberViewFromControllerDefault                         = 0,    //默认成员列表
+    MemberViewFromControllerGroupList                       = 1,    //所有群组
+    MemberViewFromControllerAuthority                       = 2,    //成员权限
+    MemberViewFromControllerGroup                           = 3,    //群组成员
+    MemberViewFromControllerPublishSharedAndNotification    = 4,     //发布
+    MemberViewFromControllerPublishMissionResponsible       = 5,     //责任人
+    MemberViewFromControllerPublishMissionParticipants      = 6,     //参与人
+    MemberViewFromControllerGroupMembers                    = 7,    //群组成员
+    MemberViewFromControllerCopyTo                          = 8     //抄送
+}MemberViewFromControllerType;
+
 #define W(obj)   (!obj?0:(obj).frame.size.width)
 #define H(obj)   (!obj?0:(obj).frame.size.height)
 #define X(obj)   (!obj?0:(obj).frame.origin.x)

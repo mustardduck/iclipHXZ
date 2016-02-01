@@ -11,6 +11,7 @@
 #import "ICCreateNewGroupViewController.h"
 #import "MQCreateNewGroupVC.h"
 #import "WorkPlanMainController.h"
+#import "MQMemberTableVC.h"
 
 @interface MQSettingGroupVC ()
 @property (weak, nonatomic) IBOutlet UILabel *groupNameLbl;
@@ -119,9 +120,18 @@
 }
 
 - (IBAction)clickMember:(id)sender {
+    
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMemberTableVC"];
+    
+    ((MQMemberTableVC*)vc).controllerType = MemberViewFromControllerAuthority;
+    ((MQMemberTableVC*)vc).workGroup = _workGroup;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)clickTag:(id)sender {
+    
+    
     
 }
 - (IBAction)clickFile:(id)sender {
