@@ -81,9 +81,9 @@
         NSString* auStr = @"";
         
         int i = 0;
-        for (NSString* str in authorityArray) {
+        for (Authority* au in authorityArray) {
             i++;
-            auStr = [auStr stringByAppendingString:str];
+            auStr = [auStr stringByAppendingString:[NSString stringWithFormat:@"%ld", au.wgRoleId] ];
             if (i < authorityArray.count) {
                 auStr = [auStr stringByAppendingString:@","];
             }

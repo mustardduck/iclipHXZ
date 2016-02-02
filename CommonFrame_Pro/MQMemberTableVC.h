@@ -17,5 +17,9 @@
 
 @property (nonatomic,assign) MemberViewFromControllerType controllerType;
 @property (nonatomic, assign) BOOL justRead;
+@property (nonatomic, assign) BOOL canDelete;
+@property (nonatomic, assign) BOOL canInvite;
+@property (nonatomic, assign) BOOL canSetTagAuth;
+@property (nonatomic, assign) BOOL canSetAuth;
 
 @end

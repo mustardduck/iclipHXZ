@@ -183,6 +183,9 @@
                             cm.labelName = [di valueForKey:@"labelName"];
                             cm.isSystem = [[di valueForKey:@"level"] intValue] == 1?YES:NO;
                             cm.mainLabel = [[di valueForKey:@"type"] intValue] == 1 ? YES: NO;
+                            cm.createName = [di valueForKey:@"createName"];
+                            cm.labelNum = [di valueForKey:@"labelNum"];
+                            
                             if(cm.mainLabel && !cm.isSystem)
                             {
                                 [selArr addObject:cm];
@@ -248,7 +251,7 @@
                             cm.labelId = [di valueForKey:@"labelId"];
                             cm.labelName = [di valueForKey:@"labelName"];
                             cm.isSystem = [[di valueForKey:@"level"] intValue] == 1?YES:NO;
-                            
+
                             [array addObject:cm];
                             
                         }

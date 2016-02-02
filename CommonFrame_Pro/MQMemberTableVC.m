@@ -122,6 +122,14 @@
     });
     
     [_tableView setFrame: CGRectMake(0, 0, tableWidth - 30, THeight)];
+    
+    if(_canInvite)
+    {
+        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStyleDone target:self action:@selector(btnDoneButtonClicked:)];
+        [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+    }
+    
 }
 
 - (void) fillAllMember
@@ -272,7 +280,7 @@
         _editingStyle = UITableViewCellEditingStyleNone;
     }
     
-    if(!_justRead)
+    if(_canDelete)
     {
         _editingStyle = UITableViewCellEditingStyleDelete;
     }
@@ -383,14 +391,12 @@
         
         Member* m = _rows[indexPath.section][indexPath.row];
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc;
-//        vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberAccessControlViewContoller"];
-//        ((ICMemberAccessControlViewContoller*)vc).workContractID = m.workContractsId;
-//        ((ICMemberAccessControlViewContoller*)vc).workGroupID = m.workGroupId;
-        
-        vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMemberDetailVC"];
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMemberDetailVC"];
         ((MQMemberDetailVC*)vc).member = m;
-        
+        ((MQMemberDetailVC*)vc).workGroup = _workGroup;
+        ((MQMemberDetailVC*)vc).canSetTagAuth = _canSetTagAuth;
+        ((MQMemberDetailVC*)vc).canSetAuth = _canSetAuth;
+
         [self.navigationController pushViewController:vc animated:YES];
     }
     else
@@ -407,8 +413,6 @@
             ((ICMemberInfoViewController*)vc).memberObj = m;
             [self.navigationController pushViewController:vc animated:YES];
         }
-        
-        
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

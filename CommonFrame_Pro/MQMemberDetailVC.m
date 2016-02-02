@@ -11,6 +11,7 @@
 #import "UICommon.h"
 #import "ICMemberInfoViewController.h"
 #import "MQMemberTagSettingVC.h"
+#import "MQMemberAuthSettingVC.h"
 
 @interface MQMemberDetailVC ()
 
@@ -52,7 +53,6 @@
     self.navigationItem.leftBarButtonItem = rightBarButton;
 
     [self setViewData];
-    
 }
 
 - (void) setViewData
@@ -84,6 +84,9 @@
         _authorityBtn.titleLabel.font = Font(14);
 
     }
+    
+    _tagBtn.hidden = !_canSetTagAuth;
+    _authorityBtn.hidden = !_canSetAuth;
 }
 
 - (IBAction)btnBackButtonClicked:(id)sender
@@ -98,6 +101,8 @@
 
 - (IBAction)touchUpInsideOnBtn:(id)sender
 {
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
     if(sender == _phoneBtn)
     {
         NSString * telStr = [NSString stringWithFormat:@"tel://%@", _member.mobile];
@@ -106,14 +111,12 @@
     }
     else if (sender == _personInfoBtn)
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"ICMemberInfoViewController"];
         ((ICMemberInfoViewController*)vc).memberObj = _member;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (sender == _tagBtn)
     {
-        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMemberTagSettingVC"];
         ((MQMemberTagSettingVC*)vc).workGroupId = _member.workGroupId;
         ((MQMemberTagSettingVC*)vc).workContactsId = _member.workContractsId;
@@ -121,6 +124,14 @@
     }
     else if (sender == _authorityBtn)
     {
+        UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMemberAuthSettingVC"];
+
+        ((MQMemberAuthSettingVC*)vc).workGroupId = _member.workGroupId;
+        ((MQMemberAuthSettingVC*)vc).workContactsId = _member.workContractsId;
+        ((MQMemberAuthSettingVC*)vc).member = _member;
+        ((MQMemberAuthSettingVC*)vc).workGroup = _workGroup;
+
+        [self.navigationController pushViewController:vc animated:YES];
         
     }
 }
