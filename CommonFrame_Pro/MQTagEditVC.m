@@ -339,7 +339,7 @@
 #pragma mark Table View Action
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(SCREENWIDTH == 320 && _isEdit)
+    if((SCREENWIDTH == 320 || SCREENWIDTH == 375) && _isEdit)
     {
         return 80;
     }
@@ -376,7 +376,7 @@
     UIImageView * mainIcon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 13, 8, 11)];
     mainIcon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
     
-    if(SCREENWIDTH == 320 && _isEdit)
+    if((SCREENWIDTH == 320 || SCREENWIDTH == 375) && _isEdit)
     {
         UILabel* usedCountLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, lbl.bottom + 2, SCREENWIDTH - 28 - 216, 18)];
         usedCountLbl.text = [NSString stringWithFormat:@"被使用 %@", ms.labelNum];
@@ -452,7 +452,7 @@
         mainLabelBtn.titleLabel.font = Font(12);
         
         
-        if(SCREENWIDTH == 320)
+        if((SCREENWIDTH == 320 || SCREENWIDTH == 375))
         {
             delBtn.top = 25;
             
@@ -471,7 +471,7 @@
     UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 60 - 0.5, [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayColor]];
     
-    if(SCREENWIDTH == 320 && _isEdit)
+    if((SCREENWIDTH == 320 || SCREENWIDTH == 375) && _isEdit)
     {
         bottomLine.top = 80 - 0.5;
     }
