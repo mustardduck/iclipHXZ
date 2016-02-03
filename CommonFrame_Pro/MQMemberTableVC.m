@@ -84,6 +84,7 @@
     _editingStyle = UITableViewCellEditingStyleNone;
 
     
+    /*
     _tableView.tableHeaderView = ({
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableWidth, 40)];
@@ -124,6 +125,7 @@
         
         view;
     });
+     */
     
     [_tableView setFrame: CGRectMake(0, 0, tableWidth - 30, THeight)];
     
