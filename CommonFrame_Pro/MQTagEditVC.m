@@ -103,6 +103,20 @@
 //        [SVProgressHUD showErrorWithStatus:@"请输入需要录入的内容!"];
         return;
     }
+    else
+    {
+        for(Mark * mar in _dataArray)
+        {
+            if([mar.labelName isEqualToString:textField.text])
+            {
+                [SVProgressHUD showErrorWithStatus:@"该标签已存在"];
+                
+                [_addTagTxt becomeFirstResponder];
+
+                return;
+            }
+        }
+    }
 
     dispatch_async(dispatch_get_main_queue(), ^{
         
