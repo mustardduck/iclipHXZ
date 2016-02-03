@@ -359,12 +359,15 @@
     
     Mark* ms = [_dataArray objectAtIndex:indexPath.row];
     
-    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 12, SCREENWIDTH - 28, 18)];
+    UILabel* lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 9, SCREENWIDTH - 28, 18)];
     lbl.text = ms.labelName;
     lbl.textColor = [UIColor whiteColor];
     lbl.font = Font(15);
     lbl.backgroundColor = [UIColor clearColor];
     [cell.contentView addSubview:lbl];
+    
+    UIImageView * mainIcon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 13, 8, 11)];
+    mainIcon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
     
     if(SCREENWIDTH == 320 && _isEdit)
     {
@@ -426,6 +429,9 @@
             {
                 title = @"取消";
                 
+                [cell.contentView addSubview:mainIcon];
+                lbl.left = XW(mainIcon) + 7;
+                
                 [_selectedTagList addObject:ms];
 
             }
@@ -470,11 +476,17 @@
     cell.backgroundColor = [UIColor grayMarkColor];
     [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
+
+    
+    
     for(Mark * me in _selectedIndexList)
     {
         if(ms.labelId == me.labelId)
         {
             [mainLabelBtn setTitle:@"取消" forState:UIControlStateNormal];
+            
+            [cell.contentView addSubview:mainIcon];
+            lbl.left = XW(mainIcon) + 7;
             
             break;
         }
@@ -485,6 +497,9 @@
         if(ms.labelId == me.labelId)
         {
             [mainLabelBtn setTitle:@"取消" forState:UIControlStateNormal];
+            
+            [cell.contentView addSubview:mainIcon];
+            lbl.left = XW(mainIcon) + 7;
             
             break;
         }
