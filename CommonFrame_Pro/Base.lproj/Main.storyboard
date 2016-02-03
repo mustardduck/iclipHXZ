@@ -3786,12 +3786,6 @@
                                 <action selector="btnBackButtonClicked:" destination="HiB-6T-cYI" id="Q7K-qN-nwZ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="新工作计划" id="evK-ul-d9d">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="btnDoneButtonClicked:" destination="HiB-6T-cYI" id="V3Q-h8-btw"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>

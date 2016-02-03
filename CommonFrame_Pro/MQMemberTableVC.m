@@ -480,7 +480,7 @@
         nLbl.backgroundColor = [UIColor clearColor];
         nLbl.textColor = [UIColor grayTitleColor];
         nLbl.font = Font(12);
-        nLbl.text = @"管理者";
+        nLbl.text = @"管理员";
         [cell.contentView addSubview:nLbl];
         
     }
