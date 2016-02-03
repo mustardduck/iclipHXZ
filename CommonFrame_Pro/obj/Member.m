@@ -487,9 +487,10 @@
     return array;
 }
 
-+ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount
++ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount leaderArray:(NSArray **)leaderArr adminUser:(Member **)member
 {
     NSMutableArray* array = [NSMutableArray array];
+    NSMutableArray * leaderArray = [NSMutableArray array];
     
     NSInteger totalMCount = 0;
     
@@ -549,6 +550,17 @@
                                         mem.QQ = [di valueForKey:@"QQ"];
                                         mem.createTime = [di valueForKey:@"createTime"];
                                         mem.status = [[di valueForKey:@"status"] boolValue];
+                                        mem.isLeader = [[di valueForKey:@"isLeader"] boolValue];
+                                        
+                                        if(mem.isLeader)
+                                        {
+                                            [leaderArray addObject:mem];
+                                        }
+                                        
+                                        if(mem.isAdmin)
+                                        {
+                                            * member = mem;
+                                        }
                                         
                                         [sectionMemberArray addObject:mem];
                                         
@@ -569,6 +581,7 @@
     
     *sections = sectionArray;
     *totalCount = [NSNumber numberWithInteger:totalMCount];
+    *leaderArr = leaderArray;
     
     return array;
 }

@@ -591,7 +591,9 @@
     }
     else
     {
-        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid totalMemeberCount:&totalCount];
+        NSArray * leaderArr;
+        Member * mer;
+        memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workgid totalMemeberCount:&totalCount leaderArray:&leaderArr adminUser:&mer];
     }
     
     if([totalCount integerValue] > 0)

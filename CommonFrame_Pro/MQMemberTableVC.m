@@ -27,6 +27,9 @@
 
     //Group Members
     UITableViewCellEditingStyle _editingStyle;
+    
+    NSArray * _leaderArr;
+    Member * _adminUser;
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -135,9 +138,16 @@
 - (void) fillAllMember
 {
     NSMutableArray* sectionArray = [NSMutableArray array];
+    NSArray * leaderArr;
     NSNumber * totalCount = [NSNumber numberWithInteger:0];
-    NSArray * memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workGroup.workGroupId totalMemeberCount:&totalCount];
+    
+    Member * adminUser = [Member new];
+    
+    NSArray * memberArray = [Member getAllMembersByWorkGroupID:&sectionArray workGroupID:_workGroup.workGroupId totalMemeberCount:&totalCount leaderArray:&leaderArr adminUser:&adminUser];
+    
+    _adminUser = adminUser;
 
+    _leaderArr = leaderArr;
     
     if([totalCount integerValue] > 0)
     {
@@ -233,56 +243,144 @@
 #pragma mark Table View Action
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 77;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     [_indexBar setIndexes:_sections];
-    return [_sections count];
+    NSInteger count = [_sections count];
+    if(_leaderArr.count)
+    {
+        count += 2;
+    }
+    else
+    {
+        count += 1;
+    }
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_rows[section] count];
+    if(section == 0)
+    {
+        return 1;
+    }
+    else if (_leaderArr.count && section == 1)
+    {
+        return _leaderArr.count;
+    }
+    else
+    {
+        if(_leaderArr.count)
+        {
+            section -= 2;
+        }
+        else
+        {
+            section -= 1;
+        }
+        
+        return [_rows[section] count];
+    }
 }
 
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return _sections[section];
-}
+//- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    if(section == 0)
+//    {
+//        return nil;
+//    }
+//    else if (_leaderArr.count && section == 1)
+//    {
+//        return @"领导层";
+//    }
+//    return _sections[section];
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 18;
+    if(section == 0)
+    {
+        return 0;
+    }
+  
+    return 23;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView* myView = [[UIView alloc] init];
     myView.backgroundColor = [UIColor colorWithRed:0.40 green:0.48 blue:0.94 alpha:1.0];
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, 90, 15)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(7, 0, 90, 23)];
     titleLabel.textColor=[UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.text=_sections[section];
-    [titleLabel setFont:[UIFont systemFontOfSize:10]];
+    
+    [titleLabel setFont:Font(12)];
     [myView addSubview:titleLabel];
     
+    if(section == 0)
+    {
+        return nil;
+    }
+    else if (_leaderArr.count && section == 1)
+    {
+        titleLabel.text= @"领导层";
+    }
+    else
+    {
+        NSInteger index = section;
+        index = section - 1;
+        if(_leaderArr.count)
+        {
+            index = section - 2;
+        }
+        titleLabel.text=_sections[index];
+    }
+
     return myView;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    Member* mem = _rows[indexPath.section][indexPath.row];
-    
-    if(mem.userId == [LoginUser loginUserID])
-    {
-        _editingStyle = UITableViewCellEditingStyleNone;
-    }
-    
+
     if(_canDelete)
     {
-        _editingStyle = UITableViewCellEditingStyleDelete;
+        Member* mem;
+        NSInteger section = indexPath.section;
+        
+        if(section == 0)
+        {
+            _editingStyle = UITableViewCellEditingStyleNone;
+            
+            return _editingStyle;
+        }
+        else if (section == 1 && _leaderArr.count)
+        {
+            mem = _leaderArr[indexPath.row];
+        }
+        else
+        {
+            NSInteger section = indexPath.section - 1;
+            if(_leaderArr.count)
+            {
+                section = indexPath.section - 2;
+            }
+            mem = _rows[section][indexPath.row];
+        }
+        
+        if(mem.userId == [LoginUser loginUserID])
+        {
+            _editingStyle = UITableViewCellEditingStyleNone;
+        }
+        else
+        {
+            _editingStyle = UITableViewCellEditingStyleDelete;
+        }
+    }
+    else
+    {
+        _editingStyle = UITableViewCellEditingStyleNone;
     }
     
     return _editingStyle;
@@ -299,7 +397,22 @@
         // 删除操作
         if (editingStyle == UITableViewCellEditingStyleDelete) {
             
-            Member* mem = _rows[indexPath.section][indexPath.row];
+            Member* mem;
+            NSInteger section = indexPath.section;
+            
+            if (section == 1 && _leaderArr.count)
+            {
+                mem = _leaderArr[indexPath.row];
+            }
+            else
+            {
+                NSInteger section = indexPath.section - 1;
+                if(_leaderArr.count)
+                {
+                    section = indexPath.section - 2;
+                }
+                mem = _rows[section][indexPath.row];
+            }
             
             BOOL isDeleted = [Member memberUpdateWgPeopleStrtus:mem.workContractsId status:@"-1"];
             if(isDeleted)
@@ -319,7 +432,7 @@
     selectionColor.backgroundColor = [UIColor cellHoverBackgroundColor];
     cell.selectedBackgroundView = selectionColor;
     
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 59.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 76.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayColor]];
     [cell.selectedBackgroundView addSubview:bottomLine];
     
@@ -339,36 +452,60 @@
         [view removeFromSuperview];
     }
     
-    NSInteger index = indexPath.row;
     NSInteger section = indexPath.section;
     
-    CGFloat x = 12;
+    CGFloat x = 14;
     
-    UIImageView* choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(x, 20, 17, 17)];
-    if (self.controllerType == MemberViewFromControllerCopyTo)
+    Member* mem;
+    
+    if(section == 0)
     {
-        choseImg.image = [UIImage imageNamed:@"btn_xuanze_1"];
-        choseImg.tag = 1010;
-
-        x = x * 2 + 17;
+        mem = [Member new];
+        mem.name = _adminUser.name;
+        mem.img = _adminUser.img;
+        
+        UIImageView * starIcon = [[UIImageView alloc] initWithFrame:CGRectMake(SCREENWIDTH - 51 - 11 - 30, 33, 11, 11)];
+        starIcon.image = [UIImage imageNamed:@"icon_xingxinggzu"];
+        [cell.contentView addSubview:starIcon];
+        
+        UILabel * nLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(starIcon) + 4, 32, 50, 14)];
+        nLbl.backgroundColor = [UIColor clearColor];
+        nLbl.textColor = [UIColor grayTitleColor];
+        nLbl.font = Font(12);
+        nLbl.text = @"管理者";
+        [cell.contentView addSubview:nLbl];
+        
+    }
+    else if (section == 1 && _leaderArr.count)
+    {
+        mem = _leaderArr[indexPath.row];
+    }
+    else
+    {
+        NSInteger section = indexPath.section - 1;
+        if(_leaderArr.count)
+        {
+            section = indexPath.section - 2;
+        }
+        mem = _rows[section][indexPath.row];
     }
     
-    Member* mem = _rows[indexPath.section][indexPath.row];
-    
-    UIImageView* photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, 12, 36, 36)];
+    UIImageView* photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, 14, 50, 50)];
     photoImageView.tag = 777;
+    [photoImageView setRoundCorner:3.3];
     
     if(mem.img.length)
     {
         [photoImageView setImageWithURL:[NSURL URLWithString:mem.img] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
-    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(x + 36 + 6, 15, 150, 30)];
+    UILabel* name = [[UILabel alloc] initWithFrame:CGRectMake(77, 0, SCREENWIDTH - 100, 77)];
     name.textColor = [UIColor whiteColor];
     name.textAlignment = NSTextAlignmentLeft;
     name.text = mem.name;
-    name.font = [UIFont systemFontOfSize:15];
+    name.font = Font(17);
     
-    if (cell.contentView.subviews.count < 2) {
+//    if (cell.contentView.subviews.count < 2)
+    {
         [cell.contentView addSubview:photoImageView];
         [cell.contentView addSubview:name];
     }
@@ -376,7 +513,7 @@
     cell.backgroundColor = RGBCOLOR(31, 31, 31);
     [cell.contentView setBackgroundColor:[UIColor clearColor]];
     
-    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 59.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
+    UILabel* bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 76.5,  [UIScreen mainScreen].bounds.size.width, 0.5)];
     [bottomLine setBackgroundColor:[UIColor grayColor]];
     [cell.contentView addSubview:bottomLine];
     
@@ -389,10 +526,32 @@
     
     if (self.controllerType == MemberViewFromControllerAuthority) {
         
-        Member* m = _rows[indexPath.section][indexPath.row];
+        Member* mem;
+        NSInteger section = indexPath.section;
+        
+        if(section == 0)
+        {
+            mem = [Member new];
+            mem.name = _workGroup.userName;
+            mem.img = [LoginUser loginUserPhoto];
+        }
+        else if (section == 1 && _leaderArr.count)
+        {
+            mem = _leaderArr[indexPath.row];
+        }
+        else
+        {
+            NSInteger section = indexPath.section - 1;
+            if(_leaderArr.count)
+            {
+                section = indexPath.section - 2;
+            }
+            mem = _rows[section][indexPath.row];
+        }
+        
         UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMemberDetailVC"];
-        ((MQMemberDetailVC*)vc).member = m;
+        ((MQMemberDetailVC*)vc).member = mem;
         ((MQMemberDetailVC*)vc).workGroup = _workGroup;
         ((MQMemberDetailVC*)vc).canSetTagAuth = _canSetTagAuth;
         ((MQMemberDetailVC*)vc).canSetAuth = _canSetAuth;

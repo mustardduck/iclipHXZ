@@ -57,6 +57,7 @@
 @property (nonatomic,assign) BOOL       isAdmin;
 
 @property (nonatomic,assign) BOOL       isHave;
+@property (nonatomic,assign) BOOL       isLeader;//是否管理者  1:是  0：不是
 
 @property (nonatomic, strong) UIImage * image;
 @property (nonatomic, strong) NSNumber * recordId;//手机通讯录ID
@@ -68,7 +69,9 @@
 + (NSArray*)getAllMembersExceptMe:(NSMutableArray**)sections searchText:(NSString*)searchString workGroupId:(NSString *)groupId;
 + (NSArray*)getAllMembers:(NSMutableArray**)sections participantsArray:(NSArray*)pArray;
 //+ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId;
-+ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)count;
+
++ (NSArray*)getAllMembersByWorkGroupID:(NSMutableArray**)sections workGroupID:(NSString*)workGroupId totalMemeberCount:(NSNumber **)totalCount leaderArray:(NSArray **)leaderArr adminUser:(Member **)member;
+
 + (Member*)getMemberInfoByWorkContractsID:(NSString*)contractID;
 + (NSArray*)getMembersByWorkGroupIDAndLabelID:(NSString*)workGroupId labelId:(NSString*)labelId;
 + (BOOL)memberUpdateWgPeopleStrtus:(NSString*)workContactsId status:(NSString *)status;
