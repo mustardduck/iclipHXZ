@@ -562,13 +562,25 @@
                                             * member = mem;
                                         }
                                         
-                                        [sectionMemberArray addObject:mem];
-                                        
-                                        totalMCount ++;
+                                        if(mem.isLeader)
+                                        {
+                                            if(dArr.count == 1)
+                                            {
+                                                [sectionArray removeLastObject];
+                                            }
+                                        }
+                                        else
+                                        {
+                                            [sectionMemberArray addObject:mem];
+                                            
+                                            totalMCount ++;
+                                        }
                                     }
                                 }
-                                
-                                [array addObject:sectionMemberArray];
+                                if(sectionMemberArray.count)
+                                {
+                                    [array addObject:sectionMemberArray];
+                                }
                             }
                         }
                         
@@ -580,7 +592,7 @@
     }
     
     *sections = sectionArray;
-    *totalCount = [NSNumber numberWithInteger:totalMCount];
+    *totalCount = [NSNumber numberWithInteger:totalMCount + leaderArray.count];
     *leaderArr = leaderArray;
     
     return array;
