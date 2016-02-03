@@ -394,12 +394,20 @@
     }
     else
     {
-        UILabel* usedCountLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, lbl.bottom + 2, SCREENWIDTH - 28, 18)];
-        usedCountLbl.text = [NSString stringWithFormat:@"被使用 %@      %@ 创建", ms.labelNum, ms.createName];
+        UILabel* usedCountLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, lbl.bottom + 2, 96, 18)];
+        usedCountLbl.text = [NSString stringWithFormat:@"被使用 %@", ms.labelNum];
         usedCountLbl.textColor = [UIColor grayTitleColor];
         usedCountLbl.font = Font(12);
         usedCountLbl.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:usedCountLbl];
+        
+        usedCountLbl = [[UILabel alloc] initWithFrame:CGRectMake(111, lbl.bottom + 2, 82, 18)];
+        usedCountLbl.text = [NSString stringWithFormat:@"%@ 创建", ms.createName];
+        usedCountLbl.textColor = [UIColor grayTitleColor];
+        usedCountLbl.font = Font(12);
+        usedCountLbl.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:usedCountLbl];
+        
     }
 
     
