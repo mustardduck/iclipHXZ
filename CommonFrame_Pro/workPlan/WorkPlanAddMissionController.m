@@ -330,6 +330,8 @@
             //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
             NSString * statusStr = @"未开始";
             
+            cell.statusLbl.textColor = [UIColor grayTitleColor];
+
             if(mis.status == 1)
             {
                 statusStr = @"进行中";
