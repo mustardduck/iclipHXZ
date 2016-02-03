@@ -4294,17 +4294,17 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WYe-8z-8S9">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="118"/>
                                         <connections>
-                                            <action selector="clickMember:" destination="hwn-FM-j1g" eventType="touchUpInside" id="YeU-YQ-OGo"/>
+                                            <action selector="clickPlan:" destination="hwn-FM-j1g" eventType="touchUpInside" id="les-aR-L4Z"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_chengyuan" translatesAutoresizingMaskIntoConstraints="NO" id="bmA-03-837">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_gongzuoguanli" translatesAutoresizingMaskIntoConstraints="NO" id="bmA-03-837">
                                         <rect key="frame" x="20" y="24" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="iMo-SJ-5KL"/>
                                             <constraint firstAttribute="height" constant="40" id="srj-qJ-jJn"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="成员(20)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECs-C3-SgG">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="工作管理" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECs-C3-SgG">
                                         <rect key="frame" x="0.0" y="81" width="80" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Ag6-XL-1Hc"/>
@@ -4358,17 +4358,17 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Qy-jV-610">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="118"/>
                                         <connections>
-                                            <action selector="clickTag:" destination="hwn-FM-j1g" eventType="touchUpInside" id="HtY-7a-8el"/>
+                                            <action selector="clickMember:" destination="hwn-FM-j1g" eventType="touchUpInside" id="7Ya-EN-Vnu"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_biaoqian" translatesAutoresizingMaskIntoConstraints="NO" id="Tv9-DO-hEL">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_chengyuan" translatesAutoresizingMaskIntoConstraints="NO" id="Tv9-DO-hEL">
                                         <rect key="frame" x="20" y="24" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="crs-Ht-3Ij"/>
                                             <constraint firstAttribute="width" constant="40" id="ns1-Bn-QT2"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="标签(20)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CV7-88-4hV">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CV7-88-4hV">
                                         <rect key="frame" x="0.0" y="81" width="80" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="AjC-RH-JIY"/>
@@ -4414,17 +4414,17 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NyC-YD-vdY">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="118"/>
                                         <connections>
-                                            <action selector="clickFile:" destination="hwn-FM-j1g" eventType="touchUpInside" id="E4t-DG-JLb"/>
+                                            <action selector="clickTag:" destination="hwn-FM-j1g" eventType="touchUpInside" id="DbO-ql-QVN"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_qunzuwenjianjia" translatesAutoresizingMaskIntoConstraints="NO" id="H0I-pG-GkS">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_biaoqian" translatesAutoresizingMaskIntoConstraints="NO" id="H0I-pG-GkS">
                                         <rect key="frame" x="20" y="24" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="XNU-I1-dDc"/>
                                             <constraint firstAttribute="width" constant="40" id="dip-LQ-dXn"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群组文件夹" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duV-je-uvl">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duV-je-uvl">
                                         <rect key="frame" x="0.0" y="81" width="80" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="2Bq-cz-kmj"/>
@@ -4470,10 +4470,10 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eZy-Yy-3bR">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="118"/>
                                         <connections>
-                                            <action selector="clickPlan:" destination="hwn-FM-j1g" eventType="touchUpInside" id="NLS-UA-frJ"/>
+                                            <action selector="clickFile:" destination="hwn-FM-j1g" eventType="touchUpInside" id="e7o-D4-2UL"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="工作管理" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbh-OB-bzs">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群组文件夹" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbh-OB-bzs">
                                         <rect key="frame" x="0.0" y="81" width="80" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="X0T-te-Ygj"/>
@@ -4482,7 +4482,7 @@
                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67843137249999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_gongzuoguanli" translatesAutoresizingMaskIntoConstraints="NO" id="CNf-Hb-Xu9">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_qunzuwenjianjia" translatesAutoresizingMaskIntoConstraints="NO" id="CNf-Hb-Xu9">
                                         <rect key="frame" x="20" y="24" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="9DS-bv-tDB"/>
@@ -4568,19 +4568,19 @@
                         <outlet property="editGroupIcon" destination="RSU-Jm-TrA" id="qyZ-EY-jJO"/>
                         <outlet property="fileCons" destination="vFc-2V-BBP" id="2o8-OM-3yQ"/>
                         <outlet property="groupNameLbl" destination="esY-fQ-DMx" id="NVR-xx-5l3"/>
-                        <outlet property="memCountLbl" destination="ECs-C3-SgG" id="hOE-T0-N7a"/>
+                        <outlet property="memCountLbl" destination="CV7-88-4hV" id="AxV-EV-bt6"/>
                         <outlet property="memberCons" destination="tYL-S9-g1z" id="VB9-MK-0vK"/>
                         <outlet property="memberLbl" destination="iVq-2h-qCR" id="fVS-vW-521"/>
                         <outlet property="planCons" destination="CBd-ss-I0D" id="WCA-dQ-0gI"/>
                         <outlet property="sloganLbl" destination="ema-Mn-09l" id="uGM-Gs-XAs"/>
                         <outlet property="sloganTopCons" destination="Mm3-2l-Mle" id="IFH-KD-Hyy"/>
                         <outlet property="tagCons" destination="BTS-Md-ZYy" id="clW-V1-gnL"/>
-                        <outlet property="tagCountLbl" destination="CV7-88-4hV" id="AcD-FF-7s4"/>
+                        <outlet property="tagCountLbl" destination="duV-je-uvl" id="LTv-7c-ZQm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CEX-Rf-e8d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="574" y="1155"/>
+            <point key="canvasLocation" x="570" y="1138"/>
         </scene>
         <!--群组资料-->
         <scene sceneID="yfn-Uz-ldj">

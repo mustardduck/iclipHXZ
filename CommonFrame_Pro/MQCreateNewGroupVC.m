@@ -57,7 +57,7 @@
             
 
             _sloganTextView.text = self.workGroup.workGroupMain;
-                        
+            
             CGFloat he = [UICommon getSizeFromString:_sloganTextView.text withSize:CGSizeMake(SCREENWIDTH - 114, 63) withFont:_sloganTextView.font].height;
             
             if(he < 20)
