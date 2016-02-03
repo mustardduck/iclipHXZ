@@ -4783,9 +4783,12 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="groupNameTxt" destination="sVw-GW-sRY" id="V13-q8-sW3"/>
+                        <outlet property="lineBottomCons" destination="5UQ-Md-9Yi" id="sTP-h0-8AC"/>
                         <outlet property="photoImgBtn" destination="zNV-IJ-ve3" id="0Zb-di-IEg"/>
                         <outlet property="photoImgView" destination="f6e-ub-Xfd" id="Anv-UJ-opV"/>
+                        <outlet property="sloganHeightCons" destination="QfM-BK-a47" id="5qf-Rc-idc"/>
                         <outlet property="sloganTextView" destination="FPh-ik-8qf" id="nEF-Mb-yZ3"/>
+                        <outlet property="sloganTextViewTopCons" destination="b1a-BE-ehX" id="yRN-KZ-NQC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DMm-6K-Xba" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -24,6 +24,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *photoImgBtn;
 @property (weak, nonatomic) IBOutlet UITextField *groupNameTxt;
 @property (weak, nonatomic) IBOutlet UITextView *sloganTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sloganHeightCons;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomCons;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sloganTextViewTopCons;
 
 @end
 
@@ -51,7 +54,18 @@
     if (self.viewType == MQViewTypeEdit) {
         if (self.workGroup != nil) {
             _groupNameTxt.text = self.workGroup.workGroupName;
+            
+
             _sloganTextView.text = self.workGroup.workGroupMain;
+                        
+            CGFloat he = [UICommon getSizeFromString:_sloganTextView.text withSize:CGSizeMake(SCREENWIDTH - 114, 63) withFont:_sloganTextView.font].height;
+            
+            if(he < 20)
+            {
+                _sloganHeightCons.constant = 44;
+                _sloganTextViewTopCons.constant = 5;
+                _lineBottomCons.constant = 19;
+            }
             
             [_photoImgView setImageWithURL:[NSURL URLWithString:self.workGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 
