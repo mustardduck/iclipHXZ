@@ -25,6 +25,7 @@
     UIBarButtonItem* _rightBarButton;
     
     NSIndexPath * _currentIndexPath;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *wgImgView;
@@ -97,11 +98,12 @@
     [_addTagTxt resignFirstResponder];
 }
 
-- (void) textFieldDidEndEditing:(UITextField *)textField
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
+    [textField resignFirstResponder];
+    
     if (textField.text == nil || [textField.text isEqualToString:@""]) {
-//        [SVProgressHUD showErrorWithStatus:@"请输入需要录入的内容!"];
-        return;
+        return NO;
     }
     else
     {
@@ -112,37 +114,32 @@
                 [SVProgressHUD showErrorWithStatus:@"该标签已存在"];
                 
                 [_addTagTxt becomeFirstResponder];
-
-                return;
+                
+                return NO;
             }
         }
     }
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        BOOL isOk = [Mark createNewMark:textField.text workGroupID:_workGroup.workGroupId];
-        if (isOk) {
-            NSMutableArray * arr = [NSMutableArray array];
-            _dataArray = [Mark getMarkListByWorkGroupID:_workGroup.workGroupId loginUserID:[LoginUser loginUserID] andUrl:CURL selectArr:&arr];
-            if(arr.count)
-            {
-                _selectedIndexList = arr;
+    
+    if(textField.text.length)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BOOL isOk = [Mark createNewMark:textField.text workGroupID:_workGroup.workGroupId];
+            if (isOk) {
+                NSMutableArray * arr = [NSMutableArray array];
+                _dataArray = [Mark getMarkListByWorkGroupID:_workGroup.workGroupId loginUserID:[LoginUser loginUserID] andUrl:CURL selectArr:&arr];
+                if(arr.count)
+                {
+                    _selectedIndexList = arr;
+                }
+                
+                [_tableView reloadData];
+                
+                _addTagTxt.text = @"";
+                _addTagTxt.hidden = YES;
+                _addTagBtn.hidden = NO;
             }
-            
-            [_tableView reloadData];
-            
-            _addTagTxt.text = @"";
-            _addTagTxt.hidden = YES;
-            _addTagBtn.hidden = NO;
-        }
-        
-    });
-
-}
-
-- (BOOL) textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
+        });
+    }
     
     return YES;
 }
