@@ -74,11 +74,11 @@
 + (BOOL)changeMemberAuthority:(NSArray*)authorityArray workContractID:(NSString*)contractId
 {
     BOOL re = NO;
-    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+
+    NSString* auStr = @"";
+
     if (authorityArray.count > 0 ) {
-        NSMutableDictionary* dic = [NSMutableDictionary dictionary];
-        
-        NSString* auStr = @"";
         
         int i = 0;
         for (Authority* au in authorityArray) {
@@ -87,30 +87,31 @@
             if (i < authorityArray.count) {
                 auStr = [auStr stringByAppendingString:@","];
             }
-        }
+        }        
+    }
+    
+    [dic setObject:auStr forKey:@"str"];
+    
+    [dic setObject:contractId forKey:@"workContactsId"];
+    
+    NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CHANGE_AUTHORITY postData:dic];
+    
+    if (responseString == nil) {
+        return re;
+    }
+    
+    id val = [CommonFile jsonNSDATA:responseString];
+    
+    if ([val isKindOfClass:[NSDictionary class]]) {
+        NSDictionary* dic = (NSDictionary*)val;
         
-        [dic setObject:contractId forKey:@"workContactsId"];
-        [dic setObject:auStr forKey:@"str"];
-        
-        NSData* responseString = [HttpBaseFile requestDataWithSyncByPost:CHANGE_AUTHORITY postData:dic];
-        
-        if (responseString == nil) {
-            return re;
-        }
-        
-        id val = [CommonFile jsonNSDATA:responseString];
-        
-        if ([val isKindOfClass:[NSDictionary class]]) {
-            NSDictionary* dic = (NSDictionary*)val;
-            
-            if (dic != nil) {
-                if ([[dic valueForKey:@"state"] intValue] == 1) {
-                    re = YES;
-                    NSLog(@"Dic:%@",dic);
-                }
+        if (dic != nil) {
+            if ([[dic valueForKey:@"state"] intValue] == 1) {
+                re = YES;
+                NSLog(@"Dic:%@",dic);
             }
-            
         }
+        
     }
     
     return re;

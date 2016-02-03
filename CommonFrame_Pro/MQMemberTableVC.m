@@ -57,7 +57,7 @@
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     self.navigationItem.leftBarButtonItem = rightBarButton;
     
-    [self fillAllMember];
+//    [self fillAllMember];
 
     CGFloat tableWidth = [UIScreen mainScreen].bounds.size.width;
     
@@ -163,6 +163,8 @@
         
         _rows = memberArray;
     }
+    
+    [_tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -191,6 +193,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self fillAllMember];
     
     if (_ccopyToMembersArray != nil) {
         NSString* idArrayStr = @"";
