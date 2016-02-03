@@ -122,6 +122,11 @@
 		4BC94BC31C3F9A1F00F2FEAF /* NSDate+DateTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC94BBB1C3F9A1F00F2FEAF /* NSDate+DateTools.m */; };
 		4BCC5FE51C59C1D4000FC7A9 /* MQSettingGroupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC5FE41C59C1D4000FC7A9 /* MQSettingGroupVC.m */; };
 		4BCC5FE81C5B00CA000FC7A9 /* MQCreateNewGroupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC5FE71C5B00CA000FC7A9 /* MQCreateNewGroupVC.m */; };
+		4BCC5FEB1C5B73BB000FC7A9 /* MQMemberTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC5FEA1C5B73BB000FC7A9 /* MQMemberTableVC.m */; };
+		4BDDF5B01C5F3731007E5258 /* MQMemberDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BDDF5AF1C5F3731007E5258 /* MQMemberDetailVC.m */; };
+		4BDDF5B31C5F6A70007E5258 /* MQMemberTagSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BDDF5B21C5F6A70007E5258 /* MQMemberTagSettingVC.m */; };
+		4BDDF5B61C5F7E65007E5258 /* MQMemberAuthSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BDDF5B51C5F7E65007E5258 /* MQMemberAuthSettingVC.m */; };
+		4BDDF5B91C60565F007E5258 /* MQTagEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BDDF5B81C60565F007E5258 /* MQTagEditVC.m */; };
 		4BE1F57A1BD641D7007CF6C4 /* AddPicCell88.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F5781BD641D7007CF6C4 /* AddPicCell88.m */; };
 		4BE1F57B1BD641D7007CF6C4 /* AddPicCell88.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE1F5791BD641D7007CF6C4 /* AddPicCell88.xib */; };
 		4BE1F57F1BD642B1007CF6C4 /* AddPicCell80.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1F57D1BD642B1007CF6C4 /* AddPicCell80.m */; };
@@ -425,6 +430,16 @@
 		4BCC5FE41C59C1D4000FC7A9 /* MQSettingGroupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSettingGroupVC.m; sourceTree = "<group>"; };
 		4BCC5FE61C5B00CA000FC7A9 /* MQCreateNewGroupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCreateNewGroupVC.h; sourceTree = "<group>"; };
 		4BCC5FE71C5B00CA000FC7A9 /* MQCreateNewGroupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCreateNewGroupVC.m; sourceTree = "<group>"; };
+		4BCC5FE91C5B73BB000FC7A9 /* MQMemberTableVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMemberTableVC.h; sourceTree = "<group>"; };
+		4BCC5FEA1C5B73BB000FC7A9 /* MQMemberTableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMemberTableVC.m; sourceTree = "<group>"; };
+		4BDDF5AE1C5F3731007E5258 /* MQMemberDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMemberDetailVC.h; sourceTree = "<group>"; };
+		4BDDF5AF1C5F3731007E5258 /* MQMemberDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMemberDetailVC.m; sourceTree = "<group>"; };
+		4BDDF5B11C5F6A70007E5258 /* MQMemberTagSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMemberTagSettingVC.h; sourceTree = "<group>"; };
+		4BDDF5B21C5F6A70007E5258 /* MQMemberTagSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMemberTagSettingVC.m; sourceTree = "<group>"; };
+		4BDDF5B41C5F7E65007E5258 /* MQMemberAuthSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMemberAuthSettingVC.h; sourceTree = "<group>"; };
+		4BDDF5B51C5F7E65007E5258 /* MQMemberAuthSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMemberAuthSettingVC.m; sourceTree = "<group>"; };
+		4BDDF5B71C60565F007E5258 /* MQTagEditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTagEditVC.h; sourceTree = "<group>"; };
+		4BDDF5B81C60565F007E5258 /* MQTagEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTagEditVC.m; sourceTree = "<group>"; };
 		4BE1F5771BD641D7007CF6C4 /* AddPicCell88.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPicCell88.h; sourceTree = "<group>"; };
 		4BE1F5781BD641D7007CF6C4 /* AddPicCell88.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPicCell88.m; sourceTree = "<group>"; };
 		4BE1F5791BD641D7007CF6C4 /* AddPicCell88.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPicCell88.xib; sourceTree = "<group>"; };
@@ -1025,6 +1040,14 @@
 			children = (
 				7844F6721B2145BB0021FFDF /* ICMemberTableViewController.h */,
 				7844F6731B2145BB0021FFDF /* ICMemberTableViewController.m */,
+				4BCC5FE91C5B73BB000FC7A9 /* MQMemberTableVC.h */,
+				4BCC5FEA1C5B73BB000FC7A9 /* MQMemberTableVC.m */,
+				4BDDF5AE1C5F3731007E5258 /* MQMemberDetailVC.h */,
+				4BDDF5AF1C5F3731007E5258 /* MQMemberDetailVC.m */,
+				4BDDF5B11C5F6A70007E5258 /* MQMemberTagSettingVC.h */,
+				4BDDF5B21C5F6A70007E5258 /* MQMemberTagSettingVC.m */,
+				4BDDF5B41C5F7E65007E5258 /* MQMemberAuthSettingVC.h */,
+				4BDDF5B51C5F7E65007E5258 /* MQMemberAuthSettingVC.m */,
 				784770E41B2FC8C5007D7839 /* ICMemberInfoViewController.h */,
 				784770E51B2FC8C5007D7839 /* ICMemberInfoViewController.m */,
 				784A84BB1B462E4F000D6577 /* ICMemberNaviController.h */,
@@ -1077,6 +1100,8 @@
 				78613FC61B3D48AD007ED169 /* ICMarkListViewController.m */,
 				78613FC81B3D4D72007ED169 /* ICMarkClassifyViewController.h */,
 				78613FC91B3D4D72007ED169 /* ICMarkClassifyViewController.m */,
+				4BDDF5B71C60565F007E5258 /* MQTagEditVC.h */,
+				4BDDF5B81C60565F007E5258 /* MQTagEditVC.m */,
 			);
 			name = Mark;
 			sourceTree = "<group>";
@@ -1475,6 +1500,7 @@
 				7830DDFC1B3BDC0E00D956C9 /* ICCreateNewGroupViewController.m in Sources */,
 				781AD2581B465C3A006DF848 /* ICMemberManagementViewController.m in Sources */,
 				787EF9CC1B1D784B0030C560 /* ICMainViewController.m in Sources */,
+				4BDDF5B01C5F3731007E5258 /* MQMemberDetailVC.m in Sources */,
 				786381CF1B3AA55C0078F156 /* ICGroupNaviController.m in Sources */,
 				4B7A89241BD4F05F00E42F7C /* SDWebImageDecoder.m in Sources */,
 				4BAE39A91C44DEE500D7FC41 /* WorkPlanDetailController.m in Sources */,
@@ -1496,6 +1522,7 @@
 				4BC03FD21BABA59E004C6F3B /* ICGroupMessageSettingController.m in Sources */,
 				78354CD31B40F5A000E2F00A /* ICMemberRegisterViewController.m in Sources */,
 				4B8AE4251BB910C9002B0143 /* ICFileViewController.m in Sources */,
+				4BCC5FEB1C5B73BB000FC7A9 /* MQMemberTableVC.m in Sources */,
 				4BC94BBD1C3F9A1F00F2FEAF /* DTConstants.m in Sources */,
 				4BC94BAA1C3E55EC00F2FEAF /* WorkPlanTime.m in Sources */,
 				4B1F2AA81BB9251F00D55BAE /* NSData+GIF.m in Sources */,
@@ -1524,6 +1551,7 @@
 				4B1F2AA61BB9251F00D55BAE /* RRPageControl.m in Sources */,
 				4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */,
 				4B1F2AA31BB9251F00D55BAE /* MJPhotoToolbar.m in Sources */,
+				4BDDF5B91C60565F007E5258 /* MQTagEditVC.m in Sources */,
 				786381D21B3AAFEA0078F156 /* ICGroupDetailViewController.m in Sources */,
 				4BC530161C1968B3002C20D8 /* APAddress.m in Sources */,
 				4B1F2AA21BB9251F00D55BAE /* MJPhotoProgressView.m in Sources */,
@@ -1582,6 +1610,7 @@
 				786644951B54D80000DBB189 /* CommonFile.m in Sources */,
 				7883D6AF1B5783580068CEE5 /* Mark.m in Sources */,
 				7839C2671B4D4291003E3330 /* UIColor+HexString.m in Sources */,
+				4BDDF5B61C5F7E65007E5258 /* MQMemberAuthSettingVC.m in Sources */,
 				783AC2D81B55F35600EE3E37 /* Mission.m in Sources */,
 				4B8856131C10237A00B50998 /* MQCreateGroupFirstController.m in Sources */,
 				7864DD2F1B2E8F4C00547D16 /* ICSideTopMenuController.m in Sources */,
@@ -1595,6 +1624,7 @@
 				4B5F59D11BDF54C60017FD9D /* MQPublishMissionMainController.m in Sources */,
 				4B7A89261BD4F05F00E42F7C /* SDWebImageDownloaderOperation.m in Sources */,
 				4B8856161C103CEA00B50998 /* MQCreateGroupSecondController.m in Sources */,
+				4BDDF5B31C5F6A70007E5258 /* MQMemberTagSettingVC.m in Sources */,
 				783AC2DE1B56543900EE3E37 /* Member.m in Sources */,
 				4BBB612D1BDA2EA400C7E79E /* MessageCenter.m in Sources */,
 				4BC5301A1C1968B3002C20D8 /* APSocialProfile.m in Sources */,
@@ -1731,8 +1761,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1751,7 +1781,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
+				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
@@ -1764,8 +1794,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1784,7 +1814,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
+				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
