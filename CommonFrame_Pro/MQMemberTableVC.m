@@ -12,6 +12,7 @@
 #import "InputText.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "MQMemberDetailVC.h"
+#import "SVProgressHUD.h"
 
 @interface MQMemberTableVC ()<UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate, UITextFieldDelegate>
 {
@@ -194,8 +195,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self fillAllMember];
-    
     if (_ccopyToMembersArray != nil) {
         NSString* idArrayStr = @"";
         NSString * userArrayStr = @"";
@@ -218,17 +217,22 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString* loginUserId = [LoginUser loginUserID];
-            //NSString* idStr = _txtGroupName.text;
             BOOL isOk = [Group inviteNewUser:loginUserId workGroupId:_workGroup.workGroupId source:3 sourceValue:idArrayStr];
             if (isOk) {
                 
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已邀请群组成员!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
+                [SVProgressHUD showSuccessWithStatus:@"已邀请群组成员"];
+                
                 _ccopyToMembersArray = nil;
+                
+                [self fillAllMember];
             }
             
         });
         
+    }
+    else
+    {
+        [self fillAllMember];
     }
 }
 
@@ -397,7 +401,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (self.controllerType == MemberViewFromControllerGroupMembers) {
+    if (self.controllerType == MemberViewFromControllerAuthority) {
         // 删除操作
         if (editingStyle == UITableViewCellEditingStyleDelete) {
             
