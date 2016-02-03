@@ -92,6 +92,11 @@
     
 }
 
+- (void) hiddenKeyboard
+{
+    [_addTagTxt resignFirstResponder];
+}
+
 - (void) textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField.text == nil || [textField.text isEqualToString:@""]) {
@@ -113,6 +118,8 @@
             [_tableView reloadData];
             
             _addTagTxt.text = @"";
+            _addTagTxt.hidden = YES;
+            _addTagBtn.hidden = NO;
         }
         
     });
