@@ -46,7 +46,8 @@
 @property (nonatomic,strong)    NSArray*                            dataArray;
 
 
-- (ICSideMenuController*)initWithImages:(NSArray*)imageList menusName:(NSArray*)nameList badgeValue:(NSArray*)badgeList onView:(UIView*)parentView searchText:(NSString*)searchString isFirstSearchBar:(BOOL)isFirstBar allNumBadge:(NSArray *)allNumBadgeList;
+- (ICSideMenuController*)initWithImages:(NSArray*)imageList menusName:(NSArray*)nameList badgeValue:(NSArray*)badgeList onView:(UIView*)parentView searchText:(NSString*)searchString isFirstSearchBar:(BOOL)isFirstBar allNumBadge:(NSArray *)allNumBadgeList isOpen:(BOOL)isOpen;
+
 - (void)showMenu;
 - (void)btnShowAllGroup:(id)sender;
 @end

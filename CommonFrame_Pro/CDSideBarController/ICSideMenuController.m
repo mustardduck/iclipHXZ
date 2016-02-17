@@ -58,7 +58,7 @@
 
 @implementation ICSideMenuController
 
-- (ICSideMenuController*)initWithImages:(NSArray*)imageList menusName:(NSArray*)nameList badgeValue:(NSArray*)badgeList onView:(UIView*)parentView searchText:(NSString*)searchString isFirstSearchBar:(BOOL)isFirstBar allNumBadge:(NSArray *)allNumBadgeList
+- (ICSideMenuController*)initWithImages:(NSArray*)imageList menusName:(NSArray*)nameList badgeValue:(NSArray*)badgeList onView:(UIView*)parentView searchText:(NSString*)searchString isFirstSearchBar:(BOOL)isFirstBar allNumBadge:(NSArray *)allNumBadgeList isOpen:(BOOL)isOpen
 {
     CGFloat vWidth = parentView.frame.size.width;
     
@@ -107,12 +107,11 @@
     
     self.clickedButtonTag  = -1;
 
+    _isOpen = !isOpen;
     
     [self sideMenuShow];
 
     parentView = _mainView;
-
-    _isOpen = YES;
 
     return self;
 }

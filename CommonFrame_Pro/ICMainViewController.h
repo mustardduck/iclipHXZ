@@ -38,6 +38,7 @@
 
 @property (nonatomic, strong) NSMutableArray * contentArray;
 
+@property (nonatomic, assign) BOOL isOpen;
 
 
 

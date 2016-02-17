@@ -495,11 +495,11 @@
             [_badges addObject:badgeStr];
             [_allNumbadges addObject:gp.allNum];
         }
-        _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne allNumBadge:_allNumbadges];
+        _sideMenu = [[ICSideMenuController alloc] initWithImages:imgs menusName:names badgeValue:_badges  onView:_smView searchText:searchString isFirstSearchBar:isBarOne allNumBadge:_allNumbadges isOpen:_isOpen];
         
     }
     else
-        _sideMenu = [[ICSideMenuController alloc] initWithImages:imageListBottom menusName:nameList badgeValue:badgeList  onView:_smView searchText:searchString  isFirstSearchBar:isBarOne allNumBadge:nil];
+        _sideMenu = [[ICSideMenuController alloc] initWithImages:imageListBottom menusName:nameList badgeValue:badgeList  onView:_smView searchText:searchString  isFirstSearchBar:isBarOne allNumBadge:nil isOpen:_isOpen];
     
     NSMutableArray* sectionArray = [NSMutableArray array];
     NSArray*        memberArray = [Member getAllMembers:&sectionArray searchText:((!isBarOne && searchString != nil) ? searchString : nil)];
@@ -911,7 +911,6 @@
 {
     [super viewWillAppear:animated];
     
-    
     if (_strIndexForDetail != nil) {
         NSInteger index = [self.strIndexForDetail  integerValue];
         [_contentArray removeObjectAtIndex:index];
@@ -1188,6 +1187,8 @@
 
 - (void)MQSearchMenuButtonClicked:(NSString *)searchStr keyString:(NSString *)keyStr selectedArr:(NSArray *)selectedArr
 {
+    _isOpen = YES;
+    
     _keyString = keyStr;
     _TermString = searchStr;
     _searchArr = selectedArr;
@@ -1896,6 +1897,12 @@
 - (void)partfarmButtonClicked:(NSString*)val
 {
     NSInteger index = [val integerValue];
+    
+    if(!_topMenuController.isOpen)
+    {
+        _isOpen = !_sideMenu.isOpen;
+    }
+
     switch (index) {
         case 1:
             
@@ -1957,6 +1964,8 @@
 
 - (void)icSideMenuClicked:(id)sender
 {
+    _isOpen = YES;
+    
     UIButton * btn = (UIButton *)sender;
     
     if(btn.tag == _bottomArray.count - 1)
