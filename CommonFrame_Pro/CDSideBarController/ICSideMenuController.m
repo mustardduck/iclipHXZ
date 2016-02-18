@@ -13,7 +13,7 @@
 #import "UIColor+HexString.h"
 #import "UIButton+UIActivityIndicatorForSDWebImage.h"
 
-@interface ICSideMenuController()<UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
+@interface ICSideMenuController()<UITableViewDataSource,UITableViewDelegate, AIMTableViewIndexBarDelegate,InputTextDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate, UIScrollViewDelegate>
 {
   
     UIView*     _mainView;
@@ -50,6 +50,9 @@
     BOOL            _isFirstSearchBar;
     
     BOOL   _isUp;
+    
+    UIPageControl * _pageControl;
+    UIScrollView* _sv;
 }
 
 @property (nonatomic,assign) BOOL chang;
@@ -212,6 +215,11 @@
     }
 }
 
+- (void)actionCotrolPage:(id)sender
+{
+    [_sv setContentOffset:CGPointMake(_pageControl.currentPage * SCREENWIDTH, 0) animated:YES];
+}
+
 - (void)showMenu
 {
     CGFloat vHeight = 120;
@@ -235,15 +243,24 @@
     [self sideMenuShow];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+//    int page = sender.contentOffset.x/SCREENWIDTH + 1;
+    CGFloat pageWidth = sender.frame.size.width;
+    int page = floor((sender.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pageControl.currentPage = page;
+    
+}
+
 - (void)sideMenuShow
 {
     //show
     int index = 0;
-    int columeCount = 5;
+    int columeCount = 4;
     
     CGFloat top = 45;                                       //change main menu view top height
     CGFloat menuWidth = (_pViewWidth - 30)/columeCount;
-    CGFloat menuHeight = 70;
+    CGFloat menuHeight = 106;
     CGFloat vHeight = 120;
     NSInteger rowCount = _dataCount / columeCount;
     
@@ -251,12 +268,12 @@
         [control removeFromSuperview];
     }
     
-    UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 1, _pViewWidth, 28)];
+    UIButton* mbutton = [[UIButton alloc] initWithFrame:CGRectMake(0, 1, _pViewWidth, 32)];
     mbutton.backgroundColor = [UIColor clearColor];
     
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
-    [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
+    [mbutton setImage:[UIImage imageNamed:@"btn_xiala"] forState:UIControlStateNormal];
     
     
     [_mainView addSubview:mbutton];
@@ -281,23 +298,6 @@
         
         UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"群组"];
         
-        //        UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
-        //        [leftButton addTarget:self action:@selector(btnShowAllGroup:) forControlEvents:UIControlEventTouchUpInside];
-        //        UIImageView* imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 2, 10, 18)];
-        //        [imgview setImage:[UIImage imageNamed:@"btn_fanhui"]];
-        //        [leftButton addSubview:imgview];
-        //        UILabel* ti = [[UILabel alloc] initWithFrame:CGRectMake(18, 2, 80, 20)];
-        //        [ti setBackgroundColor:[UIColor clearColor]];
-        //        [ti setTextColor:[UIColor whiteColor]];
-        //        [ti setText:@"所有群组"];
-        //        [ti setFont:[UIFont systemFontOfSize:13]];
-        //        [leftButton addSubview:ti];
-        //
-        //        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
-        //        [leftBarButton setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} forState:UIControlStateNormal];
-        //
-        //        [item setLeftBarButtonItem:leftBarButton];
-        
         UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
         [rightBtn addTarget:self action:@selector(btnCreateNewGroup:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -316,14 +316,14 @@
         
         [topBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13],NSForegroundColorAttributeName:[UIColor whiteColor]}];
         
-        [_mainView addSubview:topBar];
+//        [_mainView addSubview:topBar];
         
         
         _messageView = [[UIView alloc] initWithFrame:
                         CGRectMake(0,
-                                   topBar.frame.size.height + topBar.frame.origin.y,
+                                   mbutton.bottom - 9,
                                    _mainView.frame.size.width,
-                                   _mainView.frame.size.height - topBar.frame.size.height - topBar.frame.origin.y)];
+                                   _mainView.frame.size.height)];
         [_messageView setBackgroundColor:[UIColor blackColor]];
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _pViewWidth, 40)];
@@ -385,19 +385,36 @@
         else
             rowCount = 1;
         
+        NSInteger maxRowCount = 3;
+        
+        if(SCREENWIDTH == 375)
+        {
+            maxRowCount = 4;
+        }
+        else if(SCREENWIDTH == 414)
+        {
+            maxRowCount = 5;
+        }
+        
         CGFloat svHeight = menuHeight * rowCount + 7;
         
-        UIScrollView* sv = [[UIScrollView alloc] initWithFrame:CGRectMake(0, top, [UIScreen mainScreen].bounds.size.width, svHeight)];
+        _sv = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, svHeight)];
         
-        [sv setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, menuHeight * rowCount)];
-        [sv setBounces:YES];
-        [sv setScrollEnabled:YES];
-        [sv setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
-        [sv setShowsVerticalScrollIndicator:YES];
+        NSInteger page = _dataCount % (maxRowCount * columeCount) ? _dataCount / (maxRowCount * columeCount) + 1 :  _dataCount / (maxRowCount * columeCount);
+        
+//        [sv setContentSize:CGSizeMake(SCREENWIDTH * (_dataCount / (columeCount * 5) + 1) , menuHeight * rowCount)];
+        [_sv setBounces:YES];
+        [_sv setPagingEnabled:YES];
+        [_sv setScrollEnabled:YES];
+        [_sv setIndicatorStyle:UIScrollViewIndicatorStyleBlack];
+        [_sv setShowsVerticalScrollIndicator:YES];
+        [_sv setDelegate:self];
         
         for (int i = 0; i < rowCount; i++) {
             
             int count = columeCount;
+            
+            int k = i / maxRowCount;
             
             if (i + 1 == rowCount) {
                 count = (int)(_dataCount - i * columeCount);
@@ -408,24 +425,27 @@
                 index = i * columeCount + j;
                 
                 CGFloat x = j * menuWidth + (j+1) * 5;
-                CGFloat y = i * menuHeight;
+                CGFloat y = (i % maxRowCount) * menuHeight;
                 y = y + 1;
                 
                 UIView* menuView = [[UIView alloc]
-                                    initWithFrame:CGRectMake(x, y, menuWidth, menuHeight)];
+                                    initWithFrame:CGRectMake(SCREENWIDTH * k + x, y, menuWidth, menuHeight)];
                 
-                UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake((menuWidth - 44) / 2, 5, 44, 44)];
+                UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake((menuWidth - 60) / 2, 5, 60, 60)];
                 
                 //[menuButton setImage:[_imageList objectAtIndex:index] forState:UIControlStateNormal];
+                
                 
                 if(index == _imageList.count - 1)
                 {
                     [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_1"] forState:UIControlStateNormal];
-                    [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
+//                    [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
                     
                 }
                 else
                 {
+                    [menuButton setRoundCorner:10];
+
                     [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                 }
                 
@@ -435,13 +455,13 @@
                 
                 
                 
-                UILabel* menuName = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, menuWidth, 15)];
+                UILabel* menuName = [[UILabel alloc] initWithFrame:CGRectMake(0, menuButton.bottom + 5, menuWidth, 14)];
                 
                 [menuName setText:[_nameList objectAtIndex:index]];
                 [menuName setBackgroundColor:[UIColor clearColor]];
                 [menuName setTextAlignment:NSTextAlignmentCenter];
                 [menuName setTextColor:[UIColor whiteColor]];
-                [menuName setFont:[UIFont boldSystemFontOfSize:9]];
+                [menuName setFont:Font(12)];
                 
                 [menuView addSubview:menuButton];
                 [menuView addSubview:menuName];
@@ -471,85 +491,130 @@
                     [menuButton setTag:index];
                     [menuView addSubview:menuButton];
                     
-                    [sv addSubview:menuView];
+                    [_sv addSubview:menuView];
                 }
                 else
                 {
                     self.clickedButtonTag = -1;
                     [self addBadgeView:menuView parentView:menuView  showValue:@"0" isAllNum:NO withIndex:index];
-                    [sv addSubview:menuView];
+                    [_sv addSubview:menuView];
                 }
                 
             }
         }
         
-        [_messageView addSubview:sv];
+        [_messageView addSubview:_sv];
         
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         
-        //我的
+        CGFloat msgY = H(_messageView) - 96 - 64 - (mbutton.bottom - 9);
+        if(H(_messageView) != SCREENHEIGHT)
+        {
+            msgY = H(_messageView) - 96 - (mbutton.bottom - 9);
+        }
         
-        UIView * msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(sv), width, 68)];
-        [msgView setBackgroundColor:[UIColor clearColor]];
+        _sv.height = msgY;
+        
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, msgY - 30, SCREENWIDTH, 30)];
+        _pageControl.numberOfPages = rowCount % maxRowCount ? rowCount / maxRowCount + 1 : rowCount / maxRowCount;
+        _pageControl.currentPage = 0;
+//        _pageControl.pageIndicatorTintColor = [UIColor redColor];
+        [_messageView addSubview:_pageControl];
+        [_pageControl addTarget:self action:@selector(actionCotrolPage:) forControlEvents:UIControlEventValueChanged];
+        
+        [_sv setContentSize:CGSizeMake(page * SCREENWIDTH, msgY)];
+
+        //消息
+        UIView * msgView = [[UIView alloc]initWithFrame:CGRectMake(0, msgY, width, 96)];
+        [msgView setBackgroundColor:RGBCOLOR(41, 46, 50)];
         [_messageView addSubview:msgView];
         
-        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0.5f)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [msgView addSubview:bottomLine];
-        
-        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, H(msgView) - 0.5, width, 0.5f)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [msgView addSubview:bottomLine];
-        
-        UIImageView * photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 14, 40, 40)];
-        photo.image = [UIImage imageNamed:@"icon_wode"];
+        UIImageView * photo = [[UIImageView alloc]initWithFrame:CGRectMake((SCREENWIDTH - 60) / 2, 14, 60, 60)];
+        photo.image = [UIImage imageNamed:@"btn_xiaoxi"];
         [msgView addSubview:photo];
         
-        UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 0, width, H(msgView))];
+        UILabel * titLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(photo), photo.bottom + 2, W(photo), 16)];
         titLbl.backgroundColor = [UIColor clearColor];
-        titLbl.text = @"我的";
-        titLbl.font = [UIFont systemFontOfSize:16];
+        titLbl.text = @"消息";
+        titLbl.font = Font(12);
         titLbl.textColor = [UIColor whiteColor];
+        titLbl.textAlignment = NSTextAlignmentCenter;
         [msgView addSubview:titLbl];
         
-        UIButton * btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
+        UIButton * btn = [[UIButton alloc] initWithFrame:photo.frame];
         [btn addTarget:self action:@selector(btnMyMessageClicked:) forControlEvents:UIControlEventTouchUpInside];
         btn.backgroundColor = [UIColor clearColor];
         [msgView addSubview:btn];
         
+        //我的
+        UIImageView * photo2 = [[UIImageView alloc]initWithFrame:CGRectMake(X(photo) - 35 - 60, 14, 60, 60)];
+        photo2.image = [UIImage imageNamed:@"btn_wode"];
+        [msgView addSubview:photo2];
         
-        //成员通讯录
-        msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(msgView), width, 68)];
-        [msgView setBackgroundColor:[UIColor clearColor]];
-        [_messageView addSubview:msgView];
-        
-        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0.5f)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [msgView addSubview:bottomLine];
-        
-        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, H(msgView) - 0.5, width, 0.5f)];
-        [bottomLine setBackgroundColor:[UIColor grayColor]];
-        [msgView addSubview:bottomLine];
-        
-        photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 14, 40, 40)];
-        photo.image = [UIImage imageNamed:@"icon_chengyuantongxunlu"];
-        [msgView addSubview:photo];
-        
-        titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 0, width, H(msgView))];
+        titLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(photo2), photo2.bottom + 2, W(photo), 16)];
         titLbl.backgroundColor = [UIColor clearColor];
-        titLbl.text = @"成员通讯录";
-        titLbl.font = [UIFont systemFontOfSize:16];
+        titLbl.text = @"我的";
+        titLbl.font = Font(12);
         titLbl.textColor = [UIColor whiteColor];
+        titLbl.textAlignment = NSTextAlignmentCenter;
         [msgView addSubview:titLbl];
         
-        btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
-        [btn addTarget:self action:@selector(jumpToMemberList:) forControlEvents:UIControlEventTouchUpInside];
+        btn = [[UIButton alloc] initWithFrame:photo2.frame];
+        [btn addTarget:self action:@selector(btnMineClicked:) forControlEvents:UIControlEventTouchUpInside];
         btn.backgroundColor = [UIColor clearColor];
         [msgView addSubview:btn];
         
+        //设置
+        UIImageView * photo3 = [[UIImageView alloc]initWithFrame:CGRectMake(XW(photo) + 35, 14, 60, 60)];
+        photo3.image = [UIImage imageNamed:@"btn_shezhi2"];
+        [msgView addSubview:photo3];
+        
+        titLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(photo3), photo3.bottom + 2, W(photo), 16)];
+        titLbl.backgroundColor = [UIColor clearColor];
+        titLbl.text = @"设置";
+        titLbl.font = Font(12);
+        titLbl.textColor = [UIColor whiteColor];
+        titLbl.textAlignment = NSTextAlignmentCenter;
+        [msgView addSubview:titLbl];
+        
+        btn = [[UIButton alloc] initWithFrame: photo3.frame];
+        [btn addTarget:self action:@selector(btnSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+        btn.backgroundColor = [UIColor clearColor];
+        [msgView addSubview:btn];
+
+        
+        //成员通讯录
+//        msgView = [[UIView alloc]initWithFrame:CGRectMake(0, YH(msgView), width, 68)];
+//        [msgView setBackgroundColor:[UIColor clearColor]];
+//        [_messageView addSubview:msgView];
+//        
+//        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0.5f)];
+//        [bottomLine setBackgroundColor:[UIColor grayColor]];
+//        [msgView addSubview:bottomLine];
+//        
+//        bottomLine = [[UILabel alloc] initWithFrame:CGRectMake(0, H(msgView) - 0.5, width, 0.5f)];
+//        [bottomLine setBackgroundColor:[UIColor grayColor]];
+//        [msgView addSubview:bottomLine];
+//        
+//        photo = [[UIImageView alloc]initWithFrame:CGRectMake(12 + 5, 14, 40, 40)];
+//        photo.image = [UIImage imageNamed:@"icon_chengyuantongxunlu"];
+//        [msgView addSubview:photo];
+//        
+//        titLbl = [[UILabel alloc] initWithFrame:CGRectMake(XW(photo) + 14, 0, width, H(msgView))];
+//        titLbl.backgroundColor = [UIColor clearColor];
+//        titLbl.text = @"成员通讯录";
+//        titLbl.font = [UIFont systemFontOfSize:16];
+//        titLbl.textColor = [UIColor whiteColor];
+//        [msgView addSubview:titLbl];
+//        
+//        btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(msgView), H(msgView))];
+//        [btn addTarget:self action:@selector(jumpToMemberList:) forControlEvents:UIControlEventTouchUpInside];
+//        btn.backgroundColor = [UIColor clearColor];
+//        [msgView addSubview:btn];
+        
         [_mainView addSubview:_messageView];
         
-        [self loadTableView:_messageView.frame];
+//        [self loadTableView:_messageView.frame];momo
         
         _isOpen = NO;
     }
@@ -561,7 +626,7 @@
         //            }];
         //        });
         
-        top = 20;
+        top = 32 - 7;
         
         if (_dataCount > 20) {
             columeCount = 20;
@@ -593,18 +658,21 @@
             UIView* menuView = [[UIView alloc]
                                 initWithFrame:CGRectMake(x, 0, menuWidth, menuHeight)];
             
-            UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake((menuWidth - 44) / 2, 5, 44, 44)];
+            UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake((menuWidth - 60) / 2, 5, 60, 60)];
             
             //[menuButton setImage:[_imageList objectAtIndex:index] forState:UIControlStateNormal];
             
+
             if(index == _imageList.count - 1)
             {
                 [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_1"] forState:UIControlStateNormal];
-                [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
+//                [menuButton setBackgroundImage:[UIImage imageNamed:@"btn_chuangjianqunzu_2"] forState:UIControlStateHighlighted];
                 
             }
             else
             {
+                [menuButton setRoundCorner:10];
+
                 [menuButton setImageWithURL:[NSURL URLWithString:[_imageList objectAtIndex:index]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_touxiang"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             }
             
@@ -613,13 +681,13 @@
             [menuButton setTag:index];
             
             
-            UILabel* menuName = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, menuWidth, 15)];
+            UILabel* menuName = [[UILabel alloc] initWithFrame:CGRectMake(0, menuButton.bottom + 5, menuWidth, 15)];
             
             [menuName setText:[_nameList objectAtIndex:index]];
             [menuName setBackgroundColor:[UIColor clearColor]];
             [menuName setTextAlignment:NSTextAlignmentCenter];
             [menuName setTextColor:[UIColor whiteColor]];
-            [menuName setFont:[UIFont boldSystemFontOfSize:9]];
+            [menuName setFont:Font(12)];
             
             [menuView addSubview:menuButton];
             [menuView addSubview:menuName];
@@ -670,7 +738,7 @@
         menuTitle.textAlignment = NSTextAlignmentCenter;
         menuTitle.font = [UIFont systemFontOfSize:13];
         
-        [_mainView addSubview:menuTitle];
+//        [_mainView addSubview:menuTitle];
         
         _isOpen = YES;
     }
@@ -679,7 +747,7 @@
 
 - (void)addBadgeView:(UIView*)control parentView:(UIView*)pview showValue:(NSString*)value isAllNum:(BOOL)isAllNum withIndex:(NSInteger)index
 {
-    CGPoint location = CGPointMake(control.bounds.size.width/9 * 7, control.bounds.size.height/7);
+    CGPoint location = CGPointMake(control.bounds.size.width/9 * 7 + 3, control.bounds.size.height/7 - 6);
 
     PPDragDropBadgeView* badgeView = [[PPDragDropBadgeView alloc] initWithSuperView:control parentView:pview location:CGPointMake(0,0) radius:9.f dragdropCompletion:^{
         NSLog(@"Drag Done");
@@ -1098,6 +1166,18 @@
 //    [self restoreTextName:_lblSearch textField:_txtSearch];
     if ([self.delegate respondsToSelector:@selector(btnMyMessageClicked:)])
         [self.delegate btnMyMessageClicked:sender];
+}
+
+- (void)btnMineClicked:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(btnMineClicked:)])
+        [self.delegate btnMineClicked:sender];
+}
+
+- (void)btnSettingClicked:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(btnSettingClicked:)])
+        [self.delegate btnSettingClicked:sender];
 }
 
 

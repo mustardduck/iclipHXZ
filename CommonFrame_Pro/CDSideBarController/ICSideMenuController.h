@@ -24,6 +24,9 @@
 - (void)btnGroupProjectClicked:(id)sender;
 
 - (void)btnMyMessageClicked:(id)sender;
+- (void)btnMineClicked:(id)sender;
+- (void)btnSettingClicked:(id)sender;
+
 
 - (void)btnGroupDepartmentClicked:(id)sender;
 

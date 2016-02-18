@@ -33,6 +33,7 @@
 #import "WorkPlanEditController.h"
 #import "WorkPlanDetailController.h"
 #import "MQSettingGroupVC.h"
+#import "MQMyMessageListController.h"
 
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
@@ -1042,16 +1043,18 @@
 
 - (void)btnIconClicked
 {
-    if(_tableView.header.state == MJRefreshHeaderStateIdle && [_isSetting intValue] == 1)
-    {
-        UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICSettingViewController"];
-        ((ICSettingViewController *) vc).icMainVC = self;
-        
-        _isSetting = @"0";
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+    [self partfarmButtonClicked:@"3"];
+    
+//    if(_tableView.header.state == MJRefreshHeaderStateIdle && [_isSetting intValue] == 1)
+//    {
+//        UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICSettingViewController"];
+//        ((ICSettingViewController *) vc).icMainVC = self;
+//        
+//        _isSetting = @"0";
+//        
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
 }
 
 #pragma make -
@@ -1964,8 +1967,6 @@
 
 - (void)icSideMenuClicked:(id)sender
 {
-    _isOpen = YES;
-    
     UIButton * btn = (UIButton *)sender;
     
     if(btn.tag == _bottomArray.count - 1)
@@ -1974,6 +1975,8 @@
         
         return;
     }
+    
+    _isOpen = YES;
     
     [_textSelectionList setSelectedButtonIndex:0];
     
@@ -2081,12 +2084,35 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void) btnMineClicked:(id)sender
+{
+    //    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQMyMessageMainController"];
+    //    ((MQMyMessageMainController *)vc).icMainVC = self;
+    //
+    //    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) btnSettingClicked:(id)sender
+{
+    if(_tableView.header.state == MJRefreshHeaderStateIdle && [_isSetting intValue] == 1)
+    {
+        UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"ICSettingViewController"];
+        ((ICSettingViewController *) vc).icMainVC = self;
+        
+        _isSetting = @"0";
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 - (void) btnMyMessageClicked:(id)sender
 {
-    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQMyMessageMainController"];
-    ((MQMyMessageMainController *)vc).icMainVC = self;
-    
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQMyMessageListController"];
+    ((MQMyMessageListController *)vc).icMainVC = self;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
