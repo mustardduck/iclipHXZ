@@ -88,6 +88,7 @@
     _wgNameLbl.text = _workGroup.workGroupName;
     
     _selectedTagList = [[NSMutableArray alloc] init];
+    _selectedIndexList = [[NSMutableArray alloc] init];
 
     [_tableView reloadData];
     
@@ -565,9 +566,9 @@
     Mark* me = _dataArray[row];
     
     if (selectedArray.count > 0) {
-        for (Mark* ip in _selectedIndexList) {
+        for (Mark* ip in selectedArray) {
             if (ip.labelId == me.labelId) {
-                [_selectedIndexList removeObject:ip];
+                [selectedArray removeObject:ip];
                 break;
             }
         }
@@ -593,7 +594,7 @@
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = Font(15);
     
-    titleLabel.text= @"可分配下列权限";
+    titleLabel.text= @"所有标签";
     [titleView addSubview:titleLabel];
     
     return myView;
