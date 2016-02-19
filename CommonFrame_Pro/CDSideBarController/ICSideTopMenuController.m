@@ -85,7 +85,7 @@
     mbutton.backgroundColor = [UIColor clearColor];
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [mbutton addTarget:self action:@selector(showTopMenu:) forControlEvents:UIControlEventTouchUpInside];
-    [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
+    [mbutton setImage:[UIImage imageNamed:@"btn_xiala"] forState:UIControlStateNormal];
     
     [_mainView addSubview:mbutton];
 

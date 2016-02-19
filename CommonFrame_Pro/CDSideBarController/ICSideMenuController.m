@@ -273,7 +273,7 @@
     
     mbutton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [mbutton addTarget:self action:@selector(menuClicked) forControlEvents:UIControlEventTouchUpInside];
-    [mbutton setImage:[UIImage imageNamed:@"btn_xiala"] forState:UIControlStateNormal];
+    [mbutton setImage:[UIImage imageNamed:@"btn_caidan"] forState:UIControlStateNormal];
     
     
     [_mainView addSubview:mbutton];
@@ -281,6 +281,8 @@
     //    [self addGestureRecognizer:mbutton];
     
     if (_isOpen) {
+        
+        [mbutton setImage:[UIImage imageNamed:@"btn_xiala"] forState:UIControlStateNormal];
         
         //        dispatch_async(dispatch_get_main_queue(), ^{
         //            [UIView animateWithDuration:0.4 animations:^{
