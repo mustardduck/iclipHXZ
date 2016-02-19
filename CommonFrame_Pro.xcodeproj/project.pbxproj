@@ -36,6 +36,8 @@
 		4B4114D91BD4F5A10003B56C /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114D81BD4F5A10003B56C /* UIView+WebCacheOperation.m */; };
 		4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114DE1BD4F6010003B56C /* NSData+ImageContentType.m */; };
 		4B4114EA1BD4F6010003B56C /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4114E41BD4F6010003B56C /* UIImageView+HighlightedWebCache.m */; };
+		4B4F210F1C75BBED0077FAD8 /* MQPersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4F210E1C75BBED0077FAD8 /* MQPersonalInfoVC.m */; };
+		4B4F21121C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4F21111C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.m */; };
 		4B5F59CB1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */; };
 		4B5F59D11BDF54C60017FD9D /* MQPublishMissionMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5F59D01BDF54C60017FD9D /* MQPublishMissionMainController.m */; };
 		4B6C5AA11BE1B06D00CEB8C4 /* MQPublishMissionMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6C5AA01BE1B06D00CEB8C4 /* MQPublishMissionMainCell.m */; };
@@ -268,6 +270,10 @@
 		4B4114DE1BD4F6010003B56C /* NSData+ImageContentType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ImageContentType.m"; sourceTree = "<group>"; };
 		4B4114E31BD4F6010003B56C /* UIImageView+HighlightedWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+HighlightedWebCache.h"; sourceTree = "<group>"; };
 		4B4114E41BD4F6010003B56C /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
+		4B4F210D1C75BBED0077FAD8 /* MQPersonalInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPersonalInfoVC.h; sourceTree = "<group>"; };
+		4B4F210E1C75BBED0077FAD8 /* MQPersonalInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPersonalInfoVC.m; sourceTree = "<group>"; };
+		4B4F21101C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPersonalInfoFieldEditVC.h; sourceTree = "<group>"; };
+		4B4F21111C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPersonalInfoFieldEditVC.m; sourceTree = "<group>"; };
 		4B5F59C91BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPublishSharedAndNotifyController.h; sourceTree = "<group>"; };
 		4B5F59CA1BDE1D8D0017FD9D /* MQPublishSharedAndNotifyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPublishSharedAndNotifyController.m; sourceTree = "<group>"; };
 		4B5F59CF1BDF54C60017FD9D /* MQPublishMissionMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPublishMissionMainController.h; sourceTree = "<group>"; };
@@ -1031,6 +1037,10 @@
 				4BB560E51C1FE62000A070C0 /* MQOrgSearchController.m */,
 				4BB560E11C1FE60B00A070C0 /* MQCreateOrgController.h */,
 				4BB560E21C1FE60B00A070C0 /* MQCreateOrgController.m */,
+				4B4F210D1C75BBED0077FAD8 /* MQPersonalInfoVC.h */,
+				4B4F210E1C75BBED0077FAD8 /* MQPersonalInfoVC.m */,
+				4B4F21101C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.h */,
+				4B4F21111C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.m */,
 			);
 			name = Account;
 			sourceTree = "<group>";
@@ -1547,6 +1557,7 @@
 				4BB33A8F1B9EC5CF009D80E2 /* SKSTableView.m in Sources */,
 				78486E191B61EA7D00D67751 /* ICSearchViewController.m in Sources */,
 				78BE76D61B2043F5008AF8AD /* ICSideMenuController.m in Sources */,
+				4B4F210F1C75BBED0077FAD8 /* MQPersonalInfoVC.m in Sources */,
 				4B8856191C103D0000B50998 /* MQCreateGroupThirdController.m in Sources */,
 				4B1F2AA61BB9251F00D55BAE /* RRPageControl.m in Sources */,
 				4B4114E71BD4F6010003B56C /* NSData+ImageContentType.m in Sources */,
@@ -1570,6 +1581,7 @@
 				4B1981B01BD4FBBB00174CFD /* UIView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				4BE1F5841BD6433F007CF6C4 /* AddPicCell66.m in Sources */,
 				4B8EA4361B9D305B0055FCF3 /* RRAttributedString.m in Sources */,
+				4B4F21121C75CF9D0077FAD8 /* MQPersonalInfoFieldEditVC.m in Sources */,
 				783D2C3D1B5CF73D007B197E /* PrintObject.m in Sources */,
 				4BE1F5891BD7A157007CF6C4 /* MarkCell.m in Sources */,
 				78613FCA1B3D4D72007ED169 /* ICMarkClassifyViewController.m in Sources */,
@@ -1761,8 +1773,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1781,7 +1793,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
+				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
@@ -1794,8 +1806,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Liang Ou (2A6YLJ5ES8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liang Ou (XD37MGRQ36)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Ou (XD37MGRQ36)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1814,7 +1826,7 @@
 					"$(PROJECT_DIR)/CommonFrame_Pro/Tools/dotc/lib",
 				);
 				PRODUCT_NAME = "回形针";
-				PROVISIONING_PROFILE = "4f6fa840-8926-47a2-8ddd-3fb68ba4a249";
+				PROVISIONING_PROFILE = "3357ffbe-69a1-445d-89a7-9710db66c8eb";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/CommonFrame_Pro";
