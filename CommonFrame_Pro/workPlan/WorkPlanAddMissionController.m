@@ -361,6 +361,8 @@
             }
             
             cell.selectIcon.hidden = NO;
+            cell.titleLblleftCons.constant = 40;
+
         }
         else
         {
@@ -368,6 +370,8 @@
             cell.selectIcon.hidden = YES;
             cell.icon.hidden = YES;
             cell.titleLbl.text = @"无";
+            
+            cell.titleLblleftCons.constant = 14;
         }
         
         [cell.selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];

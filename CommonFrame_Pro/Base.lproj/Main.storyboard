@@ -4161,6 +4161,7 @@
                                             <outlet property="selectIcon" destination="W7c-hX-DK1" id="dQ8-NX-nHy"/>
                                             <outlet property="statusLbl" destination="b2C-OG-Xop" id="OMV-WJ-Xjf"/>
                                             <outlet property="titleLbl" destination="5L1-Do-TtU" id="iAY-ym-4ZM"/>
+                                            <outlet property="titleLblleftCons" destination="khg-cZ-rPs" id="BbH-JJ-uGd"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

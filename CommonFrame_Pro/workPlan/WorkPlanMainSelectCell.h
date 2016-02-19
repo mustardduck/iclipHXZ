@@ -16,5 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *selectIcon;
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 @property (weak, nonatomic) IBOutlet UIButton *jumpBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLblleftCons;
 
 @end
