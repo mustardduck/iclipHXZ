@@ -173,15 +173,33 @@
 //        _photo.image = editedImage;
         _user.img = userImgPath;
 
-        [_photo setImageWithURL:[NSURL URLWithString:_user.img] placeholderImage:[UIImage imageNamed:@"icon_chengyuan"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL isOk = [LoginUser updateInfo:_nameLbl.text phone:_mobileLbl.text email:_emailLbl.text photo:_user.img];
             if (isOk) {
                 
                 [SVProgressHUD showSuccessWithStatus:@"更新资料成功"];
                 
-                _user = [LoginUser getLoginInfo];
+                LoginUser* lg = [LoginUser new];
+                
+                lg.loginName = [LoginUser loginUserMobile];
+                lg.password = [LoginUser loginUserPwd];
+                lg.isPwdMD5 = YES;
+                
+                lg.type = 2;
+                lg.source = 2;
+                lg.productId = 1;
+                lg.version = @"1.0.0";
+                lg.systemVersion = @"1.0.0";
+                
+                NSString * msg = @"";
+                BOOL isOk = [lg hasLogin:&msg];
+                
+                if(isOk)
+                {
+                    _user = [LoginUser getLoginInfo];
+                }
+                
+                
             }
             else
             {
