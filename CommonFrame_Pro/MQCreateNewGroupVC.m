@@ -64,7 +64,7 @@
             {
                 _sloganHeightCons.constant = 44;
                 _sloganTextViewTopCons.constant = 5;
-                _lineBottomCons.constant = 19;
+                _lineBottomCons.constant = 0;
             }
             
             [_photoImgView setImageWithURL:[NSURL URLWithString:self.workGroup.workGroupImg] placeholderImage:[UIImage imageNamed:@"icon_touxiang"] options:SDWebImageDelayPlaceholder usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
