@@ -34,6 +34,7 @@
 #import "WorkPlanDetailController.h"
 #import "MQSettingGroupVC.h"
 #import "MQMyMessageListController.h"
+#import "MQPersonalInfoVC.h"
 
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
@@ -1075,7 +1076,8 @@
             ((MQPublishMissionMainController*)vc).workGroupId = _currentGroup.workGroupId;
             ((MQPublishMissionMainController*)vc).workGroupName = _currentGroup.workGroupName;
         }
-        
+        ((MQPublishMissionMainController*)vc).icMainVC = self;
+
         [self.navigationController pushViewController:vc animated:YES];
 
 //        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -1096,6 +1098,8 @@
         }
         ((MQPublishSharedAndNotifyController*)vc).userId = self.loginUserID;
         ((MQPublishSharedAndNotifyController*)vc).isShared = 1;
+        ((MQPublishSharedAndNotifyController*)vc).icMainVC = self;
+
         [self.navigationController pushViewController:vc animated:YES];
         
     }
@@ -1109,6 +1113,8 @@
         }
         ((MQPublishSharedAndNotifyController*)vc).userId = self.loginUserID;
         ((MQPublishSharedAndNotifyController*)vc).isShared = 2;
+        ((MQPublishSharedAndNotifyController*)vc).icMainVC = self;
+
         [self.navigationController pushViewController:vc animated:YES];
         
     }
@@ -1123,6 +1129,8 @@
         }
         ((MQPublishSharedAndNotifyController*)vc).userId = self.loginUserID;
         ((MQPublishSharedAndNotifyController*)vc).isShared = 3;
+        ((MQPublishSharedAndNotifyController*)vc).icMainVC = self;
+
         [self.navigationController pushViewController:vc animated:YES];
         
 //        UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -1140,6 +1148,7 @@
         ((WorkPlanEditController*)vc).workGroupId = _currentGroup.workGroupId;
         ((WorkPlanEditController*)vc).workGroupName = _currentGroup.workGroupName;
         ((WorkPlanEditController*)vc).currentGroup = _currentGroup;
+        ((WorkPlanEditController*)vc).icMainVC = self;
 
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -2086,11 +2095,13 @@
 
 - (void) btnMineClicked:(id)sender
 {
-    //    UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    //    UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQMyMessageMainController"];
-    //    ((MQMyMessageMainController *)vc).icMainVC = self;
-    //
-    //    [self.navigationController pushViewController:vc animated:YES];
+        UIStoryboard* mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"MQPersonalInfoVC"];
+        ((MQPersonalInfoVC *)vc).icMainVC = self;
+    
+        [self.navigationController pushViewController:vc animated:YES];
+    
+    
 }
 
 - (void) btnSettingClicked:(id)sender

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ICMainViewController.h"
 
 @interface MQPublishSharedAndNotifyController : UIViewController
 
@@ -36,6 +37,7 @@
 
 @property(nonatomic,strong) id       icDetailViewController;
 @property(nonatomic,strong) id       icGroupViewController;
+@property(nonatomic,strong) id       icMainVC;
 
 @property(nonatomic,strong) NSDictionary* currentMissionDic;
 @property(nonatomic,strong) NSDictionary* missionDic;

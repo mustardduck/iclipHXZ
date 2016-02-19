@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ICMainViewController.h"
 
 @interface MQPublishMissionMainController : UIViewController
 
@@ -18,5 +19,6 @@
 @property (nonatomic, strong) NSString * taskId;
 
 @property(nonatomic,strong) id       icDetailViewController;
+@property(nonatomic,strong) id       icMainVC;
 
 @end

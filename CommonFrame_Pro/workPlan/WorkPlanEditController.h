@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
+#import "ICMainViewController.h"
 
 @interface WorkPlanEditController : UIViewController
 
@@ -20,5 +21,5 @@
 @property (nonatomic, assign) BOOL isEdit;
 @property (nonatomic, strong) Group * currentGroup;
 @property(nonatomic,strong) id       icDetailViewController;
-
+@property (nonatomic, strong) id icMainVC;
 @end

@@ -421,6 +421,10 @@
     if ([self.icDetailViewController respondsToSelector:@selector(setContent:)]) {
         [self.icDetailViewController setValue:@"1" forKey:@"content"];
     }
+    
+    if ([self.icMainVC respondsToSelector:@selector(setIsNotRefreshMain:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isNotRefreshMain"];
+    }
 }
 
 
