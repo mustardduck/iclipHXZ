@@ -1889,7 +1889,14 @@
             {
                 if(section < _finishArr.count)
                 {
-                    return 60;
+                    if(section == 0)
+                    {
+                        return 60;
+                    }
+                    else
+                    {
+                        return 34;
+                    }
                 }
                 else//已完成为空->写上“无”
                 {
@@ -2079,12 +2086,20 @@
                     titleLbl.backgroundColor = [UIColor clearColor];
                     titleLbl.textColor = [UIColor whiteColor];
                     titleLbl.font = Font(17);
-                    
-                    [myView addSubview:titleLbl];
+                    titleLbl.text = @"已完成";
                     
                     UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 28, SCREENWIDTH, 28)];
                     titleView.backgroundColor = [UIColor clearColor];
                     [myView addSubview:titleView];
+                    
+                    if(section == 0)
+                    {
+                        [myView addSubview:titleLbl];
+                    }
+                    else
+                    {
+                        titleView.top = 0;
+                    }
                     
                     UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
                     icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
@@ -2095,7 +2110,6 @@
                     titleLabel.backgroundColor = [UIColor clearColor];
                     titleLabel.font = Font(15);
                     
-                    titleLbl.text = @"已完成";
                     titleLabel.text = [_finishArr[section] valueForKey:@"labelName"];
                     
                     [titleView addSubview:titleLabel];
