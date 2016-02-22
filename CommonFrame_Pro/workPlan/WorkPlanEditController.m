@@ -1237,15 +1237,26 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger count;
+    NSInteger count = 0;
     if(_isEdit)
     {
-        count = [[_rows[indexPath.section] objectForKey:@"taskList"] count];
+        if(_rows.count)
+        {
+            count = [[_rows[indexPath.section] objectForKey:@"taskList"] count];
+        }
     }
     else
     {
-        Mark * ma = _tags[indexPath.section];
-        count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+        if(_tags.count)
+        {
+            Mark * ma = _tags[indexPath.section];
+            
+            if(_rows.count)
+            {
+                count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            }
+        }
+
     }
     
     NSInteger sectionCount = 0;
