@@ -362,13 +362,15 @@
             
             cell.selectIcon.hidden = NO;
             cell.titleLblleftCons.constant = 40;
-
+            cell.icon.hidden = NO;
+            cell.statusLbl.hidden = NO;
         }
         else
         {
             cell.selectIcon.tag = 1012;
             cell.selectIcon.hidden = YES;
             cell.icon.hidden = YES;
+            cell.statusLbl.hidden = YES;
             cell.titleLbl.text = @"无";
             
             cell.titleLblleftCons.constant = 14;

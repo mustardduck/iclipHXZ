@@ -4204,7 +4204,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GOX-rh-qep" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2332" y="1077"/>
+            <point key="canvasLocation" x="2139" y="1078"/>
         </scene>
         <!--群组管理-->
         <scene sceneID="mT8-QX-KQh">
