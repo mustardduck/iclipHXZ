@@ -2691,6 +2691,8 @@
         
         if(ms.type == 4 || ms.type == 5)
         {
+            _isOpen = YES;
+            
             UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanDetailController"];
             ((WorkPlanDetailController*)vc).taskId = ms.taskId;
