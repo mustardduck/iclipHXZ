@@ -18,6 +18,7 @@
 #import "SVProgressHUD.h"
 #import "ICSettingGroupViewController.h"
 #import "ICWorkingDetailViewController.h"
+#import "MQSettingGroupVC.h"
 
 @interface WorkPlanEditController ()<UITableViewDataSource, UITableViewDelegate, MQworkGroupSelectDelegate, MQworkTimeSelectDelegate, UIAlertViewDelegate>
 {
@@ -663,7 +664,12 @@
         {
             Mark * ma = _tags[indexPath.section];
             
-            NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            NSInteger count = 0;
+            
+            if(_rows.count)
+            {
+                count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            }
             
             if(indexPath.row == count && count > 0)
             {
@@ -676,8 +682,13 @@
         {
             Mark * ma = _tags[indexPath.section];
             
-            NSInteger count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            NSInteger count = 0;
             
+            if(_rows.count)
+            {
+                count = [[_rows[indexPath.section] objectForKey:ma.labelId] count];
+            }
+                        
             if(indexPath.row == count && count > 0)
             {
                 return 44 + 40;
@@ -710,7 +721,12 @@
 {
     if(_isEdit)
     {
-        NSInteger count = [[_rows[section] objectForKey:@"taskList"] count];
+        NSInteger count = 0;
+        
+        if(_rows.count)
+        {
+            count = [[_rows[section] objectForKey:@"taskList"] count];
+        }
         
         if(count == 0)
         {
@@ -735,7 +751,12 @@
     {
         Mark * ma = _tags[section];
         
-        NSInteger count = [[_rows[section] objectForKey:ma.labelId] count];
+        NSInteger count = 0;
+        
+        if(_rows.count)
+        {
+            count = [[_rows[section] objectForKey:ma.labelId] count];
+        }
         
         if(count == 0)
         {
@@ -783,7 +804,10 @@
     
     if(_isEdit)
     {
-        titleLabel.text = [_rows[section] valueForKey:@"labelName"];
+        if(_rows.count)
+        {
+            titleLabel.text = [_rows[section] valueForKey:@"labelName"];
+        }
     }
     else
     {
@@ -808,13 +832,23 @@
         NSArray * mArr;
         if(_isEdit)
         {
-            mArr = [_rows[indexPath.section] objectForKey:@"taskList"];
+            if(_rows.count)
+            {
+                mArr = [_rows[indexPath.section] objectForKey:@"taskList"];
+            }
         }
         else
         {
-            Mark * ma = _tags[indexPath.section];
+            if(_tags.count)
+            {
+                Mark * ma = _tags[indexPath.section];
+                
+                if(_rows.count)
+                {
+                    mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+                }
+            }
 
-            mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
         }
         
         if(mArr.count)
@@ -976,12 +1010,22 @@
         NSArray * mArr;
         if(_isEdit)
         {
-            mArr = [_rows[indexPath.section] objectForKey:@"taskList"];
+            if(_rows.count)
+            {
+                mArr = [_rows[indexPath.section] objectForKey:@"taskList"];
+            }
         }
         else
         {
-            Mark * ma = _tags[indexPath.section];
-            mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+            if(_tags.count)
+            {
+                Mark * ma = _tags[indexPath.section];
+                if(_rows.count)
+                {
+                    mArr = [_rows[indexPath.section] objectForKey:ma.labelId];
+                }
+            }
+
         }
 
         if(mArr.count)
@@ -1281,14 +1325,19 @@
         NSArray * arr;
         if(_isEdit)
         {
-            arr = [_rows[indexPath.section] objectForKey:@"taskList"];
+            if(_rows.count)
+            {
+                arr = [_rows[indexPath.section] objectForKey:@"taskList"];
+            }
         }
         else
         {
-            numKey = [NSNumber numberWithInteger:[[_rows[indexPath.section] allKeys][0] integerValue]];
-            
-            arr = [_rows[indexPath.section] objectForKey:numKey];
-
+            if(_rows.count)
+            {
+                numKey = [NSNumber numberWithInteger:[[_rows[indexPath.section] allKeys][0] integerValue]];
+                
+                arr = [_rows[indexPath.section] objectForKey:numKey];
+            }
         }
         
         if(arr.count)
@@ -1342,7 +1391,7 @@
 - (void) showAlertView
 {
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"没有主要工作标签"
-                                                    message:@"请先去添加!" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去添加", nil];
+                                                       message:@"请先去添加!" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去添加", nil];
     [alert show];
 }
 
@@ -1351,9 +1400,8 @@
     if (buttonIndex == 1)
     {
         UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"ICSettingGroupViewController"];
-        ((ICSettingGroupViewController*)controller).workGroupId = _currentGroup.workGroupId;
-        ((ICSettingGroupViewController*)controller).workGroup = _currentGroup;
+        UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"MQSettingGroupVC"];
+        ((MQSettingGroupVC*)controller).workGroup = _currentGroup;
         [self.navigationController pushViewController:controller animated:YES];
     }
 }

@@ -691,7 +691,6 @@
     UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"MQSettingGroupVC"];
     ((MQSettingGroupVC*)controller).workGroup = _currentGroup;
-//    ((MQSettingGroupVC*)controller).icGroupDetailController = self;
     [self.navigationController pushViewController:controller animated:YES];
     
     /*
