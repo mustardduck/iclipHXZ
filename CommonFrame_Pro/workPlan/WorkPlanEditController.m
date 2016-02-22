@@ -1377,7 +1377,7 @@
     _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
     if(_tags.count)
     {
-        [self resetRowsData];
+        [self resetRowsEditData];
     }
     else
     {
