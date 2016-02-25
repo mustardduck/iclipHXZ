@@ -44,7 +44,7 @@
 
 + (NSArray *) findUserMainLabel:(NSString *)userId workGroupId:(NSString *) workGroupId;//找到用户的主要标签
 
-+ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelIdStr;//找到用户的主要标签下的任务
++ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelIdStr taskId:(NSString *)taskId;//找到用户的主要标签下的任务
 
 + (NSArray *) findUserTaskByTime:(NSString *)userId workGroupId:(NSString *) workGroupId;//查找工作组工作管理
 

@@ -35,6 +35,7 @@
 #import "MQSettingGroupVC.h"
 #import "MQMyMessageListController.h"
 #import "MQPersonalInfoVC.h"
+#import "WorkPlanEditMainController.h"
 
 
 @interface ICMainViewController () <UITableViewDelegate,UITableViewDataSource, HTHorizontalSelectionListDelegate, HTHorizontalSelectionListDataSource>
@@ -1142,14 +1143,26 @@
     }
     else if (index == 4)//计划
     {
+        
+        UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanEditMainController"];
+        ((WorkPlanEditMainController*)vc).workGroupId = _currentGroup.workGroupId;
+        ((WorkPlanEditMainController*)vc).workGroupName = _currentGroup.workGroupName;
+        ((WorkPlanEditMainController*)vc).currentGroup = _currentGroup;
+        ((WorkPlanEditMainController*)vc).icMainVC = self;
+
+        [self.navigationController pushViewController:vc animated:YES];
+        
+         /*
         UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanEditController"];
         ((WorkPlanEditController*)vc).workGroupId = _currentGroup.workGroupId;
         ((WorkPlanEditController*)vc).workGroupName = _currentGroup.workGroupName;
         ((WorkPlanEditController*)vc).currentGroup = _currentGroup;
         ((WorkPlanEditController*)vc).icMainVC = self;
-
+        
         [self.navigationController pushViewController:vc animated:YES];
+          */
     }
 }
 
@@ -2645,7 +2658,7 @@
         if(ms.type == 1)
         {
             //子任务
-            if([ms.parentId isEqualToString:@"0"])
+            if(ms.parentId == 0)
             {
                 fujianLbl = [[UILabel alloc] init];
                 fujianLbl.textColor = RGBCOLOR(172, 172, 173);

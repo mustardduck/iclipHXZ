@@ -136,6 +136,10 @@
     
     [self resetData];
     
+    if(_isFromWorkPlanToCreateMission)
+    {
+        _titleTxt.text = _titleName;
+    }
 }
 
 - (void) resetData

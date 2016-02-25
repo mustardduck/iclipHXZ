@@ -152,7 +152,7 @@
                             [curDic setObject:ms.lableUserName forKey:@"lableUserName"];
                             [curDic setObject:ms.lableUserImg forKey:@"lableUserImg"];
                             
-                            if([ms.parentId isEqualToString:@"0"])
+                            if(ms.parentId == 0)
                             {
                                 [mainMDic setObject:ms.title forKey:@"title"];
                                 
@@ -428,7 +428,10 @@
     }
     
     [dic setObject:self.workGroupId forKey:@"workGroupId"];
-    [dic setObject:self.main forKey:@"main"];
+    if(self.main.length)
+    {
+        [dic setObject:self.main forKey:@"main"];
+    }
     [dic setObject:self.title forKey:@"title"];
     
     if (isMission) {
@@ -438,8 +441,10 @@
         if(self.cclist != nil)
             [dic setObject:self.cclist forKey:@"ccList"];
         
-        
-        [dic setObject:self.finishTime forKey:@"finishTime"];
+        if(self.finishTime.length)
+        {
+            [dic setObject:self.finishTime forKey:@"finishTime"];
+        }
         
         if(self.remindTime != nil)
             [dic setObject:self.remindTime forKey:@"remindTime"];

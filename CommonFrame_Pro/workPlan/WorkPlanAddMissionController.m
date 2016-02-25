@@ -60,7 +60,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    _rows = [Group findUserMainLabelTask:[LoginUser loginUserID] workGroupId:_workGroupId labelId:_labelIdStr];
+    _rows = [Group findUserMainLabelTask:[LoginUser loginUserID] workGroupId:_workGroupId labelId:_labelIdStr taskId:nil];
 
     [_mainTableView reloadData];
 }

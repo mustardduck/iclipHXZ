@@ -175,7 +175,7 @@
         }
         else if (buttonIndex == 1)//编辑
         {
-            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+            _isMainMission = _currentMission.parentId == 0;//为0 主任务
 
             if(_isMainMission)
             {
@@ -201,7 +201,7 @@
             
             if(type == 1)
             {
-                _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+                _isMainMission = _currentMission.parentId == 0;//为0 主任务
                 
                 if(_isMainMission)
                 {
@@ -2026,7 +2026,7 @@
                 bSecondView.backgroundColor = [UIColor clearColor];
                 [bSecondView setRoundColorCorner:8 withColor:[UIColor grayLineColor]];
                 
-                _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+                _isMainMission = _currentMission.parentId == 0;//为0 主任务
                 
                 if(_isMainMission)//是主任务
                 {

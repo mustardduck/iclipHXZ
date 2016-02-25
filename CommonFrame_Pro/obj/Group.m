@@ -570,11 +570,11 @@
     return array;
 }
 
-+ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelIdStr
++ (NSArray *) findUserMainLabelTask:(NSString *)userId workGroupId:(NSString *) workGroupId labelId:(NSString *)labelIdStr taskId:(NSString *)taskId
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@&labelIdStr=%@",FindUserMainLabelTask_URL, userId, workGroupId, labelIdStr]];
+    NSData* responseString = [HttpBaseFile requestDataWithSync:[NSString stringWithFormat:@"%@?userId=%@&workGroupId=%@&labelIdStr=%@&taskId=%@",FindUserMainLabelTask_URL, userId, workGroupId, labelIdStr, taskId]];
     
     if (responseString == nil) {
         return array;
@@ -617,6 +617,7 @@
                                     mi.lableUserName = [di valueForKey:@"createName"];//责任人
                                     mi.createUserId = [di valueForKey:@"createUserId"];
                                     mi.workGroupId = workGroupId;
+                                    mi.isHave = [[di valueForKey:@"isHave"] integerValue];
                                     
                                     [labelArr addObject:mi];
                                 }

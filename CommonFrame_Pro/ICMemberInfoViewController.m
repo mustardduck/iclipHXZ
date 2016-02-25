@@ -765,7 +765,7 @@
         if(ms.type == 1)
         {
             //子任务
-            if([ms.parentId isEqualToString:@"0"])
+            if(ms.parentId == 0)
             {
                 fujianLbl = [[UILabel alloc] init];
                 fujianLbl.textColor = RGBCOLOR(172, 172, 173);

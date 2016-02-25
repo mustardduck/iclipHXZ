@@ -14,6 +14,7 @@
 #import "ICWorkingDetailViewController.h"
 #import "MQPublishMissionMainController.h"
 #import "WorkPlanEditController.h"
+#import "WorkPlanEditMainController.h"
 
 @interface WorkPlanMainController ()<UITableViewDataSource, UITableViewDelegate>
 {
@@ -64,9 +65,9 @@
 {
     UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanEditController"];
-    ((WorkPlanEditController*)vc).workGroupId = _workGroupId;
-    ((WorkPlanEditController*)vc).workGroupName = _workGroupName;
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"WorkPlanEditMainController"];
+    ((WorkPlanEditMainController*)vc).workGroupId = _workGroupId;
+    ((WorkPlanEditMainController*)vc).workGroupName = _workGroupName;
     
     [self.navigationController pushViewController:vc animated:YES];
 }

@@ -25,6 +25,7 @@
 #import "WorkPlanMainCell.h"
 #import "WorkPlanEditController.h"
 #import "SVProgressHUD.h"
+#import "WorkPlanEditMainController.h"
 
 @interface WorkPlanDetailController ()<UITableViewDataSource, UITableViewDelegate,YFInputBarDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZYQAssetPickerControllerDelegate,CMPopTipViewDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate, UIActionSheetDelegate, UIDocumentInteractionControllerDelegate, UITextFieldDelegate>
 {
@@ -236,7 +237,7 @@
         }
         else if (buttonIndex == 1)//编辑
         {
-            _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+            _isMainMission = _currentMission.parentId == 0;//为0 主任务
             
             if(_isMainMission)
             {
@@ -262,7 +263,7 @@
             
             if(type == 1)
             {
-                _isMainMission = [_currentMission.parentId isEqualToString:@"0"];//为0 主任务
+                _isMainMission = _currentMission.parentId == 0;//为0 主任务
                 
                 if(_isMainMission)
                 {
@@ -324,15 +325,15 @@
 - (void) jumpToPlanEdit
 {
     UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanEditController"];
-    ((WorkPlanEditController*)vc).workGroupId = _currentMission.workGroupId;
-    ((WorkPlanEditController*)vc).workGroupName = _currentMission.workGroupName;
-    ((WorkPlanEditController*)vc).taskId = _currentMission.taskId;
-    ((WorkPlanEditController*)vc).startTime = _currentMission.startTime;
-    ((WorkPlanEditController*)vc).finishTime = _currentMission.finishTime;
-    ((WorkPlanEditController*)vc).rows = [NSMutableArray arrayWithArray:_currentMission.labelList];
-    ((WorkPlanEditController*)vc).isEdit = YES;
-    ((WorkPlanEditController*)vc).icDetailViewController = self;
+    UIViewController* vc = [mainStrory instantiateViewControllerWithIdentifier:@"WorkPlanEditMainController"];
+    ((WorkPlanEditMainController*)vc).workGroupId = _currentMission.workGroupId;
+    ((WorkPlanEditMainController*)vc).workGroupName = _currentMission.workGroupName;
+    ((WorkPlanEditMainController*)vc).taskId = _currentMission.taskId;
+    ((WorkPlanEditMainController*)vc).startTime = _currentMission.startTime;
+    ((WorkPlanEditMainController*)vc).finishTime = _currentMission.finishTime;
+    ((WorkPlanEditMainController*)vc).rows = [NSMutableArray arrayWithArray:_currentMission.labelList];
+    ((WorkPlanEditMainController*)vc).isEdit = YES;
+    ((WorkPlanEditMainController*)vc).icDetailViewController = self;
     
     [self.navigationController pushViewController:vc animated:YES];
     
