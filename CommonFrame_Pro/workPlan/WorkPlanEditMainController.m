@@ -691,11 +691,9 @@
     {
         NSMutableDictionary * taskDic = [NSMutableDictionary dictionary];
         
-        NSArray * nArr;
-        
         NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
         
-        nArr = [dic objectForKey:num];
+        NSArray * nArr = [dic objectForKey:num];
         
         NSMutableArray * taskArr = [NSMutableArray array];
         
@@ -1227,7 +1225,13 @@
     
     NSDictionary * titleDic = [_rows[section] objectForKey:@"label"];
     
-    titleLabel.text = [titleDic valueForKey:@"labelName"];
+    NSDictionary * keydic = _rows[section];
+    
+    NSNumber *num = [NSNumber numberWithInteger:[[keydic allKeys][1] integerValue]];
+    
+    NSArray * nArr = [keydic objectForKey:num];
+    
+    titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
     [titleView addSubview:titleLabel];
     
     return myView;
