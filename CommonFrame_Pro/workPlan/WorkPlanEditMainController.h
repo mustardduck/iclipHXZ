@@ -13,6 +13,8 @@
 @interface WorkPlanEditMainController : UIViewController
 
 @property (nonatomic, strong) NSString * workGroupId;
+@property (nonatomic, strong) NSString * userName;
+
 @property (nonatomic, strong) NSString * workGroupName;
 @property (nonatomic, strong) NSArray * rows;
 @property (nonatomic, strong) NSString * taskId;

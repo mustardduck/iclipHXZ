@@ -335,6 +335,17 @@
     ((WorkPlanEditMainController*)vc).isEdit = YES;
     ((WorkPlanEditMainController*)vc).icDetailViewController = self;
     
+    NSMutableArray *selArr = [NSMutableArray array];
+    for(NSDictionary * dic in _unfinishArr)
+    {
+        NSArray * arr = [dic objectForKey:@"taskList"];
+        [selArr addObjectsFromArray:arr];
+    }
+    ((WorkPlanEditMainController*)vc).selectedIndexList = selArr;
+    
+    ((WorkPlanEditMainController*)vc).userName = _currentMission.userName;
+
+
     [self.navigationController pushViewController:vc animated:YES];
     
 }

@@ -106,8 +106,14 @@
     
     [self setTopView:tView];
     
-    _rightBarBtnItem.enabled = NO;
+    _rightBarBtnItem.enabled = _selectedIndexList.count;
     
+    [self initSettingView];
+    
+}
+
+- (void) initSettingView
+{
     _settingView = [[UIView alloc] initWithFrame:CGRectMake(0, 375, SCREENWIDTH, 44)];
     _settingView.backgroundColor = RGBCOLOR(240, 241, 243);
     _settingView.tag = 1000;
@@ -132,7 +138,6 @@
     
     [self.view addSubview:_settingView];
     _settingView.hidden = YES;
-    
 }
 
 - (void) dealloc
@@ -330,7 +335,11 @@
     }
     UILabel * groupNameLbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, wi, H(topView))];
     groupNameLbl.backgroundColor = [UIColor clearColor];
-    groupNameLbl.text = [NSString stringWithFormat:@"%@   %@",[LoginUser loginUserName], _workGroupName ];
+    if(!_isEdit)
+    {
+        _userName = [LoginUser loginUserName];
+    }
+    groupNameLbl.text = [NSString stringWithFormat:@"%@   %@",_userName, _workGroupName ];
     groupNameLbl.textColor = [UIColor whiteColor];
     groupNameLbl.font = Font(15);
     [topView addSubview:groupNameLbl];
@@ -652,16 +661,7 @@
     {
         NSDictionary * dic = arr[i];
         
-        
-        NSNumber * num = 0;
-        if(_isEdit)
-        {
-            num = [NSNumber numberWithInteger:[[dic objectForKey:@"labelId"] integerValue]];
-        }
-        else
-        {
-            num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
-        }
+        NSNumber * num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
         
         NSMutableArray * keyArr = [NSMutableArray array];
         
@@ -675,23 +675,8 @@
         
         NSMutableDictionary * ddic = [NSMutableDictionary dictionary];
         
-        NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
-
-        if(_isEdit)
-        {
-            [ddic setObject:keyArr forKey:@"taskList"];
-            NSString * labelId =[NSString stringWithFormat:@"%@", [dic objectForKey:@"labelId"]];
-            
-            [ddic setObject:labelId forKey:@"labelId"];
-            [ddic setObject:[dic objectForKey:@"labelName"] forKey:@"labelName"];
-            [ddic setObject:[dic objectForKey:@"workGroupId"] forKey:@"workGroupId"];
-            
-        }
-        else
-        {
-            [ddic setObject:[dic objectForKey:@"label"] forKey:@"label"];
-            [ddic setObject:keyArr forKey:num];
-        }
+        [ddic setObject:[dic objectForKey:@"label"] forKey:@"label"];
+        [ddic setObject:keyArr forKey:num];
         
         [arr replaceObjectAtIndex:i withObject:ddic];
         
@@ -707,19 +692,10 @@
         NSMutableDictionary * taskDic = [NSMutableDictionary dictionary];
         
         NSArray * nArr;
-        if(_isEdit)
-        {
-            nArr = [dic objectForKey:@"taskList"];
-            
-        }
-        else
-        {
-            NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
-            
-            nArr = [dic objectForKey:num];
-            
-        }
         
+        NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
+        
+        nArr = [dic objectForKey:num];
         
         NSMutableArray * taskArr = [NSMutableArray array];
         
@@ -736,14 +712,7 @@
         
         if(taskArr.count)
         {
-            if(_isEdit)
-            {
-                [taskDic setObject:[NSString stringWithFormat:@"%@", [dic valueForKey:@"labelId"]] forKey:@"labelId"];
-            }
-            else
-            {
-                [taskDic setObject:[NSString stringWithFormat:@"%ld", [[dic allKeys][1] integerValue]] forKey:@"labelId"];
-            }
+            [taskDic setObject:[NSString stringWithFormat:@"%ld", [[dic allKeys][1] integerValue]] forKey:@"labelId"];
             
             [taskDic setObject:taskArr forKey:@"taskReasonList"];
             
