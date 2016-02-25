@@ -7,6 +7,7 @@
 //
 
 #import "MQworkTimeSelectVC.h"
+#import "RRAttributedString.h"
 
 #import "UICommon.h"
 
@@ -68,7 +69,7 @@
     [closeBtn addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [_mainView addSubview:closeBtn];
     
-    CGRect tableFrame = CGRectMake(SCREENWIDTH / 2 + 1, 0 , SCREENWIDTH / 2, 224);
+    CGRect tableFrame = CGRectMake(0, 0 , SCREENWIDTH, 44 * 5);
     
     _mainTableView = [[UITableView alloc]  initWithFrame:tableFrame];
     _mainTableView.showsVerticalScrollIndicator = NO;
@@ -82,17 +83,17 @@
     
     pView = _mainView;
     
-    _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, - 224 + 44);
+    _mainView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, - H(_mainTableView) + 44);
     
     _mainView.hidden = YES;
     
-    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2 + 1, H(_mainTableView) - 0.5, W(_mainTableView), 0.5)];
-    line.backgroundColor = [UIColor grayLineColor];
-    [_mainView addSubview:line];
-    
-    line = [[UIView alloc] initWithFrame:CGRectMake(X(line), 0, 0.5, H(_mainTableView))];
-    line.backgroundColor = [UIColor grayLineColor];
-    [_mainView addSubview:line];
+//    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(SCREENWIDTH / 2 + 1, H(_mainTableView) - 0.5, W(_mainTableView), 0.5)];
+//    line.backgroundColor = [UIColor grayLineColor];
+//    [_mainView addSubview:line];
+//    
+//    line = [[UIView alloc] initWithFrame:CGRectMake(X(line), 0, 0.5, H(_mainTableView))];
+//    line.backgroundColor = [UIColor grayLineColor];
+//    [_mainView addSubview:line];
     
     return self;
 }
@@ -108,18 +109,12 @@
     
     WorkPlanTime * wpt = _timeList[indexPath.row];
     
-    if(wpt.year == _currentWPT.year && wpt.month == _currentWPT.month && wpt.week == _currentWPT.week)
-    {
-        [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
-    }
-    
     UILabel * titleLbl = [cell viewWithTag:111];
     if(!titleLbl)
     {
-        titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, SCREENWIDTH / 2 - 16 , 34)];
+        titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, SCREENWIDTH - 20 , 44)];
         titleLbl.tag = 111;
         titleLbl.backgroundColor = [UIColor clearColor];
-        titleLbl.textAlignment = NSTextAlignmentCenter;
         titleLbl.font = Font(15);
         titleLbl.textColor = [UIColor whiteColor];
     }
@@ -128,28 +123,38 @@
     
     if(wpt.week == 0)
     {
-        timeStr = [NSString stringWithFormat:@"   无     %ld月  %ld年", wpt.month, wpt.year];
+        timeStr = [NSString stringWithFormat:@"    无       %ld月", wpt.month];
     }
     else
     {
-        timeStr = [NSString stringWithFormat:@"第%ld周  %ld月  %ld年", wpt.week, wpt.month, wpt.year];
+        timeStr = [NSString stringWithFormat:@"第%ld周    %ld月", wpt.week, wpt.month];
     }
     
-    titleLbl.text = timeStr;
+    NSString * mondayDateStr = [UICommon stringFromDate:[UICommon mondayDateFromWPT: wpt]];
+    NSString * weekendDateStr = [UICommon stringFromDate:[UICommon weekendDateFromWPT: wpt]];
+
+    mondayDateStr = [mondayDateStr substringWithRange:NSMakeRange(5, 5)];
+    weekendDateStr = [weekendDateStr substringWithRange:NSMakeRange(5, 5)];
     
-    if(indexPath.row == 0)
+    NSString * dateStr = [NSString stringWithFormat:@"%@ ~ %@                     %@",mondayDateStr, weekendDateStr, timeStr];
+    
+    
+    if(wpt.year == _currentWPT.year && wpt.month == _currentWPT.month && wpt.week == _currentWPT.week)
     {
-        titleLbl.top = 10;
+        //        [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+//        NSAttributedString *attrStr = [RRAttributedString setText:dateStr font:titleLbl.font range:NSMakeRange(0, 2)];
+        NSAttributedString *attrStr = [RRAttributedString setText:dateStr color:[UIColor blueTextColor] range:NSMakeRange(dateStr.length - timeStr.length, timeStr.length)];
+        titleLbl.attributedText = attrStr;
     }
     else
     {
-        titleLbl.top = 0;
+        titleLbl.text = dateStr;
     }
     
     cell.contentView.backgroundColor = [UIColor grayMarkColor];
     
-    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView.backgroundColor = [UIColor tagBlueBackColor];
+//    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+//    cell.selectedBackgroundView.backgroundColor = [UIColor tagBlueBackColor];
     
     [cell.contentView addSubview:titleLbl];
     
@@ -158,11 +163,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0 || indexPath.row == _timeList.count - 1)
-    {
-        return 44;
-    }
-    return 34;
+    return 44;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -179,10 +180,14 @@
 {
     WorkPlanTime * wpt = _timeList[indexPath.row];
     
+    self.currentWPT = wpt;
+        
     if ([self.delegate respondsToSelector:@selector(didSelectTime:)])
         [self.delegate didSelectTime:wpt];
     
     [self showTopMenu:@"2"];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)performDismissAnimation

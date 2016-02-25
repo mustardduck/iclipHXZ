@@ -623,6 +623,8 @@
         [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
         
     }
+    
+    [_MQworkTimeSelectVC.mainTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
