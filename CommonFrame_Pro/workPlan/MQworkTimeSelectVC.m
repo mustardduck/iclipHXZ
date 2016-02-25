@@ -158,6 +158,10 @@
     
     [cell.contentView addSubview:titleLbl];
     
+    UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, 43.5, SCREENWIDTH, 0.5)];
+    line.backgroundColor = [UIColor grayLineColor];
+    [cell.contentView addSubview:line];
+    
     return cell;
 }
 

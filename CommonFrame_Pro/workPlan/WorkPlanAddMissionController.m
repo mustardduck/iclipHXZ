@@ -87,7 +87,6 @@
         {
             NSDictionary * dic = arr[i];
             
-            
             NSNumber * num = 0;
             if(_isEdit)
             {

@@ -71,6 +71,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    if(!_selectedIndexList)
+    {
+        _selectedIndexList = [[NSMutableArray alloc] init];
+    }
+    
     //注册键盘通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -262,7 +267,7 @@
                 
 //                [_currentField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventValueChanged];
                 
-                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
                 
             }
         }
@@ -639,11 +644,65 @@
 
 - (IBAction)btnDoneButtonClicked:(id)sender
 {
+    NSMutableArray * arr = [NSMutableArray array];
+    
+    [arr addObjectsFromArray:_rows];
+    
+    for(int i = 0; i < arr.count; i ++)
+    {
+        NSDictionary * dic = arr[i];
+        
+        
+        NSNumber * num = 0;
+        if(_isEdit)
+        {
+            num = [NSNumber numberWithInteger:[[dic objectForKey:@"labelId"] integerValue]];
+        }
+        else
+        {
+            num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
+        }
+        
+        NSMutableArray * keyArr = [NSMutableArray array];
+        
+        for(Mission * mi in _selectedIndexList)
+        {
+            if(mi.labelId == num)
+            {
+                [keyArr addObject:mi];
+            }
+        }
+        
+        NSMutableDictionary * ddic = [NSMutableDictionary dictionary];
+        
+        NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
+
+        if(_isEdit)
+        {
+            [ddic setObject:keyArr forKey:@"taskList"];
+            NSString * labelId =[NSString stringWithFormat:@"%@", [dic objectForKey:@"labelId"]];
+            
+            [ddic setObject:labelId forKey:@"labelId"];
+            [ddic setObject:[dic objectForKey:@"labelName"] forKey:@"labelName"];
+            [ddic setObject:[dic objectForKey:@"workGroupId"] forKey:@"workGroupId"];
+            
+        }
+        else
+        {
+            [ddic setObject:[dic objectForKey:@"label"] forKey:@"label"];
+            [ddic setObject:keyArr forKey:num];
+        }
+        
+        [arr replaceObjectAtIndex:i withObject:ddic];
+        
+    }
+
+    
     [SVProgressHUD showWithStatus:@"工作计划发布中..."];
     
     NSMutableArray * taskList = [NSMutableArray array];
     
-    for(NSDictionary * dic in _rows)
+    for(NSDictionary * dic in arr)
     {
         NSMutableDictionary * taskDic = [NSMutableDictionary dictionary];
         
@@ -655,7 +714,7 @@
         }
         else
         {
-            NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][0] integerValue]];
+            NSNumber *num = [NSNumber numberWithInteger:[[dic allKeys][1] integerValue]];
             
             nArr = [dic objectForKey:num];
             
@@ -683,7 +742,7 @@
             }
             else
             {
-                [taskDic setObject:[NSString stringWithFormat:@"%ld", [[dic allKeys][0] integerValue]] forKey:@"labelId"];
+                [taskDic setObject:[NSString stringWithFormat:@"%ld", [[dic allKeys][1] integerValue]] forKey:@"labelId"];
             }
             
             [taskDic setObject:taskArr forKey:@"taskReasonList"];
@@ -837,6 +896,15 @@
     else{
         [_selectedIndexList addObject:mi];
     }
+    
+    if(_selectedIndexList.count)
+    {
+        _rightBarBtnItem.enabled = YES;
+    }
+    else
+    {
+        _rightBarBtnItem.enabled = NO;
+    }
 }
 
 - (void)removeIndexPathFromSelectArray:(NSIndexPath*)indexPath
@@ -857,6 +925,15 @@
                 [_selectedIndexList removeObject:ip];
             }
         }
+    }
+    
+    if(_selectedIndexList.count)
+    {
+        _rightBarBtnItem.enabled = YES;
+    }
+    else
+    {
+        _rightBarBtnItem.enabled = NO;
     }
 }
 
@@ -881,63 +958,151 @@
     return isEx;
 }
 
-#pragma mark -
-#pragma mark Table View Action
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (void) addMissionClicked:(id) sender
 {
-    if(!_statusLayoutShow)
+    UIButton * btn = (UIButton *)sender;
+    
+    UITableView *  mTableView =(UITableView *) [[[[[[btn superview] superview] superview] superview] superview] superview];
+    UITableViewCell *  cell = (UITableViewCell *)[[[[btn superview] superview] superview] superview];
+    NSIndexPath * indexPath = [mTableView indexPathForCell:cell];
+    
+    if(cell)
     {
-        NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
-        
-        NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
-        
-        if(arr.count)
+        UIView * addView = (UIView *) [cell viewWithTag:101 + indexPath.row];
+        if(addView)
         {
-            if(indexPath.row == arr.count)
+            addView.hidden = YES;
+            
+            UITextField * txtField = (UITextField *) [cell viewWithTag:100 + indexPath.row];
+            if(txtField)
             {
-                return 70;
+                [txtField becomeFirstResponder];
+                
+                _currentField = txtField;
+                
+                NSDictionary * titleDic = [_rows[indexPath.section] objectForKey:@"label"];
+                
+                _currentLabelId = [titleDic valueForKey:@"labelId"];
+                
+                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                
             }
         }
-        else
-        {
-            return 70;
-        }
-        return 34;
+    }
+    
+}
+
+- (void) rightBtnClicked:(id) sender
+{
+    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
+    ((MQPublishMissionController*)vc).workGroupId = _workGroupId;
+    ((MQPublishMissionController*)vc).workGroupName = _workGroupName;
+    
+    ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
+    ((MQPublishMissionController*)vc).titleName = _currentField.text;
+    
+    ((MQPublishMissionController*)vc).isMainMission = NO;
+    
+    ((MQPublishMissionController*)vc).isEditMission = NO;//新增主任务
+    ((MQPublishMissionController*)vc).isFromWorkPlanToCreateMission = YES;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)didSelectGroup:(Group*)group
+{
+    if(_groupBtn.tag == 1)
+    {
+        _groupBtn.tag = 0;
+        [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
+    }
+    
+    _currentGroup = group;
+    
+    _workGroupNameLbl.text = group.workGroupName;
+    
+    _workGroupName = group.workGroupName;
+    _workGroupId = group.workGroupId;
+    
+    _rows = nil;
+    
+    _rightBarBtnItem.enabled = NO;
+    _titleLeftLbl.hidden = NO;
+    
+    _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
+    
+    _labelIdStr = @"";
+    
+    for(int i = 0; i < _tags.count; i ++)
+    {
+        Mark * ma = _tags[i];
+        _labelIdStr = [_labelIdStr stringByAppendingString:[NSString stringWithFormat:@"%@,",ma.labelId]];
+    }
+    
+    if(_labelIdStr.length > 1)
+    {
+        _labelIdStr = [_labelIdStr substringToIndex:_labelIdStr.length - 1];
+    }
+    
+    if(_tags.count)
+    {
+        //        [self resetRowsEditData];
+        [_mainTableView reloadData];
     }
     else
     {
-        UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-        if(cell)
-        {
-            return cell.frame.size.height;
-        }
+        [self showAlertView];
     }
     
-    return 34;
 }
 
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void) showAlertView
 {
-    return _rows.count;
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"没有主要工作标签"
+                                                    message:@"请先去添加!" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去添加", nil];
+    [alert show];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
-    
-    NSArray * arr = [_rows[section] objectForKey:numKey];
-    
-    NSInteger count = [arr count];
-    
-    count += 1;
-    
-    return count;
+    if (buttonIndex == 1)
+    {
+        UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"MQSettingGroupVC"];
+        ((MQSettingGroupVC*)controller).workGroup = _currentGroup;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (void)didSelectTime:(WorkPlanTime *)time
 {
-    return 34;
+    if(_timeBtn.tag == 1)
+    {
+        _timeBtn.tag = 0;
+        [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
+    }
+    
+    _layoutBtn.hidden = NO;
+    _titleLeftLbl.hidden = NO;
+    
+    NSString * timeStr = @"";
+    
+    if(time.week == 0)
+    {
+        timeStr = [NSString stringWithFormat:@"无  %ld月  %ld年", time.month, time.year];
+    }
+    else
+    {
+        timeStr = [NSString stringWithFormat:@"第%ld周  %ld月  %ld年", time.week, time.month, time.year];
+    }
+    
+    _timeLbl.text = timeStr;
+    
+    _selectedWPT = time;
+    
 }
 
 - (void) hiddenKeyboard
@@ -957,7 +1122,7 @@
         
         [tAr addObject:_currentLabelId];
         m.labelList = [NSArray arrayWithArray:tAr];
-
+        
         m.isAccessory = 0;
         
         [SVProgressHUD showWithStatus:@"任务添加中..."];
@@ -996,6 +1161,83 @@
     }
 }
 
+#pragma mark -
+#pragma mark Table View Action
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(!_statusLayoutShow)
+    {
+        NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+        
+        NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
+        
+        if(arr.count)
+        {
+            if(indexPath.row == arr.count)
+            {
+                if(indexPath.section == _rows.count - 1)
+                {
+                    return 70 + 280;
+                }
+                return 70;
+            }
+        }
+        else
+        {
+            if(indexPath.section == _rows.count - 1 && indexPath.row == arr.count)
+            {
+                return 70 + 280;
+            }
+            return 70;
+        }
+        
+        return 34;
+    }
+    else
+    {
+        UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+        if(cell)
+        {
+            NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[indexPath.section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+            
+            NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
+            
+            if(indexPath.section == _rows.count - 1 && indexPath.row == arr.count)
+            {
+                return cell.frame.size.height + 280;
+            }
+
+            return cell.frame.size.height;
+        }
+    }
+    
+    return 34;
+}
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return _rows.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSNumber * numKey = [NSNumber numberWithInteger:[[[_rows[section] valueForKey:@"label"] valueForKey:@"labelId"] integerValue]];
+    
+    NSArray * arr = [_rows[section] objectForKey:numKey];
+    
+    NSInteger count = [arr count];
+    
+    count += 1;
+    
+    return count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 34;
+}
+
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView* myView = [[UIView alloc] init];
@@ -1025,59 +1267,6 @@
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
-}
-
-- (void) addMissionClicked:(id) sender
-{
-    UIButton * btn = (UIButton *)sender;
-    
-    UITableView *  mTableView =(UITableView *) [[[[[[btn superview] superview] superview] superview] superview] superview];
-    UITableViewCell *  cell = (UITableViewCell *)[[[[btn superview] superview] superview] superview];
-    NSIndexPath * indexPath = [mTableView indexPathForCell:cell];
-    
-    if(cell)
-    {
-        UIView * addView = (UIView *) [cell viewWithTag:101 + indexPath.row];
-        if(addView)
-        {
-            addView.hidden = YES;
-            
-            UITextField * txtField = (UITextField *) [cell viewWithTag:100 + indexPath.row];
-            if(txtField)
-            {
-                [txtField becomeFirstResponder];
-                
-                _currentField = txtField;
-                
-                NSDictionary * titleDic = [_rows[indexPath.section] objectForKey:@"label"];
-                
-                _currentLabelId = [titleDic valueForKey:@"labelId"];
-                
-                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-
-            }
-        }
-    }
-    
-}
-
-- (void) rightBtnClicked:(id) sender
-{
-    UIStoryboard* mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    UIViewController* vc = [mainStory instantiateViewControllerWithIdentifier:@"MQPublishMissionController"];
-    ((MQPublishMissionController*)vc).workGroupId = _workGroupId;
-    ((MQPublishMissionController*)vc).workGroupName = _workGroupName;
-    
-    ((MQPublishMissionController*)vc).userId = [LoginUser loginUserID];
-    ((MQPublishMissionController*)vc).titleName = _currentField.text;
-    
-    ((MQPublishMissionController*)vc).isMainMission = NO;
-    
-    ((MQPublishMissionController*)vc).isEditMission = NO;//新增主任务
-    ((MQPublishMissionController*)vc).isFromWorkPlanToCreateMission = YES;
-    
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1266,6 +1455,7 @@
             txtField.textColor = [UIColor whiteColor];
             txtField.tag = 100 + indexPath.row;
             txtField.placeholder = @"请输入任务名称";
+            txtField.delegate = self;
             [txtField setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
             
             [addMissionView addSubview:txtField];
@@ -1329,125 +1519,203 @@
         
         if(misArr.count)
         {
-            Mission * mis = misArr[indexPath.row];
-            
-            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, SCREENWIDTH - 40 - 38, 16)];
-            titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
-            titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
-            
-            if(titleLbl.height > 70)
+            if(indexPath.row < misArr.count)
             {
-                titleLbl.height = 70;
-            }
-            titleLbl.backgroundColor = [UIColor clearColor];
-            titleLbl.textColor = [UIColor whiteColor];
-            titleLbl.numberOfLines = 3;
-            titleLbl.font = Font(14);
-            [cell.contentView addSubview:titleLbl];
-            
-            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10, 4, 10, 10)];
-            icon.image = [UIImage imageNamed:@"btn_jiantou_1"];
-            [cell.contentView addSubview:icon];
-            
-            UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 16, 14)];
-            choseImg.image = [UIImage imageNamed:@"btn_kuang"];
-            
-            if ([self hasExitsInSelectArray:indexPath])
-            {
-                choseImg.image = [UIImage imageNamed:@"btn_gou"];
-                choseImg.tag = 1011;
-            }
-            else
-            {
+                Mission * mis = misArr[indexPath.row];
+                
+                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, SCREENWIDTH - 40 - 38, 16)];
+                titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
+                titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
+                
+                if(titleLbl.height > 70)
+                {
+                    titleLbl.height = 70;
+                }
+                titleLbl.backgroundColor = [UIColor clearColor];
+                titleLbl.textColor = [UIColor whiteColor];
+                titleLbl.numberOfLines = 3;
+                titleLbl.font = Font(14);
+                [cell.contentView addSubview:titleLbl];
+                
+                UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10, 4, 10, 10)];
+                icon.image = [UIImage imageNamed:@"btn_jiantou_1"];
+                [cell.contentView addSubview:icon];
+                
+                UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 16, 14)];
                 choseImg.image = [UIImage imageNamed:@"btn_kuang"];
-                choseImg.tag = 1010;
+                
+                if ([self hasExitsInSelectArray:indexPath])
+                {
+                    choseImg.image = [UIImage imageNamed:@"btn_gou"];
+                    choseImg.tag = 1011;
+                }
+                else
+                {
+                    choseImg.image = [UIImage imageNamed:@"btn_kuang"];
+                    choseImg.tag = 1010;
+                }
+                
+                [cell.contentView addSubview:choseImg];
+                
+                
+                //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                NSString * statusStr = @"未开始";
+                
+                if(mis.status == 1)
+                {
+                    statusStr = @"进行中";
+                }
+                else if (mis.status == 2)
+                {
+                    statusStr = @"已完成";
+                }
+                else if (mis.status == -3)
+                {
+                    statusStr = @"超时";
+                    
+                }
+                
+                UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
+                statusLbl.backgroundColor = [UIColor grayMarkColor];
+                [statusLbl setRoundCorner:1.7];
+                statusLbl.textColor = [UIColor grayTitleColor];
+                statusLbl.font = Font(14);
+                statusLbl.textAlignment = NSTextAlignmentCenter;
+                statusLbl.text = statusStr;
+                
+                UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                
+                dateLbl.backgroundColor = [UIColor grayMarkColor];
+                [dateLbl setRoundCorner:1.7];
+                dateLbl.textColor = [UIColor grayTitleColor];
+                dateLbl.font = Font(14);
+                dateLbl.textAlignment = NSTextAlignmentCenter;
+                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+                
+                [cell.contentView addSubview:dateLbl];
+                
+                if(mis.status != -3)
+                {
+                    [cell.contentView addSubview:statusLbl];
+                }
+                else
+                {
+                    UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
+                    statusView.backgroundColor = [UIColor grayMarkColor];
+                    [statusView setRoundCorner:1.7];
+                    
+                    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
+                    icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
+                    [statusView addSubview:icon];
+                    
+                    statusLbl.left = icon.right - 8;
+                    statusLbl.top = 0;
+                    statusLbl.backgroundColor = [UIColor clearColor];
+                    statusLbl.textColor = [UIColor redTextColor];
+                    [statusView addSubview:statusLbl];
+                    
+                    [cell.contentView addSubview:statusView];
+                    
+                    dateLbl.left = statusView.right + 7;
+                    
+                }
+                
+                CGFloat he = dateLbl.bottom + 20;
+                
+                CGRect rect = cell.frame;
+                rect.size.height = he;
+                cell.frame = rect;
+                
+                UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, he)];
+                selectBtn.backgroundColor = [UIColor clearColor];
+                UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 0, SCREENWIDTH, he)];
+                jumpBtn.backgroundColor = [UIColor clearColor];
+                
+                [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+                [jumpBtn addTarget:self action:@selector(jumpBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+                
+                [cell.contentView addSubview:selectBtn];
+                [cell.contentView addSubview:jumpBtn];
+                
+                cell.contentView.backgroundColor = [UIColor backgroundColor];
+                
+                return cell;
             }
-            
-            [cell.contentView addSubview:choseImg];
-            
-            
-            //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
-            NSString * statusStr = @"未开始";
-            
-            if(mis.status == 1)
+            else if (indexPath.row == misArr.count)
             {
-                statusStr = @"进行中";
-            }
-            else if (mis.status == 2)
-            {
-                statusStr = @"已完成";
-            }
-            else if (mis.status == -3)
-            {
-                statusStr = @"超时";
+                static NSString *cellId = @"Cell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+                if (cell == nil){
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+                    cell.frame = CGRectMake(0, 0, SCREENWIDTH, 70);
+                }
+                
+                for(UIView *view in cell.contentView.subviews) {
+                    [view removeFromSuperview];
+                }
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                UIView * addMissionView = [[UIView alloc] initWithFrame:CGRectMake(7 + 14, 0, SCREENWIDTH - 7 * 2 - 14 * 2, 44)];
+                addMissionView.backgroundColor = [UIColor grayMarkColor];
+                [addMissionView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+                
+                UIView * addView = [[UIView alloc] initWithFrame:CGRectMake(14, 0, W(addMissionView) - 18, H(addMissionView) )];
+                
+                addView.backgroundColor = [UIColor grayMarkColor];
+                addView.tag = 101 + indexPath.row;
+                
+                
+                UIButton * addBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(addView), H(addView))];
+                addBtn.backgroundColor = [UIColor clearColor];
+                
+                [addBtn addTarget:self action:@selector(addMissionClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [addView addSubview:addBtn];
+                
+                UIImageView * addIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 15, 14, 14)];
+                addIcon.image = [UIImage imageNamed:@"btn_xinjianrenwu"];
+                [addView addSubview:addIcon];
+                
+                UILabel * addLbl = [[UILabel alloc] initWithFrame:CGRectMake(addIcon.right + 7, 0, 100, H(addView))];
+                addLbl.backgroundColor = [UIColor clearColor];
+                addLbl.text = @"新建任务";
+                addLbl.textColor = [UIColor whiteColor];
+                addLbl.font = Font(15);
+                [addView addSubview:addLbl];
+                
+                UITextField * txtField = [[UITextField alloc] initWithFrame:CGRectMake(14, 0, W(addMissionView) - 14 - 50, H(addMissionView))];
+                txtField.backgroundColor = [UIColor clearColor];
+                txtField.font = Font(15);
+                txtField.textColor = [UIColor whiteColor];
+                txtField.tag = 100 + indexPath.row;
+                txtField.placeholder = @"请输入任务名称";
+                txtField.delegate = self;
+                [txtField setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
+                
+                [addMissionView addSubview:txtField];
+                
+                UIButton * rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(W(addMissionView) - 50, 0, 50, H(addMissionView))];
+                rightBtn.backgroundColor = [UIColor clearColor];
+                [rightBtn addTarget:self action:@selector(rightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [addMissionView addSubview:rightBtn];
+                
+                UIView * line = [[UIView alloc] initWithFrame:CGRectMake(W(addMissionView) - 32, 0, 0.5, H(addMissionView))];
+                line.backgroundColor = [UIColor grayLineColor];
+                [addMissionView addSubview:line];
+                
+                UIImageView * rightIcon = [[UIImageView alloc] initWithFrame:CGRectMake(X(line) + 14, 17, 10, 10)];
+                rightIcon.image = [UIImage imageNamed:@"btn_jiantou_1"];
+                [addMissionView addSubview:rightIcon];
+                
+                [addMissionView addSubview:addView];
+                
+                [cell.contentView addSubview:addMissionView];
+                
+                cell.contentView.backgroundColor = [UIColor backgroundColor];
+                
+                return cell;
                 
             }
-            
-            UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
-            statusLbl.backgroundColor = [UIColor grayMarkColor];
-            [statusLbl setRoundCorner:1.7];
-            statusLbl.textColor = [UIColor grayTitleColor];
-            statusLbl.font = Font(14);
-            statusLbl.textAlignment = NSTextAlignmentCenter;
-            statusLbl.text = statusStr;
-            
-            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
-            
-            dateLbl.backgroundColor = [UIColor grayMarkColor];
-            [dateLbl setRoundCorner:1.7];
-            dateLbl.textColor = [UIColor grayTitleColor];
-            dateLbl.font = Font(14);
-            dateLbl.textAlignment = NSTextAlignmentCenter;
-            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
-            
-            [cell.contentView addSubview:dateLbl];
-            
-            if(mis.status != -3)
-            {
-                [cell.contentView addSubview:statusLbl];
-            }
-            else
-            {
-                UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
-                statusView.backgroundColor = [UIColor grayMarkColor];
-                [statusView setRoundCorner:1.7];
-                
-                UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 9, 9)];
-                icon.image = [UIImage imageNamed:@"icon_chaoshi_hong"];
-                [statusView addSubview:icon];
-                
-                statusLbl.left = icon.right - 8;
-                statusLbl.top = 0;
-                statusLbl.backgroundColor = [UIColor clearColor];
-                statusLbl.textColor = [UIColor redTextColor];
-                [statusView addSubview:statusLbl];
-                
-                [cell.contentView addSubview:statusView];
-                
-                dateLbl.left = statusView.right + 7;
-                
-            }
-            
-            CGFloat he = dateLbl.bottom + 20;
-            
-            CGRect rect = cell.frame;
-            rect.size.height = he;
-            cell.frame = rect;
-            
-            UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, he)];
-            selectBtn.backgroundColor = [UIColor clearColor];
-            UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 0, SCREENWIDTH, he)];
-            jumpBtn.backgroundColor = [UIColor clearColor];
-            
-            [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            [jumpBtn addTarget:self action:@selector(jumpBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [cell.contentView addSubview:selectBtn];
-            [cell.contentView addSubview:jumpBtn];
-            
-            cell.contentView.backgroundColor = [UIColor backgroundColor];
-            
-            return cell;
         }
         else
         {
@@ -1497,9 +1765,8 @@
             txtField.textColor = [UIColor whiteColor];
             txtField.tag = 100 + indexPath.row;
             txtField.placeholder = @"请输入任务名称";
+            txtField.delegate = self;
             [txtField setValue:[UIColor grayTitleColor] forKeyPath:@"_placeholderLabel.textColor"];
-            
-            [self addDoneToKeyboard:txtField];
             
             [addMissionView addSubview:txtField];
             
@@ -1542,6 +1809,7 @@
             return cell;
         }*/
         
+        return cell;
     }
 }
 
@@ -1652,99 +1920,6 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
-}
-
-- (void)didSelectGroup:(Group*)group
-{
-    if(_groupBtn.tag == 1)
-    {
-        _groupBtn.tag = 0;
-        [_groupBtn setImage:[UIImage imageNamed:@"btn_jiantou_up"] forState:UIControlStateNormal];
-    }
-    
-    _currentGroup = group;
-    
-    _workGroupNameLbl.text = group.workGroupName;
-    
-    _workGroupName = group.workGroupName;
-    _workGroupId = group.workGroupId;
-    
-    _rows = nil;
-    
-    _rightBarBtnItem.enabled = NO;
-    _titleLeftLbl.hidden = NO;
-    
-    _tags = [Group findUserMainLabel:[LoginUser loginUserID] workGroupId:_workGroupId];
-    
-    _labelIdStr = @"";
-    
-    for(int i = 0; i < _tags.count; i ++)
-    {
-        Mark * ma = _tags[i];
-        _labelIdStr = [_labelIdStr stringByAppendingString:[NSString stringWithFormat:@"%@,",ma.labelId]];
-    }
-    
-    if(_labelIdStr.length > 1)
-    {
-        _labelIdStr = [_labelIdStr substringToIndex:_labelIdStr.length - 1];
-    }
-    
-    if(_tags.count)
-    {
-//        [self resetRowsEditData];
-        [_mainTableView reloadData];
-    }
-    else
-    {
-        [self showAlertView];
-    }
-    
-}
-
-- (void) showAlertView
-{
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"没有主要工作标签"
-                                                    message:@"请先去添加!" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去添加", nil];
-    [alert show];
-}
-
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        UIStoryboard* mainStrory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController* controller = [mainStrory instantiateViewControllerWithIdentifier:@"MQSettingGroupVC"];
-        ((MQSettingGroupVC*)controller).workGroup = _currentGroup;
-        [self.navigationController pushViewController:controller animated:YES];
-    }
-}
-
-- (void)didSelectTime:(WorkPlanTime *)time
-{
-    if(_timeBtn.tag == 1)
-    {
-        _timeBtn.tag = 0;
-        [_timeBtn setImage:[UIImage imageNamed:@"btn_jiantou_1"] forState:UIControlStateNormal];
-    }
-    
-    _layoutBtn.hidden = NO;
-    _titleLeftLbl.hidden = NO;
-    
-    NSString * timeStr = @"";
-    
-    if(time.week == 0)
-    {
-        timeStr = [NSString stringWithFormat:@"无  %ld月  %ld年", time.month, time.year];
-    }
-    else
-    {
-        timeStr = [NSString stringWithFormat:@"第%ld周  %ld月  %ld年", time.week, time.month, time.year];
-    }
-    
-    _timeLbl.text = timeStr;
-    
-    _selectedWPT = time;
-    
 }
 
 @end
