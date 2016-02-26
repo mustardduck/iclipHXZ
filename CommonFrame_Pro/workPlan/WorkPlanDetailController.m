@@ -72,7 +72,12 @@
     NSArray* _reasonZJRows;
 
     BOOL _isCreater;
+    
+    UIButton * _topLayoutBtn;//详情
+    UIButton * _topDoneBtn;//编辑
+    
 }
+
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
@@ -81,7 +86,49 @@
 
 @end
 
+static const CGFloat TABLE_HEADER_HEIGHT = 34;
+
+
 @implementation WorkPlanDetailController
+
+- (void) initRightBarBtnItems
+{
+    NSMutableArray * barItemArr = [NSMutableArray array];
+    
+    _topLayoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    [_topLayoutBtn setBackgroundColor:[UIColor clearColor]];
+    [_topLayoutBtn setTitle:@"详情" forState:UIControlStateNormal];
+    [_topLayoutBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_topLayoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    _topDoneBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    [_topDoneBtn setBackgroundColor:[UIColor clearColor]];
+    [_topDoneBtn setTitle:@"编辑" forState:UIControlStateNormal];
+    [_topDoneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [_topDoneBtn addTarget:self action:@selector(btnRightEditClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem * right1 = [[UIBarButtonItem alloc] initWithCustomView:_topLayoutBtn];
+    UIBarButtonItem * rightSpace =  [[UIBarButtonItem alloc]
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                     target:nil action:nil];
+    rightSpace.width = 13;
+    
+    UIBarButtonItem * right2 = [[UIBarButtonItem alloc] initWithCustomView:_topDoneBtn];
+    
+    UIBarButtonItem * rightSpace2 =  [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                      target:nil action:nil];
+    rightSpace2.width = -15;
+    
+    [barItemArr addObject:rightSpace2];
+    [barItemArr addObject:right2];
+    [barItemArr addObject:rightSpace];
+    [barItemArr addObject:right1];
+    
+    self.navigationItem.rightBarButtonItems = barItemArr;
+}
 
 - (void)notiForJumpToWorkPlanDetail:(NSNotification *)note {
     
@@ -772,6 +819,9 @@
 
     }
     
+    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItems = nil;
+
     if (_currentMission != nil) {
         
         NSString * title = @"工作计划详情";
@@ -788,6 +838,7 @@
         
         self.navigationItem.title = title;
         
+        
         NSString * loginStr = [NSString stringWithFormat:@"%@", [LoginUser loginUserID]];
         
         if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
@@ -803,14 +854,21 @@
             
             if(_currentMission.type != 5)
             {
-                UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(btnRightEditClicked:)];
-                [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
-                self.navigationItem.rightBarButtonItem = rightBarButton;
+                [self initRightBarBtnItems];
             }
             else
             {
-                self.navigationItem.rightBarButtonItem = nil;
+
+                UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"详情" style:UIBarButtonItemStyleDone target:self action:@selector(btnLayoutButtonClicked:)];
+                [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+                self.navigationItem.rightBarButtonItem = rightBarButton;
             }
+        }
+        else
+        {
+            UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"详情" style:UIBarButtonItemStyleDone target:self action:@selector(btnLayoutButtonClicked:)];
+            [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+            self.navigationItem.rightBarButtonItem = rightBarButton;
         }
     }
     
@@ -1248,6 +1306,8 @@
                 [self loadData];
                 
                 [_tableView reloadData];
+                
+//                _topDoneBtn.hidden = YES;
                 
                 [SVProgressHUD showSuccessWithStatus:@"工作总结发布成功"];
             }
@@ -1919,10 +1979,11 @@
         }
         else
         {
-            return 34;
+            return TABLE_HEADER_HEIGHT;
         }
     }
 }
+
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -1966,17 +2027,17 @@
                         titleView.backgroundColor = [UIColor clearColor];
                         [myView addSubview:titleView];
                         
-                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-                        icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-                        [titleView addSubview:icon];
                         
-                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, -2, 200, 18)];
                         titleLabel.textColor=[UIColor whiteColor];
                         titleLabel.backgroundColor = [UIColor clearColor];
                         titleLabel.font = Font(15);
                         
                         titleLbl.text = @"未完成";
-                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
+                        
+                        NSDictionary * titleDic = _unfinishArr[index];
+                        NSArray * nArr = [titleDic objectForKey:@"taskList"];
+                        titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
                         
                         [titleView addSubview:titleLabel];
                         
@@ -1990,22 +2051,23 @@
                         UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 28)];
                         titleView.backgroundColor = [UIColor clearColor];
                         [myView addSubview:titleView];
-                        
-                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-                        icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-                        [titleView addSubview:icon];
-                        
-                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+
+                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, -2, 200, 18)];
                         titleLabel.textColor=[UIColor whiteColor];
                         titleLabel.backgroundColor = [UIColor clearColor];
                         titleLabel.font = Font(15);
                         
-                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
+                        
+                        NSDictionary * titleDic = _unfinishArr[index];
+                        NSArray * nArr = [titleDic objectForKey:@"taskList"];
+                        titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
+
+                
                         [titleView addSubview:titleLabel];
                         
                         return myView;
                     }
-
+                    
                 }
                 else if (index < _unfinishArr.count - 1)
                 {
@@ -2023,24 +2085,24 @@
                         titleLbl.backgroundColor = [UIColor clearColor];
                         titleLbl.textColor = [UIColor whiteColor];
                         titleLbl.font = Font(17);
-
+                        
                         [myView addSubview:titleLbl];
                         
                         UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 28 + Y(titleLbl), SCREENWIDTH, 28)];
                         titleView.backgroundColor = [UIColor clearColor];
                         [myView addSubview:titleView];
+
                         
-                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-                        icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-                        [titleView addSubview:icon];
-                        
-                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, -2, 200, 18)];
                         titleLabel.textColor=[UIColor whiteColor];
                         titleLabel.backgroundColor = [UIColor clearColor];
                         titleLabel.font = Font(15);
                         
                         titleLbl.text = @"未完成";
-                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
+                        
+                        NSDictionary * titleDic = _unfinishArr[index];
+                        NSArray * nArr = [titleDic objectForKey:@"taskList"];
+                        titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
                         
                         [titleView addSubview:titleLabel];
                         
@@ -2055,20 +2117,20 @@
                         titleView.backgroundColor = [UIColor clearColor];
                         [myView addSubview:titleView];
                         
-                        UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-                        icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-                        [titleView addSubview:icon];
-                        
-                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+                        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, -2, 200, 18)];
                         titleLabel.textColor=[UIColor whiteColor];
                         titleLabel.backgroundColor = [UIColor clearColor];
                         titleLabel.font = Font(15);
+
                         
-                        titleLabel.text = [_unfinishArr[index] valueForKey:@"labelName"];
+                        NSDictionary * titleDic = _unfinishArr[index];
+                        NSArray * nArr = [titleDic objectForKey:@"taskList"];
+                        titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
+                        
                         [titleView addSubview:titleLabel];
                         
                         return myView;
-
+                        
                     }
                     return nil;
                 }
@@ -2113,16 +2175,15 @@
                         titleView.top = 0;
                     }
                     
-                    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-                    icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-                    [titleView addSubview:icon];
-                    
-                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+                    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, -2, 200, 18)];
                     titleLabel.textColor=[UIColor whiteColor];
                     titleLabel.backgroundColor = [UIColor clearColor];
                     titleLabel.font = Font(15);
                     
-                    titleLabel.text = [_finishArr[section] valueForKey:@"labelName"];
+                    
+                    NSDictionary * titleDic = _finishArr[section];
+                    NSArray * nArr = [titleDic objectForKey:@"taskList"];
+                    titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
                     
                     [titleView addSubview:titleLabel];
                     
@@ -2150,25 +2211,22 @@
             UIView* myView = [[UIView alloc] init];
             myView.backgroundColor = [UIColor backgroundColor];
             
-            UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 28)];
-            titleView.backgroundColor = [UIColor clearColor];
-            [myView addSubview:titleView];
             
-            UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-            icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-            [titleView addSubview:icon];
-            
-            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, 200, 18)];
             titleLabel.textColor=[UIColor whiteColor];
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.font = Font(15);
             
-            titleLabel.text = [_rows[section] valueForKey:@"labelName"];
-            [titleView addSubview:titleLabel];
+            NSDictionary * titleDic = _rows[section];
+            
+            NSArray * nArr = [titleDic objectForKey:@"taskList"];
+            
+            titleLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[titleDic valueForKey:@"labelName"], nArr.count];
+            [myView addSubview:titleLabel];
             
             return myView;
         }
-
+        
     }
 }
 
@@ -2290,7 +2348,7 @@
             leftLbl.text = @"主要工作";
             leftLbl.textColor = [UIColor whiteColor];
             leftLbl.font = Font(15);
-            [cell.contentView addSubview:leftLbl];
+//            [cell.contentView addSubview:leftLbl];
             
             _layoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 76 - 14 - 13, YH(title) + 7, 76, 46)];
             _layoutBtn.backgroundColor = [UIColor clearColor];
@@ -2305,9 +2363,9 @@
             }
             [_layoutBtn setTitle:statusTitle forState:UIControlStateNormal];
             [_layoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:_layoutBtn];
+//            [cell.contentView addSubview:_layoutBtn];
             
-            _planTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, YH(leftLbl) + 18, SCREENWIDTH - 13 * 2 - 2, 34 * 3)];
+            _planTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, YH(title) + 27, SCREENWIDTH - 13 * 2 - 2, 34 * 3)];
             _planTableView.scrollEnabled = NO;
             _planTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             _planTableView.backgroundColor = [UIColor clearColor];
@@ -2374,7 +2432,7 @@
                         
                         count += arr.count;
                     }
-                    CGFloat planTableHeight = count * 34 + _rows.count * 34 + 34;
+                    CGFloat planTableHeight = count * 34 + _rows.count * TABLE_HEADER_HEIGHT + TABLE_HEADER_HEIGHT;
                     _planTableView.height = planTableHeight;
                 }
             }
@@ -2547,7 +2605,7 @@
 //                    }
 //                    else
                     {
-                       planTableHeight = rowsHe + _rows.count * 34 + 34;
+                       planTableHeight = rowsHe + _rows.count * TABLE_HEADER_HEIGHT + TABLE_HEADER_HEIGHT;
                     }
                     
                     _planTableView.height = planTableHeight;

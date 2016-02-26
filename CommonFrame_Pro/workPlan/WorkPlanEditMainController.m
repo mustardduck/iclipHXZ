@@ -117,6 +117,12 @@
     
     _isRefresh = @"1";
     
+    [self initRightBarBtnItems];
+    
+}
+
+- (void) initRightBarBtnItems
+{
     NSMutableArray * barItemArr = [NSMutableArray array];
     
     _topLayoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
@@ -124,19 +130,19 @@
     [_topLayoutBtn setTitle:@"详情" forState:UIControlStateNormal];
     [_topLayoutBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_topLayoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     
     _topDoneBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     [_topDoneBtn setBackgroundColor:[UIColor clearColor]];
     [_topDoneBtn setTitle:@"发布" forState:UIControlStateNormal];
     [_topDoneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-
+    
     [_topDoneBtn addTarget:self action:@selector(btnDoneButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     _topDoneBtn.tag = _selectedIndexList.count;
     
     [_topDoneBtn setTitleColor:[UIColor qitaBackColor] forState:UIControlStateNormal];
-
+    
     if(_topDoneBtn.tag)
     {
         [_topDoneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -147,12 +153,12 @@
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
                                      target:nil action:nil];
     rightSpace.width = 13;
-
+    
     UIBarButtonItem * right2 = [[UIBarButtonItem alloc] initWithCustomView:_topDoneBtn];
-
+    
     UIBarButtonItem * rightSpace2 =  [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                     target:nil action:nil];
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                      target:nil action:nil];
     rightSpace2.width = -15;
     
     [barItemArr addObject:rightSpace2];
@@ -161,7 +167,6 @@
     [barItemArr addObject:right1];
     
     self.navigationItem.rightBarButtonItems = barItemArr;
-    
 }
 
 - (void) initSettingView
