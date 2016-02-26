@@ -487,7 +487,9 @@
                         [self addBadgeView:menuView parentView:menuView  showValue:allnumBadgeValueString isAllNum:YES withIndex:index];
                     }
                     
-                    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(menuView), H(menuView))];
+//                    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, W(menuView), H(menuView))];
+                    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake((menuWidth - 60) / 2, 5, 60, 60)];
+
                     [menuButton setBackgroundColor:[UIColor clearColor]];
                     [menuButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
                     [menuButton setTag:index];
