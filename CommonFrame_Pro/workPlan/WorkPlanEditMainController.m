@@ -54,6 +54,8 @@
     UIButton * _doneBtn;
     
     NSString * _currentLabelId;
+    
+    NSString * _isRefresh;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
@@ -109,6 +111,8 @@
     _rightBarBtnItem.enabled = _selectedIndexList.count;
     
     [self initSettingView];
+    
+    _isRefresh = @"1";
     
 }
 
@@ -667,7 +671,7 @@
     }
     
     if ([self.icMainVC respondsToSelector:@selector(setIsNotRefreshMain:)]) {
-        [self.icMainVC setValue:@"1" forKey:@"isNotRefreshMain"];
+        [self.icMainVC setValue:_isRefresh forKey:@"isNotRefreshMain"];
     }
 }
 
@@ -854,6 +858,8 @@
         if(isOk)
         {
             [SVProgressHUD showSuccessWithStatus:@"工作计划发布成功"];
+            
+            _isRefresh = @"0";
             
             [self.navigationController popViewControllerAnimated:YES];
         }
