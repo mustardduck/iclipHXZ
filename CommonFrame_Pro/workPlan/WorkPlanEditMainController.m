@@ -1202,7 +1202,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 34;
+    return 54;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -1210,15 +1210,30 @@
     UIView* myView = [[UIView alloc] init];
     myView.backgroundColor = [UIColor backgroundColor];
     
-    UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 28)];
+    UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(7, 0, SCREENWIDTH - 7 * 2, 50)];
     titleView.backgroundColor = [UIColor clearColor];
+    [titleView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+    
+    UIView * subView = [[UIView alloc] initWithFrame:CGRectMake(7, H(titleView) - 5, W(titleView), 9)];
+    subView.backgroundColor = [UIColor backgroundColor];
+    
+    UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.5, H(subView))];
+    leftLine.backgroundColor = [UIColor grayLineColor];
+    [subView addSubview:leftLine];
+    
+    UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake(W(subView) - 0.5, 0, 0.5, H(subView))];
+    rightLine.backgroundColor = [UIColor grayLineColor];
+    [subView addSubview:rightLine];
+    
     [myView addSubview:titleView];
     
-    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
-    icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
-    [titleView addSubview:icon];
+    [myView addSubview:subView];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, -2, 200, 18)];
+//    UIImageView * icon = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 8, 11)];
+//    icon.image = [UIImage imageNamed:@"icon_zhuyaogongzu"];
+//    [titleView addSubview:icon];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 12, 200, 18)];
     titleLabel.textColor=[UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = Font(15);
@@ -1319,6 +1334,24 @@
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
+                UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(7, 70 - 10 - 14, SCREENWIDTH - 7 * 2, 10)];
+                titleView.backgroundColor = [UIColor clearColor];
+                [titleView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+                [cell.contentView addSubview:titleView];
+                
+                UIView * subView = [[UIView alloc] initWithFrame:CGRectMake(X(titleView), 0, W(titleView), 50)];
+                subView.backgroundColor = [UIColor backgroundColor];
+                [cell.contentView addSubview:subView];
+                
+                UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.5, H(subView))];
+                leftLine.backgroundColor = [UIColor grayLineColor];
+                [subView addSubview:leftLine];
+                
+                UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake(W(subView) - 0.5, 0, 0.5, H(subView))];
+                rightLine.backgroundColor = [UIColor grayLineColor];
+                [subView addSubview:rightLine];
+                
+                
                 UIView * addMissionView = [[UIView alloc] initWithFrame:CGRectMake(7 + 14, 0, SCREENWIDTH - 7 * 2 - 14 * 2, 44)];
                 addMissionView.backgroundColor = [UIColor grayMarkColor];
                 [addMissionView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
@@ -1394,6 +1427,24 @@
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(7, 70 - 10 - 14, SCREENWIDTH - 7 * 2, 10)];
+            titleView.backgroundColor = [UIColor clearColor];
+            [titleView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+            [cell.contentView addSubview:titleView];
+            
+            UIView * subView = [[UIView alloc] initWithFrame:CGRectMake(X(titleView), 0, W(titleView), 50)];
+            subView.backgroundColor = [UIColor backgroundColor];
+            [cell.contentView addSubview:subView];
+            
+            UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.5, H(subView))];
+            leftLine.backgroundColor = [UIColor grayLineColor];
+            [subView addSubview:leftLine];
+            
+            UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake(W(subView) - 0.5, 0, 0.5, H(subView))];
+            rightLine.backgroundColor = [UIColor grayLineColor];
+            [subView addSubview:rightLine];
+            
             
             UIView * addMissionView = [[UIView alloc] initWithFrame:CGRectMake(7 + 14, 0, SCREENWIDTH - 7 * 2 - 14 * 2, 44)];
             addMissionView.backgroundColor = [UIColor grayMarkColor];
@@ -1496,7 +1547,7 @@
             {
                 Mission * mis = misArr[indexPath.row];
                 
-                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, SCREENWIDTH - 40 - 38, 16)];
+                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40 + 7, 0, SCREENWIDTH - 40 - 38, 16)];
                 titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
                 titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
                 
@@ -1510,11 +1561,11 @@
                 titleLbl.font = Font(14);
                 [cell.contentView addSubview:titleLbl];
                 
-                UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10, 4, 10, 10)];
+                UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 7, 4, 10, 10)];
                 icon.image = [UIImage imageNamed:@"btn_jiantou_1"];
                 [cell.contentView addSubview:icon];
                 
-                UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14, 2, 16, 14)];
+                UIImageView * choseImg = [[UIImageView alloc] initWithFrame:CGRectMake(14 + 7, 2, 16, 14)];
                 choseImg.image = [UIImage imageNamed:@"btn_kuang"];
                 
                 if ([self hasExitsInSelectArray:indexPath])
@@ -1545,10 +1596,9 @@
                 else if (mis.status == -3)
                 {
                     statusStr = @"超时";
-                    
                 }
                 
-                UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
+                UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(titleLbl), titleLbl.bottom + 7, 54, 24)];
                 statusLbl.backgroundColor = [UIColor grayMarkColor];
                 [statusLbl setRoundCorner:1.7];
                 statusLbl.textColor = [UIColor grayTitleColor];
@@ -1573,7 +1623,7 @@
                 }
                 else
                 {
-                    UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(30 + 10, titleLbl.bottom + 7, 54, 24)];
+                    UIView * statusView = [[UIView alloc] initWithFrame:CGRectMake(X(titleLbl), titleLbl.bottom + 7, 54, 24)];
                     statusView.backgroundColor = [UIColor grayMarkColor];
                     [statusView setRoundCorner:1.7];
                     
@@ -1599,9 +1649,17 @@
                 rect.size.height = he;
                 cell.frame = rect;
                 
-                UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, he)];
+                UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(7, 0, 0.5, he)];
+                leftLine.backgroundColor = [UIColor grayLineColor];
+                [cell.contentView addSubview:leftLine];
+                
+                UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake(SCREENWIDTH - 7 - 0.5, 0, 0.5, he)];
+                rightLine.backgroundColor = [UIColor grayLineColor];
+                [cell.contentView addSubview:rightLine];
+                
+                UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 220, he)];
                 selectBtn.backgroundColor = [UIColor clearColor];
-                UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 0, SCREENWIDTH, he)];
+                UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(selectBtn.right, 0, SCREENWIDTH - W(selectBtn), he)];
                 jumpBtn.backgroundColor = [UIColor clearColor];
                 
                 [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -1628,6 +1686,24 @@
                 }
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(7, 70 - 10 - 14, SCREENWIDTH - 7 * 2, 10)];
+                titleView.backgroundColor = [UIColor clearColor];
+                [titleView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+                [cell.contentView addSubview:titleView];
+                
+                UIView * subView = [[UIView alloc] initWithFrame:CGRectMake(X(titleView), 0, W(titleView), 50)];
+                subView.backgroundColor = [UIColor backgroundColor];
+                [cell.contentView addSubview:subView];
+                
+                UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.5, H(subView))];
+                leftLine.backgroundColor = [UIColor grayLineColor];
+                [subView addSubview:leftLine];
+                
+                UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake(W(subView) - 0.5, 0, 0.5, H(subView))];
+                rightLine.backgroundColor = [UIColor grayLineColor];
+                [subView addSubview:rightLine];
+                
                 
                 UIView * addMissionView = [[UIView alloc] initWithFrame:CGRectMake(7 + 14, 0, SCREENWIDTH - 7 * 2 - 14 * 2, 44)];
                 addMissionView.backgroundColor = [UIColor grayMarkColor];
@@ -1705,6 +1781,24 @@
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
+            UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(7, 70 - 10 - 14, SCREENWIDTH - 7 * 2, 10)];
+            titleView.backgroundColor = [UIColor clearColor];
+            [titleView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
+            [cell.contentView addSubview:titleView];
+            
+            UIView * subView = [[UIView alloc] initWithFrame:CGRectMake(X(titleView), 0, W(titleView), 50)];
+            subView.backgroundColor = [UIColor backgroundColor];
+            [cell.contentView addSubview:subView];
+            
+            UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.5, H(subView))];
+            leftLine.backgroundColor = [UIColor grayLineColor];
+            [subView addSubview:leftLine];
+            
+            UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake(W(subView) - 0.5, 0, 0.5, H(subView))];
+            rightLine.backgroundColor = [UIColor grayLineColor];
+            [subView addSubview:rightLine];
+            
+            
             UIView * addMissionView = [[UIView alloc] initWithFrame:CGRectMake(7 + 14, 0, SCREENWIDTH - 7 * 2 - 14 * 2, 44)];
             addMissionView.backgroundColor = [UIColor grayMarkColor];
             [addMissionView setRoundColorCorner:3.3 withColor:[UIColor grayLineColor]];
@@ -1772,7 +1866,7 @@
             titleLbl.textColor = [UIColor whiteColor];
             titleLbl.font = Font(14);
             [cell.contentView addSubview:titleLbl];
-            
+         
             CGRect rect = cell.frame;
             rect.size.height = 34;
             cell.frame = rect;
