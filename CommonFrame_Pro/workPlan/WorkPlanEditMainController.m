@@ -364,7 +364,7 @@
     _titleLeftLbl.font = Font(15);
     _titleLeftLbl.textColor = [UIColor whiteColor];
     _titleLeftLbl.text = @"主要工作";
-    [self.view addSubview:_titleLeftLbl];
+//    [self.view addSubview:_titleLeftLbl];
     
     _layoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREENWIDTH - 76 - 14, 44, 76, 46)];
     _layoutBtn.backgroundColor = [UIColor clearColor];
@@ -374,11 +374,11 @@
     [_layoutBtn setTitle:@"状态视图" forState:UIControlStateNormal];
     [_layoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:_layoutBtn];
+//    [self.view addSubview:_layoutBtn];
     
     UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, 43.5, SCREENWIDTH, 0.5)];
     line.backgroundColor = [UIColor grayLineColor];
-    [topView addSubview:line];
+//    [topView addSubview:line];
     
     topView.backgroundColor = [UIColor grayMarkColor];
     
