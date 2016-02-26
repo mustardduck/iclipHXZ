@@ -650,7 +650,8 @@
     
     Group * gr = _bottomArray[0];
     
-    [self setNaviLeftBarItem:gr.workGroupName];
+//    [self setNaviLeftBarItem:gr.workGroupName];
+    [self setNaviLeftBarItem:@"首页"];
 }
 
 - (void) setNaviLeftBarItem:(NSString *)titleName
@@ -2022,7 +2023,8 @@
         
     }
     
-    [self setNaviLeftBarItem:mi.workGroupName];
+//    [self setNaviLeftBarItem:mi.workGroupName];
+    [self setNaviLeftBarItem:@"首页"];
     
     [self addRefrish];
     
