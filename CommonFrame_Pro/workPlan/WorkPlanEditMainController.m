@@ -1711,7 +1711,7 @@
             {
                 Mission * mis = misArr[indexPath.row];
                 
-                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40 + 7, 0, SCREENWIDTH - 40 - 38, 16)];
+                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(40 + 7, 0, SCREENWIDTH - 157, 16)];
                 titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
                 titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38, 70) withFont:Font(14)].height;
                 
@@ -1747,6 +1747,13 @@
                 
                 
                 //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                
+                UILabel * rightStatusLbl = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 95, - 2, 50, 16)];
+                rightStatusLbl.backgroundColor = [UIColor clearColor];
+                rightStatusLbl.textColor = [UIColor grayTitleColor];
+                rightStatusLbl.font = Font(14);
+                rightStatusLbl.textAlignment = NSTextAlignmentRight;
+                
                 NSString * statusStr = @"未开始";
                 
                 if(mis.status == 1)
@@ -1760,8 +1767,14 @@
                 else if (mis.status == -3)
                 {
                     statusStr = @"超时";
+                    
+                    rightStatusLbl.textColor = [UIColor redTextColor];
                 }
                 
+                rightStatusLbl.text = statusStr;
+                [cell.contentView addSubview:rightStatusLbl];
+                
+
                 UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(titleLbl), titleLbl.bottom + 7, 54, 24)];
                 statusLbl.backgroundColor = [UIColor grayMarkColor];
                 [statusLbl setRoundCorner:1.7];
@@ -1770,20 +1783,28 @@
                 statusLbl.textAlignment = NSTextAlignmentCenter;
                 statusLbl.text = statusStr;
                 
-                UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(X(titleLbl), titleLbl.bottom + 7, 148, 24)];
                 
-                dateLbl.backgroundColor = [UIColor grayMarkColor];
-                [dateLbl setRoundCorner:1.7];
+                dateLbl.backgroundColor = [UIColor clearColor];
+//                [dateLbl setRoundCorner:1.7];
                 dateLbl.textColor = [UIColor grayTitleColor];
                 dateLbl.font = Font(14);
-                dateLbl.textAlignment = NSTextAlignmentCenter;
-                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+//                dateLbl.textAlignment = NSTextAlignmentCenter;
+                
+                NSString * finishTimeStr = mis.finishTime;
+                
+                if([[finishTimeStr substringToIndex:4] isEqualToString:@"1970"])
+                {
+                    finishTimeStr = @"未设置";
+                }
+                
+                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, finishTimeStr];
                 
                 [cell.contentView addSubview:dateLbl];
                 
                 if(mis.status != -3)
                 {
-                    [cell.contentView addSubview:statusLbl];
+//                    [cell.contentView addSubview:statusLbl];
                 }
                 else
                 {
@@ -1801,9 +1822,9 @@
                     statusLbl.textColor = [UIColor redTextColor];
                     [statusView addSubview:statusLbl];
                     
-                    [cell.contentView addSubview:statusView];
+//                    [cell.contentView addSubview:statusView];
                     
-                    dateLbl.left = statusView.right + 7;
+//                    dateLbl.left = statusView.right + 7;
                     
                 }
                 
@@ -1821,9 +1842,9 @@
                 rightLine.backgroundColor = [UIColor grayLineColor];
                 [cell.contentView addSubview:rightLine];
                 
-                UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 220, he)];
+                UIButton * selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH - 103, he)];
                 selectBtn.backgroundColor = [UIColor clearColor];
-                UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(selectBtn.right, 0, SCREENWIDTH - W(selectBtn), he)];
+                UIButton * jumpBtn = [[UIButton alloc] initWithFrame:CGRectMake(selectBtn.right, 0, 103, he)];
                 jumpBtn.backgroundColor = [UIColor clearColor];
                 
                 [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
