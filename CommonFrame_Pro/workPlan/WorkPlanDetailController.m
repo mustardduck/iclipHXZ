@@ -4397,6 +4397,8 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
     
     if (_currentMission && !_isDeleteMission) {
         
+        return;
+        
         Mission * ms = _contentArr[_indexInMainArray];
         
         _currentMission.isRead = YES;

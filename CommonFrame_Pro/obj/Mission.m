@@ -1577,7 +1577,7 @@
                                         mis.reason = [di valueForKey:@"reason"];
                                         mis.finishTime = [di valueForKey:@"finishTimeStr"];
                                         mis.createUserId = [di valueForKey:@"createUserId"];
-                                        mis.lableUserName = [di valueForKey:@"createName"];//责任人
+                                        mis.lableUserName = [di valueForKey:@"lableUserName"];//责任人
                                         mis.labelId = [NSNumber numberWithInteger:[[lblDic valueForKey:@"labelId" ] integerValue]];
                                         
                                         if(mis.status == 2)
