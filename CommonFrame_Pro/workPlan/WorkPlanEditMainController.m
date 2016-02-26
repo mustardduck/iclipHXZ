@@ -407,9 +407,24 @@
 
 - (void) initTimeSelectView:(NSDate *)nowDate
 {
+    if(_isEdit)
+    {
+        WorkPlanTime * editDateWPT = [UICommon WPTFromStartTime:_startTime andFinishTime:_finishTime];
+        if(editDateWPT.week == 0)
+        {
+            editDateWPT.week = 1;
+            
+            nowDate = [UICommon mondayDateFromWPT:editDateWPT];
+        }
+        else
+        {
+            nowDate = [UICommon mondayDateFromWPT:editDateWPT];
+        }
+    }
+    
     NSArray * timeList = [self getTimeArr:nowDate];
     
-    WorkPlanTime * wpt = timeList[0];
+    WorkPlanTime * wpt = [UICommon WPTFromDate:nowDate];
     
     if(_isEdit)
     {
@@ -435,12 +450,93 @@
     _rightViewHeightCons.constant = SCREENHEIGHT;
     
     _MQworkTimeSelectVC = [[MQworkTimeSelectVC alloc] initWithMenuNameList:timeList actionControl:_timeBtn parentView:_rightpMenuView];
+    WorkPlanTime * nowdateWPT = [UICommon WPTFromDate:nowDate];
+    if(_isEdit)
+    {
+        nowdateWPT = _selectedWPT;
+    }
+    _MQworkTimeSelectVC.nowWPT = nowdateWPT;
     _MQworkTimeSelectVC.currentWPT = _selectedWPT;
     _MQworkTimeSelectVC.delegate = self;
     
 }
 
 - (NSMutableArray * ) getTimeArr:(NSDate *)nowDate
+{
+    NSMutableArray * timeArr = [NSMutableArray array];
+    
+    NSLog(@"星期%ld", nowDate.weekday);//1：周天 2：周一 3：周二 4：周三 5：周四 6：周五 7：周六
+    
+    NSInteger weekday = [UICommon weekday:nowDate];
+    
+    NSInteger weekdayOrdinal = 1;//第一个星期几
+    
+    NSDate *newDate = nowDate;
+    
+    if(weekday == 1)//今天是周一
+    {
+    }
+    else
+    {
+        newDate = [nowDate dateBySubtractingDays:weekday - 1];//本周的周一
+    }
+    
+    NSInteger newDateWO = newDate.weekdayOrdinal;
+    
+    if(newDateWO == weekdayOrdinal)//第一个周一
+    {
+        
+    }
+    else
+    {
+        if(!_isEdit)
+        {
+            newDate = [newDate dateBySubtractingWeeks:newDateWO - 1];
+        }
+    }
+    
+    NSDate * aMonthLaterDate = [newDate dateByAddingMonths:1];
+    if(_isEdit)
+    {
+        aMonthLaterDate = [[UICommon formatDate:_startTime] dateByAddingMonths:1];
+    }
+    
+    while ([newDate isEarlierThanOrEqualTo:aMonthLaterDate]) {
+        
+        weekdayOrdinal = newDate.weekdayOrdinal;//第几个周一
+        
+        if(newDate.day <= newDate.daysInMonth)//小于或等于最后一天
+        {
+            if(weekdayOrdinal == 1)
+            {
+                WorkPlanTime *wpt = [WorkPlanTime new];
+                wpt.year = newDate.year;
+                wpt.month = newDate.month;
+                wpt.week = 0;
+                [timeArr addObject:wpt];
+            }
+            
+            WorkPlanTime *wpt = [WorkPlanTime new];
+            wpt.year = newDate.year;
+            wpt.month = newDate.month;
+            wpt.week = weekdayOrdinal;
+            [timeArr addObject:wpt];
+            
+            newDate = [newDate dateByAddingWeeks:1];//下一周的周一
+            
+        }
+        
+        WorkPlanTime * wop = timeArr[0];
+        if(wop.week == 0)
+        {
+//            [timeArr removeObjectAtIndex:0];
+        }
+    }
+    
+    return timeArr;
+}
+
+- (NSMutableArray * ) getFiveYearTimeArr:(NSDate *)nowDate
 {
     NSMutableArray * timeArr = [NSMutableArray array];
     

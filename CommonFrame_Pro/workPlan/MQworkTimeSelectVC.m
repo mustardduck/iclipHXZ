@@ -146,6 +146,13 @@
         NSAttributedString *attrStr = [RRAttributedString setText:dateStr color:[UIColor blueTextColor] range:NSMakeRange(dateStr.length - timeStr.length, timeStr.length)];
         titleLbl.attributedText = attrStr;
     }
+    else if ((wpt.year < _nowWPT.year ||
+             wpt.month < _nowWPT.month ||
+             wpt.week < _nowWPT.week) && wpt.week)
+    {
+        NSAttributedString *attrStr = [RRAttributedString setText:dateStr color:[UIColor qitaBackColor] range:NSMakeRange(dateStr.length - timeStr.length, timeStr.length)];
+        titleLbl.attributedText = attrStr;
+    }
     else
     {
         titleLbl.text = dateStr;
@@ -183,6 +190,15 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WorkPlanTime * wpt = _timeList[indexPath.row];
+    
+    if ((wpt.year < _nowWPT.year ||
+              wpt.month < _nowWPT.month ||
+              wpt.week < _nowWPT.week) && wpt.week)
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+        return;
+    }
     
     self.currentWPT = wpt;
         
