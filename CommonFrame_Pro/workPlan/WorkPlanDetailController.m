@@ -97,7 +97,12 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
     
     _topLayoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     [_topLayoutBtn setBackgroundColor:[UIColor clearColor]];
-    [_topLayoutBtn setTitle:@"详情" forState:UIControlStateNormal];
+    NSString * txt = @"详情";
+    if(_statusLayoutShow)
+    {
+        txt = @"收起";
+    }
+    [_topLayoutBtn setTitle:txt forState:UIControlStateNormal];
     [_topLayoutBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_topLayoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -1621,6 +1626,11 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
     {
         _statusLayoutShow = NO;
     }
+    
+    self.navigationItem.rightBarButtonItems = nil;
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    [self initRightBarBtnItems];
     
     [_tableView reloadData];
 }

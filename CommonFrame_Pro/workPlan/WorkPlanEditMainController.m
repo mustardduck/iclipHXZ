@@ -127,7 +127,12 @@
     
     _topLayoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     [_topLayoutBtn setBackgroundColor:[UIColor clearColor]];
-    [_topLayoutBtn setTitle:@"详情" forState:UIControlStateNormal];
+    NSString * txt = @"详情";
+    if(_statusLayoutShow)
+    {
+        txt = @"收起";
+    }
+    [_topLayoutBtn setTitle:txt forState:UIControlStateNormal];
     [_topLayoutBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_topLayoutBtn addTarget:self action:@selector(btnLayoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -1001,6 +1006,11 @@
         _statusLayoutShow = NO;
         [_layoutBtn setTitle:@"状态视图" forState:UIControlStateNormal];
     }
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItems = nil;
+    
+    [self initRightBarBtnItems];
     
     [_mainTableView reloadData];
 }
