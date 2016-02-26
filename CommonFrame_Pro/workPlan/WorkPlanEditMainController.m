@@ -791,6 +791,8 @@
 
 - (IBAction)timeBtnClicked:(id)sender
 {
+    [_currentField resignFirstResponder];
+    
     if(_timeBtn.tag != 1)
     {
         _timeBtn.tag = 1;
