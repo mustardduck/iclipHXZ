@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Member Register View Controller-->
@@ -3844,7 +3843,7 @@
                                                     <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67843137249999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="4ED75C90-015F-41E3-B6EB-D2CF2B1210F0" translatesAutoresizingMaskIntoConstraints="NO" id="I2o-gR-S23">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="21F3FFEE-F1E2-405D-87B7-84CC1C6CDF80" translatesAutoresizingMaskIntoConstraints="NO" id="I2o-gR-S23">
                                                     <rect key="frame" x="296" y="2" width="10" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="10" id="DwC-3g-Wer"/>
@@ -6113,26 +6112,11 @@
                                 <action selector="btnBackButtonClicked:" destination="dkm-z9-kUo" id="79n-Re-d0S"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem title="发布" id="NBe-0k-xNu">
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <action selector="btnDoneButtonClicked:" destination="dkm-z9-kUo" id="Oaa-Ho-trg"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="详情" id="53C-3b-0TA">
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <action selector="btnLayoutButtonClicked:" destination="dkm-z9-kUo" id="34G-MH-Azz"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="_rightpMenuView" destination="NBQ-ck-bxA" id="rUR-Ot-AuH"/>
                         <outlet property="mainTableView" destination="yPV-AY-zNI" id="3Me-2u-27a"/>
-                        <outlet property="rightBarBtnItem" destination="NBe-0k-xNu" id="2jk-pt-zut"/>
                         <outlet property="rightViewHeightCons" destination="ADc-5u-K5x" id="Bng-I4-WIW"/>
                         <outlet property="rightViewWidthCons" destination="ozl-hX-eBv" id="WVU-k3-l0s"/>
                         <outlet property="view" destination="x26-bG-FSL" id="sSw-Dd-3vz"/>
@@ -6144,7 +6128,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="4ED75C90-015F-41E3-B6EB-D2CF2B1210F0" width="10" height="10">
+        <image name="21F3FFEE-F1E2-405D-87B7-84CC1C6CDF80" width="10" height="10">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
