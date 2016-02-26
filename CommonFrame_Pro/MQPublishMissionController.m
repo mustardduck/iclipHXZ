@@ -2179,24 +2179,24 @@
     }
 
     if (_responsibleDic.count == 0) {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择任务负责人！" delegate:self
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
+//        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择任务负责人！" delegate:self
+//                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
     }
     
     if (_strFinishTime == nil || [_strFinishTime isEqualToString:@""]) {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择任务完成时间！" delegate:self
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
+//        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择任务完成时间！" delegate:self
+//                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
     }
     if(!_cMarkAarry.count)
     {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择标签！" delegate:self
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
+//        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请选择标签！" delegate:self
+//                                              cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
     }
     
     
@@ -2205,17 +2205,31 @@
     m.createUserId = [LoginUser loginUserID];
     m.workGroupId = self.workGroupId;
     m.main = _txtView.text;
-    m.liableUserId = ((Member*)[_responsibleDic objectAtIndex:0]).userId;
     
-    if(_strFinishTime.length > 10)
+    if(_responsibleDic.count)
     {
-        _strFinishTime = [NSString stringWithFormat:@"%@ 00:00:00",[UICommon formatTime:_strFinishTime withLength:10]];
+        m.liableUserId = ((Member*)[_responsibleDic objectAtIndex:0]).userId;
     }
     else
     {
-        _strFinishTime = [NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime];
+        m.liableUserId = [LoginUser loginUserID];
     }
-    m.finishTime = _strFinishTime;
+    
+    if (_strFinishTime == nil || [_strFinishTime isEqualToString:@""])//完成时间为空
+    {
+    }
+    else
+    {
+        if(_strFinishTime.length > 10)
+        {
+            _strFinishTime = [NSString stringWithFormat:@"%@ 00:00:00",[UICommon formatTime:_strFinishTime withLength:10]];
+        }
+        else
+        {
+            _strFinishTime = [NSString stringWithFormat:@"%@ 00:00:00",_strFinishTime];
+        }
+        m.finishTime = _strFinishTime;
+    }
     
     m.remindTime = _strRemindTime;
     m.type = TaskTypeMission;
@@ -2259,7 +2273,20 @@
         }
         
     }else
-        m.isLabel = 0;
+    {
+        if(_currentLabelId.length)
+        {
+            m.isLabel = 1;
+
+            NSMutableArray* tAr = [NSMutableArray array];
+            [tAr addObject:_currentLabelId];
+            m.labelList = [NSArray arrayWithArray:tAr];
+        }
+        else
+        {
+            m.isLabel = 0;
+        }
+    }
     
     if (_cAccessoryArray.count > 0) {
         m.isAccessory = 1;
@@ -2368,7 +2395,10 @@
             [dic setObject:mission.cclist forKey:@"ccList"];
         
 
-        [dic setObject:mission.finishTime forKey:@"finishTime"];
+        if(mission.finishTime.length)
+        {
+            [dic setObject:mission.finishTime forKey:@"finishTime"];
+        }
         
         if(mission.remindTime != nil)
         {

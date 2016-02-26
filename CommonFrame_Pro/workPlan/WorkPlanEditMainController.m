@@ -726,6 +726,10 @@
     if ([self.icMainVC respondsToSelector:@selector(setIsNotRefreshMain:)]) {
         [self.icMainVC setValue:_isRefresh forKey:@"isNotRefreshMain"];
     }
+    if ([self.icMainVC respondsToSelector:@selector(setIsOpen:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isOpen"];
+    }
+
 }
 
 
@@ -1144,6 +1148,8 @@
     
     ((MQPublishMissionController*)vc).isEditMission = NO;//新增主任务
     ((MQPublishMissionController*)vc).isFromWorkPlanToCreateMission = YES;
+    
+    ((MQPublishMissionController*)vc).currentLabelId = [NSString stringWithFormat:@"%@", _currentLabelId];
     
     [self.navigationController pushViewController:vc animated:YES];
 }

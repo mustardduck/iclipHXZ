@@ -537,9 +537,10 @@
         if(self.cclist != nil)
             [dic setObject:self.cclist forKey:@"ccList"];
         
-        
-        [dic setObject:self.finishTime forKey:@"finishTime"];
-//        [dic setObject:self.finishTime forKey:@"finishTime"];
+        if(self.finishTime.length)
+        {
+            [dic setObject:self.finishTime forKey:@"finishTime"];
+        }
         
         if(self.remindTime != nil)
             [dic setObject:self.remindTime forKey:@"remindTime"];
@@ -1007,7 +1008,11 @@
                 {
                     [curDic setObject:cm.main forKey:@"main"];
                 }
-                [curDic setObject:cm.finishTime forKey:@"finishTime"];
+                if(cm.finishTime.length)
+                {
+                    [curDic setObject:cm.finishTime forKey:@"finishTime"];
+                }
+                
                 if(cm.remindTime.length)
                 {
                     [curDic setObject:cm.remindTime forKey:@"remindTime"];
@@ -1371,7 +1376,11 @@
     [dic setObject:type forKey:@"type"];
     [dic setObject:@"2" forKey:@"platform"];
     [dic setObject:@"0" forKey:@"parentId"];
-    [dic setObject:finishTime forKey:@"finishTime"];
+    
+    if(finishTime.length)
+    {
+        [dic setObject:finishTime forKey:@"finishTime"];
+    }
     [dic setObject:startTime forKey:@"startTime"];
     
     [mainDic setObject:dic forKey:@"vo"];
@@ -1426,7 +1435,10 @@
     [dic setObject:@"4" forKey:@"type"];
     [dic setObject:@"2" forKey:@"platform"];
     [dic setObject:@"0" forKey:@"parentId"];
-    [dic setObject:finishTime forKey:@"finishTime"];
+    if(finishTime.length)
+    {
+        [dic setObject:finishTime forKey:@"finishTime"];
+    }
     [dic setObject:startTime forKey:@"startTime"];
 
     [mainDic setObject:dic forKey:@"vo"];

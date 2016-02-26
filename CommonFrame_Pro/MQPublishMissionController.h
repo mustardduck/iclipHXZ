@@ -39,6 +39,7 @@
 @property(nonatomic, assign) BOOL isEditMission;
 
 @property(nonatomic,assign) NSInteger currentEditChildIndex;
+@property(nonatomic,strong) NSString * currentLabelId;
 
 
 @property(nonatomic,strong) id       icDetailViewController;

@@ -3477,7 +3477,7 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                         {
                             Mission *mis = arr[indexPath.row];
                             
-                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
+                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 117, 16)];
                             titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
                             titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
                             
@@ -3491,11 +3491,18 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             titleLbl.font = Font(14);
                             [cell.contentView addSubview:titleLbl];
                             
-                            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
+                            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 3, 10, 10)];
                             icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
                             [cell.contentView addSubview:icon];
                             
                             //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                            
+                            UILabel * rightStatusLbl = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 95 - 14, 0, 50, 16)];
+                            rightStatusLbl.backgroundColor = [UIColor clearColor];
+                            rightStatusLbl.textColor = [UIColor grayTitleColor];
+                            rightStatusLbl.font = Font(14);
+                            rightStatusLbl.textAlignment = NSTextAlignmentRight;
+                            
                             NSString * statusStr = @"未开始";
                             
                             if(mis.status == 1)
@@ -3510,7 +3517,12 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             {
                                 statusStr = @"超时";
                                 
+                                rightStatusLbl.textColor = [UIColor redTextColor];
+
                             }
+                            
+                            rightStatusLbl.text = statusStr;
+                            [cell.contentView addSubview:rightStatusLbl];
                             
                             UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
                             statusLbl.backgroundColor = [UIColor grayMarkColor];
@@ -3520,20 +3532,29 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             statusLbl.textAlignment = NSTextAlignmentCenter;
                             statusLbl.text = statusStr;
                             
-                            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(28, titleLbl.bottom + 7, 148, 24)];
                             
-                            dateLbl.backgroundColor = [UIColor grayMarkColor];
-                            [dateLbl setRoundCorner:1.7];
+                            dateLbl.backgroundColor = [UIColor clearColor];
+                            //                            [dateLbl setRoundCorner:1.7];
                             dateLbl.textColor = [UIColor grayTitleColor];
                             dateLbl.font = Font(14);
-                            dateLbl.textAlignment = NSTextAlignmentCenter;
-                            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+                            //                            dateLbl.textAlignment = NSTextAlignmentCenter;
                             
+                            NSString * finishTimeStr = mis.finishTime;
+                            
+                            if([[finishTimeStr substringToIndex:4] isEqualToString:@"1970"])
+                            {
+                                finishTimeStr = @"未设置";
+                            }
+                            
+                            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, finishTimeStr];
+
                             [cell.contentView addSubview:dateLbl];
+                            
                             
                             if(mis.status != -3)
                             {
-                                [cell.contentView addSubview:statusLbl];
+//                                [cell.contentView addSubview:statusLbl];
                             }
                             else
                             {
@@ -3551,9 +3572,9 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                                 statusLbl.textColor = [UIColor redTextColor];
                                 [statusView addSubview:statusLbl];
                                 
-                                [cell.contentView addSubview:statusView];
-                                
-                                dateLbl.left = statusView.right + 7;
+//                                [cell.contentView addSubview:statusView];
+//                                
+//                                dateLbl.left = statusView.right + 7;
                                 
                             }
                             
@@ -3670,7 +3691,7 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             {
                                 Mission *mis = arr[indexPath.row];
                                 
-                                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
+                                UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 117, 16)];
                                 titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
                                 titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
                                 
@@ -3684,11 +3705,18 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                                 titleLbl.font = Font(14);
                                 [cell.contentView addSubview:titleLbl];
                                 
-                                UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
+                                UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 3, 10, 10)];
                                 icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
                                 [cell.contentView addSubview:icon];
                                 
                                 //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                                
+                                UILabel * rightStatusLbl = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 95 - 14, 0, 50, 16)];
+                                rightStatusLbl.backgroundColor = [UIColor clearColor];
+                                rightStatusLbl.textColor = [UIColor grayTitleColor];
+                                rightStatusLbl.font = Font(14);
+                                rightStatusLbl.textAlignment = NSTextAlignmentRight;
+                                
                                 NSString * statusStr = @"未开始";
                                 
                                 if(mis.status == 1)
@@ -3703,7 +3731,12 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                                 {
                                     statusStr = @"超时";
                                     
+                                    rightStatusLbl.textColor = [UIColor redTextColor];
+
                                 }
+                                
+                                rightStatusLbl.text = statusStr;
+                                [cell.contentView addSubview:rightStatusLbl];
                                 
                                 UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
                                 statusLbl.backgroundColor = [UIColor grayMarkColor];
@@ -3713,20 +3746,29 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                                 statusLbl.textAlignment = NSTextAlignmentCenter;
                                 statusLbl.text = statusStr;
                                 
-                                UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                                UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(28, titleLbl.bottom + 7, 148, 24)];
                                 
-                                dateLbl.backgroundColor = [UIColor grayMarkColor];
-                                [dateLbl setRoundCorner:1.7];
+                                dateLbl.backgroundColor = [UIColor clearColor];
+                                //                            [dateLbl setRoundCorner:1.7];
                                 dateLbl.textColor = [UIColor grayTitleColor];
                                 dateLbl.font = Font(14);
-                                dateLbl.textAlignment = NSTextAlignmentCenter;
-                                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+                                //                            dateLbl.textAlignment = NSTextAlignmentCenter;
+                                
+                                NSString * finishTimeStr = mis.finishTime;
+                                
+                                if([[finishTimeStr substringToIndex:4] isEqualToString:@"1970"])
+                                {
+                                    finishTimeStr = @"未设置";
+                                }
+                                
+                                dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, finishTimeStr];
+
                                 
                                 [cell.contentView addSubview:dateLbl];
                                 
                                 if(mis.status != -3)
                                 {
-                                    [cell.contentView addSubview:statusLbl];
+//                                    [cell.contentView addSubview:statusLbl];
                                 }
                                 else
                                 {
@@ -3744,9 +3786,9 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                                     statusLbl.textColor = [UIColor redTextColor];
                                     [statusView addSubview:statusLbl];
                                     
-                                    [cell.contentView addSubview:statusView];
-                                    
-                                    dateLbl.left = statusView.right + 7;
+//                                    [cell.contentView addSubview:statusView];
+//                                    
+//                                    dateLbl.left = statusView.right + 7;
                                     
                                 }
                                 
@@ -3796,7 +3838,7 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                         {
                             Mission *mis = arr[indexPath.row];
                             
-                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 14 - 38 - 13 * 2, 16)];
+                            UILabel * titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, SCREENWIDTH - 117, 16)];
                             titleLbl.text = [NSString stringWithFormat:@"%ld. %@",indexPath.row + 1, mis.title];
                             titleLbl.height = [UICommon getSizeFromString:titleLbl.text withSize:CGSizeMake(SCREENWIDTH - 14 - 38 - 13 * 2, 70) withFont:Font(14)].height;
                             
@@ -3810,11 +3852,18 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             titleLbl.font = Font(14);
                             [cell.contentView addSubview:titleLbl];
                             
-                            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 4, 10, 10)];
+                            UIImageView * icon = [[UIImageView alloc]initWithFrame:CGRectMake(SCREENWIDTH - 14 - 10 - 13 * 2, 3, 10, 10)];
                             icon.image = [UIImage imageNamed:@"icon_jiantou_3"];
                             [cell.contentView addSubview:icon];
                             
                             //-3:已超时  -2删除   -1停用   0：未开始 1进行中   2：已完成
+                            
+                            UILabel * rightStatusLbl = [[UILabel alloc] initWithFrame:CGRectMake(SCREENWIDTH - 95 - 14, 0, 50, 16)];
+                            rightStatusLbl.backgroundColor = [UIColor clearColor];
+                            rightStatusLbl.textColor = [UIColor grayTitleColor];
+                            rightStatusLbl.font = Font(14);
+                            rightStatusLbl.textAlignment = NSTextAlignmentRight;
+                            
                             NSString * statusStr = @"未开始";
                             
                             if(mis.status == 1)
@@ -3829,7 +3878,12 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             {
                                 statusStr = @"超时";
                                 
+                                rightStatusLbl.textColor = [UIColor redTextColor];
+
                             }
+                            
+                            rightStatusLbl.text = statusStr;
+                            [cell.contentView addSubview:rightStatusLbl];
                             
                             UILabel * statusLbl = [[UILabel alloc] initWithFrame:CGRectMake(30, titleLbl.bottom + 7, 54, 24)];
                             statusLbl.backgroundColor = [UIColor grayMarkColor];
@@ -3839,20 +3893,28 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                             statusLbl.textAlignment = NSTextAlignmentCenter;
                             statusLbl.text = statusStr;
                             
-                            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(statusLbl.right + 7, titleLbl.bottom + 7, 148, 24)];
+                            UILabel * dateLbl = [[UILabel alloc] initWithFrame:CGRectMake(28, titleLbl.bottom + 7, 148, 24)];
                             
-                            dateLbl.backgroundColor = [UIColor grayMarkColor];
-                            [dateLbl setRoundCorner:1.7];
+                            dateLbl.backgroundColor = [UIColor clearColor];
+//                            [dateLbl setRoundCorner:1.7];
                             dateLbl.textColor = [UIColor grayTitleColor];
                             dateLbl.font = Font(14);
-                            dateLbl.textAlignment = NSTextAlignmentCenter;
-                            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, mis.finishTime];
+//                            dateLbl.textAlignment = NSTextAlignmentCenter;
+                            
+                            NSString * finishTimeStr = mis.finishTime;
+                            
+                            if([[finishTimeStr substringToIndex:4] isEqualToString:@"1970"])
+                            {
+                                finishTimeStr = @"未设置";
+                            }
+                            
+                            dateLbl.text = [NSString stringWithFormat:@"%@      %@", mis.lableUserName, finishTimeStr];
                             
                             [cell.contentView addSubview:dateLbl];
                             
                             if(mis.status != -3)
                             {
-                                [cell.contentView addSubview:statusLbl];
+//                                [cell.contentView addSubview:statusLbl];
                             }
                             else
                             {
@@ -3870,9 +3932,9 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
                                 statusLbl.textColor = [UIColor redTextColor];
                                 [statusView addSubview:statusLbl];
                                 
-                                [cell.contentView addSubview:statusView];
-                                
-                                dateLbl.left = statusView.right + 7;
+//                                [cell.contentView addSubview:statusView];
+//                                
+//                                dateLbl.left = statusView.right + 7;
                                 
                             }
                             

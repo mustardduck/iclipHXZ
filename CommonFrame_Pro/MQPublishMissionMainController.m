@@ -959,6 +959,10 @@
         [self.icMainVC setValue:@"1" forKey:@"isNotRefreshMain"];
     }
     
+    if ([self.icMainVC respondsToSelector:@selector(setIsOpen:)]) {
+        [self.icMainVC setValue:@"1" forKey:@"isOpen"];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
