@@ -498,7 +498,10 @@
     NSDate * aMonthLaterDate = [newDate dateByAddingMonths:1];
     if(_isEdit)
     {
-        aMonthLaterDate = [[UICommon formatDate:_startTime] dateByAddingMonths:1];
+        
+        NSDate * firstdayDate = [UICommon firstDayDateFromWPT:[UICommon WPTFromDate:[UICommon formatDate:_startTime]]];
+        
+        aMonthLaterDate = [firstdayDate dateByAddingMonths:1];
     }
     
     while ([newDate isEarlierThanOrEqualTo:aMonthLaterDate]) {
@@ -513,7 +516,7 @@
                 wpt.year = newDate.year;
                 wpt.month = newDate.month;
                 wpt.week = 0;
-                [timeArr addObject:wpt];
+//                [timeArr addObject:wpt];
             }
             
             WorkPlanTime *wpt = [WorkPlanTime new];
@@ -529,7 +532,7 @@
         WorkPlanTime * wop = timeArr[0];
         if(wop.week == 0)
         {
-//            [timeArr removeObjectAtIndex:0];
+            [timeArr removeObjectAtIndex:0];
         }
     }
     

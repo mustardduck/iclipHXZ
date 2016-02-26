@@ -160,6 +160,17 @@ static UIViewController *imagePicker = nil;
     
 }
 
++ (NSDate *)firstDayDateFromWPT:(WorkPlanTime *)wpt//wpt转本月一号
+{
+    NSString * monthStr = wpt.month < 10 ? [NSString stringWithFormat:@"0%ld", wpt.month] : [NSString stringWithFormat:@"%ld", wpt.month];
+    
+    NSString * timeStr = [NSString stringWithFormat:@"%ld-%@-01 00:00:00", wpt.year, monthStr];
+    
+    NSDate * firstDayDate = [self formatDate:timeStr];
+    
+    return firstDayDate;
+}
+
 + (NSString *)stringFromDate:(NSDate *)date
 {
     

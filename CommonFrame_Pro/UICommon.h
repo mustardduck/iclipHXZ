@@ -74,6 +74,7 @@ typedef enum{
 + (WorkPlanTime *)WPTFromStartTime:(NSString *) startTime andFinishTime:(NSString *)finishTime;//开始和结束时间转成WPT
 + (WorkPlanTime *)WPTFromDate:(NSDate *)nowDate;//日期转成WPT周一
 + (NSString *)stringFromDate:(NSDate *)date;//日期转字符串
++ (NSDate *)firstDayDateFromWPT:(WorkPlanTime *)wpt;//wpt转本月一号
 
 #pragma mark image scale utility
 + (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage;
