@@ -1892,12 +1892,26 @@
                         break;
                 }
                 
-                responText = [NSString stringWithFormat:@"截止时间：%@", finishTime];
+                if([[finishTime substringToIndex:4] isEqualToString:@"1970"])
+                {
+                    responText = @"截止时间：未设置";
+                }
+                else
+                {
+                    responText = [NSString stringWithFormat:@"截止时间：%@", finishTime];
+                }
                 
                 if(finishTime.length)
                 {
-                    attrStr = [RRAttributedString setText:responText color:[UIColor whiteColor] range:NSMakeRange(5, 11)];
-                    title.attributedText = attrStr;
+                    if(responText.length >= 11)
+                    {
+                        attrStr = [RRAttributedString setText:responText color:[UIColor whiteColor] range:NSMakeRange(5, 11)];
+                        title.attributedText = attrStr;
+                    }
+                    else
+                    {
+                        title.text = responText;
+                    }
                 }
                 else
                 {
