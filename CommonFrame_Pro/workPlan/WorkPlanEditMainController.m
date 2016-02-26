@@ -67,6 +67,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarBtnItem;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewHeightCons;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightViewHeightCons;
+@property (assign, nonatomic) CGFloat keyboardHeight;
 
 @end
 
@@ -225,6 +226,8 @@
     
     [keyboardObject getValue:&keyboardRect];
     
+    self.keyboardHeight = keyboardRect.size.height; //后面要用到
+    
     
     //调整放置有textView的view的位置
 
@@ -334,7 +337,9 @@
                 
 //                [_currentField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventValueChanged];
                 
-                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+//                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+                
+                [self performSelector:@selector(scrollTableView:) withObject:txtField afterDelay:0.0]; //必须
                 
             }
         }
@@ -1137,12 +1142,54 @@
                 
                 _currentLabelId = [titleDic valueForKey:@"labelId"];
                 
-                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//                [_mainTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 
+
             }
         }
     }
     
+}
+
+- (void)scrollTableView:(UITextField *)textField
+{
+    UITextField * txt = (UITextField *)textField;
+    
+    UITableView *  mTableView =(UITableView *) [[[[[txt superview] superview] superview] superview] superview];
+    UITableViewCell *  cell = (UITableViewCell *)[[[txt superview] superview] superview];
+    NSIndexPath * localIndexPath = [mTableView indexPathForCell:cell];
+    
+    CGRect frame = _mainTableView.frame;
+    frame.size.height = self.view.bounds.size.height- self.keyboardHeight - 80;//
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:0.250000];
+    self.mainTableView.frame = frame;
+    [UIView commitAnimations];
+    
+    [self.mainTableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField
+{
+    [self resetTableViewFrame];
+
+}
+
+- (void)resetTableViewFrame
+{
+    if (_currentField != nil) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationDuration:0.250000];
+        self.mainTableView.frame = self.view.bounds;
+        self.mainTableView.height = self.view.bounds.size.height - 40;
+        self.mainTableView.top = 44;
+        [UIView commitAnimations];
+        
+        [_currentField resignFirstResponder];
+    }
+//    [self.mainTableView reloadData];
 }
 
 - (void) rightBtnClicked:(id) sender
@@ -1329,19 +1376,19 @@
         {
             if(indexPath.row == arr.count)
             {
-                if(indexPath.section == _rows.count - 1)
-                {
-                    return 70 + 280;
-                }
+//                if(indexPath.section == _rows.count - 1)
+//                {
+//                    return 70 + 280;
+//                }
                 return 70;
             }
         }
         else
         {
-            if(indexPath.section == _rows.count - 1 && indexPath.row == arr.count)
-            {
-                return 70 + 280;
-            }
+//            if(indexPath.section == _rows.count - 1 && indexPath.row == arr.count)
+//            {
+//                return 70 + 280;
+//            }
             return 70;
         }
         
@@ -1356,10 +1403,10 @@
             
             NSArray * arr = [_rows[indexPath.section] objectForKey:numKey];
             
-            if(indexPath.section == _rows.count - 1 && indexPath.row == arr.count)
-            {
-                return cell.frame.size.height + 280;
-            }
+//            if(indexPath.section == _rows.count - 1 && indexPath.row == arr.count)
+//            {
+//                return cell.frame.size.height + 280;
+//            }
 
             return cell.frame.size.height;
         }

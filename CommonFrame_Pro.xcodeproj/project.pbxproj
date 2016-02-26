@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B1632851C7C314400038B6F /* WorkPlanEditMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1632841C7C314400038B6F /* WorkPlanEditMainController.m */; };
 		4B17A1251C27EAFB0032410C /* MQMyMessageMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B17A1241C27EAFB0032410C /* MQMyMessageMainController.m */; };
 		4B17A1281C27EB110032410C /* MQMyMessageListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B17A1271C27EB110032410C /* MQMyMessageListController.m */; };
 		4B17A12B1C28EF0B0032410C /* SystemMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B17A12A1C28EF0B0032410C /* SystemMessage.m */; };
@@ -215,6 +216,8 @@
 
 /* Begin PBXFileReference section */
 		1579B5EA179A50AC05B6E19A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B1632831C7C314400038B6F /* WorkPlanEditMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkPlanEditMainController.h; sourceTree = "<group>"; };
+		4B1632841C7C314400038B6F /* WorkPlanEditMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkPlanEditMainController.m; sourceTree = "<group>"; };
 		4B17A1231C27EAFB0032410C /* MQMyMessageMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMyMessageMainController.h; sourceTree = "<group>"; };
 		4B17A1241C27EAFB0032410C /* MQMyMessageMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMyMessageMainController.m; sourceTree = "<group>"; };
 		4B17A1261C27EB110032410C /* MQMyMessageListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMyMessageListController.h; sourceTree = "<group>"; };
@@ -755,6 +758,8 @@
 				4BC94B9D1C3A4E5700F2FEAF /* WorkPlanMainSelectCell.m */,
 				4B9BC9541C32301800F4EC41 /* WorkPlanEditController.h */,
 				4B9BC9551C32301800F4EC41 /* WorkPlanEditController.m */,
+				4B1632831C7C314400038B6F /* WorkPlanEditMainController.h */,
+				4B1632841C7C314400038B6F /* WorkPlanEditMainController.m */,
 				4B9BC9571C32316A00F4EC41 /* WorkPlanAddMissionController.h */,
 				4B9BC9581C32316A00F4EC41 /* WorkPlanAddMissionController.m */,
 				4BC94BA21C3CF37B00F2FEAF /* MQworkGroupSelectVC.h */,
@@ -1540,6 +1545,7 @@
 				4BC530001C196870002C20D8 /* LRIndexedCollationWithSearch.m in Sources */,
 				4B1F2AB51BB9251F00D55BAE /* UIImageView+MJWebCache.m in Sources */,
 				4BC94BC31C3F9A1F00F2FEAF /* NSDate+DateTools.m in Sources */,
+				4B1632851C7C314400038B6F /* WorkPlanEditMainController.m in Sources */,
 				4B17A1251C27EAFB0032410C /* MQMyMessageMainController.m in Sources */,
 				4BC94BA71C3E559F00F2FEAF /* MQworkTimeSelectVC.m in Sources */,
 				4BC040341BABBF6E004C6F3B /* SVProgressHUD.m in Sources */,
