@@ -843,38 +843,8 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
         
         self.navigationItem.title = title;
         
+        [self resetRightBarItems];
         
-        NSString * loginStr = [NSString stringWithFormat:@"%@", [LoginUser loginUserID]];
-        
-        if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
-        {
-            if(_currentMission.createUserId == [LoginUser loginUserID])
-            {
-                _isCreater = YES;
-            }
-            else
-            {
-                _isCreater = NO;
-            }
-            
-            if(_currentMission.type != 5)
-            {
-                [self initRightBarBtnItems];
-            }
-            else
-            {
-
-                UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"详情" style:UIBarButtonItemStyleDone target:self action:@selector(btnLayoutButtonClicked:)];
-                [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
-                self.navigationItem.rightBarButtonItem = rightBarButton;
-            }
-        }
-        else
-        {
-            UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"详情" style:UIBarButtonItemStyleDone target:self action:@selector(btnLayoutButtonClicked:)];
-            [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
-            self.navigationItem.rightBarButtonItem = rightBarButton;
-        }
     }
     
     if (_currentMission != nil) {
@@ -1630,9 +1600,41 @@ static const CGFloat TABLE_HEADER_HEIGHT = 34;
     self.navigationItem.rightBarButtonItems = nil;
     self.navigationItem.rightBarButtonItem = nil;
     
-    [self initRightBarBtnItems];
-    
+    [self resetRightBarItems];
+
     [_tableView reloadData];
+}
+
+- (void) resetRightBarItems
+{
+    NSString * loginStr = [NSString stringWithFormat:@"%@", [LoginUser loginUserID]];
+
+    NSString * title = @"详情";
+    
+    if(_statusLayoutShow)
+    {
+        title = @"收起";
+    }
+    
+    if(_currentMission.createUserId == [LoginUser loginUserID] || [_currentMission.liableUserId isEqualToString:loginStr])
+    {
+        if(_currentMission.type != 5)
+        {
+            [self initRightBarBtnItems];
+        }
+        else
+        {
+            UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(btnLayoutButtonClicked:)];
+            [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+            self.navigationItem.rightBarButtonItem = rightBarButton;
+        }
+    }
+    else
+    {
+        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(btnLayoutButtonClicked:)];
+        [rightBarButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:17]} forState:UIControlStateNormal];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
